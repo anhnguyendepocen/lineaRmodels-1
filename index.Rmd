@@ -16,8 +16,7 @@ description: "This is a web complement to MATH 341 (Linear Models), a first regr
 
 # Introduction {-}
 
-We shall use the **R** programming language througout the course (as it is free and the most used tool for data analysis, including in statistics courses at EPFL). Visit [the R-project website](https://cran.r-project.org/) to download the program. The most popular graphical cross-platform front-end is [RStudio Desktop](https://www.rstudio.com/products/rstudio/download/).
+We shall use the **R** programming language througout the course. 
+(as it is free and it is used in other statistics courses at EPFL). Visit [the R-project website](https://cran.r-project.org/) to download the program. The most popular graphical cross-platform front-end is [RStudio Desktop](https://www.rstudio.com/products/rstudio/download/).
 
-**R** is an object-oriented interpreted language. It differs from usual programming languages in that it is designed for interactive analyses. You can find several introductions to **R** online. Have a look at the [**R** manuals](https://cran.r-project.org/manuals.html) or better at [contributed manuals](https://cran.r-project.org/other-docs.html). A nice official reference is [*An introduction to* **R**](http://colinfay.me/intro-to-r/index.html). 
-You may wish to look up the following chapters of the **R** language definition ([Evaluation of expressions](http://colinfay.me/r-language-definition/evaluation-of-expressions.html) and part of the [*Objects* chapter](http://colinfay.me/r-language-definition/objects.html)).
-
+**R** is an object-oriented interpreted language. It differs from usual programming languages in that it is designed for interactive analyses. 

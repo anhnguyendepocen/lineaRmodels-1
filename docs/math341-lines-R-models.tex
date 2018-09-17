@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{Fall 2018, version of 2018-09-17}
+    \date{version of 2018-09-17}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -161,50 +161,45 @@
 \chapter*{Introduction}\label{introduction}}
 \addcontentsline{toc}{chapter}{Introduction}
 
-We shall use the R programming language througout the course (as it is
-free and the most used tool for data analysis, including in statistics
-courses at EPFL). Visit \href{https://cran.r-project.org/}{the R-project
-website} to download the program. The most popular graphical
-cross-platform front-end is
+We shall use the \textbf{R} programming language througout the course.
+(as it is free and it is used in other statistics courses at EPFL).
+Visit \href{https://cran.r-project.org/}{the R-project website} to
+download the program. The most popular graphical cross-platform
+front-end is
 \href{https://www.rstudio.com/products/rstudio/download/}{RStudio
 Desktop}.
 
 \textbf{R} is an object-oriented interpreted language. It differs from
 usual programming languages in that it is designed for interactive
-analyses. Indexing in \textbf{R} starts at one, not zero.
+analyses.
 
-You can find several introductions to \textbf{R} online. Have a look at
-the \href{https://cran.r-project.org/manuals.html}{\textbf{R} manuals}
-or better at
-\href{https://cran.r-project.org/other-docs.html}{contributed manuals}.
-A nice official reference is
-\href{http://colinfay.me/intro-to-r/index.html}{\emph{An introduction
-to} \textbf{RR}}. You may wish to look up the following chapters of the
-\textbf{R} language definition
-(\href{http://colinfay.me/r-language-definition/evaluation-of-expressions.html}{Evaluation
-of expressions} and part of the
-\href{http://colinfay.me/r-language-definition/objects.html}{\emph{Objects}
-chapter}).
-
-\hypertarget{introduction-projection-matrices}{%
-\chapter{Introduction, projection
-matrices}\label{introduction-projection-matrices}}
+\hypertarget{projection-matrices}{%
+\chapter{Projection matrices}\label{projection-matrices}}
 
 \hypertarget{introduction-1}{%
 \section{Introduction}\label{introduction-1}}
 
-I will perform basic manipulations in \textbf{R}; the benefit of the
-format used for these notes is that you see the output directly and you
-can also copy the code.
+Since \textbf{R} is not a conventional programming language, my teaching
+approach will be learning-by-doing. The benefit of using
+\emph{Rmarkdown} is that you see the output directly and you can also
+copy the code.
+
+Help can be accessed via \texttt{help} or simply \texttt{?}. If you do
+not know what to query, use \texttt{??} in front of a string, delimited
+by captions \texttt{"\ "} as in \texttt{??"Cholesky\ decomposition"}.
+Help is your best friend if you don't know what a function does, what
+are its arguments, etc.
 
 \hypertarget{packages}{%
 \subsection{Packages}\label{packages}}
 
 The great strength of \textbf{R} comes from its contributed libraries
-(called packages), which contain contributed functions and datasets
-provided by third parties. Some of these (\texttt{base}, \texttt{stats},
+(called packages), which contain functions and datasets provided by
+third parties. Some of these (\texttt{base}, \texttt{stats},
 \texttt{graphics}, etc.) are loaded by default whenever you open a
-session. To install a package from CRAN, use
+session.
+
+To install a package from CRAN, use
 \texttt{install.packages("package")}, replacing \texttt{package} by the
 package name. Once installed, packages can be loaded using
 \texttt{library(package)}; all the functions in \texttt{package} will be
@@ -218,35 +213,54 @@ the model \texttt{package::function}.
 \subsection{\texorpdfstring{Basics of
 \textbf{R}}{Basics of R}}\label{basics-of-r}}
 
+You can find several introductions to \textbf{R} online. Have a look at
+the \href{https://cran.r-project.org/manuals.html}{\textbf{R} manuals}
+or better at
+\href{https://cran.r-project.org/other-docs.html}{contributed manuals}.
+A nice official reference is
+\href{http://colinfay.me/intro-to-r/index.html}{\emph{An introduction
+to} \textbf{R}}. You may wish to look up the following chapters of the
+\textbf{R} language definition
+(\href{http://colinfay.me/r-language-definition/evaluation-of-expressions.html}{Evaluation
+of expressions} and part of the
+\href{http://colinfay.me/r-language-definition/objects.html}{\emph{Objects}
+chapter}).
+
+Some \textbf{R} commands are fairly intuitive, especially if you want to
+use your console as a calculator. Elementary functions such as
+\texttt{sum}, \texttt{min}, \texttt{max}, \texttt{sqrt}, \texttt{log},
+\texttt{exp}, etc., are self-explanatory.
+
 \begin{itemize}
 \tightlist
 \item
   Use \texttt{\textless{}-} to assign to a variable, and \texttt{=} for
   matching arguments inside functions
 \item
-  Elementary functions include \texttt{sum}, \texttt{min}, \texttt{max},
-  \texttt{sqrt}, \texttt{log}, \texttt{exp}, etc.
+  Indexing in \textbf{R} starts at 1, \textbf{not} zero.
 \item
-  Indexing in \textbf{R} starts at 1, \textbf{not} zer.
-\item
-  \textbf{R} is a vectorized language, so avoid loops as much as
-  possible
+  Most functions in \textbf{R} are vectorized, so avoid loops as much as
+  possible.
 \item
   integers are obtained by appending \texttt{L} to the number, so
   \texttt{2L} is an integer and \texttt{2} a double.
 \end{itemize}
 
-Missing values are indicated by \texttt{NA} or \texttt{NaN}. These are
-often found in data sets (where missingness is common) or as a result of
-invalid mathematical operations \texttt{log(-2)}. Be careful: \textbf{R}
-returns errors much less often than its counterparts, so it is good
-practice to check that the output is sensical. There is a special type
-for \texttt{NULL} pointers. Logicals are \texttt{TRUE} and
-\texttt{FALSE} in capital letters.
+Besides integers and doubles, the common types are logicals
+(\texttt{TRUE} and \texttt{FALSE}, note the capital letters). You can
+assign \texttt{NULL} pointers to arguments. Special types exists for
+missing values, namely \texttt{NA} or \texttt{NaN}. These can also be
+obtained a result of invalid mathematical operations such as
+\texttt{log(-2)}.
+
+The above illustrates a caveat of \textbf{R}: invalid calls will often
+returns \emph{something} rather than an error. It is therefore good
+practice to check that the output is sensical.
 
 \textbf{R} is an object oriented language, and the basic elements in
-\textbf{R} are vector. Below are some useful commands for performing
-basic manipulation of vectors and matrix operations:
+\textbf{R} are (column) vector. Below is a glossary with some useful
+commands for performing basic manipulation of vectors and matrix
+operations:
 
 \begin{itemize}
 \tightlist
@@ -306,11 +320,11 @@ statements. For example, if \texttt{x} is a vector, then
   condition.
 \end{itemize}
 
-For a matrix \texttt{x}, subsetting now involves dimensions row comma
-column. Therefore \texttt{{[}1,2{]}} returns the element in the first
-row, second column. \texttt{x{[},2{]}} will return all of the rows, but
-only the second column. For lists, you can use \texttt{{[}{[}} for
-subsetting or the \texttt{\$} signs.
+For a matrix \texttt{x}, subsetting now involves dimensions:
+\texttt{{[}1,2{]}} returns the element in the first row, second column.
+\texttt{x{[},2{]}} will return all of the rows, but only the second
+column. For lists, you can use \texttt{{[}{[}} for subsetting by index
+or the \texttt{\$} sign by names.
 
 \hypertarget{week1}{%
 \section{R-tutorial 1}\label{week1}}
@@ -323,7 +337,7 @@ National park. This is a \texttt{data.frame} object, a matrix whose
 columns can be of different types (\texttt{integer}, \texttt{double},
 \texttt{logical}, \texttt{character}). To load a package already present
 in an \textbf{R} package, use the command \texttt{data} with the name of
-the \texttt{package} as a string.
+the \texttt{package} as an argument (must be a string).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -413,7 +427,9 @@ Always label the axis and include units.
 \KeywordTok{library}\NormalTok{(ggplot2)}
 \KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ faithful, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ eruptions, }\DataTypeTok{y =}\NormalTok{ waiting)) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{  }
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Old Faithful Geyser Data"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Eruption time (in min.)"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Waiting time between eruptions (in min.)"}\NormalTok{)}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Old Faithful Geyser Data"}\NormalTok{, }
+       \DataTypeTok{x =} \StringTok{"Eruption time (in min.)"}\NormalTok{, }
+       \DataTypeTok{y =} \StringTok{"Waiting time between eruptions (in min.)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -444,8 +460,8 @@ We can now create an orthogonal projection matrix \texttt{X} onto the
 \(\mathbf{H}_{\mathbf{X}}\) numerically using \texttt{all.equal} to
 check for equalities.
 
-\hypertarget{projection-matrices}{%
-\subsection{Projection matrices}\label{projection-matrices}}
+\hypertarget{projection-matrices-1}{%
+\subsection{Projection matrices}\label{projection-matrices-1}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
