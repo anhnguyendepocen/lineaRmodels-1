@@ -1,8 +1,10 @@
-# Introduction, projection matrices
+# Projection matrices
 
 ## Introduction
 
-I will perform basic manipulations in **R**; the benefit of the format used for these notes is that you see the output directly and you can also copy the code.
+Since **R** is not a conventional programming language, my teaching approach will be learning-by-doing. The benefit of using *Rmarkdown* is that you see the output directly and you can also copy the code.
+ 
+Before starting with our first analysis, some preliminary remarks.  
  
 ### Packages
 
@@ -14,11 +16,11 @@ To palliate to this, you can use the `::` syntax to access a single function fro
 
 - Use `<-` to assign to a variable, and `=` for matching arguments inside functions
 - Elementary functions include `sum`, `min`, `max`, `sqrt`, `log`, `exp`, etc. 
-- Indexing in **R** starts at 1, **not** zer. 
-- **R** is a vectorized language, so avoid loops as much as possible 
+- Indexing in **R** starts at 1, **not** zero. 
+- Most functions in **R** are vectorized, so avoid loops as much as possible.
 - integers are obtained by appending `L` to the number, so `2L` is an integer and `2` a double.
 
-Missing values are indicated by `NA` or `NaN`. These are often found in data sets (where missingness is common) or as a result of invalid mathematical operations `log(-2)`. Be careful: **R** returns errors much less often than its counterparts, so it is good practice to check that the output is sensical. There is a special type for `NULL` pointers. Logicals are `TRUE` and `FALSE` in capital letters.
+Missing values are indicated by `NA` or `NaN`. These are often found in data sets (where missingness is common) or as a result of invalid mathematical operations `log(-2)`. Be careful: **R** often returns values in place of errors, so it is good practice to check that the output is sensical. There is a special type for `NULL` pointers. Logicals are `TRUE` and `FALSE` in capital letters.
 
 **R** is an object oriented language, and the basic elements in **R** are vector. Below are some useful commands for performing basic manipulation of vectors and matrix operations:
 
@@ -88,7 +90,9 @@ plot(waiting ~ eruptions, data = faithful,
 library(ggplot2)
 ggplot(data = faithful, aes(x = eruptions, y = waiting)) + 
   geom_point() +  
-  labs(title = "Old Faithful Geyser Data", x = "Eruption time (in min.)", y = "Waiting time between eruptions (in min.)")
+  labs(title = "Old Faithful Geyser Data", 
+       x = "Eruption time (in min.)", 
+       y = "Waiting time between eruptions (in min.)")
 ```
 
 A simple linear model of the form $y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i$, where $\varepsilon_i$ is a noise variable with expectation zero and $\mathbf{x} = \mathsf{eruptions}$ and $\boldsymbol{y} = \mathsf{waiting}$. We first create a matrix with a column of $\mathbf{1}_n$ for the intercept.  We bind vectors by column (`cbind`) into a matrix, recycling arguments if necessary. Use `<-` to assign values to a variable and `$` to obtain a column of the data frame
