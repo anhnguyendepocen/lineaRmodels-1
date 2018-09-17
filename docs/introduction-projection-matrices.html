@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Lines are models</title>
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Lines are models" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="github-repo" content="lbelzile/linesRmodels" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Lines are models" />
+  
+  <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  
+
+<meta name="author" content="Léo Belzile">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lines R Models</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html"><i class="fa fa-check"></i><b>1</b> Introduction, projection matrices</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#packages"><i class="fa fa-check"></i><b>1.1.1</b> Packages</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#basics-of-r"><i class="fa fa-check"></i><b>1.1.2</b> Basics of <strong>R</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#week1"><i class="fa fa-check"></i><b>1.2</b> R-tutorial 1</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#data-sets"><i class="fa fa-check"></i><b>1.2.1</b> Data sets</a></li>
+<li class="chapter" data-level="1.2.2" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#graphics"><i class="fa fa-check"></i><b>1.2.2</b> Graphics</a></li>
+<li class="chapter" data-level="1.2.3" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#projection-matrices"><i class="fa fa-check"></i><b>1.2.3</b> Projection matrices</a></li>
+<li class="chapter" data-level="" data-path="introduction-projection-matrices.html"><a href="introduction-projection-matrices.html#your-turn"><i class="fa fa-check"></i>Your turn</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lines are models</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction-projection-matrices" class="section level1">
+<h1><span class="header-section-number">Week 1</span> Introduction, projection matrices</h1>
+<div id="introduction-1" class="section level2">
+<h2><span class="header-section-number">1.1</span> Introduction</h2>
+<p>I will perform basic manipulations in <strong>R</strong>; the benefit of the format used for these notes is that you see the output directly and you can also copy the code.</p>
+<div id="packages" class="section level3">
+<h3><span class="header-section-number">1.1.1</span> Packages</h3>
+<p>The great strength of <strong>R</strong> comes from its contributed libraries (called packages), which contain contributed functions and datasets provided by third parties. Some of these (<code>base</code>, <code>stats</code>, <code>graphics</code>, etc.) are loaded by default whenever you open a session.
+To install a package from CRAN, use <code>install.packages(&quot;package&quot;)</code>, replacing <code>package</code> by the package name. Once installed, packages can be loaded using <code>library(package)</code>; all the functions in <code>package</code> will be available in the environment. The drawback of this approach is that, if a function from another package is already present with the same name, it will be overriden.
+To palliate to this, you can use the <code>::</code> syntax to access a single function from an installed package, following the model <code>package::function</code>.</p>
+</div>
+<div id="basics-of-r" class="section level3">
+<h3><span class="header-section-number">1.1.2</span> Basics of <strong>R</strong></h3>
+<ul>
+<li>Use <code>&lt;-</code> to assign to a variable, and <code>=</code> for matching arguments inside functions</li>
+<li>Elementary functions include <code>sum</code>, <code>min</code>, <code>max</code>, <code>sqrt</code>, <code>log</code>, <code>exp</code>, etc.</li>
+<li>Indexing in <strong>R</strong> starts at 1, <strong>not</strong> zer.</li>
+<li><strong>R</strong> is a vectorized language, so avoid loops as much as possible</li>
+<li>integers are obtained by appending <code>L</code> to the number, so <code>2L</code> is an integer and <code>2</code> a double.</li>
+</ul>
+<p>Missing values are indicated by <code>NA</code> or <code>NaN</code>. These are often found in data sets (where missingness is common) or as a result of invalid mathematical operations <code>log(-2)</code>. Be careful: <strong>R</strong> returns errors much less often than its counterparts, so it is good practice to check that the output is sensical. There is a special type for <code>NULL</code> pointers. Logicals are <code>TRUE</code> and <code>FALSE</code> in capital letters.</p>
+<p><strong>R</strong> is an object oriented language, and the basic elements in <strong>R</strong> are vector. Below are some useful commands for performing basic manipulation of vectors and matrix operations:</p>
+<ul>
+<li><code>c</code> creates a vector</li>
+<li><code>cbind</code> (<code>rbind</code>) binds column (row) vectors</li>
+<li><code>matrix</code> and <code>vector</code> are constructors</li>
+<li><code>diag</code> creates a diagonal matrix (by default with ones)</li>
+<li><code>t</code> is the function for transpose</li>
+<li><code>solve</code> performs matrix inversion</li>
+<li><code>%*%</code> is matrix multiplication, <code>*</code> is element-wise multiplication</li>
+<li><code>crossprod</code> <code>crossprod(A, B)</code> calculates the cross-product, <code>t(A) %*% B</code> of two matrices <code>A</code> and <code>B</code></li>
+<li><code>eigen</code>/<code>chol</code>/<code>qr</code> perform respectively an eigendecomposition/Cholesky/QR decomposition of a matrix</li>
+<li><code>rep</code> creates a vector of duplicates, <code>seq</code> a sequence. For integers <span class="math inline">\(i\)</span>, <span class="math inline">\(j\)</span> with <span class="math inline">\(i&lt;j\)</span>, <code>i:j</code> generates the sequence <span class="math inline">\(i, i+1, \ldots, j-1, j\)</span>.</li>
+</ul>
+<p>Subsetting is fairly intuitive and general; you can use vectors, logical statements. For example, if <code>x</code> is a vector,
+then</p>
+<ul>
+<li><code>x[2]</code> returns the second element</li>
+<li><code>x[-2]</code> returns all but the second element</li>
+<li><code>x[1:5]</code> returns the first five elements</li>
+<li><code>x[(length(x) - 5):length(x)]</code> returns the last five elements</li>
+<li><code>x[c(1, 2, 4)]</code> returns the first, second and fourth element</li>
+<li><code>x[x &gt; 3]</code> return any element greater than 3. Possibly an empty vector of length zero!</li>
+<li><code>x[ x &lt; -2 | x &gt; 2]</code> multiple logical conditions.</li>
+<li><code>which(x == max(x))</code> index of elements satisfying a logical condition.</li>
+</ul>
+<p>For a matrix <code>x</code>, subsetting now involves dimensions row comma column. Therefore <code>[1,2]</code> returns the element in the first row, second column. <code>x[,2]</code> will return all of the rows, but only the second column. For lists, you can use <code>[[</code> for subsetting or the <code>$</code> signs.</p>
+</div>
+</div>
+<div id="week1" class="section level2">
+<h2><span class="header-section-number">1.2</span> R-tutorial 1</h2>
+<div id="data-sets" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Data sets</h3>
+<p>We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park.
+This is a <code>data.frame</code> object, a matrix whose columns can be of different types (<code>integer</code>, <code>double</code>, <code>logical</code>, <code>character</code>).
+To load a package already present in an <strong>R</strong> package, use the command <code>data</code> with the name of the <code>package</code> as a string.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Load Old faithful dataset</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">data</span>(faithful, <span class="dt">package =</span> <span class="st">&quot;datasets&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># Query the database for documentation</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">?faithful</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># look at first entries</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">head</span>(faithful)</a></code></pre></div>
+<pre><code>##   eruptions waiting
+## 1     3.600      79
+## 2     1.800      54
+## 3     3.333      74
+## 4     2.283      62
+## 5     4.533      85
+## 6     2.883      55</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">str</span>(faithful)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    272 obs. of  2 variables:
+##  $ eruptions: num  3.6 1.8 3.33 2.28 4.53 ...
+##  $ waiting  : num  79 54 74 62 85 55 88 85 51 85 ...</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># What kind of object is faithful? </span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">class</span>(faithful)</a></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>Other common classes are <code>matrix</code> and <code>list</code>. The former has attributes <code>dim</code>, <code>ncol</code> and <code>nrow</code> in addition to <code>length</code>, which gives the total number of elements. A <code>list</code> is an unstructured class whose elements are accessed using double indexing <code>[[ ]]</code> and elements are typically accessed using <code>$</code> symbol with names. To delete an element from a list, assign <code>NULL</code> to it. <code>data.frame</code> is a special type of list where all the elements are vectors of potentially different type, but of the same length.</p>
+</div>
+<div id="graphics" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Graphics</h3>
+<p>The <code>faithful</code> dataset consists of two variables: the regressand <code>waiting</code> and the regressor <code>eruptions</code>. One could postulate that the waiting time between eruptions will be smaller if the eruption time is small, since pressure needs to build up for the eruption to happen. We can look at the data to see if there is a linear relationship between the variables.</p>
+<p>There are two options: the base graphics package and the package <code>ggplot2</code>. The syntax for the two options is detailed below. Always label the axis and include units.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Scatterplots</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># Using default R commands</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">plot</span>(waiting <span class="op">~</span><span class="st"> </span>eruptions, <span class="dt">data =</span> faithful, </a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">     <span class="dt">xlab =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, </a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">     <span class="dt">ylab =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">     <span class="dt">main =</span> <span class="st">&quot;Old Faithful Geyser Data&quot;</span>)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#install.packages(&quot;ggplot2&quot;) #do this once only</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#using the grammar of graphics (more modular)</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
+<p><img src="math341-lines-R-models_files/figure-html/week1_scatterplot-1.png" width="672" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> faithful, <span class="kw">aes</span>(<span class="dt">x =</span> eruptions, <span class="dt">y =</span> waiting)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Old Faithful Geyser Data&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>)</a></code></pre></div>
+<p><img src="math341-lines-R-models_files/figure-html/week1_scatterplot-2.png" width="672" /></p>
+<p>A simple linear model of the form <span class="math inline">\(y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i\)</span>, where <span class="math inline">\(\varepsilon_i\)</span> is a noise variable with expectation zero and <span class="math inline">\(\mathbf{x} = \mathsf{eruptions}\)</span> and <span class="math inline">\(\boldsymbol{y} = \mathsf{waiting}\)</span>. We first create a matrix with a column of <span class="math inline">\(\mathbf{1}_n\)</span> for the intercept. We bind vectors by column (<code>cbind</code>) into a matrix, recycling arguments if necessary. Use <code>&lt;-</code> to assign values to a variable and <code>$</code> to obtain a column of the data frame</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">## Manipulating matrices</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(faithful)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(faithful)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">y &lt;-<span class="st"> </span>faithful<span class="op">$</span>waiting</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, faithful<span class="op">$</span>eruptions)</a></code></pre></div>
+<p>We can now create an orthogonal projection matrix <code>X</code> onto the <span class="math inline">\(\mathsf{span}(\mathbf{X})\)</span>. We can verify the properties of <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> numerically using <code>all.equal</code> to check for equalities.</p>
+</div>
+<div id="projection-matrices" class="section level3">
+<h3><span class="header-section-number">1.2.3</span> Projection matrices</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">Hx &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># Create projection matrix onto complement </span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co"># `diag(n)` is the n by n identity matrix</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">Mx &lt;-<span class="st"> </span><span class="kw">diag</span>(n) <span class="op">-</span><span class="st"> </span>Hx</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#Check that projection leaves X invariant</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(X, Hx <span class="op">%*%</span><span class="st"> </span>X))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">#Check that orthogonal projection maps X to zero matrix of dimension (n, p)</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> n, <span class="dt">ncol =</span> p), Mx <span class="op">%*%</span><span class="st"> </span>X))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co">#Check that the matrix Hx is idempotent</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Hx <span class="op">%*%</span><span class="st"> </span>Hx, Hx))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co">#Check that the matrix Hx is symmetric</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">t</span>(Hx), Hx))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co">#Check that only a two eigenvalue are 1 and the rest are zero</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">eigen</span>(Hx, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values, <span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, p), <span class="kw">rep</span>(<span class="dv">0</span>, n <span class="op">-</span><span class="st"> </span>p))))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co">#Check that the matrix has rank p</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Matrix<span class="op">::</span><span class="kw">rankMatrix</span>(Hx), p, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="your-turn" class="section level3 unnumbered">
+<h3>Your turn</h3>
+<ul>
+<li>Install the <strong>R</strong> package <code>ISLR</code> and load the dataset <code>Auto</code>. Be careful, as <strong>R</strong> is case-sensitive.</li>
+<li>Query the help file for information about the data set.</li>
+<li>Look at the first lines of <code>Auto</code></li>
+<li>Create an explanatory variable <code>x</code> with horsepower and mileage per gallon as response <code>y</code>.</li>
+<li>Create a scatterplot of <code>y</code> against <code>x</code>. Is there a linear relationship between the two variables?</li>
+<li>Append a vector of ones to <code>x</code> and create a projection matrix.</li>
+<li>Check that projection matrix is symmetric and idempotent.</li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-intro.Rmd",
+"text": "Edit"
+},
+"download": ["math341-lines-R-models.pdf", "math341-lines-R-models.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
