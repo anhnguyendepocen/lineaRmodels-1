@@ -1,5 +1,5 @@
-book_filename: "math341-lines-R-models"
-repo: https://github.com/lbelzile/Lines-R-Models
+book_filename: "LinesRModels"
+repo: https://github.com/lbelzile/LinesRModels
 output_dir: docs
 language:
   ui:

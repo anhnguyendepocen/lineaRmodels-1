@@ -1,5 +1,5 @@
 --- 
-title: "Lines are models"
+title: "Linear models"
 author: "Léo Belzile"
 date: "version of `r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -14,7 +14,10 @@ github-repo: lbelzile/LinesRModels
 description: "This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians."
 ---
 
-# Introduction
+# Preliminary remarks {-}
+
+This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.
+
 
 We shall use the **R** programming language througout the course (as it is free and it is used in other statistics courses at EPFL). Visit [the R-project website](https://cran.r-project.org/) to download the program. The most popular graphical cross-platform front-end is [RStudio Desktop](https://www.rstudio.com/products/rstudio/download/).
 

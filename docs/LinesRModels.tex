@@ -24,7 +24,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={Lines are models},
+            pdftitle={Linear models},
             pdfauthor={Léo Belzile},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -117,7 +117,7 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{Lines are models}
+  \title{Linear models}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
     \author{Léo Belzile}
@@ -227,7 +227,11 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\chapter{Introduction}\label{introduction}
+\chapter*{Preliminary remarks}\label{preliminary-remarks}
+\addcontentsline{toc}{chapter}{Preliminary remarks}
+
+This is a web complement to MATH 341 (Linear Models), a first regression
+course for EPFL mathematicians.
 
 We shall use the \textbf{R} programming language througout the course
 (as it is free and it is used in other statistics courses at EPFL).
@@ -246,8 +250,7 @@ approach will be learning-by-doing. The benefit of using
 \emph{Rmarkdown} is that you see the output directly and you can also
 copy the code.
 
-\section{\texorpdfstring{Basics of
-\textbf{R}}{Basics of R}}\label{basics-of-r}
+\chapter{Introduction}\label{introduction}
 
 You can find several introductions to \textbf{R} online. Have a look at
 the \href{https://cran.r-project.org/manuals.html}{\textbf{R} manuals}
@@ -261,6 +264,9 @@ A nice official reference is
 of expressions} and part of the
 \href{http://colinfay.me/r-language-definition/objects.html}{\emph{Objects}
 chapter}).
+
+\section{\texorpdfstring{Basics of
+\textbf{R}}{Basics of R}}\label{basics-of-r}
 
 \subsection{Help}\label{help}
 
@@ -552,7 +558,7 @@ measurement units!
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{math341-lines-R-models_files/figure-latex/week1_scatterplot-1.pdf}
+\includegraphics{LinesRModels_files/figure-latex/week1_scatterplot-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -567,7 +573,7 @@ measurement units!
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{math341-lines-R-models_files/figure-latex/week1_scatterplot-2.pdf}
+\includegraphics{LinesRModels_files/figure-latex/week1_scatterplot-2.pdf}
 
 A simple linear model of the form
 \[y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i,\] where
@@ -779,7 +785,7 @@ Notice that \(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\), whereas
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{math341-lines-R-models_files/figure-latex/oblique_projection-1.pdf}
+\includegraphics{LinesRModels_files/figure-latex/oblique_projection-1.pdf}
 
 \bibliography{book.bib,packages.bib}
 
