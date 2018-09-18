@@ -16,8 +16,7 @@ description: "This is a web complement to MATH 341 (Linear Models), a first regr
 
 # Introduction
 
-We shall use the **R** programming language througout the course. 
-(as it is free and it is used in other statistics courses at EPFL). Visit [the R-project website](https://cran.r-project.org/) to download the program. The most popular graphical cross-platform front-end is [RStudio Desktop](https://www.rstudio.com/products/rstudio/download/).
+We shall use the **R** programming language througout the course (as it is free and it is used in other statistics courses at EPFL). Visit [the R-project website](https://cran.r-project.org/) to download the program. The most popular graphical cross-platform front-end is [RStudio Desktop](https://www.rstudio.com/products/rstudio/download/).
 
 **R** is an object-oriented interpreted language. It differs from usual programming languages in that it is designed for interactive analyses. 
 
