@@ -401,18 +401,29 @@ model \texttt{package::function}.
 \subsection{Data sets}\label{data-sets}
 
 We start by loading a dataset of the Old Faithful Geyser of Yellowstone
-National park. - Data sets are typically stored inside a
-\texttt{data.frame}, a matrix-like object whose columns contain the
-variables and the rows the observation vectors. - The columns can be of
-different types (\texttt{integer}, \texttt{double}, \texttt{logical},
-\texttt{character}), but all the column vectors must be of the same
-length. - Variable names can be displayed by using
-\texttt{names(faithful)}. - Individual columns can be accessed using the
-column name using the \texttt{\$} operator. For example,
-\texttt{faithful\$eruptions} will return the first column of the
-\texttt{faithful} dataset. - To load a package already present in an
-\textbf{R} package, use the command \texttt{data} with the name of the
-\texttt{package} as an argument (must be a string).
+National park.
+
+\begin{itemize}
+\tightlist
+\item
+  Data sets are typically stored inside a \texttt{data.frame}, a
+  matrix-like object whose columns contain the variables and the rows
+  the observation vectors.
+\item
+  The columns can be of different types (\texttt{integer},
+  \texttt{double}, \texttt{logical}, \texttt{character}), but all the
+  column vectors must be of the same length.
+\item
+  Variable names can be displayed by using \texttt{names(faithful)}.
+\item
+  Individual columns can be accessed using the column name using the
+  \texttt{\$} operator. For example, \texttt{faithful\$eruptions} will
+  return the first column of the \texttt{faithful} dataset.
+\item
+  To load a package already present in an \textbf{R} package, use the
+  command \texttt{data} with the name of the \texttt{package} as an
+  argument (must be a string).
+\end{itemize}
 
 The following functions can be useful to get a quick glimpse of the
 data:
