@@ -697,22 +697,30 @@ whereas \texttt{all.equal(1/10\ +\ 2/10\ -\ 3/10,\ 0)} will return
 \addcontentsline{toc}{subsection}{(1.4) Oblique projections}
 
 Suppose that
-\(\dim(\mathcal{M}(\mathbf{X})) \neq \dim(\mathcal{M}(\mathbf{W}))\). An
-oblique projection matrix is of the form
+\(\dim(\mathsf{span}(\mathbf{X})) \neq \dim(\mathsf{span}(\mathbf{W}))\).
+An oblique projection matrix is of the form
 \(\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top\)
 and appears in instrumental variable regression. The oblique projection
-is such that \(\mathrm{im}(\mathbf{P})=\mathcal{M}(\mathbf{X})\), but
-\(\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathcal{M}(\mathbf{W}^\perp)\).
+is such that \(\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})\), but
+\(\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)\).
 This fact is illustrated below.
+
+We consider two non-parallel vectors in \(\mathbb{R}^2\), \(\mathbf{X}\)
+and \(\mathbf{W}\). The figure shows the projection of a third vector
+(non-parallel to \(\mathbf{X}\) or \(\mathbf{W}\)) onto the span of
+\(\mathbf{P}\) (blue), \(\mathbf{P}^\top\) (red),
+\(\mathbf{I}_2-\mathbf{P}\) (dashed blue) and
+\(\mathbf{I}_2-\mathbf{P}^\top\) (dashed red). The circles indicate the
+points \(\mathbf{W}\) (red) and \(\mathbf{X}\) (blue) on the plane.
+Notice that \(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\), whereas
+\(\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top\).
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#Create two vectors (non-parallel)}
 \NormalTok{x <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)}
 \NormalTok{w <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{, }\FloatTok{0.1}\NormalTok{)}
-\CommentTok{#Create usual hat projection matrix and form P}
-\NormalTok{H <-}\StringTok{ }\NormalTok{x }\OperatorTok{%*%}\StringTok{ }\KeywordTok{solve}\NormalTok{(}\KeywordTok{t}\NormalTok{(x) }\OperatorTok{%*%}\StringTok{ }\NormalTok{x) }\OperatorTok{%*%}\StringTok{ }\KeywordTok{t}\NormalTok{(x) }
-\CommentTok{#solve: matrix inverse}
+\CommentTok{#Create oblique projection matrix}
 \NormalTok{P <-}\StringTok{ }\NormalTok{x }\OperatorTok{%*%}\StringTok{ }\KeywordTok{solve}\NormalTok{(}\KeywordTok{t}\NormalTok{(w) }\OperatorTok{%*%}\StringTok{ }\NormalTok{x) }\OperatorTok{%*%}\StringTok{ }\KeywordTok{t}\NormalTok{(w)}
 
 \KeywordTok{isTRUE}\NormalTok{(}\KeywordTok{all.equal}\NormalTok{((P }\OperatorTok{%*%}\StringTok{ }\NormalTok{P), P)) }\CommentTok{#P is idempotent}
@@ -737,7 +745,7 @@ This fact is illustrated below.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Project a vector `vec' onto P, P transpose, I-P, I-(P transpose)}
+\CommentTok{#Project a third vector `vec' onto P, P transpose, I-P, I-(P transpose)}
 \NormalTok{vec <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\FloatTok{1.9}\NormalTok{, }\OperatorTok{-}\FloatTok{1.5}\NormalTok{)}
 \NormalTok{vec_P <-}\StringTok{ }\NormalTok{P }\OperatorTok{%*%}\StringTok{ }\NormalTok{vec}
 \NormalTok{vec_Pt <-}\StringTok{ }\KeywordTok{t}\NormalTok{(P) }\OperatorTok{%*%}\StringTok{ }\NormalTok{vec}

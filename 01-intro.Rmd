@@ -190,21 +190,21 @@ isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
 
 ### (1.4) Oblique projections  {-}
 
-Suppose that $\dim(\mathcal{M}(\mathbf{X})) \neq \dim(\mathcal{M}(\mathbf{W}))$. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathcal{M}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathcal{M}(\mathbf{W}^\perp)$. This fact is illustrated below.
+Suppose that $\dim(\mathsf{span}(\mathbf{X})) \neq \dim(\mathsf{span}(\mathbf{W}))$. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)$. This fact is illustrated below.
 
-```{r, oblique_projection, height = 4, width = 4} 
+We consider two non-parallel vectors in $\mathbb{R}^2$, $\mathbf{X}$ and $\mathbf{W}$. The figure shows the projection of a third vector (non-parallel to $\mathbf{X}$ or $\mathbf{W}$) onto the span of $\mathbf{P}$ (blue), $\mathbf{P}^\top$ (red), $\mathbf{I}_2-\mathbf{P}$ (dashed blue) and $\mathbf{I}_2-\mathbf{P}^\top$ (dashed red). The circles indicate the points $\mathbf{W}$ (red) and $\mathbf{X}$ (blue) on the plane. Notice that $\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}$, whereas $\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top$.
+
+```{r, oblique_projection} 
 #Create two vectors (non-parallel)
 x <- c(1, 2)
 w <- c(-1, 0.1)
-#Create usual hat projection matrix and form P
-H <- x %*% solve(t(x) %*% x) %*% t(x) 
-#solve: matrix inverse
+#Create oblique projection matrix
 P <- x %*% solve(t(w) %*% x) %*% t(w)
 
 isTRUE(all.equal((P %*% P), P)) #P is idempotent
 P - t(P) #but not symmetric
 
-#Project a vector `vec' onto P, P transpose, I-P, I-(P transpose)
+#Project a third vector `vec' onto P, P transpose, I-P, I-(P transpose)
 vec <- c(1.9, -1.5)
 vec_P <- P %*% vec
 vec_Pt <- t(P) %*% vec

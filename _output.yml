@@ -3,6 +3,7 @@ bookdown::gitbook:
   split_by: section
   config:
     toc:
+      collapse: none
       before: |
         <li><a href="./">Linear Models</a></li>
       after: |
