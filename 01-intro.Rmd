@@ -70,8 +70,10 @@ The drawback of loading packages is that, if a function with the same name from 
 
 ### Data sets
 
-We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park. 
-- Data sets are typically stored inside a `data.frame`, a matrix-like object whose columns contain the variables and the rows the observation vectors. - The columns can be of different types (`integer`, `double`, `logical`, `character`), but all the column vectors must be of the same length. 
+We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park.
+
+- Data sets are typically stored inside a `data.frame`, a matrix-like object whose columns contain the variables and the rows the observation vectors. 
+- The columns can be of different types (`integer`, `double`, `logical`, `character`), but all the column vectors must be of the same length. 
 - Variable names can be displayed by using `names(faithful)`. 
 - Individual columns can be accessed using the column name using the `$` operator. For example, `faithful$eruptions` will return the first column of the `faithful` dataset.
 - To load a package already present in an **R** package, use the command `data` with the name of the `package` as an argument (must be a string).
