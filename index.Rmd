@@ -1,5 +1,5 @@
 --- 
-title: "Linear models"
+title: "LinesRModels"
 author: "Léo Belzile"
 date: "version of `r Sys.Date()`"
 site: bookdown::bookdown_site

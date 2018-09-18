@@ -191,7 +191,7 @@ isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
 - Append a vector of ones to `x` and create a projection matrix.
 - Check that the resulting projection matrix is symmetric and idempotent.
 
-## Exercises
+## Week 1 exercises
 
 ### (1.4) Oblique projections  {-}
 
