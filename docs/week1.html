@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-
+<link rel="prev" href="basics-of-r.html">
+<link rel="next" href="exercises.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -86,7 +86,7 @@ code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 
 <body>
@@ -99,21 +99,24 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">Lines R Models</a></li>
+<li><a href="./">Linear Models</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
-<li class="chapter" data-level="1" data-path="projection-matrices.html"><a href="projection-matrices.html"><i class="fa fa-check"></i><b>1</b> Projection matrices</a><ul>
-<li class="chapter" data-level="1.1" data-path="projection-matrices.html"><a href="projection-matrices.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a><ul>
-<li class="chapter" data-level="1.1.1" data-path="projection-matrices.html"><a href="projection-matrices.html#packages"><i class="fa fa-check"></i><b>1.1.1</b> Packages</a></li>
-<li class="chapter" data-level="1.1.2" data-path="projection-matrices.html"><a href="projection-matrices.html#basics-of-r"><i class="fa fa-check"></i><b>1.1.2</b> Basics of <strong>R</strong></a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="basics-of-r.html"><a href="basics-of-r.html"><i class="fa fa-check"></i><b>1.1</b> Basics of <strong>R</strong></a><ul>
+<li class="chapter" data-level="1.1.1" data-path="basics-of-r.html"><a href="basics-of-r.html#help"><i class="fa fa-check"></i><b>1.1.1</b> Help</a></li>
+<li class="chapter" data-level="1.1.2" data-path="basics-of-r.html"><a href="basics-of-r.html#basic-commands"><i class="fa fa-check"></i><b>1.1.2</b> Basic commands</a></li>
+<li class="chapter" data-level="1.1.3" data-path="basics-of-r.html"><a href="basics-of-r.html#linear-algebra-in-r"><i class="fa fa-check"></i><b>1.1.3</b> Linear algebra in <strong>R</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="basics-of-r.html"><a href="basics-of-r.html#packages"><i class="fa fa-check"></i><b>1.1.4</b> Packages</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="projection-matrices.html"><a href="projection-matrices.html#week1"><i class="fa fa-check"></i><b>1.2</b> R-tutorial 1</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="projection-matrices.html"><a href="projection-matrices.html#data-sets"><i class="fa fa-check"></i><b>1.2.1</b> Data sets</a></li>
+<li class="chapter" data-level="1.2" data-path="week1.html"><a href="week1.html"><i class="fa fa-check"></i><b>1.2</b> Tutorial 1</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="week1.html"><a href="week1.html#data-sets"><i class="fa fa-check"></i><b>1.2.1</b> Data sets</a></li>
+<li class="chapter" data-level="1.2.2" data-path="week1.html"><a href="week1.html#graphics"><i class="fa fa-check"></i><b>1.2.2</b> Graphics</a></li>
+<li class="chapter" data-level="1.2.3" data-path="week1.html"><a href="week1.html#projection-matrices"><i class="fa fa-check"></i><b>1.2.3</b> Projection matrices</a></li>
+<li class="chapter" data-level="1.2.4" data-path="week1.html"><a href="week1.html#your-turn"><i class="fa fa-check"></i><b>1.2.4</b> Your turn</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="projection-matrices.html"><a href="projection-matrices.html#graphics"><i class="fa fa-check"></i><b>1.3</b> Graphics</a><ul>
-<li class="chapter" data-level="1.3.1" data-path="projection-matrices.html"><a href="projection-matrices.html#projection-matrices-1"><i class="fa fa-check"></i><b>1.3.1</b> Projection matrices</a></li>
-<li class="chapter" data-level="" data-path="projection-matrices.html"><a href="projection-matrices.html#your-turn"><i class="fa fa-check"></i>Your turn</a></li>
+<li class="chapter" data-level="1.3" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.3</b> Exercises</a><ul>
+<li class="chapter" data-level="" data-path="exercises.html"><a href="exercises.html#oblique-projections"><i class="fa fa-check"></i>(1.4) Oblique projections</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -136,58 +139,8 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="projection-matrices" class="section level1">
-<h1><span class="header-section-number">Week 1</span> Projection matrices</h1>
-<div id="introduction-1" class="section level2">
-<h2><span class="header-section-number">1.1</span> Introduction</h2>
-<p>Since <strong>R</strong> is not a conventional programming language, my teaching approach will be learning-by-doing. The benefit of using <em>Rmarkdown</em> is that you see the output directly and you can also copy the code.</p>
-<p>Help can be accessed via <code>help</code> or simply <code>?</code>. If you do not know what to query, use <code>??</code> in front of a string, delimited by captions <code>&quot; &quot;</code> as in <code>??&quot;Cholesky decomposition&quot;</code>. Help is your best friend if you don’t know what a function does, what are its arguments, etc.</p>
-<div id="packages" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> Packages</h3>
-<p>The great strength of <strong>R</strong> comes from its contributed libraries (called packages), which contain functions and datasets provided by third parties. Some of these (<code>base</code>, <code>stats</code>, <code>graphics</code>, etc.) are loaded by default whenever you open a session.</p>
-<p>To install a package from CRAN, use <code>install.packages(&quot;package&quot;)</code>, replacing <code>package</code> by the package name. Once installed, packages can be loaded using <code>library(package)</code>; all the functions in <code>package</code> will be available in the environment. The drawback of this approach is that, if a function from another package is already present with the same name, it will be overriden. To palliate to this, you can use the <code>::</code> syntax to access a single function from an installed package, following the model <code>package::function</code>.</p>
-</div>
-<div id="basics-of-r" class="section level3">
-<h3><span class="header-section-number">1.1.2</span> Basics of <strong>R</strong></h3>
-<p>You can find several introductions to <strong>R</strong> online. Have a look at the <a href="https://cran.r-project.org/manuals.html"><strong>R</strong> manuals</a> or better at <a href="https://cran.r-project.org/other-docs.html">contributed manuals</a>. A nice official reference is <a href="http://colinfay.me/intro-to-r/index.html">*An introduction to <strong>R</strong></a>. You may wish to look up the following chapters of the <strong>R</strong> language definition (<a href="http://colinfay.me/r-language-definition/evaluation-of-expressions.html">Evaluation of expressions</a> and part of the <a href="http://colinfay.me/r-language-definition/objects.html"><em>Objects</em> chapter</a>).</p>
-<p>Basic <strong>R</strong> commands are fairly intuitive, especially if you want to use your <strong>R</strong> as a calculator. Elementary functions such as <code>sum</code>, <code>min</code>, <code>max</code>, <code>sqrt</code>, <code>log</code>, <code>exp</code>, etc., are self-explanatory.</p>
-<ul>
-<li>Use <code>&lt;-</code> to assign to a variable, and <code>=</code> for matching arguments inside functions</li>
-<li>Indexing in <strong>R</strong> starts at 1, <strong>not</strong> zero.</li>
-<li>Most functions in <strong>R</strong> are vectorized, so avoid loops as much as possible.</li>
-<li>Integers are obtained by appending <code>L</code> to the number, so <code>2L</code> is an integer and <code>2</code> a double.</li>
-</ul>
-<p>Besides integers and doubles, the common types are - logicals (<code>TRUE</code> and <code>FALSE</code>); - null pointers (<code>NULL</code>), which can be assigned to arguments; - missing values, namely <code>NA</code> or <code>NaN</code>. These can also be obtained a result of invalid mathematical operations such as <code>log(-2)</code>.</p>
-<p>The above illustrates a caveat of <strong>R</strong>: invalid calls will often returns <em>something</em> rather than an error. It is therefore good practice to check that the output is sensical.</p>
-<p><strong>R</strong> is an object oriented language, and the basic elements in <strong>R</strong> are (column) vector. Below is a glossary with some useful commands for performing basic manipulation of vectors and matrix operations:</p>
-<ul>
-<li><code>c</code> creates a vector</li>
-<li><code>cbind</code> (<code>rbind</code>) binds column (row) vectors</li>
-<li><code>matrix</code> and <code>vector</code> are constructors</li>
-<li><code>diag</code> creates a diagonal matrix (by default with ones)</li>
-<li><code>t</code> is the function for transpose</li>
-<li><code>solve</code> performs matrix inversion</li>
-<li><code>%*%</code> is matrix multiplication, <code>*</code> is element-wise multiplication</li>
-<li><code>crossprod</code> <code>crossprod(A, B)</code> calculates the cross-product, <code>t(A) %*% B</code> of two matrices <code>A</code> and <code>B</code></li>
-<li><code>eigen</code>/<code>chol</code>/<code>qr</code> perform respectively an eigendecomposition/Cholesky/QR decomposition of a matrix</li>
-<li><code>rep</code> creates a vector of duplicates, <code>seq</code> a sequence. For integers <span class="math inline">\(i\)</span>, <span class="math inline">\(j\)</span> with <span class="math inline">\(i&lt;j\)</span>, <code>i:j</code> generates the sequence <span class="math inline">\(i, i+1, \ldots, j-1, j\)</span>.</li>
-</ul>
-<p>Subsetting is fairly intuitive and general; you can use vectors, logical statements. For example, if <code>x</code> is a vector, then</p>
-<ul>
-<li><code>x[2]</code> returns the second element</li>
-<li><code>x[-2]</code> returns all but the second element</li>
-<li><code>x[1:5]</code> returns the first five elements</li>
-<li><code>x[(length(x) - 5):length(x)]</code> returns the last five elements</li>
-<li><code>x[c(1, 2, 4)]</code> returns the first, second and fourth element</li>
-<li><code>x[x &gt; 3]</code> return any element greater than 3. Possibly an empty vector of length zero!</li>
-<li><code>x[ x &lt; -2 | x &gt; 2]</code> multiple logical conditions.</li>
-<li><code>which(x == max(x))</code> index of elements satisfying a logical condition.</li>
-</ul>
-<p>For a matrix <code>x</code>, subsetting now involves dimensions: <code>[1,2]</code> returns the element in the first row, second column. <code>x[,2]</code> will return all of the rows, but only the second column. For lists, you can use <code>[[</code> for subsetting by index or the <code>$</code> sign by names.</p>
-</div>
-</div>
 <div id="week1" class="section level2">
-<h2><span class="header-section-number">1.2</span> R-tutorial 1</h2>
+<h2><span class="header-section-number">1.2</span> Tutorial 1</h2>
 <div id="data-sets" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Data sets</h3>
 <p>We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park. - Data sets are typically stored inside a <code>data.frame</code>, a matrix-like object whose columns contain the variables and the rows the observation vectors. - The columns can be of different types (<code>integer</code>, <code>double</code>, <code>logical</code>, <code>character</code>), but all the column vectors must be of the same length. - Variable names can be displayed by using <code>names(faithful)</code>. - Individual columns can be accessed using the column name using the <code>$</code> operator. For example, <code>faithful$eruptions</code> will return the first column of the <code>faithful</code> dataset. - To load a package already present in an <strong>R</strong> package, use the command <code>data</code> with the name of the <code>package</code> as an argument (must be a string).</p>
@@ -219,9 +172,8 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <p>Other common classes are <code>matrix</code> and <code>list</code>. The former has attributes <code>dim</code>, <code>ncol</code> and <code>nrow</code> in addition to <code>length</code>, which gives the total number of elements. A <code>list</code> is an unstructured class whose elements are accessed using double indexing <code>[[ ]]</code> and elements are typically accessed using <code>$</code> symbol with names. To delete an element from a list, assign <code>NULL</code> to it. <code>data.frame</code> is a special type of list where all the elements are vectors of potentially different type, but of the same length.</p>
 </div>
-</div>
-<div id="graphics" class="section level2">
-<h2><span class="header-section-number">1.3</span> Graphics</h2>
+<div id="graphics" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Graphics</h3>
 <p>The <code>faithful</code> dataset consists of two variables: the regressand <code>waiting</code> and the regressor <code>eruptions</code>. One could postulate that the waiting time between eruptions will be smaller if the eruption time is small, since pressure needs to build up for the eruption to happen. We can look at the data to see if there is a linear relationship between the variables.</p>
 <p>An image is worth a thousand words and in statistics, visualization is crucial. Scatterplots are produced using the function <code>plot</code>. You can control the graphic console options using <code>par</code> — see <code>?plot</code> and <code>?par</code> for a description of the basic and advanced options available.</p>
 <p>Once <code>plot</code> has been called, you can add additional observations as points (lines) to the graph using <code>point</code> (<code>lines</code>) in place of <code>plot</code>. If you want to add a line (horizontal, vertical, or with known intercept and slope), use the function <code>abline</code>.</p>
@@ -231,7 +183,11 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li><code>hist</code> creates an histogram, either on frequency or probability scale (option <code>freq = FALSE</code>). <code>breaks</code> control the number of bins. <code>rug</code> adds lines below the graph indicating the value of the observations.</li>
 <li><code>pairs</code> creates a matrix of scatterplots, akin to <code>plot</code> for data frame objects.</li>
 </ul>
-<p>There are two options for basic graphics: the base graphics package and the package <code>ggplot2</code>. The latter is a more recent proposal that builds on a modular approach and is more easily customizable — I suggest you stick to either and <code>ggplot2</code> is a good option if you don’t know <strong>R</strong> already, as the learning curve will be about the same. Even if the display from <code>ggplot2</code> is nicer, this is no excuse for making proper graphics. Always label the axis and include measurement sunits!</p>
+
+<div class="rmdnote">
+<p>There are two options for basic graphics: the base graphics package and the package <code>ggplot2</code>. The latter is a more recent proposal that builds on a modular approach and is more easily customizable — I suggest you stick to either and <code>ggplot2</code> is a good option if you don’t know <strong>R</strong> already, as the learning curve will be about the same. Even if the display from <code>ggplot2</code> is nicer, this is no excuse for not making proper graphics. Always label the axis and include measurement units!</p>
+</div>
+
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Scatterplots</span>
 <span class="co"># Using default R commands</span>
 <span class="kw">plot</span>(waiting <span class="op">~</span><span class="st"> </span>eruptions, <span class="dt">data =</span> faithful, 
@@ -248,16 +204,21 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
        <span class="dt">x =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, 
        <span class="dt">y =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>)</code></pre></div>
 <p><img src="math341-lines-R-models_files/figure-html/week1_scatterplot-2.png" width="672" /></p>
-<p>A simple linear model of the form <span class="math display">\[y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i,\]</span> where <span class="math inline">\(\varepsilon_i\)</span> is a noise variable with expectation zero and <span class="math inline">\(\mathbf{x} = \mathsf{eruptions}\)</span> and <span class="math inline">\(\boldsymbol{y} = \mathsf{waiting}\)</span>. We first create a matrix with a column of <span class="math inline">\(\mathbf{1}_n\)</span> for the intercept. We bind vectors by column (<code>cbind</code>) into a matrix, recycling arguments if necessary. Use <code>&lt;-</code> to assign values to a variable and <code>$</code> to obtain a column of the data frame (partial matching is allowed, e.g., <code>faithful$er</code> is equivalent to <code>faithful$eruptions</code> in this case).</p>
+<p>A simple linear model of the form <span class="math display">\[y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i,\]</span> where <span class="math inline">\(\varepsilon_i\)</span> is a noise variable with expectation zero and <span class="math inline">\(\mathbf{x} = \mathsf{eruptions}\)</span> and <span class="math inline">\(\boldsymbol{y} = \mathsf{waiting}\)</span>. We first create a matrix with a column of <span class="math inline">\(\mathbf{1}_n\)</span> for the intercept. We bind vectors by column (<code>cbind</code>) into a matrix, recycling arguments if necessary. Use <code>$</code> to obtain a column of the data frame based on the name of the variable (partial matching is allowed, e.g., <code>faithful$er</code> is equivalent to <code>faithful$eruptions</code> in this case).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Manipulating matrices
 n &lt;-<span class="st"> </span><span class="kw">nrow</span>(faithful)
 p &lt;-<span class="st"> </span><span class="kw">ncol</span>(faithful)
 y &lt;-<span class="st"> </span>faithful<span class="op">$</span>waiting
 X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, faithful<span class="op">$</span>eruptions)</code></pre></div>
-<div id="projection-matrices-1" class="section level3">
-<h3><span class="header-section-number">1.3.1</span> Projection matrices</h3>
-<p>Recall that <span class="math inline">\(\mathbf{H}_{\mathbf{X}} \equiv \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\)</span> is the orthogonal projection matrix onto <span class="math inline">\(\mathsf{span}(\mathbf{X})\)</span>. The latter has <span class="math inline">\(p=2\)</span> eigenvalues equal to 1, is an <span class="math inline">\(n \times n\)</span> matrix of rank <span class="math inline">\(p\)</span>, is symmetric and idempotent</p>
-<p>We can verify the properties of <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> numerically using <code>all.equal</code> to check for equalities. Whereas we will frequently use <code>==</code> to check for equality of booleans, the latter should be avoided — computer arithmetic is only exact in base 2.For example, <code>1/10 + 2/10 - 3/10 == 0</code> will return <code>FALSE</code>, whereas <code>all.equal(1/10 + 2/10 - 3/10, 0)</code> will return <code>TRUE</code>.</p>
+</div>
+<div id="projection-matrices" class="section level3">
+<h3><span class="header-section-number">1.2.3</span> Projection matrices</h3>
+<p>Recall that <span class="math inline">\(\mathbf{H}_{\mathbf{X}} \equiv \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\)</span> is the orthogonal projection matrix onto <span class="math inline">\(\mathsf{span}(\mathbf{X})\)</span>. The latter has <span class="math inline">\(p=2\)</span> eigenvalues equal to 1, is an <span class="math inline">\(n \times n\)</span> matrix of rank <span class="math inline">\(p\)</span>, is symmetric and idempotent. We can verify the properties of <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> numerically.</p>
+
+<div class="rmdcaution">
+<p>Whereas we will frequently use <code>==</code> to check for equality of booleans, the latter should be avoided for comparisons because computer arithmetic is exact only in base 2. For example, <code>1/10 + 2/10 - 3/10 == 0</code> will return <code>FALSE</code>, whereas <code>all.equal(1/10 + 2/10 - 3/10, 0)</code> will return <code>TRUE</code>. Us <code>all.equal</code> to check for equalities.</p>
+</div>
+
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Hx &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)
 <span class="co"># Create projection matrix onto complement </span>
 <span class="co"># `diag(n)` is the n by n identity matrix</span>
@@ -281,8 +242,8 @@ Mx &lt;-<span class="st"> </span><span class="kw">diag</span>(n) <span class="op
 <span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Matrix<span class="op">::</span><span class="kw">rankMatrix</span>(Hx), p, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="your-turn" class="section level3 unnumbered">
-<h3>Your turn</h3>
+<div id="your-turn" class="section level3">
+<h3><span class="header-section-number">1.2.4</span> Your turn</h3>
 <ul>
 <li>Install the <strong>R</strong> package <code>ISLR</code> and load the dataset <code>Auto</code>. Be careful, as <strong>R</strong> is case-sensitive.</li>
 <li>Query the help file for information about the data set.</li>
@@ -290,10 +251,8 @@ Mx &lt;-<span class="st"> </span><span class="kw">diag</span>(n) <span class="op
 <li>Create an explanatory variable <code>x</code> with horsepower and mileage per gallon as response <code>y</code>.</li>
 <li>Create a scatterplot of <code>y</code> against <code>x</code>. Is there a linear relationship between the two variables?</li>
 <li>Append a vector of ones to <code>x</code> and create a projection matrix.</li>
-<li>Check that projection matrix is symmetric and idempotent.</li>
+<li>Check that the resulting projection matrix is symmetric and idempotent.</li>
 </ul>
-
-</div>
 </div>
 </div>
             </section>
@@ -301,8 +260,8 @@ Mx &lt;-<span class="st"> </span><span class="kw">diag</span>(n) <span class="op
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="basics-of-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exercises.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

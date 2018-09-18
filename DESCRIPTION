@@ -1,6 +1,0 @@
-Package: placeholder
-Type: Book
-Title: Lines are models.
-Version: 0.0.1
-Imports: bookdown
-Remotes: rstudio/bookdown
