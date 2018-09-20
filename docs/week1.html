@@ -144,13 +144,12 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">1.2</span> Tutorial 1</h2>
 <div id="data-sets" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Data sets</h3>
-<p>We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park.</p>
 <ul>
 <li>Data sets are typically stored inside a <code>data.frame</code>, a matrix-like object whose columns contain the variables and the rows the observation vectors.</li>
 <li>The columns can be of different types (<code>integer</code>, <code>double</code>, <code>logical</code>, <code>character</code>), but all the column vectors must be of the same length.</li>
 <li>Variable names can be displayed by using <code>names(faithful)</code>.</li>
 <li>Individual columns can be accessed using the column name using the <code>$</code> operator. For example, <code>faithful$eruptions</code> will return the first column of the <code>faithful</code> dataset.</li>
-<li>To load a package already present in an <strong>R</strong> package, use the command <code>data</code> with the name of the <code>package</code> as an argument (must be a string).</li>
+<li>To load a data set from an (installed) <strong>R</strong> package, use the command <code>data</code> with the name of the <code>package</code> as an argument (must be a string). The package <code>datasets</code> is loaded by default whenever you open <strong>R</strong>, so these are always in the search path.</li>
 </ul>
 <p>The following functions can be useful to get a quick glimpse of the data:</p>
 <ul>
@@ -158,6 +157,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li><code>str</code> provides the first few elements with each variable, along with the dimension</li>
 <li><code>head</code> (<code>tail</code>) prints the first (last) <span class="math inline">\(n\)</span> lines of the object to the console (default is <span class="math inline">\(n=6\)</span>).</li>
 </ul>
+<p>We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park and looking at its entries.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load Old faithful dataset</span>
 <span class="kw">data</span>(faithful, <span class="dt">package =</span> <span class="st">&quot;datasets&quot;</span>)
 <span class="co"># Query the database for documentation</span>
@@ -178,7 +178,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># What kind of object is faithful? </span>
 <span class="kw">class</span>(faithful)</code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>Other common classes are <code>matrix</code> and <code>list</code>. The former has attributes <code>dim</code>, <code>ncol</code> and <code>nrow</code> in addition to <code>length</code>, which gives the total number of elements. A <code>list</code> is an unstructured class whose elements are accessed using double indexing <code>[[ ]]</code> and elements are typically accessed using <code>$</code> symbol with names. To delete an element from a list, assign <code>NULL</code> to it. <code>data.frame</code> is a special type of list where all the elements are vectors of potentially different type, but of the same length.</p>
+<p>Other common classes of objects: - <code>matrix</code>: an object with attributes <code>dim</code>, <code>ncol</code> and <code>nrow</code> in addition to <code>length</code>, which gives the total number of elements. - <code>array</code>: a higher dimensional extension of <code>matrix</code> with arguments <code>dim</code> and <code>dimnames</code>. - <code>list</code>: an unstructured class whose elements are accessed using double indexing <code>[[ ]]</code> and elements are typically accessed using <code>$</code> symbol with names. To delete an element from a list, assign <code>NULL</code> to it. - <code>data.frame</code> is a special type of list where all the elements are vectors of potentially different type, but of the same length.</p>
 </div>
 <div id="graphics" class="section level3">
 <h3><span class="header-section-number">1.2.2</span> Graphics</h3>
@@ -224,7 +224,7 @@ X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1
 <p>Recall that <span class="math inline">\(\mathbf{H}_{\mathbf{X}} \equiv \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\)</span> is the orthogonal projection matrix onto <span class="math inline">\(\mathsf{span}(\mathbf{X})\)</span>. The latter has <span class="math inline">\(p=2\)</span> eigenvalues equal to 1, is an <span class="math inline">\(n \times n\)</span> matrix of rank <span class="math inline">\(p\)</span>, is symmetric and idempotent. We can verify the properties of <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> numerically.</p>
 
 <div class="rmdcaution">
-<p>Whereas we will frequently use <code>==</code> to check for equality of booleans, the latter should be avoided for comparisons because computer arithmetic is exact only in base 2. For example, <code>1/10 + 2/10 - 3/10 == 0</code> will return <code>FALSE</code>, whereas <code>all.equal(1/10 + 2/10 - 3/10, 0)</code> will return <code>TRUE</code>. Us <code>all.equal</code> to check for equalities.</p>
+<p>Whereas we will frequently use <code>==</code> to check for equality of booleans, the latter should be avoided for comparisons because computer arithmetic is exact only in base 2. For example, <code>1/10 + 2/10 - 3/10 == 0</code> will return <code>FALSE</code>, whereas <code>all.equal(1/10 + 2/10 - 3/10, 0)</code> will return <code>TRUE</code>. Use <code>all.equal</code> to check for equalities.</p>
 </div>
 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Hx &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)

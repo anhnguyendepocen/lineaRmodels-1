@@ -148,7 +148,8 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="basic-commands" class="section level3">
 <h3><span class="header-section-number">1.1.2</span> Basic commands</h3>
-<p>Basic <strong>R</strong> commands are fairly intuitive, especially if you want to use your <strong>R</strong> as a calculator. Elementary functions such as <code>sum</code>, <code>min</code>, <code>max</code>, <code>sqrt</code>, <code>log</code>, <code>exp</code>, etc., are self-explanatory.</p>
+<p>Basic <strong>R</strong> commands are fairly intuitive, especially if you want to use <strong>R</strong> as a calculator. Elementary functions such as <code>sum</code>, <code>min</code>, <code>max</code>, <code>sqrt</code>, <code>log</code>, <code>exp</code>, etc., are self-explanatory.</p>
+<p>Some unconventional features of the language:</p>
 <ul>
 <li>Use <code>&lt;-</code> to assign to a variable, and <code>=</code> for matching arguments inside functions</li>
 <li>Indexing in <strong>R</strong> starts at 1, <strong>not</strong> zero.</li>
@@ -169,8 +170,8 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li><code>t</code> is the function for transpose</li>
 <li><code>solve</code> performs matrix inversion</li>
 <li><code>%*%</code> is matrix multiplication, <code>*</code> is element-wise multiplication</li>
-<li><code>crossprod</code> <code>crossprod(A, B)</code> calculates the cross-product, <code>t(A) %*% B</code> of two matrices <code>A</code> and <code>B</code></li>
-<li><code>eigen</code>/<code>chol</code>/<code>qr</code> perform respectively an eigendecomposition/Cholesky/QR decomposition of a matrix</li>
+<li><code>crossprod(A, B)</code> calculates the cross-product <span class="math inline">\(\mathbf{A}^\top\mathbf{B}\)</span>, <code>t(A) %*% B</code>, of two matrices <code>A</code> and <code>B</code>.</li>
+<li><code>eigen</code>/<code>chol</code>/<code>qr</code>/<code>svd</code> perform respectively an eigendecomposition/Cholesky/QR/singular value decomposition of a matrix</li>
 <li><code>rep</code> creates a vector of duplicates, <code>seq</code> a sequence. For integers <span class="math inline">\(i\)</span>, <span class="math inline">\(j\)</span> with <span class="math inline">\(i&lt;j\)</span>, <code>i:j</code> generates the sequence <span class="math inline">\(i, i+1, \ldots, j-1, j\)</span>.</li>
 </ul>
 <p>Subsetting is fairly intuitive and general; you can use vectors, logical statements. For example, if <code>x</code> is a vector, then</p>
@@ -192,7 +193,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <p>To install a package from CRAN, use <code>install.packages(&quot;package&quot;)</code>, replacing <code>package</code> by the package name. Once installed, packages can be loaded using <code>library(package)</code>; all the functions in <code>package</code> will be available in the environment.</p>
 
 <div class="rmdcaution">
-<p>The drawback of loading packages is that, if a function with the same name from another package is already present in your environment, it will be hidden. To palliate to this, you can use the <code>::</code> syntax to access a single function from an installed package, following the model <code>package::function</code>.</p>
+<p>There are drawbacks to loading packages: if an object with the same name from another package is already present in your environment, it will be hidden. Use the double-colon operator <code>::</code> to access a single object from an installed package (<code>package::object</code>).</p>
 </div>
 
 </div>

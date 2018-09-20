@@ -13,8 +13,10 @@ Help can be accessed via `help` or simply `?`. If you do not know what to query,
  
 
 ### Basic commands 
+Basic **R** commands are fairly intuitive, especially if you want to use **R** as a calculator.
+Elementary functions such as `sum`, `min`, `max`, `sqrt`, `log`, `exp`, etc., are self-explanatory.
 
-Basic **R** commands are fairly intuitive, especially if you want to use your **R** as a calculator. Elementary functions such as `sum`, `min`, `max`, `sqrt`, `log`, `exp`, etc., are self-explanatory.
+Some unconventional features of the language: 
 
 - Use `<-` to assign to a variable, and `=` for matching arguments inside functions
 - Indexing in **R** starts at 1, **not** zero. 
@@ -39,8 +41,8 @@ The above illustrates a caveat of  **R**: invalid calls will often returns _some
 - `t` is the function for transpose
 - `solve` performs matrix inversion
 - `%*%` is matrix multiplication, `*` is element-wise multiplication
-- `crossprod` `crossprod(A, B)` calculates the cross-product, `t(A) %*% B` of two matrices `A` and `B`
-- `eigen`/`chol`/`qr` perform respectively an eigendecomposition/Cholesky/QR decomposition of a matrix
+- `crossprod(A, B)` calculates the cross-product $\mathbf{A}^\top\mathbf{B}$, `t(A) %*% B`, of two matrices `A` and `B`.
+- `eigen`/`chol`/`qr`/`svd` perform respectively an eigendecomposition/Cholesky/QR/singular value decomposition of a matrix
 - `rep` creates a vector of duplicates, `seq` a sequence. For integers $i$, $j$ with $i<j$, `i:j` generates the sequence $i, i+1, \ldots, j-1, j$.
 
 Subsetting is fairly intuitive and general;  you can use vectors, logical statements. For example, if `x` is a vector,
@@ -65,7 +67,7 @@ The great strength of **R** comes from its contributed libraries (called package
 To install a package from CRAN, use `install.packages("package")`, replacing `package` by the package name. Once installed, packages can be loaded using `library(package)`; all the functions in `package` will be available in the environment. 
 
 ```{block2, type = "rmdcaution"}
-The drawback of loading packages is that, if a function with the same name from another package is already present in your environment, it will be hidden. To palliate to this, you can use the `::` syntax to access a single function from an installed package, following the model `package::function`. 
+There are drawbacks to loading packages: if an object with the same name from another package is already present in your environment, it will be hidden. Use the double-colon operator `::` to access a single object from an installed package (`package::object`). 
 
 ```
 
@@ -73,19 +75,19 @@ The drawback of loading packages is that, if a function with the same name from 
 
 ### Data sets
 
-We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park.
-
 - Data sets are typically stored inside a `data.frame`, a matrix-like object whose columns contain the variables and the rows the observation vectors. 
 - The columns can be of different types (`integer`, `double`, `logical`, `character`), but all the column vectors must be of the same length. 
 - Variable names can be displayed by using `names(faithful)`. 
 - Individual columns can be accessed using the column name using the `$` operator. For example, `faithful$eruptions` will return the first column of the `faithful` dataset.
-- To load a package already present in an **R** package, use the command `data` with the name of the `package` as an argument (must be a string).
+- To load a data set from an (installed) **R** package, use the command `data` with the name of the `package` as an argument (must be a string). The package `datasets` is loaded by default whenever you open **R**, so these are always in the search path.
 
 The following functions can be useful to get a quick glimpse of the data:
 
 - `summary` provides descriptive statistics for the variable.
 - `str` provides the first few elements with each variable, along with the dimension
 - `head` (`tail`) prints the first (last) $n$ lines of the object to the console (default is $n=6$).
+
+We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park and looking at its entries.
 
 ```{r week1_loadfaithful}
 # Load Old faithful dataset
@@ -99,7 +101,11 @@ str(faithful)
 class(faithful)
 ```
 
-Other common classes are `matrix` and `list`. The former has attributes `dim`, `ncol` and `nrow` in addition to `length`, which gives the total number of elements. A `list` is an unstructured class whose elements are accessed using double indexing `[[ ]]` and elements are typically accessed using `$` symbol with names. To delete an element from a list, assign  `NULL` to it. `data.frame` is a special type of list where all the elements are vectors of potentially different type, but of the same length.
+Other common classes of objects:
+- `matrix`: an object with attributes `dim`, `ncol` and `nrow` in addition to `length`, which gives the total number of elements. 
+- `array`: a higher dimensional extension of `matrix` with arguments `dim` and `dimnames`.
+- `list`: an unstructured class whose elements are accessed using double indexing `[[ ]]` and elements are typically accessed using `$` symbol with names. To delete an element from a list, assign  `NULL` to it. 
+- `data.frame` is a special type of list where all the elements are vectors of potentially different type, but of the same length.
 
 ### Graphics
 
@@ -158,7 +164,7 @@ Recall that $\mathbf{H}_{\mathbf{X}} \equiv \mathbf{X}(\mathbf{X}^\top\mathbf{X}
 ```{block2, type="rmdcaution"}
 
 Whereas we will frequently use `==` to check for equality of booleans, the latter should be avoided for comparisons because computer arithmetic is   exact only  in base 2.  For example, `1/10 + 2/10 - 3/10 == 0` will return `FALSE`, whereas `all.equal(1/10 + 2/10 - 3/10, 0)` will return `TRUE`.
-Us `all.equal` to check for equalities. 
+Use `all.equal` to check for equalities. 
 
 ```
 
