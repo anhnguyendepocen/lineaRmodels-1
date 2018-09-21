@@ -201,7 +201,7 @@ isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
 
 ### (1.4) Oblique projections  {-}
 
-Suppose that $\dim(\mathsf{span}(\mathbf{X})) \neq \dim(\mathsf{span}(\mathbf{W}))$. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)$. This fact is illustrated below.
+Suppose that $\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})$, that both $\mathbf{X}$ and $\mathbf{W}$ are full-rank $n \times p$ matrices such that $\mathbf{X}^\top\mathbf{W}$ and $\mathbf{W}^\top\mathbf{X}$ are invertible. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)$. This fact is illustrated below.
 
 We consider two non-parallel vectors in $\mathbb{R}^2$, $\mathbf{X}$ and $\mathbf{W}$. The figure shows the projection of a third vector (non-parallel to $\mathbf{X}$ or $\mathbf{W}$) onto the span of $\mathbf{P}$ (blue), $\mathbf{P}^\top$ (red), $\mathbf{I}_2-\mathbf{P}$ (dashed blue) and $\mathbf{I}_2-\mathbf{P}^\top$ (dashed red). The circles indicate the points $\mathbf{W}$ (red) and $\mathbf{X}$ (blue) on the plane. Notice that $\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}$, whereas $\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top$.
 

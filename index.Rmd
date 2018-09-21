@@ -1,5 +1,5 @@
 --- 
-title: "LinesRModels"
+title: "lineaRmodels"
 author: "Léo Belzile"
 date: "version of `r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -10,7 +10,7 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike2
 link-citations: yes
-github-repo: lbelzile/LinesRModels
+github-repo: lbelzile/lineaRmodels
 description: "This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians."
 ---
 
