@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>lineaRmodels</title>
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="lineaRmodels" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="github-repo" content="lbelzile/lineaRmodels" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="lineaRmodels" />
+  
+  <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  
+
+<meta name="author" content="Léo Belzile">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="computational-considerations.html">
+<link rel="next" href="parameter-estimation.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Linear Models</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="basics-of-r.html"><a href="basics-of-r.html"><i class="fa fa-check"></i><b>1.1</b> Basics of <strong>R</strong></a><ul>
+<li class="chapter" data-level="1.1.1" data-path="basics-of-r.html"><a href="basics-of-r.html#help"><i class="fa fa-check"></i><b>1.1.1</b> Help</a></li>
+<li class="chapter" data-level="1.1.2" data-path="basics-of-r.html"><a href="basics-of-r.html#basic-commands"><i class="fa fa-check"></i><b>1.1.2</b> Basic commands</a></li>
+<li class="chapter" data-level="1.1.3" data-path="basics-of-r.html"><a href="basics-of-r.html#linear-algebra-in-r"><i class="fa fa-check"></i><b>1.1.3</b> Linear algebra in <strong>R</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="basics-of-r.html"><a href="basics-of-r.html#packages"><i class="fa fa-check"></i><b>1.1.4</b> Packages</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="week1.html"><a href="week1.html"><i class="fa fa-check"></i><b>1.2</b> Tutorial 1</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="week1.html"><a href="week1.html#data-sets"><i class="fa fa-check"></i><b>1.2.1</b> Data sets</a></li>
+<li class="chapter" data-level="1.2.2" data-path="week1.html"><a href="week1.html#graphics"><i class="fa fa-check"></i><b>1.2.2</b> Graphics</a></li>
+<li class="chapter" data-level="1.2.3" data-path="week1.html"><a href="week1.html#projection-matrices"><i class="fa fa-check"></i><b>1.2.3</b> Projection matrices</a></li>
+<li class="chapter" data-level="1.2.4" data-path="week1.html"><a href="week1.html#your-turn"><i class="fa fa-check"></i><b>1.2.4</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="week-1-exercises.html"><a href="week-1-exercises.html"><i class="fa fa-check"></i><b>1.3</b> Week 1 exercises</a><ul>
+<li class="chapter" data-level="" data-path="week-1-exercises.html"><a href="week-1-exercises.html#oblique-projections"><i class="fa fa-check"></i>(1.4) Oblique projections</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#normal-equations"><i class="fa fa-check"></i><b>2.1.1</b> Normal equations</a></li>
+<li class="chapter" data-level="2.1.2" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.1.2</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
+<li class="chapter" data-level="2.3" data-path="interpretation.html"><a href="interpretation.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation</a></li>
+<li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">lineaRmodels</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="calculation-of-least-square-estimates" class="section level2">
+<h2><span class="header-section-number">2.1</span> Calculation of least square estimates</h2>
+<p>Consider as usual <span class="math inline">\(\boldsymbol{y}\)</span> and <span class="math inline">\(n\)</span>-vector of response variables and a full-rank <span class="math inline">\(n \times p\)</span> design matrix <span class="math inline">\(\mathbf{X}\)</span>. We are interested in finding the ordinary least square coefficient <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}} = \mathbf{X}\hat{\boldsymbol{\beta}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e} = \boldsymbol{y} - \mathbf{X}\boldsymbol{\beta}\)</span>.</p>
+<p>Whereas orthogonal projection matrices are useful for theoretical derivations, they are not used for computations. Building <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> involves a matrix inversion and the storage of an <span class="math inline">\(n \times n\)</span> matrix. In Exercise series 2, we looked at two matrix decompositions: a singular value decomposition (SVD) and a QR decomposition. These are more numerically stable than using the normal equations <span class="math inline">\((\mathbf{X}^\top\mathbf{X})\boldsymbol{\beta} = \mathbf{X}^\top\boldsymbol{y}\)</span> (the condition number of the matrix <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> is the square of that of <span class="math inline">\(\mathbf{X}\)</span>).</p>
+<p>For more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of <a href="Lee">www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf</a>.</p>
+<div id="normal-equations" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Normal equations</h3>
+<p>The following simply illustrates what has been derived in Exercise series 2. You will probably never use these commands, as <strong>R</strong> has devoted functions that are coded more efficiently.
+We can compute first the ordinary least square estimates using the formula <span class="math inline">\(\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\boldsymbol{y}\)</span>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">y &lt;-<span class="st"> </span>mtcars<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="kw">as.matrix</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(mtcars)]))</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(X)</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(X)</a>
+<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="co"># Estimation of betahat:</span></a>
+<a class="sourceLine" id="cb27-7" data-line-number="7">XtX&lt;-<span class="st"> </span><span class="kw">crossprod</span>(X)</a>
+<a class="sourceLine" id="cb27-8" data-line-number="8">Xty &lt;-<span class="st"> </span><span class="kw">crossprod</span>(X, y)</a>
+<a class="sourceLine" id="cb27-9" data-line-number="9"><span class="co"># Solve normal equations</span></a>
+<a class="sourceLine" id="cb27-10" data-line-number="10">betahat &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">solve</span>(XtX, Xty))</a>
+<a class="sourceLine" id="cb27-11" data-line-number="11"><span class="co">#same as betahat &lt;- solve(t(X) %*% X) %*% t(X) %*% y</span></a></code></pre></div>
+</div>
+<div id="singular-value-decomposition" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Singular value decomposition</h3>
+<p>The SVD decomposition in <strong>R</strong> returns a list with elements <code>u</code>, <code>d</code> and <code>v</code>. <code>u</code> is the orthonormal <span class="math inline">\(n \times p\)</span> matrix, <code>d</code> is a vector containing the diagonal elements of <span class="math inline">\(\mathbf{D}\)</span> and <code>v</code> is the <span class="math inline">\(p \times p\)</span> orthogonal matrix. Recall that the decomposition is
+<span class="math display">\[\mathbf{X} = \mathbf{UDV}^\top\]</span>
+and that <span class="math inline">\(\mathbf{VV}^\top= \mathbf{V}^\top\mathbf{V}=\mathbf{U}^\top\mathbf{U}=\mathbf{I}_p\)</span>. The matrix <span class="math inline">\(\mathbf{D}\)</span> contains the singular values of <span class="math inline">\(\mathbf{X}\)</span>, and the diagonal elements <span class="math inline">\(\mathrm{d}_{ii}^2\)</span> corresponds to the (ordered) eigenvalues of <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co"># Projection matrix</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">Hx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)</a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co"># t(U) %*% U gives p by p identity matrix</span></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>u), <span class="kw">diag</span>(p))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># V is an orthogonal matrix</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">all.equal</span>(<span class="kw">tcrossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co"># D contains singular values</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">all.equal</span>(svdX<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>, <span class="kw">eigen</span>(XtX, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># OLS coefficient from SVD</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">betahat_svd &lt;-<span class="st"> </span><span class="kw">c</span>(svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st">  </span><span class="kw">diag</span>(<span class="dv">1</span><span class="op">/</span>svdX<span class="op">$</span>d) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>y)</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw">all.equal</span>(betahat_svd, betahat)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="qr-decomposition" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> QR decomposition</h3>
+<p><strong>R</strong> uses a QR-decomposition to calculate the OLS. There are specific functions to return coefficients, fitted values and residuals. One can also obtain the <span class="math inline">\(n \times p\)</span> matrix <span class="math inline">\(\mathbf{Q}_1\)</span> and the upper triangular <span class="math inline">\(p \times p\)</span> matrix <span class="math inline">\(\mathbf{R}\)</span> from the thinned QR decomposition,
+<span class="math display">\[\mathbf{X} = \mathbf{Q}_1\mathbf{R}.\]</span></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">qrX &lt;-<span class="st"> </span><span class="kw">qr</span>(X)</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">Q1 &lt;-<span class="st"> </span><span class="kw">qr.Q</span>(qrX)</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">R &lt;-<span class="st"> </span><span class="kw">qr.R</span>(qrX)</a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="co"># Compute betahat from QR</span></a>
+<a class="sourceLine" id="cb38-5" data-line-number="5">betahat_qr1 &lt;-<span class="st"> </span><span class="kw">qr.coef</span>(qrX, y) <span class="co">#using built-in function</span></a>
+<a class="sourceLine" id="cb38-6" data-line-number="6">betahat_qr2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">backsolve</span>(R, <span class="kw">t</span>(Q1) <span class="op">%*%</span><span class="st"> </span>y)) <span class="co">#manually</span></a>
+<a class="sourceLine" id="cb38-7" data-line-number="7"><span class="kw">all.equal</span>(betahat, betahat_qr1, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">all.equal</span>(betahat, betahat_qr2, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># Compute residuals</span></a>
+<a class="sourceLine" id="cb42-2" data-line-number="2">qre &lt;-<span class="st"> </span><span class="kw">qr.resid</span>(qrX, y)</a>
+<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="kw">all.equal</span>(qre, <span class="kw">c</span>(y <span class="op">-</span><span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>betahat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co"># Compute fitted values</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2">qryhat &lt;-<span class="st"> </span><span class="kw">qr.fitted</span>(qrX, y)</a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="kw">all.equal</span>(qryhat, <span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>betahat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co"># Compute orthogonal projection matrix</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">qrHx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(Q1)</a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="kw">all.equal</span>(qrHx, Hx)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="computational-considerations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="parameter-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

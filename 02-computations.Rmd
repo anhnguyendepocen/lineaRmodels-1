@@ -1,0 +1,156 @@
+# Computational considerations
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+In this tutorial, we will explore some basic **R** commands and illustrate their use on the Motor Trend Car Road Tests dataset (`mtcars`).
+
+
+## Calculation of least square estimates
+Consider as usual $\boldsymbol{y}$ and $n$-vector of response variables and a full-rank $n \times p$ design matrix $\mathbf{X}$. We are interested in finding the ordinary least square coefficient $\hat{\boldsymbol{\beta}}$, the fitted values $\hat{\boldsymbol{y}} =  \mathbf{X}\hat{\boldsymbol{\beta}}$ and the residuals $\boldsymbol{e} = \boldsymbol{y} - \mathbf{X}\boldsymbol{\beta}$.
+
+Whereas orthogonal projection matrices are useful for theoretical derivations, they are not used for computations. Building $\mathbf{H}_{\mathbf{X}}$ involves a matrix inversion and the storage of an $n \times n$ matrix. In Exercise series 2, we looked at two matrix decompositions: a singular value decomposition (SVD) and a QR decomposition. These are more numerically stable than using the normal equations $(\mathbf{X}^\top\mathbf{X})\boldsymbol{\beta} = \mathbf{X}^\top\boldsymbol{y}$ (the condition number of the matrix $\mathbf{X}^\top\mathbf{X}$ is the square of that of $\mathbf{X}$). 
+
+
+For more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of [www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf](Lee).
+
+### Normal equations
+The following simply illustrates what has been derived in Exercise series 2. You will probably never use these commands, as **R** has devoted functions that are coded more efficiently. 
+We can compute first the ordinary least square estimates using the formula $\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\boldsymbol{y}$.
+
+```{r loadmtcars}
+data(mtcars)
+y <- mtcars$mpg
+X <- cbind(1, as.matrix(mtcars[,2:ncol(mtcars)]))
+n <- nrow(X)
+p <- ncol(X)
+# Estimation of betahat:
+XtX<- crossprod(X)
+Xty <- crossprod(X, y)
+# Solve normal equations
+betahat <- as.vector(solve(XtX, Xty))
+#same as betahat <- solve(t(X) %*% X) %*% t(X) %*% y
+```
+
+### Singular value decomposition 
+The SVD decomposition in **R** returns a list with elements `u`, `d` and `v`. `u` is the orthonormal $n \times p$ matrix, `d` is a vector containing the diagonal elements of $\mathbf{D}$ and `v` is the $p \times p$ orthogonal matrix. Recall that the decomposition is 
+\[\mathbf{X} = \mathbf{UDV}^\top\]
+and that $\mathbf{VV}^\top= \mathbf{V}^\top\mathbf{V}=\mathbf{U}^\top\mathbf{U}=\mathbf{I}_p$. The matrix $\mathbf{D}$ contains the singular values of $\mathbf{X}$, and the diagonal elements $\mathrm{d}_{ii}^2$ corresponds to the (ordered) eigenvalues of $\mathbf{X}^\top\mathbf{X}$.
+
+```{r svd}
+svdX <- svd(X)
+# Projection matrix
+Hx <- tcrossprod(svdX$u)
+# t(U) %*% U gives p by p identity matrix
+all.equal(crossprod(svdX$u), diag(p))
+# V is an orthogonal matrix
+all.equal(tcrossprod(svdX$v), diag(p))
+all.equal(crossprod(svdX$v), diag(p))
+# D contains singular values
+all.equal(svdX$d^2, eigen(XtX, only.values = TRUE)$values)
+# OLS coefficient from SVD
+betahat_svd <- c(svdX$v %*%  diag(1/svdX$d) %*% t(svdX$u) %*% y)
+all.equal(betahat_svd, betahat)
+```
+
+
+### QR decomposition
+**R** uses a QR-decomposition to calculate the OLS. There are specific functions to return coefficients, fitted values and residuals. One can also obtain the $n \times p$ matrix $\mathbf{Q}_1$ and the upper triangular $p \times p$ matrix $\mathbf{R}$ from the thinned QR decomposition, 
+\[\mathbf{X} = \mathbf{Q}_1\mathbf{R}.\]
+
+```{r qr}
+qrX <- qr(X)
+Q1 <- qr.Q(qrX)
+R <- qr.R(qrX)
+# Compute betahat from QR
+betahat_qr1 <- qr.coef(qrX, y) #using built-in function
+betahat_qr2 <- c(backsolve(R, t(Q1) %*% y)) #manually
+all.equal(betahat, betahat_qr1, check.attributes = FALSE)
+all.equal(betahat, betahat_qr2, check.attributes = FALSE)
+# Compute residuals
+qre <- qr.resid(qrX, y)
+all.equal(qre, c(y - X %*% betahat), check.attributes = FALSE)
+# Compute fitted values
+qryhat <- qr.fitted(qrX, y)
+all.equal(qryhat, c(X %*% betahat), check.attributes = FALSE)
+# Compute orthogonal projection matrix
+qrHx <- tcrossprod(Q1)
+all.equal(qrHx, Hx)
+```
+
+
+
+## Parameter estimation
+
+We are now ready to fit a linear model with an intercept and a linear effect for the weight. The model will be of the form 
+$$ \texttt{mpg}_i = \beta_0 + \texttt{wt}_i\beta_1 +\varepsilon_i.$$
+We form the design matrix $(\boldsymbol{1}_n^\top, \texttt{wt}^\top)^\top$ and the vector of regressand $\texttt{mpg}$, then proceed with calculating the OLS coefficients $\hat{\boldsymbol{\beta}}$, the hat matrix $\mathbf{H}_{\mathbf{X}}$, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$.
+
+```{r fitbyhand}
+#Design matrix
+wt <- mtcars$wt
+X <- cbind(1, wt)
+mpg <- mtcars$mpg
+#OLS estimates
+XtXinv <- solve(crossprod(X))
+beta_hat <- c(XtXinv %*% t(X) %*% mpg)
+#Form orthogonal projection matrix
+Hmat <- X %*% XtXinv %*% t(X)
+#Create residuals and fitted values
+fitted <- Hmat %*% mpg
+res <- mpg - fitted
+fitted <- Hmat %*% mpg
+#Variance estimate and standard errors
+s2 <- sum(res^2) / (length(res) - ncol(X))
+std_err <- sqrt(diag(s2 * XtXinv))
+```
+
+The residuals $\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}$ can be interpreted as the *vertical* distance between the regression slope and the observation. This is illustrated in the following graph. For each observation $y_i$, a vertical line at distance $e_i$ is drawn from the prediction $\hat{y}_i$. 
+
+Side remark: graphs and table should *always* be properly labelled (including units). The last line of the call to `plot` contains cosmetic options that alter the display of the scatterplot --- you can check for yourself the effects of removing any (all) of these additional commands.
+
+```{r verticaldist}
+plot(mpg ~ wt, xlab = "weight (1000 lbs)", ylab = "miles/US gallon", 
+     main = "Fuel consumption of automobiles, 1974 Motor Trend", data = mtcars,
+     bty = "l", pch = 20, ylim = c(0, 35), xlim = c(0, 6)) #options to tweak the display
+#Line of best linear fit
+abline(a = beta_hat[1], b = beta_hat[2], col = "blue", lwd = 2)
+
+#Residuals are vertical distance from line to 
+for(i in 1:nrow(X)){
+  segments(x0 = wt[i], y0 = fitted[i], y1 = fitted[i] + res[i], col = 2)
+}
+
+```
+
+## Interpretation
+
+If the regression model is 
+$$y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,$$ the interpretation of $\beta_1$ in the linear model is as follows: a unit increase in $x$ leads to $\beta_1$ units increase in $y$, everything else (i.e. $\mathrm{x}_{i2}$) being held constant. 
+
+For the `mtcars` regression above, an increase of the weight of the car of 1000 pounds leads to an average decrease of `r abs(round(beta_hat[2], 2))` miles per US gallon in distance covered by the car. We could easily get an equivalent statement in terms of increase of the car fuel consumption for a given distance.
+
+## The `lm` function 
+
+The function `lm` is the workshorse for fitting linear models. It takes as input a formula: suppose you have a data frame containing columns `x` (a regressor) and `y` (the regressand); you can then call `lm(y ~ x)` to fit the linear model $y = \beta_0 + \beta_1x + \varepsilon$. The explanatory variable `y` is on the left hand side,
+while the right hand side should contain the predictors, separated by a `+` sign if there are more than one.
+If you provide the data frame name using `data`, then the shorthand `y ~ .` fits all the columns of the data frame  (but `y`) as regressors.
+
+To fit higher order polynomials or transformations, use the `I` function to tell **R** to interpret the input "as is". 
+Thus, `lm(y~x+I(x^2))`, would fit a linear model with design matrix $(\boldsymbol{1}_n, \mathbf{x}^\top, \mathbf{x}^2)^\top$. A constant is automatically included in the regression, but can be removed by writing `-1` or `+0` on the right hand side of the formula.
+
+```{r}
+# The function lm and its output
+fit <- lm(mpg ~ wt, data = mtcars)
+fit_summary <- summary(fit)
+```
+
+The `lm` output will display OLS estimates along with standard errors, $t$ values for the Wald test of the hypothesis $\mathrm{H}_0: \beta_i=0$ and the associated $P$-values. Other statistics and information about the sample size, the degrees of freedom, etc., are given at the bottom of the table.
+
+Many methods allow you to extract specific objects. For example, the functions `coef`, `resid`, `fitted`, `model.matrix` will return $\hat{\boldsymbol{\beta}}$, $\boldsymbol{e}$, $\hat{\boldsymbol{y}}$ and $\mathbf{X}$, respectively.
+
+```{r} 
+names(fit)
+names(fit_summary)
+```
+
