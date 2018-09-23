@@ -109,24 +109,40 @@ The residuals $\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}$ can be int
 
 Side remark: graphs and table should *always* be properly labelled (including units). The last line of the call to `plot` contains cosmetic options that alter the display of the scatterplot --- you can check for yourself the effects of removing any (all) of these additional commands.
 
-```{r verticaldist}
-plot(mpg ~ wt, xlab = "weight (1000 lbs)", ylab = "miles/US gallon", 
+```{r verticaldist, code_folding = "hide"}
+plot(mpg ~ wt, xlab = "weight (1000 lbs)", ylab = "Fuel consumption (miles/US gallon)", 
      main = "Fuel consumption of automobiles, 1974 Motor Trend", data = mtcars,
      bty = "l", pch = 20, ylim = c(0, 35), xlim = c(0, 6)) #options to tweak the display
 #Line of best linear fit
-abline(a = beta_hat[1], b = beta_hat[2], col = "blue", lwd = 2)
+abline(a = beta_hat[1], b = beta_hat[2])
 
 #Residuals are vertical distance from line to 
 for(i in 1:nrow(X)){
   segments(x0 = wt[i], y0 = fitted[i], y1 = fitted[i] + res[i], col = 2)
 }
+```
 
+The same scatterplot, this time using `ggplot2`.
+
+```{r ggplotmtcars, code_folding = "hide"}
+library(ggplot2, warn.conflicts = FALSE, quietly = TRUE)
+#Create data frame with segments
+vlines <- data.frame(x1 = mtcars$wt, y1 = fitted, y2 = fitted + res)
+ggg <- ggplot(mtcars, aes(wt, mpg)) + 
+        geom_point() + 
+        labs(x = "weight (1000 lbs)", 
+            y = "Fuel consumption (miles/US gallon)", 
+            title = "Fuel consumption of automobiles, 1974 Motor Trend") +
+      geom_segment(aes(x = x1, y = y1, xend = x1, yend = y2, color = "red"), 
+                   data = vlines, show.legend = FALSE) + 
+      geom_abline(slope = beta_hat[2], intercept = beta_hat[1])
+print(ggg)
 ```
 
 ## Interpretation
 
 If the regression model is 
-$$y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,$$ the interpretation of $\beta_1$ in the linear model is as follows: a unit increase in $x$ leads to $\beta_1$ units increase in $y$, everything else (i.e. $\mathrm{x}_{i2}$) being held constant. 
+$$y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,$$ the interpretation of $\beta_1$ in the linear model is as follows: a unit increase in $x$ leads to $\beta_1$ units increase in $y$, everything else (i.e., $\mathrm{x}_{i2}$) being held constant. 
 
 For the `mtcars` regression above, an increase of the weight of the car of 1000 pounds leads to an average decrease of `r abs(round(beta_hat[2], 2))` miles per US gallon in distance covered by the car. We could easily get an equivalent statement in terms of increase of the car fuel consumption for a given distance.
 

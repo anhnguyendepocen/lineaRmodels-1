@@ -138,10 +138,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2" data-path="week1.html"><a href="week1.html"><i class="fa fa-check"></i><b>1.2</b> Tutorial 1</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="week1.html"><a href="week1.html#data-sets"><i class="fa fa-check"></i><b>1.2.1</b> Data sets</a></li>
 <li class="chapter" data-level="1.2.2" data-path="week1.html"><a href="week1.html#graphics"><i class="fa fa-check"></i><b>1.2.2</b> Graphics</a></li>
-<li class="chapter" data-level="1.2.3" data-path="week1.html"><a href="week1.html#projection-matrices"><i class="fa fa-check"></i><b>1.2.3</b> Projection matrices</a></li>
-<li class="chapter" data-level="1.2.4" data-path="week1.html"><a href="week1.html#your-turn"><i class="fa fa-check"></i><b>1.2.4</b> Your turn</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="week-1-exercises.html"><a href="week-1-exercises.html"><i class="fa fa-check"></i><b>1.3</b> Week 1 exercises</a><ul>
+<li class="chapter" data-level="1.3" data-path="manipulating-matrices.html"><a href="manipulating-matrices.html"><i class="fa fa-check"></i><b>1.3</b> Manipulating matrices</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="manipulating-matrices.html"><a href="manipulating-matrices.html#projection-matrices"><i class="fa fa-check"></i><b>1.3.1</b> Projection matrices</a></li>
+<li class="chapter" data-level="1.3.2" data-path="manipulating-matrices.html"><a href="manipulating-matrices.html#your-turn"><i class="fa fa-check"></i><b>1.3.2</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="week-1-exercises.html"><a href="week-1-exercises.html"><i class="fa fa-check"></i><b>1.4</b> Week 1 exercises</a><ul>
 <li class="chapter" data-level="" data-path="week-1-exercises.html"><a href="week-1-exercises.html#oblique-projections"><i class="fa fa-check"></i>(1.4) Oblique projections</a></li>
 </ul></li>
 </ul></li>
@@ -184,67 +186,67 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">2.1.1</span> Normal equations</h3>
 <p>The following simply illustrates what has been derived in Exercise series 2. You will probably never use these commands, as <strong>R</strong> has devoted functions that are coded more efficiently.
 We can compute first the ordinary least square estimates using the formula <span class="math inline">\(\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\boldsymbol{y}\)</span>.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2">y &lt;-<span class="st"> </span>mtcars<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb27-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="kw">as.matrix</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(mtcars)]))</a>
-<a class="sourceLine" id="cb27-4" data-line-number="4">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(X)</a>
-<a class="sourceLine" id="cb27-5" data-line-number="5">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(X)</a>
-<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="co"># Estimation of betahat:</span></a>
-<a class="sourceLine" id="cb27-7" data-line-number="7">XtX&lt;-<span class="st"> </span><span class="kw">crossprod</span>(X)</a>
-<a class="sourceLine" id="cb27-8" data-line-number="8">Xty &lt;-<span class="st"> </span><span class="kw">crossprod</span>(X, y)</a>
-<a class="sourceLine" id="cb27-9" data-line-number="9"><span class="co"># Solve normal equations</span></a>
-<a class="sourceLine" id="cb27-10" data-line-number="10">betahat &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">solve</span>(XtX, Xty))</a>
-<a class="sourceLine" id="cb27-11" data-line-number="11"><span class="co">#same as betahat &lt;- solve(t(X) %*% X) %*% t(X) %*% y</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">y &lt;-<span class="st"> </span>mtcars<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="kw">as.matrix</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(mtcars)]))</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(X)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(X)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># Estimation of betahat:</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">XtX&lt;-<span class="st"> </span><span class="kw">crossprod</span>(X)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">Xty &lt;-<span class="st"> </span><span class="kw">crossprod</span>(X, y)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># Solve normal equations</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">betahat &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">solve</span>(XtX, Xty))</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#same as betahat &lt;- solve(t(X) %*% X) %*% t(X) %*% y</span></a></code></pre></div>
 </div>
 <div id="singular-value-decomposition" class="section level3">
 <h3><span class="header-section-number">2.1.2</span> Singular value decomposition</h3>
 <p>The SVD decomposition in <strong>R</strong> returns a list with elements <code>u</code>, <code>d</code> and <code>v</code>. <code>u</code> is the orthonormal <span class="math inline">\(n \times p\)</span> matrix, <code>d</code> is a vector containing the diagonal elements of <span class="math inline">\(\mathbf{D}\)</span> and <code>v</code> is the <span class="math inline">\(p \times p\)</span> orthogonal matrix. Recall that the decomposition is
 <span class="math display">\[\mathbf{X} = \mathbf{UDV}^\top\]</span>
 and that <span class="math inline">\(\mathbf{VV}^\top= \mathbf{V}^\top\mathbf{V}=\mathbf{U}^\top\mathbf{U}=\mathbf{I}_p\)</span>. The matrix <span class="math inline">\(\mathbf{D}\)</span> contains the singular values of <span class="math inline">\(\mathbf{X}\)</span>, and the diagonal elements <span class="math inline">\(\mathrm{d}_{ii}^2\)</span> corresponds to the (ordered) eigenvalues of <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span>.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="co"># Projection matrix</span></a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">Hx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co"># t(U) %*% U gives p by p identity matrix</span></a>
-<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>u), <span class="kw">diag</span>(p))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># Projection matrix</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">Hx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># t(U) %*% U gives p by p identity matrix</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>u), <span class="kw">diag</span>(p))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># V is an orthogonal matrix</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">all.equal</span>(<span class="kw">tcrossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># V is an orthogonal matrix</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">all.equal</span>(<span class="kw">tcrossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co"># D contains singular values</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">all.equal</span>(svdX<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>, <span class="kw">eigen</span>(XtX, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># D contains singular values</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">all.equal</span>(svdX<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>, <span class="kw">eigen</span>(XtX, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># OLS coefficient from SVD</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">betahat_svd &lt;-<span class="st"> </span><span class="kw">c</span>(svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st">  </span><span class="kw">diag</span>(<span class="dv">1</span><span class="op">/</span>svdX<span class="op">$</span>d) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>y)</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw">all.equal</span>(betahat_svd, betahat)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># OLS coefficient from SVD</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">betahat_svd &lt;-<span class="st"> </span><span class="kw">c</span>(svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st">  </span><span class="kw">diag</span>(<span class="dv">1</span><span class="op">/</span>svdX<span class="op">$</span>d) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>y)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">all.equal</span>(betahat_svd, betahat)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="qr-decomposition" class="section level3">
 <h3><span class="header-section-number">2.1.3</span> QR decomposition</h3>
 <p><strong>R</strong> uses a QR-decomposition to calculate the OLS. There are specific functions to return coefficients, fitted values and residuals. One can also obtain the <span class="math inline">\(n \times p\)</span> matrix <span class="math inline">\(\mathbf{Q}_1\)</span> and the upper triangular <span class="math inline">\(p \times p\)</span> matrix <span class="math inline">\(\mathbf{R}\)</span> from the thinned QR decomposition,
 <span class="math display">\[\mathbf{X} = \mathbf{Q}_1\mathbf{R}.\]</span></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">qrX &lt;-<span class="st"> </span><span class="kw">qr</span>(X)</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">Q1 &lt;-<span class="st"> </span><span class="kw">qr.Q</span>(qrX)</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">R &lt;-<span class="st"> </span><span class="kw">qr.R</span>(qrX)</a>
-<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="co"># Compute betahat from QR</span></a>
-<a class="sourceLine" id="cb38-5" data-line-number="5">betahat_qr1 &lt;-<span class="st"> </span><span class="kw">qr.coef</span>(qrX, y) <span class="co">#using built-in function</span></a>
-<a class="sourceLine" id="cb38-6" data-line-number="6">betahat_qr2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">backsolve</span>(R, <span class="kw">t</span>(Q1) <span class="op">%*%</span><span class="st"> </span>y)) <span class="co">#manually</span></a>
-<a class="sourceLine" id="cb38-7" data-line-number="7"><span class="kw">all.equal</span>(betahat, betahat_qr1, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">qrX &lt;-<span class="st"> </span><span class="kw">qr</span>(X)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">Q1 &lt;-<span class="st"> </span><span class="kw">qr.Q</span>(qrX)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">R &lt;-<span class="st"> </span><span class="kw">qr.R</span>(qrX)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># Compute betahat from QR</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">betahat_qr1 &lt;-<span class="st"> </span><span class="kw">qr.coef</span>(qrX, y) <span class="co">#using built-in function</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">betahat_qr2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">backsolve</span>(R, <span class="kw">t</span>(Q1) <span class="op">%*%</span><span class="st"> </span>y)) <span class="co">#manually</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="kw">all.equal</span>(betahat, betahat_qr1, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">all.equal</span>(betahat, betahat_qr2, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">all.equal</span>(betahat, betahat_qr2, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># Compute residuals</span></a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">qre &lt;-<span class="st"> </span><span class="kw">qr.resid</span>(qrX, y)</a>
-<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="kw">all.equal</span>(qre, <span class="kw">c</span>(y <span class="op">-</span><span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>betahat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Compute residuals</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">qre &lt;-<span class="st"> </span><span class="kw">qr.resid</span>(qrX, y)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">all.equal</span>(qre, <span class="kw">c</span>(y <span class="op">-</span><span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>betahat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co"># Compute fitted values</span></a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">qryhat &lt;-<span class="st"> </span><span class="kw">qr.fitted</span>(qrX, y)</a>
-<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="kw">all.equal</span>(qryhat, <span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>betahat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Compute fitted values</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">qryhat &lt;-<span class="st"> </span><span class="kw">qr.fitted</span>(qrX, y)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw">all.equal</span>(qryhat, <span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>betahat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co"># Compute orthogonal projection matrix</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">qrHx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(Q1)</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="kw">all.equal</span>(qrHx, Hx)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># Compute orthogonal projection matrix</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">qrHx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(Q1)</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="kw">all.equal</span>(qrHx, Hx)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 </div>
