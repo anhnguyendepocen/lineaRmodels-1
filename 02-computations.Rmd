@@ -9,10 +9,10 @@ In this tutorial, we will explore some basic **R** commands and illustrate their
 ## Calculation of least square estimates
 Consider as usual $\boldsymbol{y}$ and $n$-vector of response variables and a full-rank $n \times p$ design matrix $\mathbf{X}$. We are interested in finding the ordinary least square coefficient $\hat{\boldsymbol{\beta}}$, the fitted values $\hat{\boldsymbol{y}} =  \mathbf{X}\hat{\boldsymbol{\beta}}$ and the residuals $\boldsymbol{e} = \boldsymbol{y} - \mathbf{X}\boldsymbol{\beta}$.
 
-Whereas orthogonal projection matrices are useful for theoretical derivations, they are not used for computations. Building $\mathbf{H}_{\mathbf{X}}$ involves a matrix inversion and the storage of an $n \times n$ matrix. In Exercise series 2, we looked at two matrix decompositions: a singular value decomposition (SVD) and a QR decomposition. These are more numerically stable than using the normal equations $(\mathbf{X}^\top\mathbf{X})\boldsymbol{\beta} = \mathbf{X}^\top\boldsymbol{y}$ (the condition number of the matrix $\mathbf{X}^\top\mathbf{X}$ is the square of that of $\mathbf{X}$). 
+Whereas orthogonal projection matrices are useful for theoretical derivations, they are not used for computations. Building $\mathbf{H}_{\mathbf{X}}$ involves a matrix inversion and the storage of an $n \times n$ matrix. In Exercise series 2, we looked at two matrix decompositions: a singular value decomposition (SVD) and a QR decomposition. These are more numerically stable than using the normal equations $(\mathbf{X}^\top\mathbf{X})\boldsymbol{\beta} = \mathbf{X}^\top\boldsymbol{y}$ (the condition number of the matrix $\mathbf{X}^\top\mathbf{X}$ is the square of that of $\mathbf{X}$ --- more on this later). 
 
 
-For more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of [www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf](Lee).
+For more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of [www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf](Lee). This material is _optional_.
 
 ### Normal equations
 The following simply illustrates what has been derived in Exercise series 2. You will probably never use these commands, as **R** has devoted functions that are coded more efficiently. 
@@ -109,7 +109,7 @@ The residuals $\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}$ can be int
 
 Side remark: graphs and table should *always* be properly labelled (including units). The last line of the call to `plot` contains cosmetic options that alter the display of the scatterplot --- you can check for yourself the effects of removing any (all) of these additional commands.
 
-```{r verticaldist, code_folding = "hide"}
+```{r verticaldist}
 plot(mpg ~ wt, xlab = "weight (1000 lbs)", ylab = "Fuel consumption (miles/US gallon)", 
      main = "Fuel consumption of automobiles, 1974 Motor Trend", data = mtcars,
      bty = "l", pch = 20, ylim = c(0, 35), xlim = c(0, 6)) #options to tweak the display
@@ -124,7 +124,7 @@ for(i in 1:nrow(X)){
 
 The same scatterplot, this time using `ggplot2`.
 
-```{r ggplotmtcars, code_folding = "hide"}
+```{r ggplotmtcars}
 library(ggplot2, warn.conflicts = FALSE, quietly = TRUE)
 #Create data frame with segments
 vlines <- data.frame(x1 = mtcars$wt, y1 = fitted, y2 = fitted + res)

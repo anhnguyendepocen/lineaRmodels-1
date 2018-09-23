@@ -853,11 +853,12 @@ decomposition. These are more numerically stable than using the normal
 equations
 \((\mathbf{X}^\top\mathbf{X})\boldsymbol{\beta} = \mathbf{X}^\top\boldsymbol{y}\)
 (the condition number of the matrix \(\mathbf{X}^\top\mathbf{X}\) is the
-square of that of \(\mathbf{X}\)).
+square of that of \(\mathbf{X}\) --- more on this later).
 
 For more details about the complexity and algorithms underlying the
 different methods, the reader is referred to these notes of
 \href{Lee}{www.math.uchicago.edu/\textasciitilde{}may/REU2012/REUPapers/Lee.pdf}.
+This material is \emph{optional}.
 
 \hypertarget{normal-equations}{%
 \subsection{Normal equations}\label{normal-equations}}
@@ -1077,11 +1078,11 @@ commands.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(mpg }\OperatorTok{~}\StringTok{ }\NormalTok{wt, }\DataTypeTok{xlab =} \StringTok{"weight (1000 lbs)"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"miles/US gallon"}\NormalTok{, }
+\KeywordTok{plot}\NormalTok{(mpg }\OperatorTok{~}\StringTok{ }\NormalTok{wt, }\DataTypeTok{xlab =} \StringTok{"weight (1000 lbs)"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Fuel consumption (miles/US gallon)"}\NormalTok{, }
      \DataTypeTok{main =} \StringTok{"Fuel consumption of automobiles, 1974 Motor Trend"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ mtcars,}
      \DataTypeTok{bty =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{20}\NormalTok{, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{35}\NormalTok{), }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{6}\NormalTok{)) }\CommentTok{#options to tweak the display}
 \CommentTok{#Line of best linear fit}
-\KeywordTok{abline}\NormalTok{(}\DataTypeTok{a =}\NormalTok{ beta_hat[}\DecValTok{1}\NormalTok{], }\DataTypeTok{b =}\NormalTok{ beta_hat[}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{a =}\NormalTok{ beta_hat[}\DecValTok{1}\NormalTok{], }\DataTypeTok{b =}\NormalTok{ beta_hat[}\DecValTok{2}\NormalTok{])}
 
 \CommentTok{#Residuals are vertical distance from line to }
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(X))\{}
@@ -1092,6 +1093,27 @@ commands.
 
 \includegraphics{LinesRModels_files/figure-latex/verticaldist-1.pdf}
 
+The same scatterplot, this time using \texttt{ggplot2}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2, }\DataTypeTok{warn.conflicts =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{quietly =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{#Create data frame with segments}
+\NormalTok{vlines <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x1 =}\NormalTok{ mtcars}\OperatorTok{$}\NormalTok{wt, }\DataTypeTok{y1 =}\NormalTok{ fitted, }\DataTypeTok{y2 =}\NormalTok{ fitted }\OperatorTok{+}\StringTok{ }\NormalTok{res)}
+\NormalTok{ggg <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(mtcars, }\KeywordTok{aes}\NormalTok{(wt, mpg)) }\OperatorTok{+}\StringTok{ }
+\StringTok{        }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{        }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"weight (1000 lbs)"}\NormalTok{, }
+            \DataTypeTok{y =} \StringTok{"Fuel consumption (miles/US gallon)"}\NormalTok{, }
+            \DataTypeTok{title =} \StringTok{"Fuel consumption of automobiles, 1974 Motor Trend"}\NormalTok{) }\OperatorTok{+}
+\StringTok{      }\KeywordTok{geom_segment}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x1, }\DataTypeTok{y =}\NormalTok{ y1, }\DataTypeTok{xend =}\NormalTok{ x1, }\DataTypeTok{yend =}\NormalTok{ y2, }\DataTypeTok{color =} \StringTok{"red"}\NormalTok{), }
+                   \DataTypeTok{data =}\NormalTok{ vlines, }\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{      }\KeywordTok{geom_abline}\NormalTok{(}\DataTypeTok{slope =}\NormalTok{ beta_hat[}\DecValTok{2}\NormalTok{], }\DataTypeTok{intercept =}\NormalTok{ beta_hat[}\DecValTok{1}\NormalTok{])}
+\KeywordTok{print}\NormalTok{(ggg)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{LinesRModels_files/figure-latex/ggplotmtcars-1.pdf}
+
 \hypertarget{interpretation}{%
 \section{Interpretation}\label{interpretation}}
 
@@ -1099,7 +1121,7 @@ If the regression model is
 \[y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,\]
 the interpretation of \(\beta_1\) in the linear model is as follows: a
 unit increase in \(x\) leads to \(\beta_1\) units increase in \(y\),
-everything else (i.e. \(\mathrm{x}_{i2}\)) being held constant.
+everything else (i.e., \(\mathrm{x}_{i2}\)) being held constant.
 
 For the \texttt{mtcars} regression above, an increase of the weight of
 the car of 1000 pounds leads to an average decrease of 5.34 miles per US
