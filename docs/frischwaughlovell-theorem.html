@@ -166,7 +166,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 
 
 <div class="proof">
- <span class="proof"><em>Proof. </em></span> The easiest proof uses projection matrices, but we demonstrate the result directly. Consider an invertible <span class="math inline">\(d \times d\)</span> matrix <span class="math inline">\(\mathbf{C}\)</span> and denote its inverse by <span class="math inline">\(\mathbf{D}\)</span>; then <span class="math display">\[
+ <span class="proof"><em>Proof. </em></span> The easiest proof uses projection matrices, but we demonstrate the result for OLS coefficients directly. Consider an invertible <span class="math inline">\(d \times d\)</span> matrix <span class="math inline">\(\mathbf{C}\)</span> and denote its inverse by <span class="math inline">\(\mathbf{D}\)</span>; then <span class="math display">\[
 \begin{pmatrix} \mathbf{C}_{11} &amp; \mathbf{C}_{12} \\ \mathbf{C}_{21} &amp;\mathbf{C}_{22}
 \end{pmatrix}\begin{pmatrix} \mathbf{D}_{11} &amp; \mathbf{D}_{12} \\ \mathbf{D}_{21} &amp;\mathbf{D}_{22}
 \end{pmatrix}
@@ -191,6 +191,7 @@ from which we deduce that the so-called Schur complement of <span class="math in
 \\&amp;= \left(\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21}\right)^{-1} \mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y} 
 \\&amp;= (\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\mathbf{X}_1)^{-1}\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y}.
 \end{align*}\]</span>
+The proof that the residuals are the same is left as an exercise.
 </div>
 
 

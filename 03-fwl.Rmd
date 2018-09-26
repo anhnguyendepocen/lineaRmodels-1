@@ -40,7 +40,7 @@ $$
 ```
 
 ```{proof}
-The easiest proof uses projection matrices, but we demonstrate the result directly.
+The easiest proof uses projection matrices, but we demonstrate the result for OLS coefficients directly.
 Consider an invertible $d \times d$ matrix $\mathbf{C}$ and denote its inverse by $\mathbf{D}$; then
 $$
 \begin{pmatrix} \mathbf{C}_{11} & \mathbf{C}_{12} \\ \mathbf{C}_{21} &\mathbf{C}_{22}
@@ -73,4 +73,6 @@ and plug-in this result back in the equation for the least squares yields
 \\&= \left(\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21}\right)^{-1} \mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y} 
 \\&= (\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\mathbf{X}_1)^{-1}\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y}.
 \end{align*}
+
+The proof that the residuals are the same is left as an exercise.
 ```

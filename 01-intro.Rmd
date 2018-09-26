@@ -203,7 +203,7 @@ isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
 
 Suppose that $\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})$, that both $\mathbf{X}$ and $\mathbf{W}$ are full-rank $n \times p$ matrices such that $\mathbf{X}^\top\mathbf{W}$ and $\mathbf{W}^\top\mathbf{X}$ are invertible. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)$. This fact is illustrated below.
 
-We consider two non-parallel vectors in $\mathbb{R}^2$, $\mathbf{X}$ and $\mathbf{W}$. The figure shows the projection of a third vector (non-parallel to $\mathbf{X}$ or $\mathbf{W}$) onto the span of $\mathbf{P}$ (blue), $\mathbf{P}^\top$ (red), $\mathbf{I}_2-\mathbf{P}$ (dashed blue) and $\mathbf{I}_2-\mathbf{P}^\top$ (dashed red). The circles indicate the points $\mathbf{W}$ (red) and $\mathbf{X}$ (blue) on the plane. Notice that $\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}$, whereas $\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top$.
+We consider two non-parallel vectors in $\mathbb{R}^2$, $\mathbf{X}$ and $\mathbf{W}$. 
 
 ```{r, oblique_projection} 
 #Create two vectors (non-parallel)
@@ -214,7 +214,11 @@ P <- x %*% solve(t(w) %*% x) %*% t(w)
 
 isTRUE(all.equal((P %*% P), P)) #P is idempotent
 P - t(P) #but not symmetric
+```
 
+The figure below shows the projection of a third vector $\mathbf{v}$ (non-parallel to $\mathbf{X}$ or $\mathbf{W}$) onto the span of  <span style="color:blue">$\mathbf{P}$ (blue)</span>, <span style="color:red">$\mathbf{P}^\top$ (red)</span>, <span style=cyan>$\mathbf{I}_2-\mathbf{P}$ (dashed cyan)</span> and <span style="color:orange">$\mathbf{I}_2-\mathbf{P}^\top$ (dashed orange)</span>. The circles indicate the vectors <span style="color:red">$\mathbf{W}$ (red)</span> and <span style="color:blue">$\mathbf{X}$ (blue)</span> on the plane. Notice that $\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}$, whereas $\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top$.
+
+```{r illustproj, echo = FALSE}
 #Project a third vector `vec' onto P, P transpose, I-P, I-(P transpose)
 vec <- c(1.9, -1.5)
 vec_P <- P %*% vec
@@ -225,7 +229,7 @@ vec_Id_minus_Pt <- (diag(2)-t(P)) %*% vec
 
 #Plot the resulting vector along with the two vectors x and w (points)
 par(pty = "s") #graphical console parameters (square region)
-plot(NULL, xlab = "x", ylab = "y", xlim = c(-4, 4), ylim = c(-4, 4))
+plot(NULL, xlab = "", ylab = "", xlim = c(-4, 4), ylim = c(-4, 4))
 #create empty plot with labels x and y, on square region [-4,4]^2
 points(0, 0, pch = 20) #points: add points to existing plot
 points(x[1], x[2], col = "blue")
@@ -233,7 +237,7 @@ points(w[1], w[2], col = "red")
 # blue line for P, dashed blue for I-P, red for Pt, red dashed for I-Pt
 segments(x0 = 0, y0 = 0, x1 = vec_P[1], y1 = vec_P[2], col = "blue")
 segments(x0 = 0, y0 = 0, x1 = vec_Pt[1], y1 = vec_Pt[2], col = "red")
-segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_P[1], y1 = vec_Id_minus_P[2], col = "blue", lty = 2)
-segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_Pt[1], y1 = vec_Id_minus_Pt[2], col = "red", lty = 2)
+segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_P[1], y1 = vec_Id_minus_P[2], col = "cyan", lty = 2)
+segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_Pt[1], y1 = vec_Id_minus_Pt[2], col = "orange", lty = 2)
 
 ```

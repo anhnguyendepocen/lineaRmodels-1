@@ -576,9 +576,6 @@ measurement units!
      \DataTypeTok{xlab =} \StringTok{"Eruption time (in min.)"}\NormalTok{, }
      \DataTypeTok{ylab =} \StringTok{"Waiting time between eruptions (in min.)"}\NormalTok{,}
      \DataTypeTok{main =} \StringTok{"Old Faithful Geyser Data"}\NormalTok{)}
-\CommentTok{#using the grammar of graphics (more modular)}
-\CommentTok{#install.packages("ggplot2") #do this once only}
-\KeywordTok{library}\NormalTok{(ggplot2)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -586,6 +583,9 @@ measurement units!
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#using the grammar of graphics (more modular)}
+\CommentTok{#install.packages("ggplot2") #do this once only}
+\KeywordTok{library}\NormalTok{(ggplot2)}
 \NormalTok{ggplot2}\OperatorTok{::}\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ faithful, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ eruptions, }\DataTypeTok{y =}\NormalTok{ waiting)) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{  }
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Old Faithful Geyser Data"}\NormalTok{, }
@@ -747,14 +747,7 @@ is such that \(\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})\), but
 This fact is illustrated below.
 
 We consider two non-parallel vectors in \(\mathbb{R}^2\), \(\mathbf{X}\)
-and \(\mathbf{W}\). The figure shows the projection of a third vector
-(non-parallel to \(\mathbf{X}\) or \(\mathbf{W}\)) onto the span of
-\(\mathbf{P}\) (blue), \(\mathbf{P}^\top\) (red),
-\(\mathbf{I}_2-\mathbf{P}\) (dashed blue) and
-\(\mathbf{I}_2-\mathbf{P}^\top\) (dashed red). The circles indicate the
-points \(\mathbf{W}\) (red) and \(\mathbf{X}\) (blue) on the plane.
-Notice that \(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\), whereas
-\(\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top\).
+and \(\mathbf{W}\).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -784,32 +777,16 @@ Notice that \(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\), whereas
 ## [2,] 2.625  0.000
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#Project a third vector `vec' onto P, P transpose, I-P, I-(P transpose)}
-\NormalTok{vec <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\FloatTok{1.9}\NormalTok{, }\OperatorTok{-}\FloatTok{1.5}\NormalTok{)}
-\NormalTok{vec_P <-}\StringTok{ }\NormalTok{P }\OperatorTok{%*%}\StringTok{ }\NormalTok{vec}
-\NormalTok{vec_Pt <-}\StringTok{ }\KeywordTok{t}\NormalTok{(P) }\OperatorTok{%*%}\StringTok{ }\NormalTok{vec}
-\NormalTok{vec_Id_minus_P <-}\StringTok{ }\NormalTok{(}\KeywordTok{diag}\NormalTok{(}\DecValTok{2}\NormalTok{)}\OperatorTok{-}\NormalTok{P) }\OperatorTok{%*%}\StringTok{ }\NormalTok{vec }
-\CommentTok{#diag: diagonal matrix, default to identity}
-\NormalTok{vec_Id_minus_Pt <-}\StringTok{ }\NormalTok{(}\KeywordTok{diag}\NormalTok{(}\DecValTok{2}\NormalTok{)}\OperatorTok{-}\KeywordTok{t}\NormalTok{(P)) }\OperatorTok{%*%}\StringTok{ }\NormalTok{vec}
+The figure below shows the projection of a third vector \(\mathbf{v}\)
+(non-parallel to \(\mathbf{X}\) or \(\mathbf{W}\)) onto the span of
+{\(\mathbf{P}\) (blue)}, {\(\mathbf{P}^\top\) (red)},
+{\(\mathbf{I}_2-\mathbf{P}\) (dashed cyan)} and
+{\(\mathbf{I}_2-\mathbf{P}^\top\) (dashed orange)}. The circles indicate
+the vectors {\(\mathbf{W}\) (red)} and {\(\mathbf{X}\) (blue)} on the
+plane. Notice that \(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\),
+whereas \(\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top\).
 
-\CommentTok{#Plot the resulting vector along with the two vectors x and w (points)}
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{pty =} \StringTok{"s"}\NormalTok{) }\CommentTok{#graphical console parameters (square region)}
-\KeywordTok{plot}\NormalTok{(}\OtherTok{NULL}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"x"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"y"}\NormalTok{, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{), }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{))}
-\CommentTok{#create empty plot with labels x and y, on square region [-4,4]^2}
-\KeywordTok{points}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{20}\NormalTok{) }\CommentTok{#points: add points to existing plot}
-\KeywordTok{points}\NormalTok{(x[}\DecValTok{1}\NormalTok{], x[}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{)}
-\KeywordTok{points}\NormalTok{(w[}\DecValTok{1}\NormalTok{], w[}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{)}
-\CommentTok{# blue line for P, dashed blue for I-P, red for Pt, red dashed for I-Pt}
-\KeywordTok{segments}\NormalTok{(}\DataTypeTok{x0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{y0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x1 =}\NormalTok{ vec_P[}\DecValTok{1}\NormalTok{], }\DataTypeTok{y1 =}\NormalTok{ vec_P[}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{)}
-\KeywordTok{segments}\NormalTok{(}\DataTypeTok{x0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{y0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x1 =}\NormalTok{ vec_Pt[}\DecValTok{1}\NormalTok{], }\DataTypeTok{y1 =}\NormalTok{ vec_Pt[}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{)}
-\KeywordTok{segments}\NormalTok{(}\DataTypeTok{x0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{y0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x1 =}\NormalTok{ vec_Id_minus_P[}\DecValTok{1}\NormalTok{], }\DataTypeTok{y1 =}\NormalTok{ vec_Id_minus_P[}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
-\KeywordTok{segments}\NormalTok{(}\DataTypeTok{x0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{y0 =} \DecValTok{0}\NormalTok{, }\DataTypeTok{x1 =}\NormalTok{ vec_Id_minus_Pt[}\DecValTok{1}\NormalTok{], }\DataTypeTok{y1 =}\NormalTok{ vec_Id_minus_Pt[}\DecValTok{2}\NormalTok{], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{LinesRModels_files/figure-latex/oblique_projection-1.pdf}
+\includegraphics{LinesRModels_files/figure-latex/illustproj-1.pdf}
 
 \chapter{Computational
 considerations}\label{computational-considerations}
@@ -1221,9 +1198,9 @@ ordinary least square estimates of \(\bbeta_2\) and the residuals from
 
 \BeginKnitrBlock{proof}
 \iffalse{} {Proof. } \fi{}The easiest proof uses projection matrices,
-but we demonstrate the result directly. Consider an invertible
-\(d \times d\) matrix \(\mathbf{C}\) and denote its inverse by
-\(\mathbf{D}\); then \[
+but we demonstrate the result for OLS coefficients directly. Consider an
+invertible \(d \times d\) matrix \(\mathbf{C}\) and denote its inverse
+by \(\mathbf{D}\); then \[
 \begin{pmatrix} \mathbf{C}_{11} & \mathbf{C}_{12} \\ \mathbf{C}_{21} &\mathbf{C}_{22}
 \end{pmatrix}\begin{pmatrix} \mathbf{D}_{11} & \mathbf{D}_{12} \\ \mathbf{D}_{21} &\mathbf{D}_{22}
 \end{pmatrix}
@@ -1255,6 +1232,8 @@ yields
 \\&= \left(\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21}\right)^{-1} \mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y} 
 \\&= (\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\mathbf{X}_1)^{-1}\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y}.
 \end{align*}
+
+The proof that the residuals are the same is left as an exercise.
 \EndKnitrBlock{proof}
 
 \bibliography{book.bib,packages.bib}
