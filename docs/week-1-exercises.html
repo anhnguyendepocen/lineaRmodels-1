@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -49,66 +49,41 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  { background-color: #f8f8f8; }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="css/style.css" type="text/css" />
@@ -152,9 +127,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
-<li class="chapter" data-level="2.3" data-path="interpretation.html"><a href="interpretation.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation</a></li>
+<li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
 <li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -181,38 +157,38 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3>(1.4) Oblique projections</h3>
 <p>Suppose that <span class="math inline">\(\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})\)</span>, that both <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{W}\)</span> are full-rank <span class="math inline">\(n \times p\)</span> matrices such that <span class="math inline">\(\mathbf{X}^\top\mathbf{W}\)</span> and <span class="math inline">\(\mathbf{W}^\top\mathbf{X}\)</span> are invertible. An oblique projection matrix is of the form <span class="math inline">\(\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top\)</span> and appears in instrumental variable regression. The oblique projection is such that <span class="math inline">\(\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})\)</span>, but <span class="math inline">\(\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)\)</span>. This fact is illustrated below.</p>
 <p>We consider two non-parallel vectors in <span class="math inline">\(\mathbb{R}^2\)</span>, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{W}\)</span>. The figure shows the projection of a third vector (non-parallel to <span class="math inline">\(\mathbf{X}\)</span> or <span class="math inline">\(\mathbf{W}\)</span>) onto the span of <span class="math inline">\(\mathbf{P}\)</span> (blue), <span class="math inline">\(\mathbf{P}^\top\)</span> (red), <span class="math inline">\(\mathbf{I}_2-\mathbf{P}\)</span> (dashed blue) and <span class="math inline">\(\mathbf{I}_2-\mathbf{P}^\top\)</span> (dashed red). The circles indicate the points <span class="math inline">\(\mathbf{W}\)</span> (red) and <span class="math inline">\(\mathbf{X}\)</span> (blue) on the plane. Notice that <span class="math inline">\(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\)</span>, whereas <span class="math inline">\(\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top\)</span>.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co">#Create two vectors (non-parallel)</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">w &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">#Create oblique projection matrix</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5">P &lt;-<span class="st"> </span>x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(w) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(w)</a>
-<a class="sourceLine" id="cb22-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((P <span class="op">%*%</span><span class="st"> </span>P), P)) <span class="co">#P is idempotent</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create two vectors (non-parallel)</span>
+x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)
+w &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">0.1</span>)
+<span class="co">#Create oblique projection matrix</span>
+P &lt;-<span class="st"> </span>x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(w) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(w)
+
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((P <span class="op">%*%</span><span class="st"> </span>P), P)) <span class="co">#P is idempotent</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">P <span class="op">-</span><span class="st"> </span><span class="kw">t</span>(P) <span class="co">#but not symmetric</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">P <span class="op">-</span><span class="st"> </span><span class="kw">t</span>(P) <span class="co">#but not symmetric</span></code></pre></div>
 <pre><code>##       [,1]   [,2]
 ## [1,] 0.000 -2.625
 ## [2,] 2.625  0.000</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co">#Project a third vector `vec&#39; onto P, P transpose, I-P, I-(P transpose)</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.9</span>, <span class="fl">-1.5</span>)</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">vec_P &lt;-<span class="st"> </span>P <span class="op">%*%</span><span class="st"> </span>vec</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">vec_Pt &lt;-<span class="st"> </span><span class="kw">t</span>(P) <span class="op">%*%</span><span class="st"> </span>vec</a>
-<a class="sourceLine" id="cb26-5" data-line-number="5">vec_Id_minus_P &lt;-<span class="st"> </span>(<span class="kw">diag</span>(<span class="dv">2</span>)<span class="op">-</span>P) <span class="op">%*%</span><span class="st"> </span>vec </a>
-<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="co">#diag: diagonal matrix, default to identity</span></a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">vec_Id_minus_Pt &lt;-<span class="st"> </span>(<span class="kw">diag</span>(<span class="dv">2</span>)<span class="op">-</span><span class="kw">t</span>(P)) <span class="op">%*%</span><span class="st"> </span>vec</a>
-<a class="sourceLine" id="cb26-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb26-9" data-line-number="9"><span class="co">#Plot the resulting vector along with the two vectors x and w (points)</span></a>
-<a class="sourceLine" id="cb26-10" data-line-number="10"><span class="kw">par</span>(<span class="dt">pty =</span> <span class="st">&quot;s&quot;</span>) <span class="co">#graphical console parameters (square region)</span></a>
-<a class="sourceLine" id="cb26-11" data-line-number="11"><span class="kw">plot</span>(<span class="ot">NULL</span>, <span class="dt">xlab =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb26-12" data-line-number="12"><span class="co">#create empty plot with labels x and y, on square region [-4,4]^2</span></a>
-<a class="sourceLine" id="cb26-13" data-line-number="13"><span class="kw">points</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dt">pch =</span> <span class="dv">20</span>) <span class="co">#points: add points to existing plot</span></a>
-<a class="sourceLine" id="cb26-14" data-line-number="14"><span class="kw">points</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</a>
-<a class="sourceLine" id="cb26-15" data-line-number="15"><span class="kw">points</span>(w[<span class="dv">1</span>], w[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</a>
-<a class="sourceLine" id="cb26-16" data-line-number="16"><span class="co"># blue line for P, dashed blue for I-P, red for Pt, red dashed for I-Pt</span></a>
-<a class="sourceLine" id="cb26-17" data-line-number="17"><span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_P[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_P[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</a>
-<a class="sourceLine" id="cb26-18" data-line-number="18"><span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Pt[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Pt[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</a>
-<a class="sourceLine" id="cb26-19" data-line-number="19"><span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Id_minus_P[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Id_minus_P[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb26-20" data-line-number="20"><span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Id_minus_Pt[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Id_minus_Pt[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Project a third vector `vec&#39; onto P, P transpose, I-P, I-(P transpose)</span>
+vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.9</span>, <span class="op">-</span><span class="fl">1.5</span>)
+vec_P &lt;-<span class="st"> </span>P <span class="op">%*%</span><span class="st"> </span>vec
+vec_Pt &lt;-<span class="st"> </span><span class="kw">t</span>(P) <span class="op">%*%</span><span class="st"> </span>vec
+vec_Id_minus_P &lt;-<span class="st"> </span>(<span class="kw">diag</span>(<span class="dv">2</span>)<span class="op">-</span>P) <span class="op">%*%</span><span class="st"> </span>vec 
+<span class="co">#diag: diagonal matrix, default to identity</span>
+vec_Id_minus_Pt &lt;-<span class="st"> </span>(<span class="kw">diag</span>(<span class="dv">2</span>)<span class="op">-</span><span class="kw">t</span>(P)) <span class="op">%*%</span><span class="st"> </span>vec
+
+<span class="co">#Plot the resulting vector along with the two vectors x and w (points)</span>
+<span class="kw">par</span>(<span class="dt">pty =</span> <span class="st">&quot;s&quot;</span>) <span class="co">#graphical console parameters (square region)</span>
+<span class="kw">plot</span>(<span class="ot">NULL</span>, <span class="dt">xlab =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>))
+<span class="co">#create empty plot with labels x and y, on square region [-4,4]^2</span>
+<span class="kw">points</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dt">pch =</span> <span class="dv">20</span>) <span class="co">#points: add points to existing plot</span>
+<span class="kw">points</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)
+<span class="kw">points</span>(w[<span class="dv">1</span>], w[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+<span class="co"># blue line for P, dashed blue for I-P, red for Pt, red dashed for I-Pt</span>
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_P[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_P[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Pt[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Pt[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Id_minus_P[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Id_minus_P[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Id_minus_Pt[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Id_minus_Pt[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre></div>
 <p><img src="LinesRModels_files/figure-html/oblique_projection-1.png" width="672" /></p>
 
 </div>
@@ -270,7 +246,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "true";
+    var src = "";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

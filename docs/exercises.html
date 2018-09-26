@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="introduction.html">
-<link rel="next" href="week1.html">
+<link rel="prev" href="week1.html">
+<link rel="next" href="computational-considerations.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -151,71 +151,56 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="basics-of-r" class="section level2">
-<h2><span class="header-section-number">1.1</span> Basics of <strong>R</strong></h2>
-<div id="help" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> Help</h3>
-<p>Help can be accessed via <code>help</code> or simply <code>?</code>. If you do not know what to query, use <code>??</code> in front of a string, delimited by captions <code>&quot; &quot;</code> as in <code>??&quot;Cholesky decomposition&quot;</code>. Help is your best friend if you don’t know what a function does, what are its arguments, etc.</p>
-</div>
-<div id="basic-commands" class="section level3">
-<h3><span class="header-section-number">1.1.2</span> Basic commands</h3>
-<p>Basic <strong>R</strong> commands are fairly intuitive, especially if you want to use <strong>R</strong> as a calculator. Elementary functions such as <code>sum</code>, <code>min</code>, <code>max</code>, <code>sqrt</code>, <code>log</code>, <code>exp</code>, etc., are self-explanatory.</p>
-<p>Some unconventional features of the language:</p>
-<ul>
-<li>Use <code>&lt;-</code> to assign to a variable, and <code>=</code> for matching arguments inside functions</li>
-<li>Indexing in <strong>R</strong> starts at 1, <strong>not</strong> zero.</li>
-<li>Most functions in <strong>R</strong> are vectorized, so avoid loops as much as possible.</li>
-<li>Integers are obtained by appending <code>L</code> to the number, so <code>2L</code> is an integer and <code>2</code> a double.</li>
-</ul>
-<p>Besides integers and doubles, the common types are - logicals (<code>TRUE</code> and <code>FALSE</code>); - null pointers (<code>NULL</code>), which can be assigned to arguments; - missing values, namely <code>NA</code> or <code>NaN</code>. These can also be obtained a result of invalid mathematical operations such as <code>log(-2)</code>.</p>
-<p>The above illustrates a caveat of <strong>R</strong>: invalid calls will often returns <em>something</em> rather than an error. It is therefore good practice to check that the output is sensical.</p>
-</div>
-<div id="linear-algebra-in-r" class="section level3">
-<h3><span class="header-section-number">1.1.3</span> Linear algebra in <strong>R</strong></h3>
-<p><strong>R</strong> is an object oriented language, and the basic elements in <strong>R</strong> are (column) vector. Below is a glossary with some useful commands for performing basic manipulation of vectors and matrix operations:</p>
-<ul>
-<li><code>c</code> creates a vector</li>
-<li><code>cbind</code> (<code>rbind</code>) binds column (row) vectors</li>
-<li><code>matrix</code> and <code>vector</code> are constructors</li>
-<li><code>diag</code> creates a diagonal matrix (by default with ones)</li>
-<li><code>t</code> is the function for transpose</li>
-<li><code>solve</code> performs matrix inversion</li>
-<li><code>%*%</code> is matrix multiplication, <code>*</code> is element-wise multiplication</li>
-<li><code>crossprod(A, B)</code> calculates the cross-product <span class="math inline">\(\mathbf{A}^\top\mathbf{B}\)</span>, <code>t(A) %*% B</code>, of two matrices <code>A</code> and <code>B</code>.</li>
-<li><code>eigen</code>/<code>chol</code>/<code>qr</code>/<code>svd</code> perform respectively an eigendecomposition/Cholesky/QR/singular value decomposition of a matrix</li>
-<li><code>rep</code> creates a vector of duplicates, <code>seq</code> a sequence. For integers <span class="math inline">\(i\)</span>, <span class="math inline">\(j\)</span> with <span class="math inline">\(i&lt;j\)</span>, <code>i:j</code> generates the sequence <span class="math inline">\(i, i+1, \ldots, j-1, j\)</span>.</li>
-</ul>
-<p>Subsetting is fairly intuitive and general; you can use vectors, logical statements. For example, if <code>x</code> is a vector, then</p>
-<ul>
-<li><code>x[2]</code> returns the second element</li>
-<li><code>x[-2]</code> returns all but the second element</li>
-<li><code>x[1:5]</code> returns the first five elements</li>
-<li><code>x[(length(x) - 5):length(x)]</code> returns the last five elements</li>
-<li><code>x[c(1, 2, 4)]</code> returns the first, second and fourth element</li>
-<li><code>x[x &gt; 3]</code> return any element greater than 3. Possibly an empty vector of length zero!</li>
-<li><code>x[ x &lt; -2 | x &gt; 2]</code> multiple logical conditions.</li>
-<li><code>which(x == max(x))</code> index of elements satisfying a logical condition.</li>
-</ul>
-<p>For a matrix <code>x</code>, subsetting now involves dimensions: <code>[1,2]</code> returns the element in the first row, second column. <code>x[,2]</code> will return all of the rows, but only the second column. For lists, you can use <code>[[</code> for subsetting by index or the <code>$</code> sign by names.</p>
-</div>
-<div id="packages" class="section level3">
-<h3><span class="header-section-number">1.1.4</span> Packages</h3>
-<p>The great strength of <strong>R</strong> comes from its contributed libraries (called packages), which contain functions and datasets provided by third parties. Some of these (<code>base</code>, <code>stats</code>, <code>graphics</code>, etc.) are loaded by default whenever you open a session.</p>
-<p>To install a package from CRAN, use <code>install.packages(&quot;package&quot;)</code>, replacing <code>package</code> by the package name. Once installed, packages can be loaded using <code>library(package)</code>; all the functions in <code>package</code> will be available in the environment.</p>
+<div id="exercises" class="section level2">
+<h2><span class="header-section-number">1.3</span> Exercises</h2>
+<div id="ex.-1.4-oblique-projections" class="section level3">
+<h3><span class="header-section-number">1.3.1</span> Ex. 1.4 Oblique projections</h3>
+<p>Suppose that <span class="math inline">\(\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})\)</span>, that both <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{W}\)</span> are full-rank <span class="math inline">\(n \times p\)</span> matrices such that <span class="math inline">\(\mathbf{X}^\top\mathbf{W}\)</span> and <span class="math inline">\(\mathbf{W}^\top\mathbf{X}\)</span> are invertible. An oblique projection matrix is of the form <span class="math inline">\(\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top\)</span> and appears in instrumental variable regression. The oblique projection is such that <span class="math inline">\(\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})\)</span>, but <span class="math inline">\(\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)\)</span>. This fact is illustrated below.</p>
+<p>We consider two non-parallel vectors in <span class="math inline">\(\mathbb{R}^2\)</span>, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{W}\)</span>. The figure shows the projection of a third vector (non-parallel to <span class="math inline">\(\mathbf{X}\)</span> or <span class="math inline">\(\mathbf{W}\)</span>) onto the span of <span class="math inline">\(\mathbf{P}\)</span> (blue), <span class="math inline">\(\mathbf{P}^\top\)</span> (red), <span class="math inline">\(\mathbf{I}_2-\mathbf{P}\)</span> (dashed blue) and <span class="math inline">\(\mathbf{I}_2-\mathbf{P}^\top\)</span> (dashed red). The circles indicate the points <span class="math inline">\(\mathbf{W}\)</span> (red) and <span class="math inline">\(\mathbf{X}\)</span> (blue) on the plane. Notice that <span class="math inline">\(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\)</span>, whereas <span class="math inline">\(\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create two vectors (non-parallel)</span>
+x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)
+w &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">0.1</span>)
+<span class="co">#Create oblique projection matrix</span>
+P &lt;-<span class="st"> </span>x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(w) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(w)
 
-<div class="rmdcaution">
-<p>There are drawbacks to loading packages: if an object with the same name from another package is already present in your environment, it will be hidden. Use the double-colon operator <code>::</code> to access a single object from an installed package (<code>package::object</code>).</p>
-</div>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((P <span class="op">%*%</span><span class="st"> </span>P), P)) <span class="co">#P is idempotent</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">P <span class="op">-</span><span class="st"> </span><span class="kw">t</span>(P) <span class="co">#but not symmetric</span></code></pre></div>
+<pre><code>##       [,1]   [,2]
+## [1,] 0.000 -2.625
+## [2,] 2.625  0.000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Project a third vector `vec&#39; onto P, P transpose, I-P, I-(P transpose)</span>
+vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.9</span>, <span class="op">-</span><span class="fl">1.5</span>)
+vec_P &lt;-<span class="st"> </span>P <span class="op">%*%</span><span class="st"> </span>vec
+vec_Pt &lt;-<span class="st"> </span><span class="kw">t</span>(P) <span class="op">%*%</span><span class="st"> </span>vec
+vec_Id_minus_P &lt;-<span class="st"> </span>(<span class="kw">diag</span>(<span class="dv">2</span>)<span class="op">-</span>P) <span class="op">%*%</span><span class="st"> </span>vec 
+<span class="co">#diag: diagonal matrix, default to identity</span>
+vec_Id_minus_Pt &lt;-<span class="st"> </span>(<span class="kw">diag</span>(<span class="dv">2</span>)<span class="op">-</span><span class="kw">t</span>(P)) <span class="op">%*%</span><span class="st"> </span>vec
+
+<span class="co">#Plot the resulting vector along with the two vectors x and w (points)</span>
+<span class="kw">par</span>(<span class="dt">pty =</span> <span class="st">&quot;s&quot;</span>) <span class="co">#graphical console parameters (square region)</span>
+<span class="kw">plot</span>(<span class="ot">NULL</span>, <span class="dt">xlab =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>))
+<span class="co">#create empty plot with labels x and y, on square region [-4,4]^2</span>
+<span class="kw">points</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dt">pch =</span> <span class="dv">20</span>) <span class="co">#points: add points to existing plot</span>
+<span class="kw">points</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)
+<span class="kw">points</span>(w[<span class="dv">1</span>], w[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+<span class="co"># blue line for P, dashed blue for I-P, red for Pt, red dashed for I-Pt</span>
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_P[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_P[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Pt[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Pt[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Id_minus_P[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Id_minus_P[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">segments</span>(<span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">y0 =</span> <span class="dv">0</span>, <span class="dt">x1 =</span> vec_Id_minus_Pt[<span class="dv">1</span>], <span class="dt">y1 =</span> vec_Id_minus_Pt[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre></div>
+<p><img src="LinesRModels_files/figure-html/oblique_projection-1.png" width="672" /></p>
 
 </div>
 </div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="week1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="week1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="computational-considerations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

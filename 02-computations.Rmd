@@ -12,7 +12,7 @@ Consider as usual $\boldsymbol{y}$ and $n$-vector of response variables and a fu
 Whereas orthogonal projection matrices are useful for theoretical derivations, they are not used for computations. Building $\mathbf{H}_{\mathbf{X}}$ involves a matrix inversion and the storage of an $n \times n$ matrix. In Exercise series 2, we looked at two matrix decompositions: a singular value decomposition (SVD) and a QR decomposition. These are more numerically stable than using the normal equations $(\mathbf{X}^\top\mathbf{X})\boldsymbol{\beta} = \mathbf{X}^\top\boldsymbol{y}$ (the condition number of the matrix $\mathbf{X}^\top\mathbf{X}$ is the square of that of $\mathbf{X}$ --- more on this later). 
 
 
-For more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of [www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf](Lee). This material is _optional_.
+_Optional material_: for more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of [Lee](www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf). 
 
 ### Normal equations
 The following simply illustrates what has been derived in Exercise series 2. You will probably never use these commands, as **R** has devoted functions that are coded more efficiently. 
@@ -82,7 +82,7 @@ all.equal(qrHx, Hx)
 
 ## Parameter estimation
 
-We are now ready to fit a linear model with an intercept and a linear effect for the weight. The model will be of the form 
+We are now ready to fit a simple linear model with an intercept and a linear effect for the weight,
 $$ \texttt{mpg}_i = \beta_0 + \texttt{wt}_i\beta_1 +\varepsilon_i.$$
 We form the design matrix $(\boldsymbol{1}_n^\top, \texttt{wt}^\top)^\top$ and the vector of regressand $\texttt{mpg}$, then proceed with calculating the OLS coefficients $\hat{\boldsymbol{\beta}}$, the hat matrix $\mathbf{H}_{\mathbf{X}}$, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$.
 
@@ -100,19 +100,18 @@ Hmat <- X %*% XtXinv %*% t(X)
 fitted <- Hmat %*% mpg
 res <- mpg - fitted
 fitted <- Hmat %*% mpg
-#Variance estimate and standard errors
-s2 <- sum(res^2) / (length(res) - ncol(X))
-std_err <- sqrt(diag(s2 * XtXinv))
 ```
 
-The residuals $\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}$ can be interpreted as the *vertical* distance between the regression slope and the observation. This is illustrated in the following graph. For each observation $y_i$, a vertical line at distance $e_i$ is drawn from the prediction $\hat{y}_i$. 
-
-Side remark: graphs and table should *always* be properly labelled (including units). The last line of the call to `plot` contains cosmetic options that alter the display of the scatterplot --- you can check for yourself the effects of removing any (all) of these additional commands.
+The residuals $\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}$ can be interpreted as the *vertical* distance between the regression slope and the observation. For each observation $y_i$, a vertical line at distance $e_i$ is drawn from the prediction $\hat{y}_i$. 
 
 ```{r verticaldist}
 plot(mpg ~ wt, xlab = "weight (1000 lbs)", ylab = "Fuel consumption (miles/US gallon)", 
      main = "Fuel consumption of automobiles, 1974 Motor Trend", data = mtcars,
-     bty = "l", pch = 20, ylim = c(0, 35), xlim = c(0, 6)) #options to tweak the display
+     # the subsequent commands for `plot`  tweak the display
+     # check for yourself the effect of removing them
+     # bty = "l" gives L shaped graphical windows (not boxed)
+     # pch = 20 gives full dots rather than empty circles for points
+     bty = "l", pch = 20, ylim = c(0, 35), xlim = c(0, 6)) 
 #Line of best linear fit
 abline(a = beta_hat[1], b = beta_hat[2])
 
@@ -139,7 +138,7 @@ ggg <- ggplot(mtcars, aes(wt, mpg)) +
 print(ggg)
 ```
 
-## Interpretation
+## Interpretation of the coefficients
 
 If the regression model is 
 $$y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,$$ the interpretation of $\beta_1$ in the linear model is as follows: a unit increase in $x$ leads to $\beta_1$ units increase in $y$, everything else (i.e., $\mathrm{x}_{i2}$) being held constant. 
