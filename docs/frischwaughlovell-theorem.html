@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="the-lm-function.html">
-
+<link rel="next" href="centered-coefficient-of-determination.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -130,7 +130,9 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
 <li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a></li>
+<li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
+<li class="chapter" data-level="3.1" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>3.1</b> (Centered) coefficient of determination</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -156,7 +158,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <p>This result dates back to the work of <a href="https://www.jstor.org/stable/1907330">Frisch, R. and F. Waugh (1933)</a> and of <a href="https://doi.org/10.1080/01621459.1963.10480682">M. Lovell (1963)</a>. The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.</p>
 <p>Consider the following linear regression <span class="math display">\[
  {{\boldsymbol{y}}}= {{\mathbf{X}}}_1{\boldsymbol{\beta}}_1+{{\mathbf{X}}}_2{\boldsymbol{\beta}}_2+ {\boldsymbol{u}}, \label{eq1}
-\]</span> where the response vector <span class="math inline">\({{\boldsymbol{y}}}\)</span> is <span class="math inline">\(n \times 1\)</span>, the vector of errors <span class="math inline">\({\boldsymbol{u}}\)</span> is a realization from a mean zero random variable. The <span class="math inline">\(n \times p\)</span> full-rank design matrix <span class="math inline">\({{\mathbf{X}}}\)</span> can be written as the partitioned matrix <span class="math inline">\(({{\mathbf{X}}}_1^\top, {{\mathbf{X}}}_2^\top)^\top\)</span> with blocks <span class="math inline">\({{\mathbf{X}}}_1\)</span>, an <span class="math inline">\(n \times p_1\)</span> matrix, and <span class="math inline">\({{\mathbf{X}}}_2\)</span>, an <span class="math inline">\(n \times p_2\)</span> matrix. Let <span class="math inline">\({\widehat{\boldsymbol{\beta}}}_1\)</span> and <span class="math inline">\({\widehat{\boldsymbol{\beta}}}_2\)</span> be the ordinary least square (OLS) parameter estimates from running this regression. Define the orthogonal projection matrix <span class="math inline">\({\mathbf{H}}_{{\mathbf{X}}}\)</span> as usual and <span class="math inline">\({\mathbf{H}}_{{{\mathbf{X}}}_i} = {{\mathbf{X}}}_i^{\vphantom{\top}}({{\mathbf{X}}}_i^\top{{\mathbf{X}}}_i^{\vphantom{\top}})^{-1}{{\mathbf{X}}}_i^\top\)</span> for <span class="math inline">\(i=1, 2\)</span>. Similarly, define the complementary projection matrices <span class="math inline">\({\mathbf{M}}_{{{\mathbf{X}}}_1}=\mathbf{I}_n-{\mathbf{H}}_{{{\mathbf{X}}}_1}\)</span> and <span class="math inline">\({\mathbf{M}}_{{{\mathbf{X}}}_2}=\mathbf{I}_n-{\mathbf{H}}_{{{\mathbf{X}}}_2}\)</span>.</p>
+\]</span> where the response vector <span class="math inline">\({{\boldsymbol{y}}}\)</span> is <span class="math inline">\(n \times 1\)</span>, the vector of errors <span class="math inline">\({\boldsymbol{u}}\)</span> is a realization from a mean zero random variable. The <span class="math inline">\(n \times p\)</span> full-rank design matrix <span class="math inline">\({{\mathbf{X}}}\)</span> can be written as the partitioned matrix <span class="math inline">\(({{\mathbf{X}}}_1^\top, {{\mathbf{X}}}_2^\top)^\top\)</span> with blocks <span class="math inline">\({{\mathbf{X}}}_1\)</span>, an <span class="math inline">\(n \times p_1\)</span> matrix, and <span class="math inline">\({{\mathbf{X}}}_2\)</span>, an <span class="math inline">\(n \times p_2\)</span> matrix. Let <span class="math inline">\({\hat{\boldsymbol{\beta}}}_1\)</span> and <span class="math inline">\({\hat{\boldsymbol{\beta}}}_2\)</span> be the ordinary least square (OLS) parameter estimates from running this regression. Define the orthogonal projection matrix <span class="math inline">\({\mathbf{H}}_{{\mathbf{X}}}\)</span> as usual and <span class="math inline">\({\mathbf{H}}_{{{\mathbf{X}}}_i} = {{\mathbf{X}}}_i^{\vphantom{\top}}({{\mathbf{X}}}_i^\top{{\mathbf{X}}}_i^{\vphantom{\top}})^{-1}{{\mathbf{X}}}_i^\top\)</span> for <span class="math inline">\(i=1, 2\)</span>. Similarly, define the complementary projection matrices <span class="math inline">\({\mathbf{M}}_{{{\mathbf{X}}}_1}=\mathbf{I}_n-{\mathbf{H}}_{{{\mathbf{X}}}_1}\)</span> and <span class="math inline">\({\mathbf{M}}_{{{\mathbf{X}}}_2}=\mathbf{I}_n-{\mathbf{H}}_{{{\mathbf{X}}}_2}\)</span>.</p>
 
 <div class="theorem">
 <span id="thm:unnamed-chunk-6" class="theorem"><strong>Theorem 3.1  </strong></span>The ordinary least square estimates of <span class="math inline">\({\boldsymbol{\beta}}_2\)</span> and the residuals from  are identical to those obtained by running the regression <span class="math display">\[
@@ -193,16 +195,15 @@ from which we deduce that the so-called Schur complement of <span class="math in
 \end{align*}\]</span>
 The proof that the residuals are the same is left as an exercise.
 </div>
-
-
+ 
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="the-lm-function.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="the-lm-function.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="centered-coefficient-of-determination.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

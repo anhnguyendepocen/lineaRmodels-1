@@ -1162,9 +1162,10 @@ respectively.
 \newcommand{\eps}{\varepsilon}
 \newcommand{\beps}{\boldsymbol{\varepsilon}}
 \newcommand{\bbeta}{\boldsymbol{\beta}}
-\newcommand{\hbb}{\widehat{\boldsymbol{\beta}}}
+\newcommand{\hbb}{\hat{\boldsymbol{\beta}}}
 \newcommand{\limni}{\lim_{n \ra \infty}}
 \newcommand{\Sp}{\mathsf{span}}
+
 
 This result dates back to the work of
 \href{https://www.jstor.org/stable/1907330}{Frisch, R. and F. Waugh
@@ -1235,6 +1236,106 @@ yields
 
 The proof that the residuals are the same is left as an exercise.
 \EndKnitrBlock{proof}
+
+\section{(Centered) coefficient of
+determination}\label{centered-coefficient-of-determination}
+
+Recall the decomposition of observations into fitted and residual
+vectors,
+\[\boldsymbol{y} = (\boldsymbol{y} - \mX\hbb) + \mX \hbb = \bs{e} + \hat{\bs{y}}\]
+where
+\(\bs{e} \equiv \Mmat_{\mX}\bs{y} \perp \hat{\bs{y}} \equiv \Hmat_{\mX}\bs{y}\).
+
+The centered coefficient of determination, \(R^2_c\) measures the
+proportion of variation explained by the centered fitted values relative
+to the centered observations, i.e.,
+\[ R^2_c = \frac{\|\hat{\bs{y}}-\bar{y}\mathbf{1}_n\|^2}{\|\bs{y}-\bar{y}\mathbf{1}_n\|^2}=\frac{\|\hat{\bs{y}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}{\|\bs{y}\|^2-\|\bar{y}\mathbf{1}_n\|^2}.\]
+since the vectors
+\(\bar{y}\mathbf{1}_n \perp \hat{\bs{y}}-\bar{y}\mathbf{1}_n\).
+
+Provided that \(\mathbf{1}_n \in \Sp(\mX)\), it is obvious that the
+fitted values \(\hat{\bs{y}}\) are invariant to linear transformations
+of the covariates \(\mathbf{X}\). Multiplicative changes in \(\bs{y}\)
+lead to an equivalent change in \(\bs{e}\) and \(\hat{\bs{y}}\).
+However, location-changes in \(\bs{y}\) are only reflected in
+\(\hat{\bs{y}}\) (they are absorbed by the intercept). This is why
+\(R^2\) is not invariant to location-changes in the response, since the
+ratio \(\|\hat{\bs{y}}\|^2/\|\bs{y}\|^2\) increases to 1 if
+\(\by \mapsto \by + a \mathbf{1}_n\).
+
+This invariance is precisely the reason we dismissed \(R^2\). For
+example, a change of units from Farenheit to Celcius, viz.
+\(T_c = 5 (T_F - 32)/9\), leads to different values of \(R^2\):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(aatemp, }\DataTypeTok{package =} \StringTok{"faraway"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(temp }\OperatorTok{~}\StringTok{ }\NormalTok{year, }\DataTypeTok{data =}\NormalTok{ aatemp, }\DataTypeTok{ylab =} \StringTok{"Temperature (in F)"}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"l"}\NormalTok{)}
+\CommentTok{#Form design matrix and two response vectors}
+\NormalTok{yF <-}\StringTok{ }\NormalTok{aatemp}\OperatorTok{$}\NormalTok{temp}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{length}\NormalTok{(yF)}
+\NormalTok{yC <-}\StringTok{ }\DecValTok{5}\OperatorTok{/}\DecValTok{9}\OperatorTok{*}\NormalTok{(aatemp}\OperatorTok{$}\NormalTok{temp }\OperatorTok{-}\StringTok{ }\DecValTok{32}\NormalTok{)}
+\NormalTok{X <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{, aatemp}\OperatorTok{$}\NormalTok{year)}
+\CommentTok{# Obtain OLS coefficients and fitted values}
+\NormalTok{XtX <-}\StringTok{ }\KeywordTok{solve}\NormalTok{(}\KeywordTok{crossprod}\NormalTok{(X))}
+\NormalTok{beta_hat_F <-}\StringTok{ }\NormalTok{XtX }\OperatorTok{%*%}\StringTok{ }\KeywordTok{crossprod}\NormalTok{(X, yF)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{a =}\NormalTok{ beta_hat_F[}\DecValTok{1}\NormalTok{], }\DataTypeTok{b =}\NormalTok{ beta_hat_F[}\DecValTok{2}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{LinesRModels_files/figure-latex/faraway-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{beta_hat_C <-}\StringTok{ }\NormalTok{XtX }\OperatorTok{%*%}\StringTok{ }\KeywordTok{crossprod}\NormalTok{(X, yC)}
+\NormalTok{fitted_F <-}\StringTok{ }\NormalTok{X }\OperatorTok{%*%}\StringTok{ }\NormalTok{beta_hat_F}
+\NormalTok{fitted_C <-}\StringTok{ }\NormalTok{X }\OperatorTok{%*%}\StringTok{ }\NormalTok{beta_hat_C}
+\CommentTok{# Compute coefficient of determination}
+\NormalTok{R2_F <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(fitted_F}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(yF}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\NormalTok{R2_C <-}\StringTok{  }\KeywordTok{sum}\NormalTok{(fitted_C}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(yC}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\CommentTok{#Centered R^2}
+\NormalTok{R2c_F <-}\StringTok{ }\KeywordTok{sum}\NormalTok{((fitted_F}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(yF))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{((yF}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(yF))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\NormalTok{R2c_C <-}\StringTok{  }\KeywordTok{sum}\NormalTok{((fitted_C}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(yC))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{((yC}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(yC))}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\KeywordTok{isTRUE}\NormalTok{(}\KeywordTok{all.equal}\NormalTok{(R2c_F, R2c_C))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+The difference \(R^2(F)-R^2(C)=\) 0.00752 is small because the \(R^2\)
+value is very high, but the coefficient itself is also meaningless. In
+this example, \(R^2(F)=\) 0.9991, which seems to indicate excellent fit
+but in fact only 8.54\% of the variability is explained by year and we
+do an equally good job by simply taking \(\hat{y}_i=\bar{y}\).
+
+The centered \(R^2_c\) is equivalent to the coefficient of determination
+from the FWL regression
+\[ \Mmat_{\mathbf{1}_n}\bs{y} = \Mmat_{\mathbf{1}_n}\mX \boldsymbol{\beta} + \bs{\varepsilon},\]
+that is, after centering regressand and regressors. Note that this
+regression will have no intercept, because this coefficient would be
+exactly zero. Using \(R^2_c\) thus makes the comparison between the
+adjusted linear model and the null model with only a constant, which
+predicts each \(y_i (i=1, \ldots, n)\) by the average \(\bar{y}\).
+
+If \(R^2_c\) gives a very rough overview of how much explanatory power
+\(\mX\) has, it is not a panacea. If we add new covariates in \(\mX\),
+the value of \(R^2_c\) necessarily increases. In the most extreme
+scenario, we could add a set of \(n-p\) linearly independent vectors to
+\(\mX\) and form a new design matrix \(mX^*\) with those. The fitted
+values from running a regression with \(\mX^*\) will be exactly equal to
+the observations \(\bs{y}\) and thus \(R^2_c=1\). However, I hope it is
+clear that this model will \emph{not} be useful. Overfitting leads to
+poor predictive performance; if we get a new set of \(\mathbf{x}_*\), we
+would predict the unobserved \(y_*\) using its conditional average
+\(\mathbf{x}_i^*\hbb\) and this estimate will be rubish if we included
+too many meaningless covariates.
+
+Other versions of \(R^2_c\) exist that include a penalty term for the
+number of covariates; these are not widely used and can be negative in
+extreme cases. We will cover better goodness-of-fit diagnostics later in
+the course.
 
 \bibliography{book.bib,packages.bib}
 
