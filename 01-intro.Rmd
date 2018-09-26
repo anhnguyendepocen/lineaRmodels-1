@@ -216,7 +216,7 @@ isTRUE(all.equal((P %*% P), P)) #P is idempotent
 P - t(P) #but not symmetric
 ```
 
-The figure below shows the projection of a third vector $\mathbf{v}$ (non-parallel to $\mathbf{X}$ or $\mathbf{W}$) onto the span of  <span style="color:blue">$\mathbf{P}$ (blue)</span>, <span style="color:red">$\mathbf{P}^\top$ (red)</span>, <span style=cyan>$\mathbf{I}_2-\mathbf{P}$ (dashed cyan)</span> and <span style="color:orange">$\mathbf{I}_2-\mathbf{P}^\top$ (dashed orange)</span>. The circles indicate the vectors <span style="color:red">$\mathbf{W}$ (red)</span> and <span style="color:blue">$\mathbf{X}$ (blue)</span> on the plane. Notice that $\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}$, whereas $\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top$.
+The figure below shows the projection of a third vector $\mathbf{v}$ (non-parallel to $\mathbf{X}$ or $\mathbf{W}$) onto the span of  <span style="color:blue">$\mathbf{P}$ (blue)</span>, <span style="color:red">$\mathbf{P}^\top$ (red)</span>, <span style="color:cyan">$\mathbf{I}_2-\mathbf{P}$ (dashed cyan)</span> and <span style="color:orange">$\mathbf{I}_2-\mathbf{P}^\top$ (dashed orange)</span>. The circles indicate the vectors <span style="color:red">$\mathbf{W}$ (red)</span> and <span style="color:blue">$\mathbf{X}$ (blue)</span> on the plane. Notice that $\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}$, whereas $\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top$.
 
 ```{r illustproj, echo = FALSE}
 #Project a third vector `vec' onto P, P transpose, I-P, I-(P transpose)
