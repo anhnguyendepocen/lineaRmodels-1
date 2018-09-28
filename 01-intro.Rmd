@@ -1,8 +1,25 @@
 # Introduction 
 
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\Hmat}{\mathbf{H}}
+\newcommand{\Mmat}{\mathbf{M}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\bX}{{\mathbf{X}}}
+\newcommand{\bx}{{\mathbf{x}}}
+\newcommand{\by}{{\boldsymbol{y}}}
+\newcommand{\bY}{{\boldsymbol{Y}}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\hbb}{\hat{\boldsymbol{\beta}}}
+\newcommand{\limni}{\lim_{n \ra \infty}}
+\newcommand{\Sp}{\mathsf{span}}
+
 
 You can find several introductions to **R** online. Have a look at the [**R** manuals](https://cran.r-project.org/manuals.html) or better at [contributed manuals](https://cran.r-project.org/other-docs.html). A nice official reference is [An introduction to  **R**](http://colinfay.me/intro-to-r/index.html). 
 You may wish to look up the following chapters of the **R** language definition ([Evaluation of expressions](http://colinfay.me/r-language-definition/evaluation-of-expressions.html) and part of the [*Objects* chapter](http://colinfay.me/r-language-definition/objects.html)).
+
+If you favor online courses, Data Camp offers a [free introduction to R](https://www.datacamp.com/courses/free-introduction-to-r).
 
 ## Basics of **R**
 
@@ -34,7 +51,7 @@ The above illustrates a caveat of  **R**: invalid calls will often returns _some
 
 **R** is an object oriented language, and the basic elements in **R** are (column) vector. Below is a glossary with some useful commands for performing basic manipulation of vectors and matrix operations:
 
-- `c` creates a vector
+- `c` as in _c_oncatenates creates a vector
 - `cbind` (`rbind`) binds column (row) vectors
 - `matrix` and `vector` are constructors
 - `diag` creates a diagonal matrix (by default with ones)
@@ -241,3 +258,15 @@ segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_P[1], y1 = vec_Id_minus_P[2], col = "
 segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_Pt[1], y1 = vec_Id_minus_Pt[2], col = "orange", lty = 2)
 
 ```
+
+## Summary of week 1
+
+Let $\mathbf{X}$ be an $n \times p$ full-rank matrix ($p <n$). An $n \times n$ orthogonal projection matrix $\mathbf{H}$ 
+
+- projects on to $\mathcal{V} \subseteq \mathbb{R}^n$, meaning $\mathbf{Hv} \in \mathcal{V}$ for any $\mathbf{v} \in \mathbb{R}^n$;
+- is idempotent, meaning $\mathbf{H} = \mathbf{HH}$;
+- is symmetric, meaning $\mathbf{H} = \mathbf{H}^\top$.
+
+The projection matrix $\mathbf{H}$ is unique; if $\mathcal{V} = \Sp(\mathbf{X})$, then 
+$$\mathbf{H}_{\mathbf{X}} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top.$$
+Since $\mathbf{X}: \mathbb{R}^n \to \mathbb{R}^p$, $\mathbf{H}_{\mathbf{X}}$ has rank $p$. The orthogonal complement $\mathbf{M}_{\mathbf{X}}\equiv \mathbf{I}_n - \mathbf{H}_{\mathbf{X}}$ projects onto $\Sp^{\perp}(\mathbf{X})$. 

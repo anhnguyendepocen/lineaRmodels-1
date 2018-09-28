@@ -3,7 +3,7 @@
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-In this tutorial, we will explore some basic **R** commands and illustrate their use on the Motor Trend Car Road Tests dataset (`mtcars`).
+In this tutorial, we will explore some basic **R** commands and illustrate their use on the Auto dataset (`Auto`) from the `ISLR` package.
 
 
 ## Calculation of least square estimates
@@ -19,13 +19,13 @@ The following simply illustrates what has been derived in Exercise series 2. You
 We can compute first the ordinary least square estimates using the formula $\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\boldsymbol{y}$.
 
 ```{r loadmtcars}
-data(mtcars)
-y <- mtcars$mpg
-X <- cbind(1, as.matrix(mtcars[,2:ncol(mtcars)]))
+data(Auto, package = "ISLR")
+y <- Auto$mpg
+X <- cbind(1, Auto$horsepower)
 n <- nrow(X)
 p <- ncol(X)
 # Estimation of betahat:
-XtX<- crossprod(X)
+XtX <- crossprod(X)
 Xty <- crossprod(X, y)
 # Solve normal equations
 betahat <- as.vector(solve(XtX, Xty))
@@ -83,14 +83,14 @@ all.equal(qrHx, Hx)
 ## Parameter estimation
 
 We are now ready to fit a simple linear model with an intercept and a linear effect for the weight,
-$$ \texttt{mpg}_i = \beta_0 + \texttt{wt}_i\beta_1 +\varepsilon_i.$$
-We form the design matrix $(\boldsymbol{1}_n^\top, \texttt{wt}^\top)^\top$ and the vector of regressand $\texttt{mpg}$, then proceed with calculating the OLS coefficients $\hat{\boldsymbol{\beta}}$, the hat matrix $\mathbf{H}_{\mathbf{X}}$, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$.
+$$ \texttt{mpg}_i = \beta_0 + \texttt{hp}_i\beta_1 +\varepsilon_i.$$
+We form the design matrix $(\boldsymbol{1}_n^\top, \texttt{hp}^\top)^\top$ and the vector of regressand $\texttt{mpg}$, then proceed with calculating the OLS coefficients $\hat{\boldsymbol{\beta}}$, the hat matrix $\mathbf{H}_{\mathbf{X}}$, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$.
 
 ```{r fitbyhand}
 #Design matrix
-wt <- mtcars$wt
-X <- cbind(1, wt)
-mpg <- mtcars$mpg
+hp <- Auto$horsepower
+X <- cbind(1, Auto$horsepower)
+mpg <- Auto$mpg
 #OLS estimates
 XtXinv <- solve(crossprod(X))
 beta_hat <- c(XtXinv %*% t(X) %*% mpg)
@@ -105,19 +105,21 @@ fitted <- Hmat %*% mpg
 The residuals $\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}$ can be interpreted as the *vertical* distance between the regression slope and the observation. For each observation $y_i$, a vertical line at distance $e_i$ is drawn from the prediction $\hat{y}_i$. 
 
 ```{r verticaldist}
-plot(mpg ~ wt, xlab = "weight (1000 lbs)", ylab = "Fuel consumption (miles/US gallon)", 
-     main = "Fuel consumption of automobiles, 1974 Motor Trend", data = mtcars,
+plot(mpg ~ horsepower,  data = Auto, 
+     xlab = "Power of engine (hp)", 
+     ylab = "Fuel economy (miles/US gallon)", 
+     main = "Fuel economy of automobiles",
      # the subsequent commands for `plot`  tweak the display
      # check for yourself the effect of removing them
      # bty = "l" gives L shaped graphical windows (not boxed)
      # pch = 20 gives full dots rather than empty circles for points
-     bty = "l", pch = 20, ylim = c(0, 35), xlim = c(0, 6)) 
+     bty = "l", pch = 20) 
 #Line of best linear fit
 abline(a = beta_hat[1], b = beta_hat[2])
 
 #Residuals are vertical distance from line to 
 for(i in 1:nrow(X)){
-  segments(x0 = wt[i], y0 = fitted[i], y1 = fitted[i] + res[i], col = 2)
+  segments(x0 = hp[i], y0 = fitted[i], y1 = fitted[i] + res[i], col = 2)
 }
 ```
 
@@ -126,12 +128,12 @@ The same scatterplot, this time using `ggplot2`.
 ```{r ggplotmtcars}
 library(ggplot2, warn.conflicts = FALSE, quietly = TRUE)
 #Create data frame with segments
-vlines <- data.frame(x1 = mtcars$wt, y1 = fitted, y2 = fitted + res)
-ggg <- ggplot(mtcars, aes(wt, mpg)) + 
+vlines <- data.frame(x1 = hp, y1 = fitted, y2 = fitted + res)
+ggg <- ggplot(Auto, aes(x = horsepower, y = mpg)) + 
         geom_point() + 
-        labs(x = "weight (1000 lbs)", 
-            y = "Fuel consumption (miles/US gallon)", 
-            title = "Fuel consumption of automobiles, 1974 Motor Trend") +
+        labs(x = "Power of engine (hp)", 
+             y = "Fuel economy (miles/US gallon)", 
+             title = "Fuel economy of automobiles") +
       geom_segment(aes(x = x1, y = y1, xend = x1, yend = y2, color = "red"), 
                    data = vlines, show.legend = FALSE) + 
       geom_abline(slope = beta_hat[2], intercept = beta_hat[1])
@@ -143,7 +145,7 @@ print(ggg)
 If the regression model is 
 $$y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,$$ the interpretation of $\beta_1$ in the linear model is as follows: a unit increase in $x$ leads to $\beta_1$ units increase in $y$, everything else (i.e., $\mathrm{x}_{i2}$) being held constant. 
 
-For the `mtcars` regression above, an increase of the weight of the car of 1000 pounds leads to an average decrease of `r abs(round(beta_hat[2], 2))` miles per US gallon in distance covered by the car. We could easily get an equivalent statement in terms of increase of the car fuel consumption for a given distance.
+For the `Auto` regression above, an increase of the power of the engine by one horsepower leads to an average decrease of `r abs(round(beta_hat[2], 2))` miles per US gallon in distance covered by the car. We could easily get an equivalent statement in terms of increase of the car fuel consumption for a given distance.
 
 ## The `lm` function 
 
@@ -156,7 +158,7 @@ Thus, `lm(y~x+I(x^2))`, would fit a linear model with design matrix $(\boldsymbo
 
 ```{r}
 # The function lm and its output
-fit <- lm(mpg ~ wt, data = mtcars)
+fit <- lm(mpg ~ horsepower + I(horsepower^2), data = Auto)
 fit_summary <- summary(fit)
 ```
 
@@ -169,3 +171,119 @@ names(fit)
 names(fit_summary)
 ```
 
+## The hyperplane of fitted values
+
+In class, we presented a linear model for the `Auto` data set of the form
+$$\mathsf{mpg}_i = \beta_0 + \beta_1 \mathsf{hp}_i + \beta_2 \mathsf{hp}_i^2 + \varepsilon_i$$ 
+and claimed this was a linear model. This is indeed true because we can form the design matrix $[\mathbf{1}_n,  \mathsf{hp}, \mathsf{hp}^2]$ and obtain coefficients $\hbb$. The graphical depiction is counterintuitive.
+
+```{r, echo = FALSE}
+library(ggplot2)
+data(Auto, package = "ISLR")
+mod <- lm(mpg ~ horsepower + I(horsepower^2),  data = Auto)
+ggplot(data = Auto, aes(x = horsepower, y = mpg)) + 
+  geom_point() + 
+  labs(x = "Power of engine (hp)", 
+             y = "Fuel economy (miles/US gallon)", 
+             title = "Fuel economy of automobiles") +
+      geom_line(data = data.frame(hp = Auto$horsepower, fitted = mod$fitted),
+                aes(hp, fitted, col = "red"), show.legend = FALSE)
+```
+
+This quadratic curve is nothing like an hyperplane! Let $\bs{y} \equiv \texttt{mpg}$, $\mathsf{x} = \texttt{hp}$ and $\mathsf{z} = \texttt{hp}^2$. But recall that we are working in three dimensions (the intercept gives the height of the hyperplane) and the coordinates of our hyperplane are  
+$$\beta_0 + \beta_1x-y +\beta_2z =0.$$
+However, the observations will always be such that $z = x^2$, so our fitted values will lie on a one-dimensional subspace of this hyperplane.
+
+The following 3D depiction hopefully captures this better and shows the fitted hyperplane along with the line on which all the ($x_i, z_i$) observations lie.
+
+```{r hyperplane, echo = FALSE, cache = TRUE, webgl=TRUE}
+library(rgl);
+#knit_hooks$set(rgl = hook_rgl)
+plot3d(y = Auto$mpg, x = Auto$horsepower, z = I(Auto$horsepower^2),
+          xlab = "Power of engine (hp)", 
+          ylab = "Fuel economy (miles/US gallon)", 
+          zlab = expression(paste("squared power (", hp^2,")")),
+          axis.col = rep("black", 3))
+ols <- coef(mod)
+ran <- range(Auto$horsepower)
+hor_seq <- seq(from = ran[1], to = ran[2], length = 1000)
+hor2_seq <- hor_seq^2
+mpg_seq <- ols[1] + ols[2]*hor_seq + ols[3]*hor2_seq
+
+points3d(x = hor_seq, z = hor2_seq, y = mpg_seq, col = "red")
+planes3d(a = ols[2], c = ols[3], b = -1, d = ols[1], alpha = 0.1)
+rglwidget()
+```
+
+
+## (Centered) coefficient of determination
+
+Recall the decomposition of observations into fitted and residual vectors,
+$$\boldsymbol{y} = (\boldsymbol{y} - \mX\hbb) + \mX \hbb = \bs{e} + \hat{\bs{y}}$$
+where $\bs{e} \equiv \Mmat_{\mX}\bs{y} \perp \hat{\bs{y}} \equiv \Hmat_{\mX}\bs{y}$.
+
+
+The centered coefficient of determination, $R^2_c$ measures the proportion of variation explained by the centered fitted values relative to the centered observations, i.e.,
+$$ R^2_c = \frac{\|\hat{\bs{y}}-\bar{y}\mathbf{1}_n\|^2}{\|\bs{y}-\bar{y}\mathbf{1}_n\|^2}=\frac{\|\hat{\bs{y}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}{\|\bs{y}\|^2-\|\bar{y}\mathbf{1}_n\|^2}.$$
+since the vectors $\bar{y}\mathbf{1}_n \perp \hat{\bs{y}}-\bar{y}\mathbf{1}_n$.
+
+Provided that $\mathbf{1}_n \in \Sp(\mX)$, it is obvious that the fitted values $\hat{\bs{y}}$ are invariant to linear transformations of the covariates $\mathbf{X}$. Multiplicative changes in $\bs{y}$ lead to an equivalent change in $\bs{e}$ and $\hat{\bs{y}}$. However, location-changes in $\bs{y}$ are only reflected in $\hat{\bs{y}}$ (they are absorbed by the intercept). This is why $R^2$ is not invariant to location-changes in the response, since the ratio $\|\hat{\bs{y}}\|^2/\|\bs{y}\|^2$ increases to 1 if $\by \mapsto \by + a \mathbf{1}_n$.
+
+This invariance is precisely the reason we dismissed $R^2$. For example, a change of units from Farenheit to Celcius, viz. $T_c = 5 (T_F - 32)/9$, leads to different values of $R^2$:
+
+```{r faraway}
+data(aatemp, package = "faraway")
+plot(temp ~ year, data = aatemp, ylab = "Temperature (in F)", bty = "l")
+#Form design matrix and two response vectors
+yF <- aatemp$temp
+n <- length(yF)
+yC <- 5/9*(aatemp$temp - 32)
+X <- cbind(1, aatemp$year)
+# Obtain OLS coefficients and fitted values
+XtX <- solve(crossprod(X))
+beta_hat_F <- XtX %*% crossprod(X, yF)
+abline(a = beta_hat_F[1], b = beta_hat_F[2])
+beta_hat_C <- XtX %*% crossprod(X, yC)
+fitted_F <- X %*% beta_hat_F
+fitted_C <- X %*% beta_hat_C
+# Compute coefficient of determination
+R2_F <- sum(fitted_F^2)/sum(yF^2)
+R2_C <-  sum(fitted_C^2)/sum(yC^2)
+#Centered R^2
+R2c_F <- sum((fitted_F-mean(yF))^2)/sum((yF-mean(yF))^2)
+R2c_C <-  sum((fitted_C-mean(yC))^2)/sum((yC-mean(yC))^2)
+isTRUE(all.equal(R2c_F, R2c_C))
+```
+
+The difference $R^2(F)-R^2(C)=$ `r round(R2_F-R2_C,5)` is small because the $R^2$ value is very high, but the coefficient itself is also meaningless. In this example, $R^2(F)=$ `r round(R2_F,4)`, which seems to indicate excellent fit but in fact only `r round(100*R2c_C, 2)`% of the variability is explained by year and we do an equally good job by simply taking $\hat{y}_i=\bar{y}$. 
+
+$R^2_c$ makes the comparison between the adjusted linear model and the null model with only a constant, which predicts each $y_i (i=1, \ldots, n)$ by the average $\bar{y}$.
+
+If $R^2_c$ gives a very rough overview of how much explanatory power $\mX$ has, it is not a panacea. If we add new covariates in $\mX$, the value of $R^2_c$ necessarily increases. In the most extreme scenario, we could add a set of $n-p$ linearly independent vectors to $\mX$ and form a new design matrix $mX^*$ with those. The fitted values from running a regression with $\mX^*$ will be exactly equal to the observations $\bs{y}$ and thus $R^2_c=1$. However, I hope it is clear that this model will _not_ be useful. Overfitting leads to poor predictive performance; if we get a new set of $\mathbf{x}_*$, we would predict the unobserved $y_*$ using its conditional average $\mathbf{x}_i^*\hbb$ and this estimate will be rubish if we included too many meaningless covariates. 
+
+Other versions of $R^2_c$ exist that include a penalty term for the number of covariates; these are not widely used and can be negative in extreme cases. We will cover better goodness-of-fit diagnostics later in the course.
+
+
+
+## Summary of week 2
+
+If $\mathbf{X}$ is an $n \times p$ design matrix containing _covariates_ and $\boldsymbol{Y}$ is our response variable, we can obtain the _ordinary least squares_ (OLS) coefficients for the linear model 
+$$\boldsymbol{y} = \mathbf{X}\bbeta + \beps, \qquad \mathrm{E}(\beps)=\boldsymbol{0}_n,$$
+by projecting $\boldsymbol{y}$ on to $\mathbf{X}$; it follows that 
+$$\mX\hat{\boldsymbol{\beta}}=\mX(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\by$$ and 
+$$\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\by.$$
+
+
+
+The dual interpretation (which is used for graphical diagnostics), is the row geometry: each row corresponds to an individual and the response is a $1$ dimensional point.
+$\hbb$ describes the parameters of the hyperplane that minimizes the sum of squared Euclidean vertical distances between the fitted value $\hat{y}_i$ and the response $y_i$. 
+The problem is best written using vector-matrix notation, so
+
+$$ \mathrm{argmin}_{\bbeta} \sum_{i=1}^n (y_i- \mathbf{x}_i\bbeta)^2 \equiv \mathrm{argmin}_{\bbeta} (\bs{y} - \mX\bbeta)^\top(\bs{y}-\mX\bbeta) \equiv \bs{e}^\top\bs{e}.
+$$
+
+The solution to the OLS problem has a dual interpretation in the column geometry, in which we treat the vector of stacked observations $(y_1, \ldots, y_n)^\top$ (respectively the vertical distances $(e_1, \ldots, e_n)^\top$) as elements of $\mathbb{R}^n$. There, the response $\bs{y}$ space can be decomposed into _fitted values_ $\hat{\by} \equiv \Hmat_{\mX} = \mX\hbb$ and _residuals_ $\bs{e} = \Mmat_{\mX} = \bs{y} - \mX\hbb$. By construction, $\bs{e} \perp \hat{by}$.
+
+We therefore get $$\bs{y} = \hat{\bs{y}} + \bs{e}$$
+and since these form a right-angled triangle, Pythagoras' theorem can be used to show that 
+$\|\bs{y}\|^2 = \|\hat{\bs{y}}\|^2 + \|\bs{e}\|^2.$

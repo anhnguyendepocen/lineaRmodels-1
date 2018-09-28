@@ -1,21 +1,5 @@
 # Frisch--Waugh--Lovell theorem
 
-\newcommand{\bs}[1]{\boldsymbol{#1}}
-\newcommand{\Hmat}{\mathbf{H}}
-\newcommand{\Mmat}{\mathbf{M}}
-\newcommand{\mX}{\mathbf{X}}
-\newcommand{\bX}{{\mathbf{X}}}
-\newcommand{\bx}{{\mathbf{x}}}
-\newcommand{\by}{{\boldsymbol{y}}}
-\newcommand{\bY}{{\boldsymbol{Y}}}
-\newcommand{\eps}{\varepsilon}
-\newcommand{\beps}{\boldsymbol{\varepsilon}}
-\newcommand{\bbeta}{\boldsymbol{\beta}}
-\newcommand{\hbb}{\hat{\boldsymbol{\beta}}}
-\newcommand{\limni}{\lim_{n \ra \infty}}
-\newcommand{\Sp}{\mathsf{span}}
-
-
 This result dates back to the work of [Frisch, R. and F. Waugh (1933)](https://www.jstor.org/stable/1907330) and of [M. Lovell (1963)](https://doi.org/10.1080/01621459.1963.10480682). The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.
 
 Consider the following linear regression 
@@ -78,53 +62,10 @@ and plug-in this result back in the equation for the least squares yields
 The proof that the residuals are the same is left as an exercise.
 ```
 
+## Examples 
 
-
-## (Centered) coefficient of determination
-
-Recall the decomposition of observations into fitted and residual vectors,
-$$\boldsymbol{y} = (\boldsymbol{y} - \mX\hbb) + \mX \hbb = \bs{e} + \hat{\bs{y}}$$
-where $\bs{e} \equiv \Mmat_{\mX}\bs{y} \perp \hat{\bs{y}} \equiv \Hmat_{\mX}\bs{y}$.
-
-
-The centered coefficient of determination, $R^2_c$ measures the proportion of variation explained by the centered fitted values relative to the centered observations, i.e.,
-$$ R^2_c = \frac{\|\hat{\bs{y}}-\bar{y}\mathbf{1}_n\|^2}{\|\bs{y}-\bar{y}\mathbf{1}_n\|^2}=\frac{\|\hat{\bs{y}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}{\|\bs{y}\|^2-\|\bar{y}\mathbf{1}_n\|^2}.$$
-since the vectors $\bar{y}\mathbf{1}_n \perp \hat{\bs{y}}-\bar{y}\mathbf{1}_n$.
-
-Provided that $\mathbf{1}_n \in \Sp(\mX)$, it is obvious that the fitted values $\hat{\bs{y}}$ are invariant to linear transformations of the covariates $\mathbf{X}$. Multiplicative changes in $\bs{y}$ lead to an equivalent change in $\bs{e}$ and $\hat{\bs{y}}$. However, location-changes in $\bs{y}$ are only reflected in $\hat{\bs{y}}$ (they are absorbed by the intercept). This is why $R^2$ is not invariant to location-changes in the response, since the ratio $\|\hat{\bs{y}}\|^2/\|\bs{y}\|^2$ increases to 1 if $\by \mapsto \by + a \mathbf{1}_n$.
-
-This invariance is precisely the reason we dismissed $R^2$. For example, a change of units from Farenheit to Celcius, viz. $T_c = 5 (T_F - 32)/9$, leads to different values of $R^2$:
-
-```{r faraway}
-data(aatemp, package = "faraway")
-plot(temp ~ year, data = aatemp, ylab = "Temperature (in F)", bty = "l")
-#Form design matrix and two response vectors
-yF <- aatemp$temp
-n <- length(yF)
-yC <- 5/9*(aatemp$temp - 32)
-X <- cbind(1, aatemp$year)
-# Obtain OLS coefficients and fitted values
-XtX <- solve(crossprod(X))
-beta_hat_F <- XtX %*% crossprod(X, yF)
-abline(a = beta_hat_F[1], b = beta_hat_F[2])
-beta_hat_C <- XtX %*% crossprod(X, yC)
-fitted_F <- X %*% beta_hat_F
-fitted_C <- X %*% beta_hat_C
-# Compute coefficient of determination
-R2_F <- sum(fitted_F^2)/sum(yF^2)
-R2_C <-  sum(fitted_C^2)/sum(yC^2)
-#Centered R^2
-R2c_F <- sum((fitted_F-mean(yF))^2)/sum((yF-mean(yF))^2)
-R2c_C <-  sum((fitted_C-mean(yC))^2)/sum((yC-mean(yC))^2)
-isTRUE(all.equal(R2c_F, R2c_C))
-```
-
-The difference $R^2(F)-R^2(C)=$ `r round(R2_F-R2_C,5)` is small because the $R^2$ value is very high, but the coefficient itself is also meaningless. In this example, $R^2(F)=$ `r round(R2_F,4)`, which seems to indicate excellent fit but in fact only `r round(100*R2c_C, 2)`% of the variability is explained by year and we do an equally good job by simply taking $\hat{y}_i=\bar{y}$. 
-
-The centered $R^2_c$ is equivalent to the coefficient of determination from the FWL regression 
+We have seen last week the centered $R^2_c$; the latter is equivalent to the coefficient of determination from the FWL regression 
 $$ \Mmat_{\mathbf{1}_n}\bs{y} = \Mmat_{\mathbf{1}_n}\mX \boldsymbol{\beta} + \bs{\varepsilon},$$
-that is, after centering regressand and regressors. Note that this regression will have no intercept, because this coefficient would be exactly zero. Using $R^2_c$ thus makes the comparison between the adjusted linear model and the null model with only a constant, which predicts each $y_i (i=1, \ldots, n)$ by the average $\bar{y}$.
+that is, after centering regressand and regressors. Note that this regression will have no intercept, because this coefficient would be exactly zero. 
 
-If $R^2_c$ gives a very rough overview of how much explanatory power $\mX$ has, it is not a panacea. If we add new covariates in $\mX$, the value of $R^2_c$ necessarily increases. In the most extreme scenario, we could add a set of $n-p$ linearly independent vectors to $\mX$ and form a new design matrix $mX^*$ with those. The fitted values from running a regression with $\mX^*$ will be exactly equal to the observations $\bs{y}$ and thus $R^2_c=1$. However, I hope it is clear that this model will _not_ be useful. Overfitting leads to poor predictive performance; if we get a new set of $\mathbf{x}_*$, we would predict the unobserved $y_*$ using its conditional average $\mathbf{x}_i^*\hbb$ and this estimate will be rubish if we included too many meaningless covariates. 
-
-Other versions of $R^2_c$ exist that include a penalty term for the number of covariates; these are not widely used and can be negative in extreme cases. We will cover better goodness-of-fit diagnostics later in the course.
+To be continued.
