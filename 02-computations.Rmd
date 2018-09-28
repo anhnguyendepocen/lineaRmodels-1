@@ -196,8 +196,8 @@ However, the observations will always be such that $z = x^2$, so our fitted valu
 
 The following 3D depiction hopefully captures this better and shows the fitted hyperplane along with the line on which all the ($x_i, z_i$) observations lie.
 
-```{r hyperplane, echo = FALSE, cache = TRUE, webgl=TRUE}
-library(rgl);
+```{r hyperplane, echo = FALSE}
+library(rgl)
 #knit_hooks$set(rgl = hook_rgl)
 plot3d(y = Auto$mpg, x = Auto$horsepower, z = I(Auto$horsepower^2),
           xlab = "Power of engine (hp)", 
