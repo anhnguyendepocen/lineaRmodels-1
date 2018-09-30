@@ -296,6 +296,7 @@ $\|\bs{y}\|^2 = \|\hat{\bs{y}}\|^2 + \|\bs{e}\|^2.$
 ### Prostate cancer dataset
 
 The following questions refer to the dataset `prostate` from the package `ElemStatLearn`.
+
 - Briefly describe the dataset.
 - Look at summaries of `lbph`. What likely value was imputed in places of zeros in `lbph} (before taking the logarithm)?
 - Produce a plot of the pair of variables `lcavol` and `lpsa` on the log and on the original scale. Comment on the relationship between `lcavol` and `lpsa`.

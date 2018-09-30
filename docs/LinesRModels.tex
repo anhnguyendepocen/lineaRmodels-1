@@ -1249,7 +1249,7 @@ observations lie.
 ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 \end{verbatim}
 
-\hypertarget{rgl46970}{}
+\hypertarget{rgl5161}{}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -1397,10 +1397,44 @@ show that
 \subsection{Prostate cancer dataset}\label{prostate-cancer-dataset}}
 
 The following questions refer to the dataset \texttt{prostate} from the
-package \texttt{ElemStatLearn}. - Briefly describe the dataset. - Look
-at summaries of \texttt{lbph}. What likely value was imputed in places
-of zeros in
-\texttt{lbph\}\ (before\ taking\ the\ logarithm)?\ -\ Produce\ a\ plot\ of\ the\ pair\ of\ variables}lcavol\texttt{and}lpsa\texttt{on\ the\ log\ and\ on\ the\ original\ scale.\ Comment\ on\ the\ relationship\ between}lcavol\texttt{and}lpsa\texttt{.\ -\ \ Fit\ a\ linear\ model\ using\ the\ log\ cancer\ volume\ as\ response\ variable,\ including\ a\ constant\ and\ the\ log\ prostate\ specific\ antigen\ as\ covariates.\ Obtain\ numerically\ the\ OLS\ estimates\ \$\textbackslash{}hbb\$\ of\ the\ parameters,\ the\ fitted\ values\ \$\textbackslash{}hat\{\textbackslash{}bs\{y\}\}\$\ and\ the\ residuals\ \$\textbackslash{}bs\{e\}\$\ using\ the\ formulas\ given\ in\ class.\ \ -\ Compare\ the\ quantities\ you\ obtained\ with\ the\ output\ of\ the\ function}lm\texttt{.\ -\ Add\ the\ fitted\ regression\ line\ to\ the\ scatterplot\ of}lcavol\texttt{against}lpsa\texttt{.\ -\ \ Interpret\ the\ changes\ in\ cancer\ volume\ (not\ the\ log\ cancer\ volume),\ including\ any\ units\ in\ your\ interpretations.\ -\ \ Obtain\ the\ orthogonal\ projection\ matrix\ \$\textbackslash{}bf\{H\}\_\textbackslash{}mX\$\ and\ the\ OLS\ coefficients\ \$\textbackslash{}hbb\$\ using\ a\ SVD\ decomposition\ of\ \$\textbackslash{}mX\$\ (}svd\texttt{).\ -\ \ Compute\ the\ \$R\^{}2\_c\$\ coefficient\ and\ compare\ with\ the\ one\ in}summary\texttt{output\ of\ the}lm\texttt{function.\ What\ can\ you\ say\ about\ the\ explanatory\ power\ of\ the\ covariate}lpsa`?
+package \texttt{ElemStatLearn}.
+
+\begin{itemize}
+\tightlist
+\item
+  Briefly describe the dataset.
+\item
+  Look at summaries of \texttt{lbph}. What likely value was imputed in
+  places of zeros in `lbph\} (before taking the logarithm)?
+\item
+  Produce a plot of the pair of variables \texttt{lcavol} and
+  \texttt{lpsa} on the log and on the original scale. Comment on the
+  relationship between \texttt{lcavol} and \texttt{lpsa}.
+\item
+  Fit a linear model using the log cancer volume as response variable,
+  including a constant and the log prostate specific antigen as
+  covariates. Obtain numerically the OLS estimates
+  \(\hat{\boldsymbol{\beta}}\) of the parameters, the fitted values
+  \(\hat{\boldsymbol{y}}\) and the residuals \(\boldsymbol{e}\) using
+  the formulas given in class.
+\item
+  Compare the quantities you obtained with the output of the function
+  \texttt{lm}.
+\item
+  Add the fitted regression line to the scatterplot of \texttt{lcavol}
+  against \texttt{lpsa}.
+\item
+  Interpret the changes in cancer volume (not the log cancer volume),
+  including any units in your interpretations.
+\item
+  Obtain the orthogonal projection matrix \(\bf{H}_\mathbf{X}\) and the
+  OLS coefficients \(\hat{\boldsymbol{\beta}}\) using a SVD
+  decomposition of \(\mathbf{X}\) (\texttt{svd}).
+\item
+  Compute the \(R^2_c\) coefficient and compare with the one in
+  \texttt{summary} output of the \texttt{lm} function. What can you say
+  about the explanatory power of the covariate \texttt{lpsa}?
+\end{itemize}
 
 \hypertarget{frischwaughlovell-theorem}{%
 \chapter{Frisch--Waugh--Lovell

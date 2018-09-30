@@ -196,9 +196,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.8</span> Exercises</h2>
 <div id="prostate-cancer-dataset" class="section level3">
 <h3><span class="header-section-number">2.8.1</span> Prostate cancer dataset</h3>
-<p>The following questions refer to the dataset <code>prostate</code> from the package <code>ElemStatLearn</code>.
-- Briefly describe the dataset.
-- Look at summaries of <code>lbph</code>. What likely value was imputed in places of zeros in <code>lbph} (before taking the logarithm)? - Produce a plot of the pair of variables</code>lcavol<code>and</code>lpsa<code>on the log and on the original scale. Comment on the relationship between</code>lcavol<code>and</code>lpsa<code>. -  Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates $\hbb$ of the parameters, the fitted values $\hat{\bs{y}}$ and the residuals $\bs{e}$ using the formulas given in class.  - Compare the quantities you obtained with the output of the function</code>lm<code>. - Add the fitted regression line to the scatterplot of</code>lcavol<code>against</code>lpsa<code>. -  Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations. -  Obtain the orthogonal projection matrix $\bf{H}_\mX$ and the OLS coefficients $\hbb$ using a SVD decomposition of $\mX$ (</code>svd<code>). -  Compute the $R^2_c$ coefficient and compare with the one in</code>summary<code>output of the</code>lm<code>function. What can you say about the explanatory power of the covariate</code>lpsa`?</p>
+<p>The following questions refer to the dataset <code>prostate</code> from the package <code>ElemStatLearn</code>.</p>
+<ul>
+<li>Briefly describe the dataset.</li>
+<li>Look at summaries of <code>lbph</code>. What likely value was imputed in places of zeros in `lbph} (before taking the logarithm)?</li>
+<li>Produce a plot of the pair of variables <code>lcavol</code> and <code>lpsa</code> on the log and on the original scale. Comment on the relationship between <code>lcavol</code> and <code>lpsa</code>.</li>
+<li>Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> of the parameters, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span> using the formulas given in class.</li>
+<li>Compare the quantities you obtained with the output of the function <code>lm</code>.</li>
+<li>Add the fitted regression line to the scatterplot of <code>lcavol</code> against <code>lpsa</code>.</li>
+<li>Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.</li>
+<li>Obtain the orthogonal projection matrix <span class="math inline">\(\bf{H}_\mathbf{X}\)</span> and the OLS coefficients <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> using a SVD decomposition of <span class="math inline">\(\mathbf{X}\)</span> (<code>svd</code>).</li>
+<li>Compute the <span class="math inline">\(R^2_c\)</span> coefficient and compare with the one in <code>summary</code> output of the <code>lm</code> function. What can you say about the explanatory power of the covariate <code>lpsa</code>?</li>
+</ul>
 
 </div>
 </div>
