@@ -90,13 +90,13 @@ There are drawbacks to loading packages: if an object with the same name from an
 
 ## Tutorial 1 {#week1}
 
-### Data sets
+### datasets
 
-- Data sets are typically stored inside a `data.frame`, a matrix-like object whose columns contain the variables and the rows the observation vectors. 
+- datasets are typically stored inside a `data.frame`, a matrix-like object whose columns contain the variables and the rows the observation vectors. 
 - The columns can be of different types (`integer`, `double`, `logical`, `character`), but all the column vectors must be of the same length. 
 - Variable names can be displayed by using `names(faithful)`. 
 - Individual columns can be accessed using the column name using the `$` operator. For example, `faithful$eruptions` will return the first column of the `faithful` dataset.
-- To load a data set from an (installed) **R** package, use the command `data` with the name of the `package` as an argument (must be a string). The package `datasets` is loaded by default whenever you open **R**, so these are always in the search path.
+- To load a dataset from an (installed) **R** package, use the command `data` with the name of the `package` as an argument (must be a string). The package `datasets` is loaded by default whenever you open **R**, so these are always in the search path.
 
 The following functions can be useful to get a quick glimpse of the data:
 
@@ -204,19 +204,19 @@ isTRUE(all.equal(eigen(Hx, only.values = TRUE)$values, c(rep(1, p), rep(0, n - p
 isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
 ```
 
-### Your turn 
-
-- Install the **R** package `ISLR` and load the dataset `Auto`. Be careful, as **R** is case-sensitive.
-- Query the help file for information about the data set.
-- Look at the first lines of `Auto`
-- Create an explanatory variable `x` with horsepower and mileage per gallon as response `y`.
-- Create a scatterplot of `y` against `x`. Is there a linear relationship between the two variables?
-- Append a vector of ones to `x` and create a projection matrix.
-- Check that the resulting projection matrix is symmetric and idempotent.
-
 ## Exercises
 
-### Ex. 1.4 Oblique projections
+### Auto dataset
+
+- Install the **R** package `ISLR` and load the dataset `Auto`. Be careful, as **R** is case-sensitive.
+- Query the help file for information about the dataset.
+- Look at the first lines of `Auto`
+- Create an explanatory variable `x` with horsepower and mileage per gallon as response `y`.
+- Create a scatterplot of `y` against `x`. Is there evidence of a linear relationship between the two variables?
+- Append a column vector of ones to `x` and create a projection matrix.
+- Check that the resulting projection matrix is symmetric and idempotent.
+
+### Oblique projections (exercise 1.4)
 
 Suppose that $\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})$, that both $\mathbf{X}$ and $\mathbf{W}$ are full-rank $n \times p$ matrices such that $\mathbf{X}^\top\mathbf{W}$ and $\mathbf{W}^\top\mathbf{X}$ are invertible. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)$. This fact is illustrated below.
 

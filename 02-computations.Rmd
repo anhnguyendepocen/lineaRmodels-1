@@ -173,7 +173,7 @@ names(fit_summary)
 
 ## The hyperplane of fitted values
 
-In class, we presented a linear model for the `Auto` data set of the form
+In class, we presented a linear model for the `Auto` dataset of the form
 $$\mathsf{mpg}_i = \beta_0 + \beta_1 \mathsf{hp}_i + \beta_2 \mathsf{hp}_i^2 + \varepsilon_i$$ 
 and claimed this was a linear model. This is indeed true because we can form the design matrix $[\mathbf{1}_n,  \mathsf{hp}, \mathsf{hp}^2]$ and obtain coefficients $\hbb$. The graphical depiction is counterintuitive.
 
@@ -287,3 +287,21 @@ The solution to the OLS problem has a dual interpretation in the column geometry
 We therefore get $$\bs{y} = \hat{\bs{y}} + \bs{e}$$
 and since these form a right-angled triangle, Pythagoras' theorem can be used to show that 
 $\|\bs{y}\|^2 = \|\hat{\bs{y}}\|^2 + \|\bs{e}\|^2.$
+
+
+
+
+## Exercises
+
+### Prostate cancer dataset
+
+The following questions refer to the dataset `prostate` from the package `ElemStatLearn`.
+- Briefly describe the dataset.
+- Look at summaries of `lbph`. What likely value was imputed in places of zeros in `lbph} (before taking the logarithm)?
+- Produce a plot of the pair of variables `lcavol` and `lpsa` on the log and on the original scale. Comment on the relationship between `lcavol` and `lpsa`.
+-  Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates $\hbb$ of the parameters, the fitted values $\hat{\bs{y}}$ and the residuals $\bs{e}$ using the formulas given in class. 
+- Compare the quantities you obtained with the output of the function `lm`.
+- Add the fitted regression line to the scatterplot of `lcavol` against `lpsa`.
+-  Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.
+-  Obtain the orthogonal projection matrix $\bf{H}_\mX$ and the OLS coefficients $\hbb$ using a SVD decomposition of $\mX$ (`svd`).
+-  Compute the $R^2_c$ coefficient and compare with the one in `summary` output of the `lm` function. What can you say about the explanatory power of the covariate `lpsa`?

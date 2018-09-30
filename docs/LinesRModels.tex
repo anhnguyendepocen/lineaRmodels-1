@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{version of 2018-09-28}
+    \date{version of 2018-09-30}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -447,13 +447,13 @@ object from an installed package (\texttt{package::object}).
 \hypertarget{week1}{%
 \section{Tutorial 1}\label{week1}}
 
-\hypertarget{data-sets}{%
-\subsection{Data sets}\label{data-sets}}
+\hypertarget{datasets}{%
+\subsection{datasets}\label{datasets}}
 
 \begin{itemize}
 \tightlist
 \item
-  Data sets are typically stored inside a \texttt{data.frame}, a
+  datasets are typically stored inside a \texttt{data.frame}, a
   matrix-like object whose columns contain the variables and the rows
   the observation vectors.
 \item
@@ -467,7 +467,7 @@ object from an installed package (\texttt{package::object}).
   \texttt{\$} operator. For example, \texttt{faithful\$eruptions} will
   return the first column of the \texttt{faithful} dataset.
 \item
-  To load a data set from an (installed) \textbf{R} package, use the
+  To load a dataset from an (installed) \textbf{R} package, use the
   command \texttt{data} with the name of the \texttt{package} as an
   argument (must be a string). The package \texttt{datasets} is loaded
   by default whenever you open \textbf{R}, so these are always in the
@@ -734,8 +734,11 @@ whereas \texttt{all.equal(1/10\ +\ 2/10\ -\ 3/10,\ 0)} will return
 ## [1] TRUE
 \end{verbatim}
 
-\hypertarget{your-turn}{%
-\subsection{Your turn}\label{your-turn}}
+\hypertarget{exercises}{%
+\section{Exercises}\label{exercises}}
+
+\hypertarget{auto-dataset}{%
+\subsection{Auto dataset}\label{auto-dataset}}
 
 \begin{itemize}
 \tightlist
@@ -743,28 +746,26 @@ whereas \texttt{all.equal(1/10\ +\ 2/10\ -\ 3/10,\ 0)} will return
   Install the \textbf{R} package \texttt{ISLR} and load the dataset
   \texttt{Auto}. Be careful, as \textbf{R} is case-sensitive.
 \item
-  Query the help file for information about the data set.
+  Query the help file for information about the dataset.
 \item
   Look at the first lines of \texttt{Auto}
 \item
   Create an explanatory variable \texttt{x} with horsepower and mileage
   per gallon as response \texttt{y}.
 \item
-  Create a scatterplot of \texttt{y} against \texttt{x}. Is there a
-  linear relationship between the two variables?
+  Create a scatterplot of \texttt{y} against \texttt{x}. Is there
+  evidence of a linear relationship between the two variables?
 \item
-  Append a vector of ones to \texttt{x} and create a projection matrix.
+  Append a column vector of ones to \texttt{x} and create a projection
+  matrix.
 \item
   Check that the resulting projection matrix is symmetric and
   idempotent.
 \end{itemize}
 
-\hypertarget{exercises}{%
-\section{Exercises}\label{exercises}}
-
-\hypertarget{ex.-1.4-oblique-projections}{%
-\subsection{Ex. 1.4 Oblique
-projections}\label{ex.-1.4-oblique-projections}}
+\hypertarget{oblique-projections-exercise-1.4}{%
+\subsection{Oblique projections (exercise
+1.4)}\label{oblique-projections-exercise-1.4}}
 
 Suppose that
 \(\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})\), that both
@@ -1221,7 +1222,7 @@ respectively.
 \section{The hyperplane of fitted
 values}\label{the-hyperplane-of-fitted-values}}
 
-In class, we presented a linear model for the \texttt{Auto} data set of
+In class, we presented a linear model for the \texttt{Auto} dataset of
 the form
 \[\mathsf{mpg}_i = \beta_0 + \beta_1 \mathsf{hp}_i + \beta_2 \mathsf{hp}_i^2 + \varepsilon_i\]
 and claimed this was a linear model. This is indeed true because we can
@@ -1248,7 +1249,7 @@ observations lie.
 ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 \end{verbatim}
 
-\hypertarget{rgl48503}{}
+\hypertarget{rgl46970}{}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -1388,6 +1389,18 @@ We therefore get
 these form a right-angled triangle, Pythagoras' theorem can be used to
 show that
 \(\|\boldsymbol{y}\|^2 = \|\hat{\boldsymbol{y}}\|^2 + \|\boldsymbol{e}\|^2.\)
+
+\hypertarget{exercises-1}{%
+\section{Exercises}\label{exercises-1}}
+
+\hypertarget{prostate-cancer-dataset}{%
+\subsection{Prostate cancer dataset}\label{prostate-cancer-dataset}}
+
+The following questions refer to the dataset \texttt{prostate} from the
+package \texttt{ElemStatLearn}. - Briefly describe the dataset. - Look
+at summaries of \texttt{lbph}. What likely value was imputed in places
+of zeros in
+\texttt{lbph\}\ (before\ taking\ the\ logarithm)?\ -\ Produce\ a\ plot\ of\ the\ pair\ of\ variables}lcavol\texttt{and}lpsa\texttt{on\ the\ log\ and\ on\ the\ original\ scale.\ Comment\ on\ the\ relationship\ between}lcavol\texttt{and}lpsa\texttt{.\ -\ \ Fit\ a\ linear\ model\ using\ the\ log\ cancer\ volume\ as\ response\ variable,\ including\ a\ constant\ and\ the\ log\ prostate\ specific\ antigen\ as\ covariates.\ Obtain\ numerically\ the\ OLS\ estimates\ \$\textbackslash{}hbb\$\ of\ the\ parameters,\ the\ fitted\ values\ \$\textbackslash{}hat\{\textbackslash{}bs\{y\}\}\$\ and\ the\ residuals\ \$\textbackslash{}bs\{e\}\$\ using\ the\ formulas\ given\ in\ class.\ \ -\ Compare\ the\ quantities\ you\ obtained\ with\ the\ output\ of\ the\ function}lm\texttt{.\ -\ Add\ the\ fitted\ regression\ line\ to\ the\ scatterplot\ of}lcavol\texttt{against}lpsa\texttt{.\ -\ \ Interpret\ the\ changes\ in\ cancer\ volume\ (not\ the\ log\ cancer\ volume),\ including\ any\ units\ in\ your\ interpretations.\ -\ \ Obtain\ the\ orthogonal\ projection\ matrix\ \$\textbackslash{}bf\{H\}\_\textbackslash{}mX\$\ and\ the\ OLS\ coefficients\ \$\textbackslash{}hbb\$\ using\ a\ SVD\ decomposition\ of\ \$\textbackslash{}mX\$\ (}svd\texttt{).\ -\ \ Compute\ the\ \$R\^{}2\_c\$\ coefficient\ and\ compare\ with\ the\ one\ in}summary\texttt{output\ of\ the}lm\texttt{function.\ What\ can\ you\ say\ about\ the\ explanatory\ power\ of\ the\ covariate}lpsa`?
 
 \hypertarget{frischwaughlovell-theorem}{%
 \chapter{Frisch--Waugh--Lovell

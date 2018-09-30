@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="exercises-1.html">
-<link rel="next" href="examples.html">
+<link rel="prev" href="summary-of-week-2.html">
+<link rel="next" href="frischwaughlovell-theorem.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -192,76 +192,24 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="frischwaughlovell-theorem" class="section level1">
-<h1><span class="header-section-number">3</span> Frisch–Waugh–Lovell theorem</h1>
-<p>This result dates back to the work of <a href="https://www.jstor.org/stable/1907330">Frisch, R. and F. Waugh (1933)</a> and of <a href="https://doi.org/10.1080/01621459.1963.10480682">M. Lovell (1963)</a>. The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.</p>
-<p>Consider the following linear regression
-<span class="math display">\[
- {\boldsymbol{y}}= {\mathbf{X}}_1\boldsymbol{\beta}_1+{\mathbf{X}}_2\boldsymbol{\beta}_2+ \boldsymbol{u}, \label{eq1}
-\]</span>
-where the response vector <span class="math inline">\({\boldsymbol{y}}\)</span> is <span class="math inline">\(n \times 1\)</span>, the vector of errors <span class="math inline">\(\boldsymbol{u}\)</span> is a realization from a mean zero random
-variable. The <span class="math inline">\(n \times p\)</span> full-rank design matrix <span class="math inline">\({\mathbf{X}}\)</span> can be written as the partitioned
-matrix <span class="math inline">\(({\mathbf{X}}_1^\top, {\mathbf{X}}_2^\top)^\top\)</span> with blocks <span class="math inline">\({\mathbf{X}}_1\)</span>, an <span class="math inline">\(n \times p_1\)</span> matrix, and <span class="math inline">\({\mathbf{X}}_2\)</span>, an <span class="math inline">\(n \times p_2\)</span> matrix. Let
-<span class="math inline">\(\hat{\boldsymbol{\beta}}_1\)</span>
-and <span class="math inline">\(\hat{\boldsymbol{\beta}}_2\)</span> be the ordinary
-least square (OLS) parameter estimates from running this regression. Define the orthogonal projection matrix <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> as usual and
-<span class="math inline">\(\mathbf{H}_{{\mathbf{X}}_i} = {\mathbf{X}}_i^{\vphantom{\top}}({\mathbf{X}}_i^\top{\mathbf{X}}_i^{\vphantom{\top}})^{-1}{\mathbf{X}}_i^\top\)</span> for <span class="math inline">\(i=1, 2\)</span>. Similarly,
-define the complementary projection matrices <span class="math inline">\(\mathbf{M}_{{\mathbf{X}}_1}=\mathbf{I}_n-\mathbf{H}_{{\mathbf{X}}_1}\)</span> and <span class="math inline">\(\mathbf{M}_{{\mathbf{X}}_2}=\mathbf{I}_n-\mathbf{H}_{{\mathbf{X}}_2}\)</span>.</p>
+<div id="exercises-1" class="section level2">
+<h2><span class="header-section-number">2.8</span> Exercises</h2>
+<div id="prostate-cancer-dataset" class="section level3">
+<h3><span class="header-section-number">2.8.1</span> Prostate cancer dataset</h3>
+<p>The following questions refer to the dataset <code>prostate</code> from the package <code>ElemStatLearn</code>.
+- Briefly describe the dataset.
+- Look at summaries of <code>lbph</code>. What likely value was imputed in places of zeros in <code>lbph} (before taking the logarithm)? - Produce a plot of the pair of variables</code>lcavol<code>and</code>lpsa<code>on the log and on the original scale. Comment on the relationship between</code>lcavol<code>and</code>lpsa<code>. -  Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates $\hbb$ of the parameters, the fitted values $\hat{\bs{y}}$ and the residuals $\bs{e}$ using the formulas given in class.  - Compare the quantities you obtained with the output of the function</code>lm<code>. - Add the fitted regression line to the scatterplot of</code>lcavol<code>against</code>lpsa<code>. -  Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations. -  Obtain the orthogonal projection matrix $\bf{H}_\mX$ and the OLS coefficients $\hbb$ using a SVD decomposition of $\mX$ (</code>svd<code>). -  Compute the $R^2_c$ coefficient and compare with the one in</code>summary<code>output of the</code>lm<code>function. What can you say about the explanatory power of the covariate</code>lpsa`?</p>
 
-<div class="theorem">
-<span id="thm:unnamed-chunk-7" class="theorem"><strong>Theorem 3.1  </strong></span>The ordinary least square estimates of <span class="math inline">\(\boldsymbol{\beta}_2\)</span> and the residuals from  are identical to those obtained by
-running the regression
-<span class="math display">\[
- \mathbf{M}_{{\mathbf{X}}_1}{\boldsymbol{y}}= \mathbf{M}_{{\mathbf{X}}_1}{\mathbf{X}}_2\boldsymbol{\beta}_2 + \text{residuals}. \label{eq2} \
-\]</span>
 </div>
-
-
-<div class="proof">
-<p> <span class="proof"><em>Proof. </em></span> The easiest proof uses projection matrices, but we demonstrate the result for OLS coefficients directly.
-Consider an invertible <span class="math inline">\(d \times d\)</span> matrix <span class="math inline">\(\mathbf{C}\)</span> and denote its inverse by <span class="math inline">\(\mathbf{D}\)</span>; then
-<span class="math display">\[
-\begin{pmatrix} \mathbf{C}_{11} &amp; \mathbf{C}_{12} \\ \mathbf{C}_{21} &amp;\mathbf{C}_{22}
-\end{pmatrix}\begin{pmatrix} \mathbf{D}_{11} &amp; \mathbf{D}_{12} \\ \mathbf{D}_{21} &amp;\mathbf{D}_{22}
-\end{pmatrix}
-=\mathbf{I}_p
-\]</span>
-gives the relationships
-<span class="math display">\[\begin{align*}
-\mathbf{C}_{11}\mathbf{D}_{11}+\mathbf{C}_{12}\mathbf{D}_{21} &amp;= \mathbf{I}_{p_1}\\
-\mathbf{C}_{11}\mathbf{D}_{12}+\mathbf{C}_{12}\mathbf{D}_{22} &amp;= \mathbf{O}_{p_1, p_2}\\
-\mathbf{C}_{22}\mathbf{D}_{21}+\mathbf{C}_{21}\mathbf{D}_{11} &amp;= \mathbf{O}_{p_2, p_1}\\
-\mathbf{C}_{22}\mathbf{D}_{22}+\mathbf{C}_{21}\mathbf{D}_{12} &amp;= \mathbf{I}_{p_2}\\
-\end{align*}\]</span>
-from which we deduce that the so-called Schur complement of <span class="math inline">\(\mathbf{C}_{22}\)</span> is <span class="math display">\[\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21} = \mathbf{D}_{11}^{-1}\]</span>
-and
-<span class="math display">\[
--\mathbf{C}_{22}\mathbf{C}_{21}(\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21})^{-1} = \mathbf{D}_{21}.
-\]</span>
-Substituting
-<span class="math display">\[
-\begin{pmatrix} \mathbf{C}_{11} &amp; \mathbf{C}_{12} \\ \mathbf{C}_{21} &amp;\mathbf{C}_{22}
-\end{pmatrix} \equiv \begin{pmatrix} \mathbf{X}_1^\top\mathbf{X}_1 &amp; \mathbf{X}_1^\top\mathbf{X}_2\\\mathbf{X}_2^\top\mathbf{X}_1  &amp;\mathbf{X}_2^\top\mathbf{X}_2 
-\end{pmatrix}
-\]</span>
-and plug-in this result back in the equation for the least squares yields
-<span class="math display">\[\begin{align*}
-\hat{\boldsymbol{\beta}}_1 &amp;= (\mathbf{D}_{11}\mathbf{X}_1^\top + \mathbf{D}_{12}\mathbf{X}_2^\top)\boldsymbol{y} 
-\\&amp;= \mathbf{D}_{11}( \mathbf{X}_1^\top - \mathbf{C}_{12}\mathbf{C}_{22}^{-1}\mathbf{X}_2)\boldsymbol{y}
-\\&amp;= \left(\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21}\right)^{-1} \mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y} 
-\\&amp;= (\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\mathbf{X}_1)^{-1}\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y}.
-\end{align*}\]</span></p>
-The proof that the residuals are the same is left as an exercise.
 </div>
- 
-</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="exercises-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="examples.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="summary-of-week-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="frischwaughlovell-theorem.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
