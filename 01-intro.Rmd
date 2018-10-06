@@ -90,7 +90,7 @@ There are drawbacks to loading packages: if an object with the same name from an
 
 ## Tutorial 1 {#week1}
 
-### datasets
+### Datasets
 
 - datasets are typically stored inside a `data.frame`, a matrix-like object whose columns contain the variables and the rows the observation vectors. 
 - The columns can be of different types (`integer`, `double`, `logical`, `character`), but all the column vectors must be of the same length. 

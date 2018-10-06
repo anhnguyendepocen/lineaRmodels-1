@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>lineaRmodels</title>
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="lineaRmodels" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="github-repo" content="lbelzile/lineaRmodels" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="lineaRmodels" />
+  
+  <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  
+
+<meta name="author" content="Léo Belzile">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="exercises-1.html">
+<link rel="next" href="frischwaughlovell-theorem.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
+<script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
+<script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Linear Models</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="basics-of-r.html"><a href="basics-of-r.html"><i class="fa fa-check"></i><b>1.1</b> Basics of <strong>R</strong></a><ul>
+<li class="chapter" data-level="1.1.1" data-path="basics-of-r.html"><a href="basics-of-r.html#help"><i class="fa fa-check"></i><b>1.1.1</b> Help</a></li>
+<li class="chapter" data-level="1.1.2" data-path="basics-of-r.html"><a href="basics-of-r.html#basic-commands"><i class="fa fa-check"></i><b>1.1.2</b> Basic commands</a></li>
+<li class="chapter" data-level="1.1.3" data-path="basics-of-r.html"><a href="basics-of-r.html#linear-algebra-in-r"><i class="fa fa-check"></i><b>1.1.3</b> Linear algebra in <strong>R</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="basics-of-r.html"><a href="basics-of-r.html#packages"><i class="fa fa-check"></i><b>1.1.4</b> Packages</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="week1.html"><a href="week1.html"><i class="fa fa-check"></i><b>1.2</b> Tutorial 1</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="week1.html"><a href="week1.html#datasets"><i class="fa fa-check"></i><b>1.2.1</b> Datasets</a></li>
+<li class="chapter" data-level="1.2.2" data-path="week1.html"><a href="week1.html#graphics"><i class="fa fa-check"></i><b>1.2.2</b> Graphics</a></li>
+<li class="chapter" data-level="1.2.3" data-path="week1.html"><a href="week1.html#projection-matrices"><i class="fa fa-check"></i><b>1.2.3</b> Projection matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.3</b> Exercises</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="exercises.html"><a href="exercises.html#auto-dataset"><i class="fa fa-check"></i><b>1.3.1</b> Auto dataset</a></li>
+<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#oblique-projections-exercise-1.4"><i class="fa fa-check"></i><b>1.3.2</b> Oblique projections (exercise 1.4)</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.4</b> Summary of week 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#normal-equations"><i class="fa fa-check"></i><b>2.1.1</b> Normal equations</a></li>
+<li class="chapter" data-level="2.1.2" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.1.2</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
+<li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
+<li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
+<li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
+<li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
+<li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
+<li class="chapter" data-level="2.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>2.8</b> Exercises</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="exercises-1.html"><a href="exercises-1.html#prostate-cancer-dataset"><i class="fa fa-check"></i><b>2.8.1</b> Prostate cancer dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.9</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
+<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3.1</b> Examples</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">lineaRmodels</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="solutions" class="section level2">
+<h2><span class="header-section-number">2.9</span> Solutions</h2>
+<p>The following questions refer to the dataset <code>prostate</code> from the package <code>ElemStatLearn</code>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Briefly describe the data set.</li>
+</ol>
+<p>Running <code>?ElemStatLearn::prostate</code> gives the help file for the data set. Since we will be coming back to this example, detailed informations are provided below.</p>
+<p>This data set was extracted from</p>
+<blockquote>
+<p>Stamey, T.A., Kabalin, J.N., McNeal, J.E., Johnstone, I.M., Freiha, F., Redwine, E.A. and Yang, N. (1989)
+Prostate specific antigen in the diagnosis and treatment of adenocarcinoma of the prostate: II. radical prostatectomy treated
+patients, Journal of Urology 141(5), 1076–1083.</p>
+</blockquote>
+<p>This data set is described in Wakefield (2013), pp. 5-6.</p>
+<blockquote>
+<p>The data were collected on <span class="math inline">\(n=97\)</span> men before radical prostatectomy, a major surgical operation that
+removes the entire prostate gland along with some surrounding tissue.</p>
+</blockquote>
+<blockquote>
+<p>In Stamey et al. (1989), prostate specific antigen
+(PSA) was proposed as a preoperative marker to predict the clinical stage of cancer. As well as modeling the stage of cancer as a
+function of PSA, the authors also examined PSA as a function of age and seven other histological and morphometric covariates.</p>
+</blockquote>
+<blockquote>
+<p>The BPH and capsular penetration variables originally contained zeros, and a small number was substituted before the log transform was taken. It is not clear from the original paper why the log transform was taken though PSA varies over a wide range, and so linearity
+of the mean model may be aided by the log transform. It is also not clear why the variable PGS45 was constructed.</p>
+</blockquote>
+<p>The data set contains the following variables:</p>
+<ul>
+<li><code>lcavol</code>: log of cancer volume, measured in milliliters (cc). The area of cancer was measured from digitized images and
+multiplied by a thickness to produce a volume.</li>
+<li><code>lweight</code>: log of the prostate weight, measured in grams.</li>
+<li><code>age</code>: The age of the patient, in years.</li>
+<li><code>lbph</code>: log of the amount of benign prostatic hyperplasia (BPH), a noncancerous enlargement of the prostate gland, as
+an area in a digitized image and reported in cm<span class="math inline">\({}^2\)</span>.</li>
+<li><code>svi</code>: seminal vesicle invasion, a 0/1 indicator of whether prostate cancer cells have invaded the seminal vesicle.</li>
+<li><code>lcp</code>: log of the capsular penetration, which represents the level of extension of cancer into the capsule (the fibrous
+tissue which acts as an outer lining of the prostate gland), measured as the linear extent of penetration, in cm.</li>
+<li><code>gleason</code>: Gleason score, a measure of the degree of aggressiveness of the tumor. The Gleason grading system assigns a
+grade (1–5) to each of the two largest areas of cancer in the tissue samples with 1 being the least aggressive and 5 the most
+aggressive; the two grades are then added together to produce the Gleason score.</li>
+<li><code>pgg45</code>: percentage of Gleason scores that are 4 or 5.</li>
+<li><code>lpsa</code>: log of prostate specific antigen (PSA), a concentration measured in ng/m</li>
+</ul>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Look at summaries of <code>lbph</code>. What likely value was imputed in places of zeros in <code>lbph</code> (before taking the logarithm)?</li>
+</ol>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="co">#Install package if you get an error message</span></a>
+<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="co">#Uncomment the next line</span></a>
+<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="co">#install.packages(&quot;ElemStatLearn&quot;)</span></a>
+<a class="sourceLine" id="cb58-4" data-line-number="4"><span class="kw">data</span>(prostate, <span class="dt">package =</span> <span class="st">&quot;ElemStatLearn&quot;</span>)</a>
+<a class="sourceLine" id="cb58-5" data-line-number="5">?ElemStatLearn<span class="op">::</span>prostate</a>
+<a class="sourceLine" id="cb58-6" data-line-number="6"><span class="kw">attach</span>(prostate) </a></code></pre></div>
+<p>The command <code>attach</code> allows you to access column (variables) without using <code>prostate$</code> by adding the columns of the data frame to your work environment. <strong>Always</strong> detach the data once you are done with your analysis to avoid overriding or hidding variables, by running in this case <code>detach(&quot;package:ElemStatLearn&quot;, unload = TRUE)</code></p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">bph &lt;-<span class="st"> </span><span class="kw">exp</span>(lbph) </a>
+<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="kw">head</span>(bph) <span class="co">#look up first elements</span></a></code></pre></div>
+<pre><code>## [1] 0.25 0.25 0.25 0.25 0.25 0.25</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">min</span>(bph) <span class="co">#return minimum</span></a></code></pre></div>
+<pre><code>## [1] 0.25</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">hist</span>(bph, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;benign prostatic hyperplasia&quot;</span>)</a>
+<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="kw">rug</span>(bph) </a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/prostate_question_b2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="co">#histogram, with lines below where the observations are</span></a></code></pre></div>
+<p>It seems likely that in order to take a logarithm, zeros were changed to 0.25. As such, we have to be careful with the interpretation of this coefficient if we include <code>bph</code> in the regression.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Produce a plot of the pair of variables <code>lcavol</code> and <code>lpsa</code> on the log and on the original scale. Comment on the relationship between <code>lcavol</code> and <code>lpsa</code>.</li>
+</ol>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="co">#graphical parameters: two graphs per window</span></a>
+<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="co">#Function plot is plot(x = , y = ) or plot(y ~ x)</span></a>
+<a class="sourceLine" id="cb65-3" data-line-number="3"><span class="co">#this works for vectors! (error message otherwise)</span></a>
+<a class="sourceLine" id="cb65-4" data-line-number="4"><span class="kw">plot</span>(<span class="kw">exp</span>(lcavol) <span class="op">~</span><span class="st"> </span><span class="kw">exp</span>(lpsa),</a>
+<a class="sourceLine" id="cb65-5" data-line-number="5"><span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc)&quot;</span>, <span class="co">#y-axis label</span></a>
+<a class="sourceLine" id="cb65-6" data-line-number="6"><span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="co">#x-axis label</span></a>
+<a class="sourceLine" id="cb65-7" data-line-number="7"><span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>, <span class="co">#title</span></a>
+<a class="sourceLine" id="cb65-8" data-line-number="8"><span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>) <span class="co">#bty: remove box, only x-y axis</span></a>
+<a class="sourceLine" id="cb65-9" data-line-number="9"><span class="co">#pch: type of plotting symbol (small filled circle)</span></a>
+<a class="sourceLine" id="cb65-10" data-line-number="10"><span class="kw">plot</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa,</a>
+<a class="sourceLine" id="cb65-11" data-line-number="11"><span class="dt">ylab =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,</a>
+<a class="sourceLine" id="cb65-12" data-line-number="12"><span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, </a>
+<a class="sourceLine" id="cb65-13" data-line-number="13"><span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,</a>
+<a class="sourceLine" id="cb65-14" data-line-number="14"><span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb65-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb65-16" data-line-number="16"><span class="kw">hist</span>(<span class="kw">exp</span>(lcavol), <span class="dt">xlab =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb65-17" data-line-number="17"><span class="kw">rug</span>(<span class="kw">exp</span>(lcavol))</a>
+<a class="sourceLine" id="cb65-18" data-line-number="18"><span class="kw">hist</span>(<span class="kw">exp</span>(lpsa), <span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb65-19" data-line-number="19"><span class="kw">rug</span>(<span class="kw">exp</span>(lpsa))</a></code></pre></div>
+<p>With <code>ggplot2</code>, the same graphs</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb66-3" data-line-number="3"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,</a>
+<a class="sourceLine" id="cb66-6" data-line-number="6">       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,</a>
+<a class="sourceLine" id="cb66-7" data-line-number="7">       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> <span class="kw">exp</span>(lcavol), <span class="dt">x =</span> <span class="kw">exp</span>(lpsa))) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb67-3" data-line-number="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>,</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4">       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,</a>
+<a class="sourceLine" id="cb67-5" data-line-number="5">       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">exp</span>(lcavol))) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">30</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_rug</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,</a>
+<a class="sourceLine" id="cb68-4" data-line-number="4">       <span class="dt">title =</span> <span class="st">&quot;Histogram&quot;</span>)</a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+<p>We can see that both variables are positive and positively skewed, so a log transform may lead to a more linear relationship, as indicated by the pairs plot. A multiplicative model on the original scale is thus reasonable.</p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> of the parameters, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span> using the formulae given in class.</li>
+</ol>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate)</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="kw">summary</span>(fit)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = lcavol ~ lpsa, data = prostate)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.15949 -0.59384  0.05034  0.50826  1.67751 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.50858    0.19419  -2.619   0.0103 *  
+## lpsa         0.74992    0.07109  10.548   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8041 on 95 degrees of freedom
+## Multiple R-squared:  0.5394, Adjusted R-squared:  0.5346 
+## F-statistic: 111.3 on 1 and 95 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="co">#Create response vector and design matrix</span></a>
+<a class="sourceLine" id="cb71-2" data-line-number="2">y &lt;-<span class="st"> </span>lcavol</a>
+<a class="sourceLine" id="cb71-3" data-line-number="3">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, lpsa)</a>
+<a class="sourceLine" id="cb71-4" data-line-number="4"><span class="co">#Create function to compute coefs &quot;by hand&quot;</span></a>
+<a class="sourceLine" id="cb71-5" data-line-number="5">coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){</a>
+<a class="sourceLine" id="cb71-6" data-line-number="6">  <span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(x), <span class="kw">crossprod</span>(x, y)))</a>
+<a class="sourceLine" id="cb71-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb71-8" data-line-number="8"><span class="co"># Compute coefficients, fitted values and residuals</span></a>
+<a class="sourceLine" id="cb71-9" data-line-number="9">beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> lcavol)</a>
+<a class="sourceLine" id="cb71-10" data-line-number="10">yhat &lt;-<span class="st"> </span><span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>beta_hat)</a>
+<a class="sourceLine" id="cb71-11" data-line-number="11">e &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span>yhat</a></code></pre></div>
+<p>The function <code>lm</code> fits a linear model by least squares to a dataset. The function <code>summary</code> will return coefficient estimates, standard errors and various other statistics formatted in a way so that they can be printed to the console.</p>
+<p>The formula for <code>lm</code> must be of the form <code>y ~</code>, and any combination of the variables appearing on the right hand side of the <code>~</code> will be added as new columns of the design matrix. By default, the latter includes a column of ones. To remove it, use <code>+0</code> or <code>-1</code>. If you have two covariates <code>x1</code> and <code>x2</code>, the model <code>x1+x2</code> will have for <span class="math inline">\(i\)</span>th row <span class="math inline">\((1, x_{i1}, x_{i2})\)</span>, while the model <code>x1+x2+x1:x2</code><span class="math inline">\(\equiv\)</span><code>x1*x2</code> will include an <em>interaction</em> term <code>x1:x2</code>. The latter just means product, so the <span class="math inline">\(i\)</span>th row of the design matrix would be <span class="math inline">\((1, x_{i1}, x_{i2}, x_{i1}x_{i2})\)</span>. <strong>R</strong> will drop any collinear vectors, warn you and report <code>NA</code> in the summary output.</p>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Compare the quantities you obtained in the last question with the output of the function <code>lm</code>.</li>
+</ol>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">beta_hat <span class="co"># equivalent to print(beta_hat)</span></a></code></pre></div>
+<pre><code>## [1] -0.5085796  0.7499189</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">coef</span>(fit) <span class="co"># coefficients from object of class `lm`</span></a></code></pre></div>
+<pre><code>## (Intercept)        lpsa 
+##  -0.5085796   0.7499189</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(beta_hat, <span class="kw">coef</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(yhat), <span class="kw">fitted</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(e, <span class="kw">resid</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>Add the fitted regression line to the scatterplot of lcavol against lpsa .</li>
+</ol>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb82-2" data-line-number="2"><span class="kw">plot</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate,</a>
+<a class="sourceLine" id="cb82-3" data-line-number="3">  <span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc), log scale&quot;</span>,</a>
+<a class="sourceLine" id="cb82-4" data-line-number="4">  <span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, </a>
+<a class="sourceLine" id="cb82-5" data-line-number="5">  <span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,</a>
+<a class="sourceLine" id="cb82-6" data-line-number="6">  <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb82-7" data-line-number="7"><span class="kw">abline</span>(fit, <span class="dt">lwd =</span> <span class="dv">2</span>) <span class="co">#simply add regression line, lwd is line width</span></a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb83-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb83-3" data-line-number="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,</a>
+<a class="sourceLine" id="cb83-4" data-line-number="4">       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,</a>
+<a class="sourceLine" id="cb83-5" data-line-number="5">       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb83-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/question_eggplot2-1.png" width="672" /></p>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.</li>
+</ol>
+<p>The interpretation is as follows. We fit
+<span class="math display">\[\log(\texttt{cavol}_i) = \beta_0 + \beta_1 \log(\texttt{psa}_i) + \varepsilon_i.\]</span></p>
+<p>On the original scale, this translates into the multiplicative model <span class="math inline">\(\texttt{cavol}_i= \exp^{\beta_0}\texttt{psa}_i^{\beta_1}\exp(\varepsilon_i)\)</span>.
+The effect of an increase of one ng/mll of prostate specific antigen depends on the specific level of <span class="math inline">\(\texttt{psa}\)</span>, <span class="math inline">\((\texttt{psa}_1/\texttt{psa}_2)^{\beta_1}\)</span> for levels <span class="math inline">\(\texttt{psa}_1\)</span> and <span class="math inline">\(\texttt{psa}_2\)</span>.
+For example, an increase of the PSA level from 5.25 ng/mll to 6.15 ng/mll leads an increase of the volume of cancer of prostate cancer of 1.13 milliliters per cubic centimeter.</p>
+<ol start="8" style="list-style-type: lower-alpha">
+<li>Using the results of Exercise 4.2, obtain the orthogonal projection matrix <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> using a SVD decomposition (<code>svd</code>). Check your output.</li>
+</ol>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1"><span class="co">#Hat matrix</span></a>
+<a class="sourceLine" id="cb84-2" data-line-number="2">Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
+<a class="sourceLine" id="cb84-3" data-line-number="3"><span class="co">#SVD decomposition of X</span></a>
+<a class="sourceLine" id="cb84-4" data-line-number="4">svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)</a>
+<a class="sourceLine" id="cb84-5" data-line-number="5"><span class="co">#OLS coefficients</span></a>
+<a class="sourceLine" id="cb84-6" data-line-number="6">beta_hat_svd &lt;-<span class="st"> </span>svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st"> </span>(<span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>lcavol <span class="op">/</span><span class="st"> </span>svdX<span class="op">$</span>d)</a>
+<a class="sourceLine" id="cb84-7" data-line-number="7">Hmat_svd &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)</a>
+<a class="sourceLine" id="cb84-8" data-line-number="8"><span class="co">#Check that both quantities are equal</span></a>
+<a class="sourceLine" id="cb84-9" data-line-number="9"><span class="kw">all.equal</span>(Hmat, Hmat_svd, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1"><span class="co">#use check.attributes = FALSE </span></a>
+<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="co">#if you want to compare only the values</span></a>
+<a class="sourceLine" id="cb86-3" data-line-number="3"><span class="co">#and not e.g. the column names</span></a>
+<a class="sourceLine" id="cb86-4" data-line-number="4"><span class="kw">all.equal</span>(<span class="kw">c</span>(beta_hat_svd), beta_hat)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<ol style="list-style-type: lower-roman">
+<li>Compute the <span class="math inline">\(R^2_c\)</span> coefficient and compare with the one in summary output of the <code>lm</code> function. What
+can you say about the explanatory power of the covariate <code>lpsa</code> ?</li>
+</ol>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">R2c &lt;-<span class="st"> </span><span class="kw">sum</span>((yhat<span class="op">-</span><span class="kw">mean</span>(y))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((y<span class="op">-</span><span class="kw">mean</span>(y))<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb88-2" data-line-number="2">R2c_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)<span class="op">$</span>r.squared <span class="co">#this is centered version</span></a>
+<a class="sourceLine" id="cb88-3" data-line-number="3"><span class="kw">all.equal</span>(R2c, R2c_lm)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="co">#Detach prostate from environment</span></a>
+<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="kw">detach</span>(prostate)</a></code></pre></div>
+<p>The value of <span class="math inline">\(R^2_c\)</span> is about 0.54, so about half the variability can be explained by the model. There is reasonable explanatory power. Note that presence of cancer causes the prostate specific antigens to increase (not the other way around!) so be careful in your interpretation. A linear model could nevertheless be sensible here if we wished to obtain a non-invasive detector for predicting presence/absence of cancer, assuming the antigen is present in blood samples, but that detection of cancer would require otherwise a biopsy.</p>
+
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exercises-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="frischwaughlovell-theorem.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
