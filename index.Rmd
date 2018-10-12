@@ -7,6 +7,8 @@ output:
   bookdown::gitbook:
     highlight: tango
 documentclass: book
+header-includes:
+   - \usepackage{amsmath,amssymb,mathtools}
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike2
 link-citations: yes

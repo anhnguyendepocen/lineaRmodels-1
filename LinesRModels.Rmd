@@ -1,3 +1,311 @@
+--- 
+title: "lineaRmodels"
+author: "Léo Belzile"
+date: "version of `r Sys.Date()`"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    highlight: tango
+documentclass: book
+header-includes:
+   - \usepackage{amsmath,amssymb,mathtools}
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike2
+link-citations: yes
+github-repo: lbelzile/lineaRmodels
+always_allow_html: yes
+description: "This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians."
+---
+
+# Preliminary remarks {-}
+
+This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.
+
+
+We shall use the **R** programming language througout the course (as it is free and it is used in other statistics courses at EPFL). Visit [the R-project website](https://cran.r-project.org/) to download the program. The most popular graphical cross-platform front-end is [RStudio Desktop](https://www.rstudio.com/products/rstudio/download/).
+
+**R** is an object-oriented interpreted language. It differs from usual programming languages in that it is designed for interactive analyses. 
+
+
+Since **R** is not a conventional programming language, my teaching approach will be learning-by-doing. The benefit of using *Rmarkdown* is that you see the output directly and you can also copy the code.
+
+<!--chapter:end:index.Rmd-->
+
+# Introduction 
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\Hmat}{\mathbf{H}}
+\newcommand{\Mmat}{\mathbf{M}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\bX}{{\mathbf{X}}}
+\newcommand{\bx}{{\mathbf{x}}}
+\newcommand{\by}{{\boldsymbol{y}}}
+\newcommand{\bY}{{\boldsymbol{Y}}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\hbb}{\hat{\boldsymbol{\beta}}}
+\newcommand{\limni}{\lim_{n \ra \infty}}
+\newcommand{\Sp}{\mathsf{span}}
+
+
+You can find several introductions to **R** online. Have a look at the [**R** manuals](https://cran.r-project.org/manuals.html) or better at [contributed manuals](https://cran.r-project.org/other-docs.html). A nice official reference is [An introduction to  **R**](http://colinfay.me/intro-to-r/index.html). 
+You may wish to look up the following chapters of the **R** language definition ([Evaluation of expressions](http://colinfay.me/r-language-definition/evaluation-of-expressions.html) and part of the [*Objects* chapter](http://colinfay.me/r-language-definition/objects.html)).
+
+If you favor online courses, Data Camp offers a [free introduction to R](https://www.datacamp.com/courses/free-introduction-to-r).
+
+## Basics of **R**
+
+
+### Help
+
+Help can be accessed via `help` or simply `?`. If you do not know what to query, use `??` in front of a string, delimited by captions `" "` as in `??"Cholesky decomposition"`. Help is your best friend if you don't know what a function does, what are its arguments, etc.
+ 
+
+### Basic commands 
+Basic **R** commands are fairly intuitive, especially if you want to use **R** as a calculator.
+Elementary functions such as `sum`, `min`, `max`, `sqrt`, `log`, `exp`, etc., are self-explanatory.
+
+Some unconventional features of the language: 
+
+- Use `<-` to assign to a variable, and `=` for matching arguments inside functions
+- Indexing in **R** starts at 1, **not** zero. 
+- Most functions in **R** are vectorized, so avoid loops as much as possible.
+- Integers are obtained by appending `L` to the number, so `2L` is an integer and `2` a double.
+
+Besides integers and doubles, the common types are 
+- logicals (`TRUE` and `FALSE`);
+- null pointers (`NULL`), which can be assigned to arguments;
+- missing values, namely `NA` or `NaN`. These can also be obtained a result of invalid mathematical operations such as `log(-2)`. 
+
+The above illustrates a caveat of  **R**: invalid calls will often returns _something_ rather than an error. It is therefore good practice to check that the output is sensical.
+
+### Linear algebra in **R**
+
+**R** is an object oriented language, and the basic elements in **R** are (column) vector. Below is a glossary with some useful commands for performing basic manipulation of vectors and matrix operations:
+
+- `c` as in _c_oncatenates creates a vector
+- `cbind` (`rbind`) binds column (row) vectors
+- `matrix` and `vector` are constructors
+- `diag` creates a diagonal matrix (by default with ones)
+- `t` is the function for transpose
+- `solve` performs matrix inversion
+- `%*%` is matrix multiplication, `*` is element-wise multiplication
+- `crossprod(A, B)` calculates the cross-product $\mathbf{A}^\top\mathbf{B}$, `t(A) %*% B`, of two matrices `A` and `B`.
+- `eigen`/`chol`/`qr`/`svd` perform respectively an eigendecomposition/Cholesky/QR/singular value decomposition of a matrix
+- `rep` creates a vector of duplicates, `seq` a sequence. For integers $i$, $j$ with $i<j$, `i:j` generates the sequence $i, i+1, \ldots, j-1, j$.
+
+Subsetting is fairly intuitive and general;  you can use vectors, logical statements. For example, if `x` is a vector,
+then 
+
+- `x[2]` returns the second element
+- `x[-2]` returns all but the second element
+- `x[1:5]` returns the first five elements
+- `x[(length(x) - 5):length(x)]` returns the last five elements
+- `x[c(1, 2, 4)]` returns the first, second and fourth element
+- `x[x > 3]` return any element greater than 3. Possibly an empty vector of length zero!
+- `x[ x < -2 | x > 2]` multiple logical conditions.
+- `which(x == max(x))` index of elements satisfying a logical condition.
+
+For a matrix `x`, subsetting now involves dimensions: `[1,2]` returns the element in the first row, second column. `x[,2]` will return all of the rows, but only the second column. For lists, you can use `[[ ` for subsetting by index or the `$` sign by names.
+
+
+### Packages
+
+The great strength of **R** comes from its contributed libraries (called packages), which contain functions and datasets provided by third parties. Some of these (`base`, `stats`, `graphics`, etc.) are loaded by default whenever you open a session.
+
+To install a package from CRAN, use `install.packages("package")`, replacing `package` by the package name. Once installed, packages can be loaded using `library(package)`; all the functions in `package` will be available in the environment. 
+
+```{block2, type = "rmdcaution"}
+There are drawbacks to loading packages: if an object with the same name from another package is already present in your environment, it will be hidden. Use the double-colon operator `::` to access a single object from an installed package (`package::object`). 
+
+```
+
+## Tutorial 1 {#week1}
+
+### Datasets
+
+- datasets are typically stored inside a `data.frame`, a matrix-like object whose columns contain the variables and the rows the observation vectors. 
+- The columns can be of different types (`integer`, `double`, `logical`, `character`), but all the column vectors must be of the same length. 
+- Variable names can be displayed by using `names(faithful)`. 
+- Individual columns can be accessed using the column name using the `$` operator. For example, `faithful$eruptions` will return the first column of the `faithful` dataset.
+- To load a dataset from an (installed) **R** package, use the command `data` with the name of the `package` as an argument (must be a string). The package `datasets` is loaded by default whenever you open **R**, so these are always in the search path.
+
+The following functions can be useful to get a quick glimpse of the data:
+
+- `summary` provides descriptive statistics for the variable.
+- `str` provides the first few elements with each variable, along with the dimension
+- `head` (`tail`) prints the first (last) $n$ lines of the object to the console (default is $n=6$).
+
+We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park and looking at its entries.
+
+```{r week1_loadfaithful}
+# Load Old faithful dataset
+data(faithful, package = "datasets")
+# Query the database for documentation
+?faithful
+# look at first entries
+head(faithful)
+str(faithful)
+# What kind of object is faithful? 
+class(faithful)
+```
+
+Other common classes of objects:
+- `matrix`: an object with attributes `dim`, `ncol` and `nrow` in addition to `length`, which gives the total number of elements. 
+- `array`: a higher dimensional extension of `matrix` with arguments `dim` and `dimnames`.
+- `list`: an unstructured class whose elements are accessed using double indexing `[[ ]]` and elements are typically accessed using `$` symbol with names. To delete an element from a list, assign  `NULL` to it. 
+- `data.frame` is a special type of list where all the elements are vectors of potentially different type, but of the same length.
+
+### Graphics
+
+The `faithful` dataset consists of two variables: the regressand `waiting` and the regressor `eruptions`. One could postulate that the waiting time between eruptions will be smaller if the eruption time is small, since pressure needs to build up for the eruption to happen. We can look at the data to see if there is a linear relationship between the variables. 
+
+An image is worth a thousand words and in statistics, visualization is crucial. Scatterplots are produced using the function `plot`. You can control the graphic console options using `par` --- see `?plot` and `?par` for a description of the basic and advanced options available.
+
+Once `plot` has been called, you can add additional observations as points (lines) to the graph using `point` (`lines`) in place of `plot`. If you want to add a line (horizontal, vertical, or with known intercept and slope), use the function `abline`.
+
+Other functions worth mentioning at this stage:
+
+- `boxplot` creates a box-and-whiskers plot
+- `hist` creates an histogram, either on frequency or probability scale (option `freq = FALSE`). `breaks` control the number of bins. `rug` adds lines below the graph indicating the value of the observations.
+- `pairs` creates a matrix of scatterplots, akin to `plot` for data frame objects.
+
+```{block2, type="rmdnote"}
+There are two options for basic graphics: the base graphics package and the package `ggplot2`. The latter is a more recent proposal that builds on a modular approach and is more easily customizable --- I suggest you stick to either and `ggplot2` is a good option if you don't know **R** already, as the learning curve will be about the same. Even if the display from `ggplot2` is nicer, this is no excuse for not making proper graphics. Always label the axis and include measurement units!
+
+```
+
+```{r week1_scatterplot}
+# Scatterplots
+# Using default R commands
+plot(waiting ~ eruptions, data = faithful, 
+     xlab = "Eruption time (in min.)", 
+     ylab = "Waiting time between eruptions (in min.)",
+     main = "Old Faithful Geyser Data")
+#using the grammar of graphics (more modular)
+#install.packages("ggplot2") #do this once only
+library(ggplot2)
+ggplot2::ggplot(data = faithful, aes(x = eruptions, y = waiting)) + 
+  geom_point() +  
+  labs(title = "Old Faithful Geyser Data", 
+       x = "Eruption time (in min.)", 
+       y = "Waiting time between eruptions (in min.)")
+```
+
+A simple linear model of the form \[y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i,\] where $\varepsilon_i$ is a noise variable with expectation zero and $\mathbf{x} = \mathsf{eruptions}$ and $\boldsymbol{y} = \mathsf{waiting}$. We first create a matrix with a column of $\mathbf{1}_n$ for the intercept.  We bind vectors by column (`cbind`) into a matrix, recycling arguments if necessary. Use `$` to obtain a column of the data frame based on the name of the variable (partial matching is allowed, e.g., `faithful$er` is equivalent to `faithful$eruptions` in this case).
+
+```{r week1_buildmat}
+## Manipulating matrices
+n <- nrow(faithful)
+p <- ncol(faithful)
+y <- faithful$waiting
+X <- cbind(1, faithful$eruptions)
+```
+
+
+
+### Projection matrices
+
+Recall that $\mathbf{H}_{\mathbf{X}} \equiv \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top$ is the orthogonal projection matrix onto 
+ $\mathsf{span}(\mathbf{X})$. The latter has $p=2$ eigenvalues equal to 1, is an $n \times n$ matrix of rank $p$, is symmetric and idempotent.
+ We can verify the properties of $\mathbf{H}_{\mathbf{X}}$ numerically. 
+
+```{block2, type="rmdcaution"}
+
+Whereas we will frequently use `==` to check for equality of booleans, the latter should be avoided for comparisons because computer arithmetic is   exact only  in base 2.  For example, `1/10 + 2/10 - 3/10 == 0` will return `FALSE`, whereas `all.equal(1/10 + 2/10 - 3/10, 0)` will return `TRUE`.
+Use `all.equal` to check for equalities. 
+
+```
+
+```{r week1_projectionmat}
+Hx <- X %*% solve(crossprod(X)) %*% t(X)
+# Create projection matrix onto complement 
+# `diag(n)` is the n by n identity matrix
+Mx <- diag(n) - Hx
+#Check that projection leaves X invariant
+isTRUE(all.equal(X, Hx %*% X))
+#Check that orthogonal projection maps X to zero matrix of dimension (n, p)
+isTRUE(all.equal(matrix(0, nrow = n, ncol = p), Mx %*% X))
+#Check that the matrix Hx is idempotent
+isTRUE(all.equal(Hx %*% Hx, Hx))
+#Check that the matrix Hx is symmetric
+isTRUE(all.equal(t(Hx), Hx))
+#Check that only a two eigenvalue are 1 and the rest are zero
+isTRUE(all.equal(eigen(Hx, only.values = TRUE)$values, c(rep(1, p), rep(0, n - p))))
+#Check that the matrix has rank p
+isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
+```
+
+## Exercises
+
+### Auto dataset
+
+- Install the **R** package `ISLR` and load the dataset `Auto`. Be careful, as **R** is case-sensitive.
+- Query the help file for information about the dataset.
+- Look at the first lines of `Auto`
+- Create an explanatory variable `x` with horsepower and mileage per gallon as response `y`.
+- Create a scatterplot of `y` against `x`. Is there evidence of a linear relationship between the two variables?
+- Append a column vector of ones to `x` and create a projection matrix.
+- Check that the resulting projection matrix is symmetric and idempotent.
+
+### Oblique projections (exercise 1.4)
+
+Suppose that $\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})$, that both $\mathbf{X}$ and $\mathbf{W}$ are full-rank $n \times p$ matrices such that $\mathbf{X}^\top\mathbf{W}$ and $\mathbf{W}^\top\mathbf{X}$ are invertible. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)$. This fact is illustrated below.
+
+We consider two non-parallel vectors in $\mathbb{R}^2$, $\mathbf{X}$ and $\mathbf{W}$. 
+
+```{r, oblique_projection} 
+#Create two vectors (non-parallel)
+x <- c(1, 2)
+w <- c(-1, 0.1)
+#Create oblique projection matrix
+P <- x %*% solve(t(w) %*% x) %*% t(w)
+
+isTRUE(all.equal((P %*% P), P)) #P is idempotent
+P - t(P) #but not symmetric
+```
+
+The figure below shows the projection of a third vector $\mathbf{v}$ (non-parallel to $\mathbf{X}$ or $\mathbf{W}$) onto the span of  <span style="color:blue">$\mathbf{P}$ (blue)</span>, <span style="color:red">$\mathbf{P}^\top$ (red)</span>, <span style="color:cyan">$\mathbf{I}_2-\mathbf{P}$ (dashed cyan)</span> and <span style="color:orange">$\mathbf{I}_2-\mathbf{P}^\top$ (dashed orange)</span>. The circles indicate the vectors <span style="color:red">$\mathbf{W}$ (red)</span> and <span style="color:blue">$\mathbf{X}$ (blue)</span> on the plane. Notice that $\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}$, whereas $\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top$.
+
+```{r illustproj, echo = FALSE}
+#Project a third vector `vec' onto P, P transpose, I-P, I-(P transpose)
+vec <- c(1.9, -1.5)
+vec_P <- P %*% vec
+vec_Pt <- t(P) %*% vec
+vec_Id_minus_P <- (diag(2)-P) %*% vec 
+#diag: diagonal matrix, default to identity
+vec_Id_minus_Pt <- (diag(2)-t(P)) %*% vec
+
+#Plot the resulting vector along with the two vectors x and w (points)
+par(pty = "s") #graphical console parameters (square region)
+plot(NULL, xlab = "", ylab = "", xlim = c(-4, 4), ylim = c(-4, 4))
+#create empty plot with labels x and y, on square region [-4,4]^2
+points(0, 0, pch = 20) #points: add points to existing plot
+points(x[1], x[2], col = "blue")
+points(w[1], w[2], col = "red")
+# blue line for P, dashed blue for I-P, red for Pt, red dashed for I-Pt
+segments(x0 = 0, y0 = 0, x1 = vec_P[1], y1 = vec_P[2], col = "blue")
+segments(x0 = 0, y0 = 0, x1 = vec_Pt[1], y1 = vec_Pt[2], col = "red")
+segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_P[1], y1 = vec_Id_minus_P[2], col = "cyan", lty = 2)
+segments(x0 = 0, y0 = 0, x1 = vec_Id_minus_Pt[1], y1 = vec_Id_minus_Pt[2], col = "orange", lty = 2)
+
+```
+
+## Summary of week 1
+
+Let $\mathbf{X}$ be an $n \times p$ full-rank matrix ($p <n$). An $n \times n$ orthogonal projection matrix $\mathbf{H}$ 
+
+- projects on to $\mathcal{V} \subseteq \mathbb{R}^n$, meaning $\mathbf{Hv} \in \mathcal{V}$ for any $\mathbf{v} \in \mathbb{R}^n$;
+- is idempotent, meaning $\mathbf{H} = \mathbf{HH}$;
+- is symmetric, meaning $\mathbf{H} = \mathbf{H}^\top$.
+
+The projection matrix $\mathbf{H}$ is unique; if $\mathcal{V} = \Sp(\mathbf{X})$, then 
+$$\mathbf{H}_{\mathbf{X}} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top.$$
+Since $\mathbf{X}: \mathbb{R}^n \to \mathbb{R}^p$, $\mathbf{H}_{\mathbf{X}}$ has rank $p$. The orthogonal complement $\mathbf{M}_{\mathbf{X}}\equiv \mathbf{I}_n - \mathbf{H}_{\mathbf{X}}$ projects onto $\Sp^{\perp}(\mathbf{X})$. 
+
+<!--chapter:end:01-intro.Rmd-->
+
 # Computational considerations
 
 ```{r setup, include=FALSE}
@@ -526,3 +834,115 @@ detach(prostate)
 ```
 
 The value of $R^2_c$ is about `r round(R2c, 2)`, so about half the variability can be explained by the model. There is reasonable explanatory power. Note that presence of cancer causes the prostate specific antigens to increase (not the other way around!). A linear model could nevertheless be sensible here if we wished to obtain a non-invasive detector for predicting presence/absence of cancer, assuming the antigen is present in blood samples, but that detection of cancer would require otherwise a biopsy.
+
+<!--chapter:end:02-computations.Rmd-->
+
+# Frisch--Waugh--Lovell theorem
+
+This result dates back to the work of [Frisch, R. and F. Waugh (1933)](https://www.jstor.org/stable/1907330) and of [M. Lovell (1963)](https://doi.org/10.1080/01621459.1963.10480682). The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.
+
+Consider the following linear regression 
+$$
+ \by = \bX_1\bbeta_1+\bX_2\bbeta_2+ \bs{u}, \label{eq1}
+$$
+where the response vector $\by$ is $n \times 1$, the vector of errors $\bs{u}$ is a realization from a mean zero random 
+variable. The $n \times p$ full-rank design matrix $\bX$ can be written as the partitioned 
+matrix $(\bX_1^\top, \bX_2^\top)^\top$ with blocks $\bX_1$, an $n \times p_1$ matrix, and $\bX_2$, an $n \times p_2$ matrix. Let 
+$\hbb_1$ 
+and $\hbb_2$ be the ordinary 
+least square (OLS) parameter estimates from running this regression. Define the orthogonal projection matrix $\Hmat_\bX$ as usual and 
+$\Hmat_{\bX_i} = 
+\bX_i^{\vphantom{\top}}(\bX_i^\top\bX_i^{\vphantom{\top}})^{-1}\bX_i^\top$ for $i=1, 2$. Similarly, 
+define the complementary projection matrices $\Mmat_{\bX_1}=\mathbf{I}_n-\Hmat_{\bX_1}$ and $\Mmat_{\bX_2}=\mathbf{I}_n-\Hmat_{\bX_2}$.
+
+```{theorem}
+The ordinary least square estimates of $\bbeta_2$ and the residuals from \eqref{eq1} are identical to those obtained by 
+running the regression 
+$$
+ \Mmat_{\bX_1}\by = \Mmat_{\bX_1}\bX_2\bbeta_2 + \text{residuals}. \label{eq2} \
+$$
+```
+
+```{proof}
+The easiest proof uses projection matrices, but we demonstrate the result for OLS coefficients directly.
+Consider an invertible $d \times d$ matrix $\mathbf{C}$ and denote its inverse by $\mathbf{D}$; then
+$$
+\begin{pmatrix} \mathbf{C}_{11} & \mathbf{C}_{12} \\ \mathbf{C}_{21} &\mathbf{C}_{22}
+\end{pmatrix}\begin{pmatrix} \mathbf{D}_{11} & \mathbf{D}_{12} \\ \mathbf{D}_{21} &\mathbf{D}_{22}
+\end{pmatrix}
+=\mathbf{I}_p
+$$
+gives the relationships
+\begin{align*}
+\mathbf{C}_{11}\mathbf{D}_{11}+\mathbf{C}_{12}\mathbf{D}_{21} &= \mathbf{I}_{p_1}\\
+\mathbf{C}_{11}\mathbf{D}_{12}+\mathbf{C}_{12}\mathbf{D}_{22} &= \mathbf{O}_{p_1, p_2}\\
+\mathbf{C}_{22}\mathbf{D}_{21}+\mathbf{C}_{21}\mathbf{D}_{11} &= \mathbf{O}_{p_2, p_1}\\
+\mathbf{C}_{22}\mathbf{D}_{22}+\mathbf{C}_{21}\mathbf{D}_{12} &= \mathbf{I}_{p_2}\\
+\end{align*}
+from which we deduce that the so-called Schur complement of $\mathbf{C}_{22}$ is $$\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21} = \mathbf{D}_{11}^{-1}$$
+and 
+$$
+-\mathbf{C}_{22}\mathbf{C}_{21}(\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21})^{-1} = \mathbf{D}_{21}.
+$$
+Substituting 
+$$
+\begin{pmatrix} \mathbf{C}_{11} & \mathbf{C}_{12} \\ \mathbf{C}_{21} &\mathbf{C}_{22}
+\end{pmatrix} \equiv \begin{pmatrix} \mathbf{X}_1^\top\mathbf{X}_1 & \mathbf{X}_1^\top\mathbf{X}_2\\\mathbf{X}_2^\top\mathbf{X}_1  &\mathbf{X}_2^\top\mathbf{X}_2 
+\end{pmatrix}
+$$
+and plug-in this result back in the equation for the least squares yields
+\begin{align*}
+\hat{\boldsymbol{\beta}}_1 &= (\mathbf{D}_{11}\mathbf{X}_1^\top + \mathbf{D}_{12}\mathbf{X}_2^\top)\boldsymbol{y} 
+\\&= \mathbf{D}_{11}( \mathbf{X}_1^\top - \mathbf{C}_{12}\mathbf{C}_{22}^{-1}\mathbf{X}_2)\boldsymbol{y}
+\\&= \left(\mathbf{C}_{11}+\mathbf{C}_{12}\mathbf{C}^{-1}_{22}\mathbf{C}_{21}\right)^{-1} \mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y} 
+\\&= (\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\mathbf{X}_1)^{-1}\mathbf{X}_1^\top\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y}.
+\end{align*}
+
+The proof that the residuals are the same is left as an exercise.
+```
+
+## Geometric proof using pictures
+
+The Frisch--Waugh--Lovell theorem is perhaps best explained using pictures. 
+The following is taken from Davidson and McKinnon (1993) monograph 
+We consider for simplicity the bivariate case and two non-parallel vectors $\mathbf{X}_1$ and $\mathbf{X}_2$. The yellow line illustrate the usual orthogonal decomposition $\bs{y} = \Hmat_{\mX}\by + \Mmat_{\mX}\by$, where $\Hmat_{\mX}\by$ is the segment $OB$ and $\Mmat_{\mX}\by$ is the segment $BA$. A similar decomposition can be performed in terms of the sole $\mX_1$, namely through $\Hmat_{\mX_1}\by$ corresponding to the line segment $OC$ and
+$\Mmat_{\mX_1}\by$ corresponding to $CA$.
+
+```{r fwl1, out.width = "85%", fig.cap = "Orthogonal decomposition into residuals and fitted values", echo = FALSE}
+knitr::include_graphics("images/FWL1.png")
+#knitr::include_graphics("images/FWL.pdf")
+```
+
+The right-angled triangle $ABC$ is orthogonal to $\mX_1$. We deduce that the segment $CB$ is $\Mmat_{\mX_1}\Hmat_{\mX}\by$. 
+
+```{r fwl2, out.width = "85%", fig.cap = "Projection onto spane spanned by the regressors", echo = FALSE}
+knitr::include_graphics("images/FWL3.png")
+#knitr::include_graphics("images/FWL.pdf")
+```
+
+We may also look at the plane $\Sp(\mX)$ of the vector $\by$ and its fitted value. More specifically, consider the decomposition $\Hmat_{\mX}\by = \mX_1\hbb_1 + \mX_2\hbb_2$. This is represented by the parallelogram $ODBE$; the segments $OD$ and $EB$ correspond to the vector $\mX_2\hbb_2$, while $DB$ and $OE$ are shifted copies of $\mX_2\hbb_2$. 
+
+```{r fwl3, out.width = "85%", fig.cap = "Triangle ABC", echo = FALSE}
+knitr::include_graphics("images/FWL2.png")
+#knitr::include_graphics("images/FWL.pdf")
+```
+
+Lastly, the triangle $BCE$ gives yet another decomposition. 
+
+```{r fwl4, out.width = "85%", fig.cap = "Triangle BCE", echo = FALSE}
+knitr::include_graphics("images/FWL4.png")
+#knitr::include_graphics("images/FWL.pdf")
+```
+
+We can deduce from the latter the formula for least squares. Looking at the residuals in the second picture, we see that the segment $AC$ is also the residual from the FWL regression. 
+
+## Examples 
+
+We have seen last week the centered $R^2_c$; the latter is equivalent to the coefficient of determination from the FWL regression 
+$$ \Mmat_{\mathbf{1}_n}\bs{y} = \Mmat_{\mathbf{1}_n}\mX \boldsymbol{\beta} + \bs{\varepsilon},$$
+that is, after centering regressand and regressors. Note that this regression will have no intercept, because this coefficient would be exactly zero. 
+
+To be continued.
+
+<!--chapter:end:03-fwl.Rmd-->
+
