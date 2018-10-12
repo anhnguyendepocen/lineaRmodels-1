@@ -64,43 +64,29 @@ The proof that the residuals are the same is left as an exercise.
 
 ## Geometric proof using pictures
 
-The Frisch--Waugh--Lovell theorem is perhaps best explained using pictures. 
-The following is taken from Davidson and McKinnon (1993) monograph 
-We consider for simplicity the bivariate case and two non-parallel vectors $\mathbf{X}_1$ and $\mathbf{X}_2$. The yellow line illustrate the usual orthogonal decomposition $\bs{y} = \Hmat_{\mX}\by + \Mmat_{\mX}\by$, where $\Hmat_{\mX}\by$ is the segment $OB$ and $\Mmat_{\mX}\by$ is the segment $BA$. A similar decomposition can be performed in terms of the sole $\mX_1$, namely through $\Hmat_{\mX_1}\by$ corresponding to the line segment $OC$ and
+The Frisch--Waugh--Lovell theorem is perhaps best explained using pictures. Davidson and McKinnon (1993) ``Estimation and Inference in Econometrics'' monograph offers a fantastic illustration (Fig 1.7), which is reproduced below for convenience. The explanation is my own.
+
+
+Consider for simplicity the bivariate case and two non-parallel vectors $\mathbf{X}_1$ and $\mathbf{X}_2$. The yellow line illustrate the usual orthogonal decomposition $\bs{y} = \Hmat_{\mX}\by + \Mmat_{\mX}\by$, where $\Hmat_{\mX}\by$ is the segment $OB$ and $\Mmat_{\mX}\by$ is the segment $BA$. A similar decomposition can be performed in terms of the sole $\mX_1$, namely through $\Hmat_{\mX_1}\by$ corresponding to the line segment $OC$ and
 $\Mmat_{\mX_1}\by$ corresponding to $CA$.
 
-```{r fwl1, out.width = "85%", fig.cap = "Orthogonal decomposition into residuals and fitted values", echo = FALSE}
+```{r fwl1, out.width = "85%", fig.cap = "Orthogonal decomposition into residuals and fitted values", echo = FALSE,fig.align = 'center'}
 knitr::include_graphics("images/FWL1.png")
-#knitr::include_graphics("images/FWL.pdf")
+```
+
+We may also look at the projection onto $\Sp(\mX)$ of the vector $\by$ and its fitted value. More specifically, consider the decomposition $\Hmat_{\mX}\by = \mX_1\hbb_1 + \mX_2\hbb_2$. This is represented by the parallelogram $ODBE$; the segments $OD$ and $EB$ correspond to the vector $\mX_2\hbb_2$, while $DB$ and $OE$ are shifted copies of $\mX_1\hbb_1$. 
+
+```{r fwl2,  fig.cap = "Projection onto spane spanned by the regressors", echo = FALSE,fig.align = 'center'}
+knitr::include_graphics("images/FWL2.png")
 ```
 
 The right-angled triangle $ABC$ is orthogonal to $\mX_1$. We deduce that the segment $CB$ is $\Mmat_{\mX_1}\Hmat_{\mX}\by$. 
 
-```{r fwl2, out.width = "85%", fig.cap = "Projection onto spane spanned by the regressors", echo = FALSE}
+```{r fwl3, fig.cap="Triangle ABC", echo = FALSE,fig.align = 'center'}
 knitr::include_graphics("images/FWL3.png")
-#knitr::include_graphics("images/FWL.pdf")
 ```
 
-We may also look at the plane $\Sp(\mX)$ of the vector $\by$ and its fitted value. More specifically, consider the decomposition $\Hmat_{\mX}\by = \mX_1\hbb_1 + \mX_2\hbb_2$. This is represented by the parallelogram $ODBE$; the segments $OD$ and $EB$ correspond to the vector $\mX_2\hbb_2$, while $DB$ and $OE$ are shifted copies of $\mX_2\hbb_2$. 
 
-```{r fwl3, out.width = "85%", fig.cap = "Triangle ABC", echo = FALSE}
-knitr::include_graphics("images/FWL2.png")
-#knitr::include_graphics("images/FWL.pdf")
-```
+We can deduce from Figure \@ref(fig:fwl3) the formula for least squares since $\Mmat_{\mX_1}\Hmat_{\mX}\by = \Mmat_{\mX_1}\mX_2\hbb_2$. It is now hopefully clear that $BA$ is the vector $\boldsymbol{e}$ of residuals from the original regression. 
 
-Lastly, the triangle $BCE$ gives yet another decomposition. 
 
-```{r fwl4, out.width = "85%", fig.cap = "Triangle BCE", echo = FALSE}
-knitr::include_graphics("images/FWL4.png")
-#knitr::include_graphics("images/FWL.pdf")
-```
-
-We can deduce from the latter the formula for least squares. Looking at the residuals in the second picture, we see that the segment $AC$ is also the residual from the FWL regression. 
-
-## Examples 
-
-We have seen last week the centered $R^2_c$; the latter is equivalent to the coefficient of determination from the FWL regression 
-$$ \Mmat_{\mathbf{1}_n}\bs{y} = \Mmat_{\mathbf{1}_n}\mX \boldsymbol{\beta} + \bs{\varepsilon},$$
-that is, after centering regressand and regressors. Note that this regression will have no intercept, because this coefficient would be exactly zero. 
-
-To be continued.
