@@ -282,7 +282,7 @@ The problem is best written using vector-matrix notation, so
 $$ \mathrm{argmin}_{\bbeta} \sum_{i=1}^n (y_i- \mathbf{x}_i\bbeta)^2 \equiv \mathrm{argmin}_{\bbeta} (\bs{y} - \mX\bbeta)^\top(\bs{y}-\mX\bbeta) \equiv \bs{e}^\top\bs{e}.
 $$
 
-The solution to the OLS problem has a dual interpretation in the column geometry, in which we treat the vector of stacked observations $(y_1, \ldots, y_n)^\top$ (respectively the vertical distances $(e_1, \ldots, e_n)^\top$) as elements of $\mathbb{R}^n$. There, the response $\bs{y}$ space can be decomposed into _fitted values_ $\hat{\by} \equiv \Hmat_{\mX} = \mX\hbb$ and _residuals_ $\bs{e} = \Mmat_{\mX} = \bs{y} - \mX\hbb$. By construction, $\bs{e} \perp \hat{by}$.
+The solution to the OLS problem has a dual interpretation in the column geometry, in which we treat the vector of stacked observations $(y_1, \ldots, y_n)^\top$ (respectively the vertical distances $(e_1, \ldots, e_n)^\top$) as elements of $\mathbb{R}^n$. There, the response $\bs{y}$ space can be decomposed into _fitted values_ $\hat{\by} \equiv \Hmat_{\mX} = \mX\hbb$ and _residuals_ $\bs{e} = \Mmat_{\mX} = \bs{y} - \mX\hbb$. By construction, $\bs{e} \perp \hat{\by}$.
 
 We therefore get $$\bs{y} = \hat{\bs{y}} + \bs{e}$$
 and since these form a right-angled triangle, Pythagoras' theorem can be used to show that 

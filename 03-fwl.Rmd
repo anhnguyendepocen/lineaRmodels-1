@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Frisch--Waugh--Lovell theorem
 
 This result dates back to the work of [Frisch, R. and F. Waugh (1933)](https://www.jstor.org/stable/1907330) and of [M. Lovell (1963)](https://doi.org/10.1080/01621459.1963.10480682). The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.
@@ -61,32 +66,3 @@ and plug-in this result back in the equation for the least squares yields
 
 The proof that the residuals are the same is left as an exercise.
 ```
-
-## Geometric proof using pictures
-
-The Frisch--Waugh--Lovell theorem is perhaps best explained using pictures. Davidson and McKinnon (1993) ``Estimation and Inference in Econometrics'' monograph offers a fantastic illustration (Fig 1.7), which is reproduced below for convenience. The explanation is my own.
-
-
-Consider for simplicity the bivariate case and two non-parallel vectors $\mathbf{X}_1$ and $\mathbf{X}_2$. The yellow line illustrate the usual orthogonal decomposition $\bs{y} = \Hmat_{\mX}\by + \Mmat_{\mX}\by$, where $\Hmat_{\mX}\by$ is the segment $OB$ and $\Mmat_{\mX}\by$ is the segment $BA$. A similar decomposition can be performed in terms of the sole $\mX_1$, namely through $\Hmat_{\mX_1}\by$ corresponding to the line segment $OC$ and
-$\Mmat_{\mX_1}\by$ corresponding to $CA$.
-
-```{r fwl1, out.width = "85%", fig.cap = "Orthogonal decomposition into residuals and fitted values", echo = FALSE,fig.align = 'center'}
-knitr::include_graphics("images/FWL1.png")
-```
-
-We may also look at the projection onto $\Sp(\mX)$ of the vector $\by$ and its fitted value. More specifically, consider the decomposition $\Hmat_{\mX}\by = \mX_1\hbb_1 + \mX_2\hbb_2$. This is represented by the parallelogram $ODBE$; the segments $OD$ and $EB$ correspond to the vector $\mX_2\hbb_2$, while $DB$ and $OE$ are shifted copies of $\mX_1\hbb_1$. 
-
-```{r fwl2,  fig.cap = "Projection onto spane spanned by the regressors", echo = FALSE,fig.align = 'center'}
-knitr::include_graphics("images/FWL2.png")
-```
-
-The right-angled triangle $ABC$ is orthogonal to $\mX_1$. We deduce that the segment $CB$ is $\Mmat_{\mX_1}\Hmat_{\mX}\by$. 
-
-```{r fwl3, fig.cap="Triangle ABC", echo = FALSE,fig.align = 'center'}
-knitr::include_graphics("images/FWL3.png")
-```
-
-
-We can deduce from Figure \@ref(fig:fwl3) the formula for least squares since $\Mmat_{\mX_1}\Hmat_{\mX}\by = \Mmat_{\mX_1}\mX_2\hbb_2$. It is now hopefully clear that $BA$ is the vector $\boldsymbol{e}$ of residuals from the original regression. 
-
-
