@@ -66,3 +66,195 @@ and plug-in this result back in the equation for the least squares yields
 
 The proof that the residuals are the same is left as an exercise.
 ```
+
+## Revisiting the interpretation of the parameters of a linear model 
+
+Geometrically, the linear model $\boldsymbol{y} = \mathbf{X} \boldsymbol{\beta} + \text{residuals}$ corresponds to the projection on to the span of $\mathbf{X}$ and gives the line of best fit in that space.
+
+
+It is perhaps easiest to visualize the two-dimensional case, when $\mathbf{X} = (\mathbf{1}_n^\top, \mathbf{x}_1^\top)^\top$ is a $n \times 2$ design matrix and $\mathbf{x}_1$ is a continuous covariate. In this case, the coefficient vector $\boldsymbol{\beta}=(\beta_0, \beta_1)^\top$  represent, respectively, the intercept and the slope. 
+
+
+If $\mathbf{X} = \mathbf{1}_n$, the model only consists of an intercept, which is interpreted as the mean level. Indeed, the projection matrix corresponding to $\mathbf{1}_n$, $\mathbf{H}_{\mathbf{1}_n}$, is a matrix whose entries are all identically $n^{-1}$. The fitted values of this model thus correspond to the mean of $\boldsymbol{y}$, $\bar{y}$ and the residuals are the centred values $\boldsymbol{y}-\mathbf{1}_n \bar{y}$ whose mean is zero.
+
+
+More generally, for $\mathbf{X}$ an $n \times p$ design matrix, the interpretation is as follows: a unit increase in $\mathrm{x}_{ij}$ ($\mathrm{x}_{ij} \mapsto \mathrm{x}_{ij}+1)$ leads to a change of $\beta_j$ unit for $y_i$ ($y_i \mapsto \beta_j+y_i$), other things being held constant. Beware of models with higher order polynomials and interactions: if for example one is interested in the coefficient for $\mathbf{x}_j$, but $\mathbf{x}_j^2$ is also a column of the design matrix, then a change of one unit in $\mathbf{x}_j$ will not lead to a change of $\beta_jx_j$ for $y_j$!
+  
+The FWL theorem says the coefficient $\boldsymbol{\beta}_2$ in the regression 
+\[\boldsymbol{y} =\mathbf{X}_1\boldsymbol{\beta}_1 + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}\] is equivalent to that of the regression 
+\[\mathbf{M}_1\boldsymbol{y} =\mathbf{M}_1 \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon} \]
+This can be useful to distangle the effect of one variable.
+
+The intercept coefficient does not correspond to the mean of $\boldsymbol{y}$ unless the other variables in the design matrix have been centered (meaning they have mean zero). Otherwise, the coefficient $\beta_0$ associated to the intercept is nothing but the level of $y$ when all the other variables are set to zero.
+Adding new variables affects the estimates of the coefficient vector $\boldsymbol{\beta}$, unless the new variables are orthogonal to the existing lot.
+
+
+## Factors
+
+Oftentimes, the regressors that are part of the design matrix will be categorical variables, which can be ordered or unordered. These are encoded using binary indicators, that is, vectors of zero/ones. In **R**, dummy variables (vectors of class `factor`) are used to indicate categorical variables; the component `levels` allows one to obtain meaningful category names. The function `lm` can deal with `factor` objects. Oftentimes, dummy indicators are cast to numeric vector in data frame. There is a risk that the vector be interpreted as a continuous numeric if the levels are integers (for example, advancement of the state of an illness that is encoded as 1, 2, 3, \ldots). The user can cast columns to factors using the function `as.factor`. Use `is.factor` to check whether the vector is a factor. The functions `class` also reports the encoding and `summary` displays counts of the various factor in place of the usual summary statistics.
+
+### Example: seasonal effects
+
+Suppose we are interested in estimating the seasonal model for quarterly data. Since each observation is recorded on one trimester, it could be postulated that the time of the year affect the response. This effect can be built in the design and tested for.
+
+Consider a design matrix whose columns include $(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4)$. The entries of the seasonal dummies are 0/1 depending on the season; for example, $\mathrm{S}_{i1}=1$ if the observation is recorded in the spring and $\mathrm{S}_{i1}=0$ otherwise, so that, for time ordered response vectors starting in the spring, we can write $\mathbf{S}_1=(1,0,0,0,1,0,0,\ldots)^\top$ and $\mathbf{S}_1 + \mathbf{S}_2 + \mathbf{S}_3 + \mathbf{S}_4 = \mathbf{1}_n$. Thus, a regression model cannot include a mean and all four seasonal variables, but since $\mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4) = \mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{1}_n) = \mathscr{M}(\mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4, \mathbf{1}_n)$, any set of four vectors can be used.
+
+If we drop the constant vector $\mathbf{1}_n$ from the regression (in **R**, by writing `0` or `-1` on the right hand side of the `lm` formula), the coefficients $\alpha_i$, $i=1, \ldots, 4$ in regression 
+$$\boldsymbol{y} = \mathbf{S}_1\alpha_1 +\mathbf{S}_2\alpha_2  + \mathbf{S}_3\alpha_3 + \mathbf{S}_4\alpha_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$$
+correspond to the intercept for season $i$. If we include instead the dummy $\mathbf{S}_1$ and fit
+$$\boldsymbol{y} = \mathbf{1}_n\gamma_1 +\mathbf{S}_2\gamma_2  + \mathbf{S}_3\gamma_3 + \mathbf{S}_4\gamma_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon},$$
+then the constant for season 1 is $\alpha_1=\gamma_1$, and is $\alpha_j=\gamma_1+\gamma_j$ for season $j \in \{2, 3, 4\}$. The reference level is therefore the first season $\gamma_1$ and the coefficients $\{\gamma_j\}, j \in \{2, 3, 4\}$ are contrasts (the difference between the baseline and the seasonal level).
+
+The discussion is illustrated on a dataset consisting of quarterly measurements of the gas consumption in the United Kingdom, from 1960 to 1986.
+
+```{r}
+data(UKgas)
+quarter <- rep(1:4, length = length(UKgas)) #create vector 1, 2, 3, 4, 1, ...
+is.factor(quarter)
+quarter <- as.factor(quarter) #cast the vector to a factor
+is.factor(quarter)
+class(quarter)
+#What is name of the dummies
+head(quarter)
+levels(quarter)
+levels(quarter) <- c("Q1", "Q2", "Q3", "Q4") #change names
+```
+
+The first model is of the form 
+$$ \boldsymbol{y} = \mathbf{Q}_1 \alpha_1 + \mathbf{Q}_2 \alpha_2 + \mathbf{Q}_3 \alpha_3 + \mathbf{Q}_4 \alpha_4 + \boldsymbol{\varepsilon}.
+$$
+
+```{r}
+gas_lm1 <- lm(log(UKgas) ~ quarter - 1)
+coef(gas_lm1)
+head(model.matrix(gas_lm1), 10)
+```
+
+The model with all the quarterly dummies gives the quarterly average value $\exp(\alpha_j)$ in quarter $j$, $j = 1, \ldots, 4$. 
+If we include an intercept, the first factor is selected as baseline and the coefficients of the quarters `Q2` to `Q4` are contrasts.
+For this model, say
+$$ \boldsymbol{y} = \mathbf{1}_n \gamma_1 + \mathbf{Q}_2 \gamma_2 + \mathbf{Q}_3 \gamma_3 + \mathbf{Q}_4 \gamma_4 + \boldsymbol{\varepsilon},
+$$
+
+```{r}
+#New parameterization, with a constant
+gas_lm2 <- lm(log(UKgas) ~ quarter) #R drops collinear by default and fits with Q2-Q4
+coef(gas_lm2)
+head(model.matrix(gas_lm2), 10)
+```
+
+The estimated average gas consumption in millions of therms is $\exp(\widehat{\gamma}_1)=\exp(\widehat{\alpha}_1)$ for the first quarter, $\exp(\widehat{\alpha}_2)=\exp(\widehat{\gamma}_1+\widehat{\gamma}_2)$ for the second quarter, etc. 
+
+We can check that the interpretation is correct.
+```{r}
+isTRUE(all.equal((coef(gas_lm2)[1] + coef(gas_lm2)[-1]), coef(gas_lm1)[-1], check.attributes = FALSE))
+```
+
+## Solutions 
+
+
+Consider the linear model $$\boldsymbol{y} = \mathbf{X}_1\boldsymbol{\beta}_1 +\mathbf{X}_2\boldsymbol{\beta}_1 + \boldsymbol{\varepsilon}$$ and suppose that $\mathbf{X}_1$ includes a column of ones.
+
+
+```{r}
+data(Auto, package = "ISLR")
+y <- Auto$mpg
+X1 <- cbind(1, Auto$horsepower)
+X2 <- Auto$weight
+```
+
+a. Form the projection matrices $\mathbf{H}_{\mathbf{X}}$, $\mathbf{H}_{1}$, $\mathbf{H}_{2}$ and the complementary projection matrices (the functions `cbind`, `%*%`, `solve` and `t` may be useful).
+
+```{r sol3.4, results="hide"}
+data(Auto, package = "ISLR")
+y <- Auto$mpg
+X1 <- cbind(1, Auto$horsepower)
+X2 <- Auto$weight
+##Warning: output not displayed 
+#Projection matrices
+X <- cbind(X1, X2) 
+#Helper functions
+#Create a function: function(args){ ...}
+#last line will be object returned (if not assigned)
+#otherwise use `return( )`: see below for example
+proj_mat <- function(x){
+  x %*% solve(t(x) %*% x) %*% t(x)
+}
+coefs_vals <- function(x, y){
+  coefs <- c(solve(t(x) %*% x) %*% t(x) %*% y) 
+  return(coefs)
+  #`c` transform output from n x 1 matrix to n-vector
+}
+resid_vals <- function(y, pmat){
+  c((diag(1, length(y)) - pmat)  %*% y) 
+  #diag(1, ...) creates identity matrix
+}
+fitted_vals <- function(y, pmat){
+  c(pmat %*% y)
+}
+
+#Create projection matrices
+H  <- proj_mat(X)
+H1 <- proj_mat(X1)
+H2 <- proj_mat(X2)
+M  <- diag(nrow(X)) - H
+M1 <- diag(nrow(X)) - H1
+M2 <- diag(nrow(X)) - H2
+```
+
+b. Obtain the OLS estimates $\widehat{\boldsymbol{\beta}}_1$, $\widehat{\boldsymbol{\beta}}_2$
+c. Use the projection matrices to obtain the fitted values $\widehat{\boldsymbol{y}}$ and the estimated residuals $\widehat{\boldsymbol{\varepsilon}}$.
+
+```{r sol3.4b, results = "hide"}
+#OLS coefficients
+beta_hat <- coefs_vals(X, y)
+beta_hat
+#Fitted values
+fitted_vals(y, H)
+#Residuals
+resid_vals(y, H)
+```
+
+d. What happens to the residuals if your regressors do not include a vector of constants?
+
+ If a constant is not included, the residuals are not centered unless the columns of the design matrix and the response were
+centered, meaning they had expectation zero. This is why a column vector of ones is always included unless the mean is known
+(from theory or otherwise) to be zero.
+
+```{r sol3.4c}
+#Removing the row of constants
+res_uncentered <- resid_vals(y, proj_mat(X[,-1])) #subset [row, column]
+#X[,-1] take all rows, all columns but first
+mean(res_uncentered)
+#Consequence of not centering is that residuals are not mean zero
+```
+
+
+e. Verify numerically Frisch--Waugh--Lovell's theorem and test the different regression models from Exercice 2.4 to validate your answers.
+
+```{r sol3.4d}
+#The null models regression has
+coef_0 <- coefs_vals(x = X, y = y)[ncol(X)]
+res_0  <- resid_vals (y = y, pmat = H)
+#The following function checks equality of the coefficients
+#beta 2 is the last coef (here 1d)
+check_FWL <- function(xmat, yvec, coef0 = coef_0, res0 = res_0){
+  c(isTRUE(all.equal(coefs_vals(x = xmat, y = yvec)[ncol(xmat)], coef0)),
+    isTRUE(all.equal(resid_vals(y = yvec, pmat = proj_mat(xmat)), res0))
+  )
+}
+
+#Check the results of 4.3
+res_mat <- cbind(check_FWL(yvec = y, xmat = X2), #1
+check_FWL(yvec = H1 %*% y, xmat = X2), #2
+check_FWL(yvec = H1 %*% y, xmat = H1 %*% X2), #3
+check_FWL(yvec = H %*% y, xmat = X), #4
+check_FWL(yvec = H %*% y, xmat = X2), #5
+check_FWL(yvec = M1 %*% y, xmat = X2), #6
+check_FWL(yvec = M1 %*% y, xmat = M1 %*% X2), #7 and 9
+check_FWL(yvec = M1 %*% y, xmat = cbind(X1, M1 %*% X2)), #8
+check_FWL(yvec = H %*% y, xmat = M1 %*% X2)) #10
+colnames(res_mat) <-  c("(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7,9)","(8)","(10)")
+rownames(res_mat) <- c("coefficients","residuals")
+print(res_mat)
+```

@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="the-hyperplane-of-fitted-values.html">
-<link rel="next" href="summary-of-week-2.html">
+<link rel="prev" href="factors.html">
+<link rel="next" href="gaussian-linear-model.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -175,47 +175,111 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="centered-coefficient-of-determination" class="section level2">
-<h2><span class="header-section-number">2.6</span> (Centered) coefficient of determination</h2>
-<p>Recall the decomposition of observations into fitted and residual vectors, <span class="math display">\[\boldsymbol{y} = (\boldsymbol{y} - {\mathbf{X}}{\hat{\boldsymbol{\beta}}}) + {\mathbf{X}}{\hat{\boldsymbol{\beta}}}= {\boldsymbol{e}} + \hat{{\boldsymbol{y}}}\]</span> where <span class="math inline">\({\boldsymbol{e}} \equiv {\mathbf{M}}_{{\mathbf{X}}}{\boldsymbol{y}} \perp \hat{{\boldsymbol{y}}} \equiv {\mathbf{H}}_{{\mathbf{X}}}{\boldsymbol{y}}\)</span>.</p>
-<p>The centered coefficient of determination, <span class="math inline">\(R^2_c\)</span> measures the proportion of variation explained by the centered fitted values relative to the centered observations, i.e., <span class="math display">\[ R^2_c = \frac{\|\hat{{\boldsymbol{y}}}-\bar{y}\mathbf{1}_n\|^2}{\|{\boldsymbol{y}}-\bar{y}\mathbf{1}_n\|^2}=\frac{\|\hat{{\boldsymbol{y}}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}{\|{\boldsymbol{y}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}.\]</span> since the vectors <span class="math inline">\(\bar{y}\mathbf{1}_n \perp \hat{{\boldsymbol{y}}}-\bar{y}\mathbf{1}_n\)</span>.</p>
-<p>Provided that <span class="math inline">\(\mathbf{1}_n \in {\mathsf{span}}({\mathbf{X}})\)</span>, it is obvious that the fitted values <span class="math inline">\(\hat{{\boldsymbol{y}}}\)</span> are invariant to linear transformations of the covariates <span class="math inline">\(\mathbf{X}\)</span> (by which I mean you can transform the design matrix column by column, with <span class="math inline">\(\mathbf{x}_i \mapsto \alpha_i+\mathbf{x}_i\gamma_i\)</span> for <span class="math inline">\(i=1, \ldots, p\)</span>). Multiplicative changes in <span class="math inline">\({\boldsymbol{y}}\)</span> lead to an equivalent change in <span class="math inline">\({\boldsymbol{e}}\)</span> and <span class="math inline">\(\hat{{\boldsymbol{y}}}\)</span>. However, location-changes in <span class="math inline">\({\boldsymbol{y}}\)</span> are only reflected in <span class="math inline">\(\hat{{\boldsymbol{y}}}\)</span> (they are absorbed by the intercept). This is why <span class="math inline">\(R^2\)</span> is not invariant to location-changes in the response, since the ratio <span class="math inline">\(\|\hat{{\boldsymbol{y}}}\|^2/\|{\boldsymbol{y}}\|^2\)</span> increases to 1 if <span class="math inline">\({{\boldsymbol{y}}}\mapsto {{\boldsymbol{y}}}+ a \mathbf{1}_n\)</span>.</p>
-<p>This invariance is precisely the reason we dismissed <span class="math inline">\(R^2\)</span>. For example, a change of units from Farenheit to Celcius, viz. <span class="math inline">\(T_c = 5 (T_F - 32)/9\)</span>, leads to different values of <span class="math inline">\(R^2\)</span>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(aatemp, <span class="dt">package =</span> <span class="st">&quot;faraway&quot;</span>)
-<span class="kw">plot</span>(temp <span class="op">~</span><span class="st"> </span>year, <span class="dt">data =</span> aatemp, <span class="dt">ylab =</span> <span class="st">&quot;Temperature (in F)&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)
-<span class="co">#Form design matrix and two response vectors</span>
-yF &lt;-<span class="st"> </span>aatemp<span class="op">$</span>temp
-n &lt;-<span class="st"> </span><span class="kw">length</span>(yF)
-yC &lt;-<span class="st"> </span><span class="dv">5</span><span class="op">/</span><span class="dv">9</span><span class="op">*</span>(aatemp<span class="op">$</span>temp <span class="op">-</span><span class="st"> </span><span class="dv">32</span>)
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, aatemp<span class="op">$</span>year)
-<span class="co"># Obtain OLS coefficients and fitted values</span>
-XtX &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))
-beta_hat_F &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yF)
-<span class="kw">abline</span>(<span class="dt">a =</span> beta_hat_F[<span class="dv">1</span>], <span class="dt">b =</span> beta_hat_F[<span class="dv">2</span>])</code></pre></div>
-<p><img src="LinesRModels_files/figure-html/faraway-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta_hat_C &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yC)
-fitted_F &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_F
-fitted_C &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_C
-<span class="co"># Compute coefficient of determination</span>
-R2_F &lt;-<span class="st"> </span><span class="kw">sum</span>(fitted_F<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yF<span class="op">^</span><span class="dv">2</span>)
-R2_C &lt;-<span class="st">  </span><span class="kw">sum</span>(fitted_C<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yC<span class="op">^</span><span class="dv">2</span>)
-<span class="co">#Centered R^2</span>
-R2c_F &lt;-<span class="st"> </span><span class="kw">sum</span>((fitted_F<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yF<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)
-R2c_C &lt;-<span class="st">  </span><span class="kw">sum</span>((fitted_C<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yC<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(R2c_F, R2c_C))</code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>The difference <span class="math inline">\(R^2(F)-R^2(C)=\)</span> 0.00752 is small because the <span class="math inline">\(R^2\)</span> value is very high, but the coefficient itself is also meaningless. In this example, <span class="math inline">\(R^2(F)=\)</span> 0.9991, which seems to indicate excellent fit but in fact only 8.54% of the variability is explained by year and we do an equally good job by simply taking <span class="math inline">\(\hat{y}_i=\bar{y}\)</span>.</p>
-<p><span class="math inline">\(R^2_c\)</span> makes the comparison between the adjusted linear model and the null model with only a constant, which predicts each <span class="math inline">\(y_i (i=1, \ldots, n)\)</span> by the average <span class="math inline">\(\bar{y}\)</span>.</p>
-<p>If <span class="math inline">\(R^2_c\)</span> gives a very rough overview of how much explanatory power <span class="math inline">\({\mathbf{X}}\)</span> has, it is not a panacea. If we add new covariates in <span class="math inline">\({\mathbf{X}}\)</span>, the value of <span class="math inline">\(R^2_c\)</span> necessarily increases. In the most extreme scenario, we could add a set of <span class="math inline">\(n-p\)</span> linearly independent vectors to <span class="math inline">\({\mathbf{X}}\)</span> and form a new design matrix <span class="math inline">\(mX^*\)</span> with those. The fitted values from running a regression with <span class="math inline">\({\mathbf{X}}^*\)</span> will be exactly equal to the observations <span class="math inline">\({\boldsymbol{y}}\)</span> and thus <span class="math inline">\(R^2_c=1\)</span>. However, I hope it is clear that this model will <em>not</em> be useful. Overfitting leads to poor predictive performance; if we get a new set of <span class="math inline">\(\mathbf{x}_*\)</span>, we would predict the unobserved <span class="math inline">\(y_*\)</span> using its conditional average <span class="math inline">\(\mathbf{x}_i^*{\hat{\boldsymbol{\beta}}}\)</span> and this estimate will be rubish if we included too many meaningless covariates.</p>
-<p>Other versions of <span class="math inline">\(R^2_c\)</span> exist that include a penalty term for the number of covariates; these are not widely used and can be negative in extreme cases. We will cover better goodness-of-fit diagnostics later in the course.</p>
+<div id="solutions-1" class="section level2">
+<h2><span class="header-section-number">3.3</span> Solutions</h2>
+<p>Consider the linear model <span class="math display">\[\boldsymbol{y} = \mathbf{X}_1\boldsymbol{\beta}_1 +\mathbf{X}_2\boldsymbol{\beta}_1 + \boldsymbol{\varepsilon}\]</span> and suppose that <span class="math inline">\(\mathbf{X}_1\)</span> includes a column of ones.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)
+y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg
+X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)
+X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</code></pre></div>
+<ol style="list-style-type: lower-alpha">
+<li>Form the projection matrices <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span>, <span class="math inline">\(\mathbf{H}_{1}\)</span>, <span class="math inline">\(\mathbf{H}_{2}\)</span> and the complementary projection matrices (the functions <code>cbind</code>, <code>%*%</code>, <code>solve</code> and <code>t</code> may be useful).</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)
+y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg
+X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)
+X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight
+##Warning: output not displayed 
+<span class="co">#Projection matrices</span>
+X &lt;-<span class="st"> </span><span class="kw">cbind</span>(X1, X2) 
+<span class="co">#Helper functions</span>
+<span class="co">#Create a function: function(args){ ...}</span>
+<span class="co">#last line will be object returned (if not assigned)</span>
+<span class="co">#otherwise use `return( )`: see below for example</span>
+proj_mat &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x)
+}
+coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){
+  coefs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>y) 
+  <span class="kw">return</span>(coefs)
+  <span class="co">#`c` transform output from n x 1 matrix to n-vector</span>
+}
+resid_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){
+  <span class="kw">c</span>((<span class="kw">diag</span>(<span class="dv">1</span>, <span class="kw">length</span>(y)) <span class="op">-</span><span class="st"> </span>pmat)  <span class="op">%*%</span><span class="st"> </span>y) 
+  <span class="co">#diag(1, ...) creates identity matrix</span>
+}
+fitted_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){
+  <span class="kw">c</span>(pmat <span class="op">%*%</span><span class="st"> </span>y)
+}
+
+<span class="co">#Create projection matrices</span>
+H  &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X)
+H1 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X1)
+H2 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X2)
+M  &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H
+M1 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H1
+M2 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H2</code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Obtain the OLS estimates <span class="math inline">\(\widehat{\boldsymbol{\beta}}_1\)</span>, <span class="math inline">\(\widehat{\boldsymbol{\beta}}_2\)</span></li>
+<li>Use the projection matrices to obtain the fitted values <span class="math inline">\(\widehat{\boldsymbol{y}}\)</span> and the estimated residuals <span class="math inline">\(\widehat{\boldsymbol{\varepsilon}}\)</span>.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#OLS coefficients</span>
+beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(X, y)
+beta_hat
+<span class="co">#Fitted values</span>
+<span class="kw">fitted_vals</span>(y, H)
+<span class="co">#Residuals</span>
+<span class="kw">resid_vals</span>(y, H)</code></pre></div>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>What happens to the residuals if your regressors do not include a vector of constants?</li>
+</ol>
+<p>If a constant is not included, the residuals are not centered unless the columns of the design matrix and the response were centered, meaning they had expectation zero. This is why a column vector of ones is always included unless the mean is known (from theory or otherwise) to be zero.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Removing the row of constants</span>
+res_uncentered &lt;-<span class="st"> </span><span class="kw">resid_vals</span>(y, <span class="kw">proj_mat</span>(X[,<span class="op">-</span><span class="dv">1</span>])) <span class="co">#subset [row, column]</span>
+<span class="co">#X[,-1] take all rows, all columns but first</span>
+<span class="kw">mean</span>(res_uncentered)</code></pre></div>
+<pre><code>## [1] 3.32711</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Consequence of not centering is that residuals are not mean zero</span></code></pre></div>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Verify numerically Frisch–Waugh–Lovell’s theorem and test the different regression models from Exercice 2.4 to validate your answers.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#The null models regression has</span>
+coef_<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> y)[<span class="kw">ncol</span>(X)]
+res_<span class="dv">0</span>  &lt;-<span class="st"> </span><span class="kw">resid_vals</span> (<span class="dt">y =</span> y, <span class="dt">pmat =</span> H)
+<span class="co">#The following function checks equality of the coefficients</span>
+<span class="co">#beta 2 is the last coef (here 1d)</span>
+check_FWL &lt;-<span class="st"> </span><span class="cf">function</span>(xmat, yvec, <span class="dt">coef0 =</span> coef_<span class="dv">0</span>, <span class="dt">res0 =</span> res_<span class="dv">0</span>){
+  <span class="kw">c</span>(<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">coefs_vals</span>(<span class="dt">x =</span> xmat, <span class="dt">y =</span> yvec)[<span class="kw">ncol</span>(xmat)], coef0)),
+    <span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">resid_vals</span>(<span class="dt">y =</span> yvec, <span class="dt">pmat =</span> <span class="kw">proj_mat</span>(xmat)), res0))
+  )
+}
+
+<span class="co">#Check the results of 4.3</span>
+res_mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> y, <span class="dt">xmat =</span> X2), <span class="co">#1</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#2</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> H1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#3</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X), <span class="co">#4</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#5</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#6</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#7 and 9</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> <span class="kw">cbind</span>(X1, M1 <span class="op">%*%</span><span class="st"> </span>X2)), <span class="co">#8</span>
+<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2)) <span class="co">#10</span>
+<span class="kw">colnames</span>(res_mat) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;(1)&quot;</span>, <span class="st">&quot;(2)&quot;</span>, <span class="st">&quot;(3)&quot;</span>, <span class="st">&quot;(4)&quot;</span>, <span class="st">&quot;(5)&quot;</span>, <span class="st">&quot;(6)&quot;</span>, <span class="st">&quot;(7,9)&quot;</span>,<span class="st">&quot;(8)&quot;</span>,<span class="st">&quot;(10)&quot;</span>)
+<span class="kw">rownames</span>(res_mat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;coefficients&quot;</span>,<span class="st">&quot;residuals&quot;</span>)
+<span class="kw">print</span>(res_mat)</code></pre></div>
+<pre><code>##                (1)   (2)   (3)   (4)   (5)   (6) (7,9)  (8)  (10)
+## coefficients FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE TRUE  TRUE
+## residuals    FALSE FALSE FALSE FALSE FALSE FALSE  TRUE TRUE FALSE</code></pre>
+
 </div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="the-hyperplane-of-fitted-values.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="summary-of-week-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="factors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="gaussian-linear-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
