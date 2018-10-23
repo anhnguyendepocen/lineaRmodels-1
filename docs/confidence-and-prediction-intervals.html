@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="gaussian-linear-model.html">
-
+<link rel="next" href="residuals.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -154,6 +154,24 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
 <li class="chapter" data-level="4.1" data-path="confidence-and-prediction-intervals.html"><a href="confidence-and-prediction-intervals.html"><i class="fa fa-check"></i><b>4.1</b> Confidence and prediction intervals</a></li>
+<li class="chapter" data-level="4.2" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>4.2</b> Residuals</a></li>
+<li class="chapter" data-level="4.3" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html"><i class="fa fa-check"></i><b>4.3</b> Diagnostic plots</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#added-variable-plots"><i class="fa fa-check"></i><b>4.3.1</b> Added-variable plots</a></li>
+<li class="chapter" data-level="4.3.2" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#diagnostic-of-heteroscedasticity"><i class="fa fa-check"></i><b>4.3.2</b> Diagnostic of heteroscedasticity</a></li>
+<li class="chapter" data-level="4.3.3" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#outliers"><i class="fa fa-check"></i><b>4.3.3</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
+<li class="chapter" data-level="4.4.2" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4.3" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
+<li class="chapter" data-level="4.4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="solutions-2.html"><a href="solutions-2.html"><i class="fa fa-check"></i><b>4.5</b> Solutions</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.1---study-of-growth-hormones"><i class="fa fa-check"></i><b>4.5.1</b> Exercise 7.1 - Study of growth hormones</a></li>
+<li class="chapter" data-level="4.5.2" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.2---electric-production-of-windmills"><i class="fa fa-check"></i><b>4.5.2</b> Exercise 7.2 - Electric production of windmills</a></li>
+<li class="chapter" data-level="4.5.3" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.3---air-traffic"><i class="fa fa-check"></i><b>4.5.3</b> Exercise 7.3 - Air traffic</a></li>
+<li class="chapter" data-level="4.5.4" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.4---determinants-of-earnings"><i class="fa fa-check"></i><b>4.5.4</b> Exercise 7.4 - Determinants of earnings</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -177,7 +195,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="confidence-and-prediction-intervals" class="section level2">
 <h2><span class="header-section-number">4.1</span> Confidence and prediction intervals</h2>
-<p>Recall that in the linear model with iid errors <span class="math inline">\({\boldsymbol{\varepsilon}}\sim \mathsf{IID}(0, \sigma^2)\)</span>, we have <span class="math inline">\(\mathsf{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1}\)</span>. The standard errors for <span class="math inline">\({\hat{\boldsymbol{\beta}}}\)</span> are then simply the square root of the diagonal entries (which are the variance <span class="math inline">\(\mathsf{Var}(\hat{\beta}_j)\)</span> for <span class="math inline">\(j=1, \ldots, p\)</span>. Confidence intervals for the coefficients are given by <span class="math inline">\(\hat{\beta}_i \pm t_{n-p}({0.025})\mathsf{se}(\hat{\beta}_i)\)</span>.</p>
+<p>Recall that in the linear model with IID errors <span class="math inline">\({\boldsymbol{\varepsilon}}\sim \mathsf{IID}(0, \sigma^2)\)</span>, we have <span class="math inline">\(\mathsf{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1}\)</span>. The standard errors for <span class="math inline">\({\hat{\boldsymbol{\beta}}}\)</span> are then simply the square root of the diagonal entries (which are the variance <span class="math inline">\(\mathsf{Var}(\hat{\beta}_j)\)</span> for <span class="math inline">\(j=1, \ldots, p\)</span>. Confidence intervals for the coefficients are given by <span class="math inline">\(\hat{\beta}_i \pm t_{n-p}({0.025})\mathsf{se}(\hat{\beta}_i)\)</span>.</p>
 <p>We can also draw intervals around the regression line by considering combinations <span class="math inline">\(\mathbf{x} = (1, \texttt{mpg})\)</span> for different values of <span class="math inline">\(\texttt{mpg}\)</span> as illustrated below. The reasoning is similar, except that we now obtain the interval for a function of <span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span>. For each new vector of regressors <span class="math inline">\(\mathbf{x}^i \equiv \mathbf{c}\)</span>, we get new fitted values <span class="math inline">\(\hat{y}^i= \mathbf{x}^i\widehat{\boldsymbol{\beta}}\)</span> whose variance is, by the delta-method, given by <span class="math inline">\(\mathsf{Var}(y^i)={\sigma^2}\mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i\)</span>. We replace <span class="math inline">\(\sigma^2\)</span> by the usual estimator <span class="math inline">\(s^2\)</span> and thus the pointwise confidence interval is given by the usual Student-<span class="math inline">\(t\)</span> test statistics, with this time <span class="math display">\[\hat{y}^i \pm t_{n-p}({0.025})\mathsf{se}(\hat{y}^i) =  \mathbf{x}^i\widehat{\boldsymbol{\beta}} \pm t_{n-p}({0.025})\sqrt{s^2\mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i}.\]</span></p>
 <p>For the prediction interval, we consider instead <span class="math display">\[ \mathbf{x}^i\widehat{\boldsymbol{\beta}} \pm t_{n-p}({0.025})\sqrt{s^2 \left[ \mathbf{I}_n + \mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i\right]}.\]</span> Provided the model is correct, new observations <span class="math inline">\(y_{\mathrm{new}}\)</span> should fall 19 times out of 20 within the reported prediction interval.</p>
 <p>As we move away from the bulk of the data (average value of <span class="math inline">\(\mathbf{x}\)</span>), the hyperbolic shape of the intervals becomes visible. Note here how the prediction interval is necessarily wider than the confidence interval (iterated variance formula).</p>
@@ -185,9 +203,22 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 ols &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)
 res &lt;-<span class="st"> </span><span class="kw">resid</span>(ols)
 X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>,  mtcars<span class="op">$</span>wt)
+n &lt;-<span class="st"> </span><span class="kw">nrow</span>(X)
 s2 &lt;-<span class="st"> </span><span class="kw">sum</span>(res<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>(<span class="kw">length</span>(res) <span class="op">-</span><span class="st"> </span><span class="kw">ncol</span>(X))
 std_err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(s2 <span class="op">*</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))))
 beta_hat &lt;-<span class="st"> </span><span class="kw">coef</span>(ols)
+<span class="co">#Covariance matrix of (beta0, beta1)</span>
+Sigma &lt;-<span class="st"> </span><span class="kw">vcov</span>(<span class="kw">summary</span>(ols))
+<span class="co">#check the calculation</span>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Sigma, s2 <span class="op">*</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Standard error of estimates</span>
+std_err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(Sigma))
+<span class="co">#Projection matrix</span>
+Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)
+<span class="co">#Diagonal elements (aka leverage points)</span>
+leverage &lt;-<span class="st"> </span><span class="kw">diag</span>(Hmat)
+
 <span class="co"># Plot data set</span>
 <span class="kw">plot</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars, <span class="dt">xlab =</span> <span class="st">&quot;weight (1000 lbs)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Fuel consumption (in miles/US gallon)&quot;</span>, 
      <span class="dt">main =</span> <span class="st">&quot;Fuel consumption of automobiles, 1974 Motor Trend&quot;</span>, 
@@ -220,16 +251,14 @@ fitted_xstar &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span c
 <span class="kw">lines</span>(xstar,  fitted_xstar <span class="op">+</span><span class="st"> </span>confint_xstar, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)
 <span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>,<span class="st">&quot;blue&quot;</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Prediction&quot;</span>,<span class="st">&quot;Conf. inter.&quot;</span>,<span class="st">&quot;Pred. inter.&quot;</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre></div>
 <p><img src="LinesRModels_files/figure-html/mtcars_confint-1.png" width="672" /></p>
-
 </div>
-<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="gaussian-linear-model.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="gaussian-linear-model.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="residuals.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

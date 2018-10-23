@@ -1,9 +1,22 @@
 # Gaussian linear model
 
+This section covers confidence and prediction intervals, diagnostic plots and quantile-quantile plots.  
+
+We present a worked-out example of a linear model fit to the `mtcars` data set
+
+> The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+Residual plots are useful to diagnostic
+
+- Misspecification of the response surface (nonlinearity, omitted variables)
+- heteroscedasticity
+- outliers
+- autocorrelation (lack of independence of error terms) if observations are time ordered
+- normality assumption.
 
 ## Confidence and prediction intervals
 
-Recall that in the linear model with iid errors $\beps \sim \mathsf{IID}(0, \sigma^2)$, we have $\mathsf{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1}$. The standard errors for $\hbb$ are then simply the square root of the diagonal entries (which are the variance $\mathsf{Var}(\hat{\beta}_j)$ for $j=1, \ldots, p$. Confidence intervals for the coefficients are given by $\hat{\beta}_i \pm t_{n-p}({0.025})\mathsf{se}(\hat{\beta}_i)$.
+Recall that in the linear model with IID errors $\beps \sim \mathsf{IID}(0, \sigma^2)$, we have $\mathsf{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1}$. The standard errors for $\hbb$ are then simply the square root of the diagonal entries (which are the variance $\mathsf{Var}(\hat{\beta}_j)$ for $j=1, \ldots, p$. Confidence intervals for the coefficients are given by $\hat{\beta}_i \pm t_{n-p}({0.025})\mathsf{se}(\hat{\beta}_i)$.
 
 We can also draw intervals around the regression line by considering combinations $\mathbf{x} = (1, \texttt{mpg})$ for different values of $\texttt{mpg}$ as illustrated below. The reasoning is similar, except that we now obtain the interval for a function of $\widehat{\boldsymbol{\beta}}$. For each new vector of regressors $\mathbf{x}^i \equiv \mathbf{c}$,  we get new fitted values $\hat{y}^i= \mathbf{x}^i\widehat{\boldsymbol{\beta}}$ whose variance is, by the delta-method, given by $\mathsf{Var}(y^i)={\sigma^2}\mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i$. We replace $\sigma^2$ by the usual estimator $s^2$ and thus the pointwise confidence interval is given by the usual Student-$t$ test statistics, with this time 
 \[\hat{y}^i \pm t_{n-p}({0.025})\mathsf{se}(\hat{y}^i) =  \mathbf{x}^i\widehat{\boldsymbol{\beta}} \pm t_{n-p}({0.025})\sqrt{s^2\mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i}.\]
@@ -15,15 +28,26 @@ Provided the model is correct, new observations $y_{\mathrm{new}}$ should fall 1
 
 As we move away from the bulk of the data (average value of $\mathbf{x}$), the hyperbolic shape of the intervals becomes visible. Note here how the prediction interval is necessarily wider than the confidence interval (iterated variance formula).
 
-
 ```{r mtcars_confint}
 # The function lm and its output
 ols <- lm(mpg ~ wt, data = mtcars)
 res <- resid(ols)
 X <- cbind(1,  mtcars$wt)
+n <- nrow(X)
 s2 <- sum(res^2) / (length(res) - ncol(X))
 std_err <- sqrt(diag(s2 * solve(crossprod(X))))
 beta_hat <- coef(ols)
+#Covariance matrix of (beta0, beta1)
+Sigma <- vcov(summary(ols))
+#check the calculation
+isTRUE(all.equal(Sigma, s2 * solve(crossprod(X)), check.attributes = FALSE))
+#Standard error of estimates
+std_err <- sqrt(diag(Sigma))
+#Projection matrix
+Hmat <- X %*% solve(crossprod(X)) %*% t(X)
+#Diagonal elements (aka leverage points)
+leverage <- diag(Hmat)
+
 # Plot data set
 plot(mpg ~ wt, data = mtcars, xlab = "weight (1000 lbs)", ylab = "Fuel consumption (in miles/US gallon)", 
      main = "Fuel consumption of automobiles, 1974 Motor Trend", 
@@ -35,8 +59,6 @@ tqu = qt(0.975, df = nrow(X)- ncol(X))
 conf_inter <- cbind(beta_hat - tqu * std_err, beta_hat + tqu * std_err)
 #Compare with lm output
 confint(ols)
-
-
 xstar <- seq(0, 6, by = 0.1)
 
 #Confidence interval for prediction using lm output
@@ -55,3 +77,574 @@ lines(xstar,  fitted_xstar - confint_xstar, lty = 2, col = 'green')
 lines(xstar,  fitted_xstar + confint_xstar, lty = 2, col = 'green')
 legend(x = "topright", col = c("red", "green","blue"), lty = c(1, 2, 2), legend = c("Prediction","Conf. inter.","Pred. inter."), bty = "n")
 ```
+
+## Residuals
+
+There are many types of residuals, which we cover in term. The model residuals are simply $\bs{e}=\Mmat_{\mX}\bs{y}$, which can be obtained through `resid` for `lm` objects.
+We can verify numerically that $\hat{\by} \perp \bs{e}$ and verify that $\mX^\top\bs{e}=\bs{0}_p$.
+
+```{r}
+#Fitted values    
+yhat <- fitted(ols)
+#Residuals
+e <- resid(ols)
+
+#Orthogonality (by construction)
+isTRUE(all.equal(c(e %*% yhat), 0))
+isTRUE(all.equal(c(e %*% X), rep(0, 2)))
+```
+
+In the sequel, we will look at calculation of various variants of the residuals. The first is the standardized residuals, also internally studentized residuals. These are obtained by scaling each $\bs{e}/s$ by the invidual variance terms $1-h_{ii}$ to make them homoscedastic.
+
+```{r qties}    
+#we divide so they have the same variance - but not independent
+r <- e/sqrt(s2*(1-leverage)) 
+#also obtainable via rstandard(ols)
+isTRUE(all.equal(rstandard(ols), r))
+```
+
+
+Because the $i$th residual is used in both the numerator and in the denominator (in the calculation of $s^2$), the standardized (internally studentized) residual follows marginally an approximate scaled Student distribution. However, because of the use of $s^2$ in the denominator, the entries of $\boldsymbol{r}$ are bounded by $\pm n-p$. They are also not independent, even if this fact is often omitted in practice. While they will be approximately centered (with mean zero and variance one), they can (and should) be recentered before undertaking visual diagnostics.
+
+The externally studentized residuals $t_i$ are obtained by excluding the $i$th observation from the calculation of the variance. The advantage of doing this is that $\{t_i\}_{i=1}^n$ are marginally Student distributed with $n-p-1$ degrees of freedom (but they are again not independent). These are typically the residuals that are displayed in Q-Q plots. The externally studentized residuals can be obtained with the function `rstudent`. 
+
+```{r esr}
+#Externally studentized residuals
+smi <- influence(ols)$sigma
+s2mi <-((n-2)*s2-e^2/(1-leverage))/(n-3)
+isTRUE(all.equal(smi^2, s2mi))
+esr <- e/sqrt(s2mi*(1-leverage))
+isTRUE(all.equal(rstudent(ols), esr))
+```
+
+The last type of residual is the leave-one-out cross validation residual. These are the residuals obtained by fitting the linear model to all observations, but the $i$th, i.e., 
+$\bs{y}_{-i}= \mX_{-i}\bbeta + \bs{\eps}$. Let $\hbb_{-i}$ denote the OLS coefficients from this regression and $\hat{y}_{i,-i}=\mathbf{x}_i\hbb_{-i}$ the predicted value for the left-out $\mathbf{x}_i$ regressor. The $i$th leave-one-out cross validation residual is $e_{i,-i}=y_i - \hat{y}_{i,-i}=e_i/(1-h_{ii})$. We can use these to calculate the PRESS statistic, $\mathsf{PRESS}=\sum_{i=1}^n e_{i, -i}^2$
+
+```{r}
+# LOOCV residuals e/(1-leverage)
+loocv <- e/(1-leverage)
+loocv_err <- rstandard(ols, type = "pred")
+PRESS <- crossprod(loocv_err)
+```
+
+## Diagnostic plots
+
+If the underlying model is truly linear, a plot of $\bs{e}$ against $\hat{\bs{y}}$, should be flat because the two are by construction orthogonal. In practice, we rescale $\bs{e}$ by $s$ to ensure that the variance is closer to unity. If there are omitted higher-order interactions, these will show up in such a plot.
+
+In practice, there is often little difference between the rescaled residuals $\bs{e}/s$ and the internally studentized residuals $\bs{r}$. The former are orthogonal to $\hat{\bs{y}}$, while the latter have equal variance.
+
+```{r diagnostics}
+par(mfrow = c(1, 2)) #split the graphic window (1 row, 2 columns)
+#Fitted values vs raw residuals/s2
+plot(y = e/sqrt(s2), x = yhat, 
+     xlab = "fitted values", ylab = "rescaled residuals"); abline(h = 0, lty = 2)
+#Fitted values vs internally studentized residuals
+points(y = r, x = yhat, pch = 20, col = 2)
+#Regressor weight vs residuals
+plot(y = e/sqrt(s2), x = X[,2], xlab = "weight", 
+     ylab = "rescaled residuals"); abline(h = 0, lty = 2)
+points(y = r, x = mtcars$wt, pch = 20, col = 2)
+#graphics.off()
+par(mfrow = c(1, 1))
+```
+
+An alternative is `residualPlot(lm(mpg ~ hp + wt, data = mtcars))`, which adds the line for a quadratic regression of $\hat{\bs{y}}$ against standardized residuals.
+
+### Added-variable plots
+
+We can assess graphically whether a regressor should be included or not in the model. If the omitted regressor $\mathbf{X}_2$ is redundant, its coefficient should be zero and we can project onto the orthogonal complement of the remaining regressors $\Mmat_{\mX_1}$  and the response to get the regression FWL for $\bbeta_2$. The relationship between the two should have zero slope.
+The package `car` has a function `avPlot`.
+
+In the regression of fuel consumption as a function of weight, we have not included the potentially important regressor `hp`, which measures the power of the engine. The added variable plot shows that it is an important explanatory variable. In contrast, the displacement `disp` is either uncorrelated with `mpg` or its effect is already explained by `wt` and `hp`.
+
+```{r}
+#install.packages("car")
+library(car)
+car::avPlots(model = lm(mpg ~ hp + wt + disp, data = mtcars))
+```
+
+### Diagnostic of heteroscedasticity  
+
+Unequal variance will often show up in time series. For example, many economic models postulate exponential growth, but this effect can appear linear at a small scale. However, the variance will not be constant and typically increase with the level of the observations.
+If there are factors, these may have different variances. A simple boxplot of the fitted values against the factor can flag heteroscedasticity.
+
+### Outliers
+
+If an outlier is present and it has high leverage, it will draw the regression line towards itself. One way of assessing this (assuming there is a single such point) is to compute $\hbb$ by fitting the model to all but the observation $y_i$. The difference between this estimate $\hbb_{-i}$ and $\hbb$ is called difference of betas, or `dfbeta`. We can compute the effect of the deletion efficiently (details later on this) and similarly rescale the estimates to get a standardized difference.
+
+We can also look at the Cook's distance, the leverage values and the externally studentized residuals. These are often combined in a bubble pplot in which the radius of the circle is proportional to Cook's distance, with the leverage on the $x$-axis and the value of the externally studentized residuals $\bs{t}$ on the $y$-axis. 
+
+```{r dfbeta}
+dfbetaPlots(model = lm(mpg ~ hp + wt, data = mtcars))
+influencePlot(model = lm(mpg ~ hp + wt, data = mtcars))
+```
+
+## Quantile-quantile plots
+
+The distributional assumption is mostly assessed using quantile-quantile plots. However, the latter are hardly useful unless we superimpose some confidence intervals to the graph.
+We will cover two methods for producing Q-Q plots for linear models: one using an orthogonal transformation that makes the estimated residuals IID. The second uses the externally studentized residuals.
+
+
+### Quantile-quantile plot of externally studentized errors
+
+Recall that the quantile-quantile plot has 
+
+- on the $x$-axis, the theoretical quantiles, $F^{-1}(\mathrm{rank}(X_i)/(n+1))$
+- on the $y$-axis, the empirical quantiles, $X_i$
+
+For a Gaussian Q-Q plot, we will need to estimate both the mean and the variance. The usual estimators will do, replacing $\sigma^2$ with $s^2$ in the calculations, but all results will be  approximate. One can obtain standard residuals by subtracting the mean and scaling by the standard deviation (using e.g. the function `scale`). The function `qqnorm` plots a Normal Q-Q plot without rescaling and the function `qqline` adds a line passing through the first and third quartile. Since these are robust estimates, this is a sensible option but implies that the scales of the Q-Q plot are not the same on the $x$-axis than on the $y$-axis. It is preferable to use the estimate to rescale the data, so as to facilitate the inclusion of approximate confidence intervals.
+
+We now compute pointwise confidence intervals using the 
+result on the distribution of the order statistic, which will be covered in Exercise 8.2 (in 2018). 
+
+```{r}
+#Student plotting position F^(-1)(E[U_{(i)}])
+emp_quant <- qt(rank(esr)/(n + 1),  df = n - 3)  
+#Function to compute the pointwise confidence intervals
+#You can simply copy-paste this for your own plots
+confint.qqplot.ptw <- function(n, dist = "norm", ...){
+  t(sapply(1:n, function(i){
+  #Beta order statistic quantiles, mapped to Student scale
+    do.call(paste0('q', dist), list(qbeta(c(0.025, 0.975), i, n - i + 1), ...))
+  }))
+}
+
+#Call the function
+confint_lim <- confint.qqplot.ptw(n = n, dist = "t", df = n - 3)
+#Plot these confidence bands alongside with the empirical quantile plotting position
+matplot(sort(emp_quant), confint_lim, type = "l", lty = 2, col="grey",
+        main = "Normal Q-Q plot", xlim = c(-2, 2), ylim = c(-2, 2),
+        xlab = "Theoretical quantiles", ylab = "Empirical quantiles")  
+#Theoretical line of fit
+abline(a = 0, b = 1)
+#Add observations
+points(esr, emp_quant, pch = 20)
+```
+
+### Quantile-quantile plot using the QR decomposition
+
+The problem with the residuals is that, while $\boldsymbol{e}$ are normally distributed with variance $\sigma^2\mathbf{M}_{\mathbf{X}}$, they are linearly dependent (think of the constraint $\mathbf{X}^\top\boldsymbol{e}=\boldsymbol{0}_p$).
+
+Therefore, $\mathbf{M}_{\mathbf{X}}$ is not invertible (it is an $n \times n$ matrix of rank $n - p$) --- `solve(diag(n) - Hmat)` typically returns an error message although some matrix decomposition such as the SVD handle the rank deficient case. One can use an orthogonal transformation to obtain a set of $n-p$ independent residuals, but it is then difficult to relate these to the regressors.
+
+One such orthogonal transformation is provided by the QR decomposition, $\mathbf{X}=\mathbf{Q}\mathbf{R}$ where $\mathbf{Q}$ is an orthogonal matrix. Consider the linear model \[\mathbf{Q}^\top\boldsymbol{Y} = \mathbf{Q}^\top\mathbf{X}\bbeta + \boldsymbol{u};\] the last $n-p$ estimated residuals of the vector $\tilde{\boldsymbol{e}} =\mathbf{Q}^\top\boldsymbol{e}$ will be IID Normal and the first $p$ identically zero. In `R`, use the function `t(qr.Q(qr(X), complete = TRUE))` to obtain the matrix $\mathbf{Q}^\top$ associated to the design matrix `X`.
+
+
+Note that it is difficult to detect violation of the normality assumption because observations that arise from distributions that are not heavy-tailed still behave roughly like they are normally distributed when we scale them. This phenomenon, *supernormality*, is a consequence of the central limit theorem. 
+
+### Monte Carlo methods for confidence intervals
+
+You can safely skip this optional section, which contains advanced material that is not examinable.
+
+An alternative to asymptotic theory (which may be unreliable in small samples) is to rely on simulations.  The idea is to obtain a statistic whose distribution is (at least asymptotically) pivotal, i.e. fully specified under the null hypothesis. One can simulate samples from the null distribution $B$ times and compare the resulting data points with the test statistic calculated from the observed sample. This method, which is termed bootstrap test, is particularly powerful when we want to obtain critical values for test statistics, like e.g. $\max(|t_i|)$, whose distribution is untractable. 
+
+
+Under the null hypothesis of the Gaussian linear model, $\{y_i\}_{i=1}^n$ is a simple random sample from a Gaussian distribution $\boldsymbol{Y} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2 \mathbf{I}_n)$. One can resort to simulations to obtain approximate confidence intervals at asymptotic level $\alpha$. Specifically, the postulated data generating mechanism is  \[\boldsymbol{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.\]
+We will replace the unknown parameters (here $\boldsymbol{\beta}$ and $\sigma^2$) by their best linear unbiased estimate. For $b=1, \ldots,  B$ where $B/\alpha \in \mathbb{N}$, repeat the following steps:
+ \begin{enumerate}
+\item sample $\boldsymbol{\varepsilon}_{b} \sim \mathcal{N}_n(\boldsymbol{0}_n, s^2\bf{I}_n)$ and form $\boldsymbol{y}_b = \mathbf{X} \hat{\boldsymbol{\beta}} + \boldsymbol{\varepsilon}_{b}$. 
+\item run least squares with the design matrix $\mathbf{X}$ and extract the residuals $\boldsymbol{e}_b$. Compute 
+the centered externally Studentized version.
+\item sort the samples and the $\alpha/2$ and $1-\alpha/2$ empirical quantiles of each vector of order statistics
+\end{enumerate}
+
+This provides a pointwise confidence interval for each order statistic. We can assess the overall coverage of the intervals by checking whether or not one of the points falls outside the confidence envelope. Since we have $B$ datasets, we can check each in turn (using the others as reference for the interval) and check the fraction that have at least one observations outside the simulated pointwise bands. This gives a measure of the overall error rate. We can adjust $k$ until we get the correct overall empirical coverage.
+
+The calculation is rather simple.
+
+- calculate the rank of each observation (column by column) in the $B \times n$ matrix of simulated points.
+- an exceedance occurs if and only if the rank of an observation in a line is below or equal to $k$, or at least $B+1-k$.
+- to check this, it suffices to retain the minimum and maximum rank of each row.
+
+These methods are implemented in the package `boot` and returned by the function `boot::envelope`; you must supply a matrix of replicates test statistics. In our setting, these are the ordered samples from the externally studentized residuals \[\left\{\big\{t^{b}_{(i)}\big\}_{i=1}^n\right\}_{b=1}^B.\]
+
+You should choose $B$ so that $B+1$ is divisible by $\alpha$ and rather large. $B = 9999$ should work well and not be too computationally costly for small datasets.
+
+```{r}
+#Dimensions of the design matrix
+n <- nrow(model.matrix(ols))
+p <- ncol(model.matrix(ols))
+#Bootstrap setting
+B <- 9999
+X <- model.matrix(ols)
+betahat <- coef(ols)
+boot_samp <- matrix(NA, nrow = B, ncol = n)
+for(b in 1:B){
+  #Generate new errors
+  eps_samp <- rnorm(n, sd = sqrt(s2))
+  Xbeta <- X %*% betahat
+  #Create new replicate dataset
+  yb <- Xbeta + eps_samp
+  #Obtain externally studentized residuals
+  #Sort them in increasing order
+  boot_samp[b, ] <- sort(rstudent(lm(yb ~ -1 + X)))
+}
+
+#Add the dataset to the replicates
+res_samp <- rbind((esr <- rstudent(ols)), boot_samp)
+#Compute the quantiles of this experiment => per column means for each order statistic
+confint_pw <- t(apply(res_samp, 2, quantile, probs = c(0.025, 0.975)))
+#Alternatively, could sort each column and pick the k and B-k-1 entries
+
+#Computed automatically by package bootstrap
+env <- boot::envelope(mat = boot_samp)
+
+#Plot the confidence interval
+matplot(y = cbind(sort(esr), confint_pw), x = qt((1:n) / (n + 1), df = n - p - 1), 
+       lty = c(1, 2, 2), col = c(1, "grey", "grey"), type = c("p","l","l"), 
+       pch = 20, xlab = "Theoretical quantiles", ylab = "Empirical quantiles", bty = 'l')
+abline(a = 0, b = 1)
+
+#Simultaneous confidence interval
+#In how many of the replicates datasets do we have 
+#observations outside of the pointwise confidence bands?
+R <- nrow(boot_samp)
+alpha <- 0.05
+k <- alpha * (R + 1)/2
+#Simply check this as follows:
+#For each column, return the rank of the simulation
+rank_boot <- apply(boot_samp, 2, rank)
+#For each row, keep minimum and maximum rank
+minmax_rk <- t(apply(rank_boot, 1, function(x){c(min(x), max(x))}))
+#Go outside of the pointwise confidence interval if 
+#min(rank) < k or max(rank) > R + 1 - k 
+emp_boot_cov <- function(k){
+ 1-mean((I(minmax_rk[,1] > k))*I(minmax_rk[,2] < (R+1-k)))
+}
+#In how many of the replicates datasets do 
+#we have observations outside of the bounds?
+emp_boot_cov(k)
+#Ouch! decrease k until we hit alpha percentage of exceedances (0.05)
+boot_cov_k <- sapply(1:k, emp_boot_cov)
+klev <- match(TRUE, boot_cov_k > alpha) - 1
+if(klev == 0){
+ klev <- 1
+}
+env_jt <- apply(boot_samp, 2, sort)[c(R+1-klev, klev),]
+
+#This is what is returned by function envelope
+isTRUE(all.equal(env_jt, env$overall))
+
+#matplot(x = qt((1:n)/(n+1), df = n - p - 1), y = t(env$point), col = 2, add = TRUE, type = "l", lty = 1)
+matplot(x = qt((1:n)/(n+1), df = n - p -1), y = t(env$overall), 
+       col = "darkgrey", add = TRUE, type = "l", lty = 1)
+```
+
+### Parametric bootstrap confidence intervals using the QR decomposition
+
+This section is also **optional material**.
+
+There is an alternative way to obtain pointwise (and even simultaneous) confidence intervals for the QR decomposition.
+Under the null hypothesis: $\boldsymbol{\varepsilon} \sim \mathcal{N}_{n}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)$, we get $\tilde{\boldsymbol{\varepsilon}} \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)$ and therefore $(\tilde{\boldsymbol{\varepsilon}}- \overline{\boldsymbol{\tilde{\varepsilon}}})/\mathrm{sd}(\boldsymbol{\tilde{\varepsilon}}) \stackrel{\cdot}{\sim} \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)$ is asymptotically pivotal. A pivotal quantity has a fully specified distribution.
+
+We have only observed one sample, so comparisons are difficult because the measurements are limited. 
+Under the null hypothesis, it is however easy to generate new datasets: simply generate new observations 
+$\tilde{\boldsymbol{\epsilon}}_b \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)$ and standardize them, mimicking what we have done to obtain our sample quantiles. 
+This gives us a potentially unlimited number of samples to compare our observations to.
+By ordering each new set of errors of the $B$ replicates, we get a matrix of observations whose rows are order statistics from a run and whose columns corresponds to the empirical distribution of each order statistic. A symmetric 95\% confidence interval is obtained by taking the empirical (0.025, 0.975) percentiles of each order statistic.
+
+
+## Solutions 
+
+### Exercise 7.1 - Study of growth hormones
+
+We will use `factor` objects in the sequel. A `factor` encodes a matrix of binary variables,
+potentially identied using strings, so that the output is readable. **R** know how to handle the vector if it is passed to e.g. the function `lm`. By default, if the matrix spans $\mathbf{1}_n$, the first level (in alphabetical order) is dropped and the intercept becomes the mean of this level. 
+
+```{r ex7.1}
+url1 <- "http://sma.epfl.ch/~lbelzile/math341/growth.dat"
+growth <- read.table(url1, header = TRUE)
+summary(growth)
+##Check what the factor encodes: transpose of design matrix
+t(model.matrix(y ~ group - 1, data= growth))
+#Fit linear model with interaction
+rats_lm <- lm(y ~ x * group, data = growth)
+## recall x*group is equivalent to x + group + x:group
+## x:group is the interaction term,
+
+## The design matrix can be extracted using the command
+model.matrix(rats_lm)
+## 95% confidence interval
+confint(rats_lm, level = 0.95)[3:4,]
+## Generalized linear hypothesis test for mu=gamma=0
+## covered later in the course 
+#car::linearHypothesis(rats_lm, rbind(c(0,0,1,0), c(0,0,0,1)), c(0,0))
+```
+
+### Exercise 7.2 - Electric production of windmills
+
+
+The dataset `windmill` contains measurements of electricity output of wind turbine over 25 separate
+fifteen minute periods. We are interested in the relation between direct output and the average wind speed (measured in miles per hour) during 
+the recording. 
+a. Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate.  Comment on the adequacy of the models.
+b.  Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
+c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.
+
+```{r}
+#Extract dataset
+url2 <- "http://sma.epfl.ch/~lbelzile/math341/windmill.dat"
+windmill <- read.table(file = url2, header = TRUE)
+#Copy variables
+output <- windmill$output
+velocity <- windmill$velocity
+recip_velo <- 1/velocity
+#Fit linear model
+lm_wind1 <- lm(output ~ velocity)
+#Summary of fit
+summ1 <- summary(lm_wind1)
+#Graphical parameters 
+#mfrow: 1 line 2 column plotting window, 
+#pch: small dots plotting symbol, 
+#bty: L console shape)
+par(mfrow = c(1, 2), pch = 20, bty = "l")
+#Plot and add line of best fit
+plot(y = output, x = velocity, xlab = "wind velocity (in mph)")
+abline(lm_wind1)
+#Repeat with second dataset
+summ2 <- summary(lm_wind2 <- lm(output ~ recip_velo))
+#Note above how we can assign variables inside call to other functions
+plot(output ~ recip_velo, xlab = "reciprocal wind velocity (in mph)")
+abline(lm_wind2)
+
+#Standardized residuals r - manual calculation
+#Standard deviation of errors
+s <- sqrt(sum(resid(lm_wind1)^2)/lm_wind1$df.residual)
+#Design matrix i.e. cbind(1, velocity)
+Xmat1 <- model.matrix(lm_wind1)
+#Dimensions
+n <- nrow(Xmat1)
+p <- ncol(Xmat1)
+#Projection matrix onto Xmat1
+Hmat1 <- Xmat1 %*% solve(crossprod(Xmat1)) %*% t(Xmat1)
+#Diagonal of H
+leverage <- diag(Hmat1)
+#Standardized residuals
+r_wind1 <- resid(lm_wind1)/(s*sqrt(1-leverage))
+#The function rstandard returns those for us
+r_wind2 <- rstandard(lm_wind2)
+
+#Plot of standardized residuals vs fitted values
+plot(y = r_wind1 - mean(r_wind1), x = fitted(lm_wind1), 
+     ylab = "Standardized residuals", xlab = "Fitted values", 
+     main = "Residuals vs\nfitted values", sub ="output ~ velocity")
+abline(h = 0, lty = 2)
+plot(y = r_wind2 - mean(r_wind2), x = fitted(lm_wind2), 
+     ylab = "Standardized residuals", xlab = "Fitted values", 
+     main = "Residuals vs\nfitted values", sub ="output ~ 1/velocity")
+abline(h = 0, lty = 2)
+```
+
+There is some structure left in the model `output ~ velocity`, since the smallest values occur at the endpoint of the output. There is less visible structure in the model with the reciprocal.
+The second model appears to fit better, since its $\mathrm{R}^2$ value is `r round(digits = 2, summ2$r.squared)` compared to `r round(digits = 2, summ1$r.squared)` for the first model.
+Note that, in the second model, the intercept corresponds to infinite strenght wind gusts.
+
+```{r predict}
+#Predict new observation
+pred1int <- predict(lm_wind1, newdata = data.frame(velocity = 5), 
+                    interval = "prediction")
+pred2int <- predict(lm_wind2, newdata = data.frame(recip_velo = 1/5), 
+                    interval = "prediction")
+#Manually, see slide 68
+xplus <- c(1, 5)
+pred1 <- xplus %*% coef(lm_wind1)
+interv_length <- qt(0.975, lm_wind1$df.residual) * summ1$sigma * 
+            sqrt((1 + t(xplus) %*% solve(crossprod(Xmat1)) %*% xplus))
+#Check that the calculation is correct
+isTRUE(all.equal(c(pred1, pred1 - interv_length, pred1 + interv_length), 
+                 c(pred1int), check.attributes = FALSE))
+```
+
+The predicted output is `r round(pred1, 2)` units of electrity for the first model, while the point forecast is `r round(c(pred2int[1]), digits = 2)` for the model with the reciprocal velocity. Both intervals overlap, but the second one `r paste0("[",round(pred2int[2],2), ", ", round(pred2int[3],2),"]")` is considerable narrower than the first one, given by `r paste0("[",round(pred1int[2],2), ", ",round(pred1int[3],2),"]")`.
+
+```{r modelminusintercept}
+summary(update(lm_wind1, . ~ .-1))
+```
+
+The function `update` changes the arguments of the linear model. Here, the `.` means keep all variables on lhs or rhs. You can also use it with a dataset to fit all the remaining variables after specifying the response variable, like for example `lm(output ~ .,  data = windmill)` would have `velocity` as covariate.
+
+We notice first that the confidence interval for $\beta_0$, the intercept, includes zero, we cannot reject the null hypothesis that $\beta_0=0$ at level $0.95$.
+
+The coefficient $\beta_1$ corresponding to the effect of velocity has a smaller standard error than the first model. Does this make sense? If a model is correctly specified, addition of new variables that are unrelated does not introduce bias, but ncessarily inflates the standard errors by Gauss--Markov theorem. However, if the intercept should truly be there (this can be made necessary because of measurement errors) and $\beta_0 \neq 0$, then the tests and confidence intervals will be invalid in the simplified model. 
+
+The multiple $\mathrm{R}^2_c$ goes up the roof, but makes no sense here because it compares two models that are not nested (the model with a single mean versus which has no constant). A consequence of the removal of the intercept is that the average of the residuals is not zero anymore.
+
+We now produce the quantile-quantile plots using.
+
+```{r confints}
+Q <- t(qr.Q(qr(Xmat1), complete = TRUE))
+resQ1 <- (t(Q) %*% resid(lm_wind1))[-(1:2)]
+#Function from Tutorial 3
+confint.qqplot.ptw <- function(n, dist = "norm", ...){
+  t(sapply(1:n, function(i){
+  #Beta order statistic quantiles, mapped to scale dist
+    do.call(paste0('q', dist), list(qbeta(c(0.025, 0.975), i, n - i + 1), ...))
+  }))
+}
+
+# Adjust the number of observations
+N <- n - p
+#Plotting positions on X axis
+rankit <- qnorm((1:N) / (N+1))
+plot(rankit, sort(scale(resQ1)), xlab = "Theoretical quantiles", 
+    ylab = "Sample quantiles", main = "Normal Q-Q plot")
+abline(a = 0, b = 1)
+confint_ptwise <- confint.qqplot.ptw(N)
+lines(rankit, confint_ptwise[,1], col = "gray", lty = 2)
+lines(rankit, confint_ptwise[,2], col = "gray", lty = 2)
+```
+
+```{r}
+boot_samps <- replicate(sort(scale(rnorm(N))), n = (B <- 9999))
+alpha <- 0.05
+k <- alpha/2*(B + 1)
+confint_boot <- apply(boot_samps, 1, sort)[c(k, B+1-k),]
+
+#Example with second model
+Xmat2 <- cbind(1, 1/velocity)
+Q <- t(qr.Q(qr(Xmat2), complete = TRUE))
+resQ2 <- (t(Q) %*% resid(lm_wind2))[-(1:2)]
+
+plot(rankit, sort(scale(resQ2)), xlab = "Theoretical quantiles", 
+    ylab = "Sample quantiles", main = "Normal Q-Q plot")
+abline(a = 0, b = 1)
+confint_ptwise <- confint.qqplot.ptw(N)
+#Simulated pointwise bands
+lines(rankit, confint_boot[1,], col = "red", lty = 2)
+lines(rankit, confint_boot[2,], col = "red", lty = 2)
+#Theoretical bands based on order statistics distribution
+lines(rankit, confint_ptwise[,1], col = "gray", lty = 3)
+lines(rankit, confint_ptwise[,2], col = "gray", lty = 3)
+```
+
+The simulated pointwise confidence interval are shorter and account for the scaling. 
+
+### Exercise 7.3 - Air traffic
+
+
+First load the data set and plot the observations
+```{r}
+rm(list = ls()) #clear environment 
+par(bty = "l", pch = 20)
+url3 <- "http://sma.epfl.ch/~lbelzile/math341/airpassengers.dat"
+airpass <- read.table(file = url3, header = TRUE)
+# Cast monthly binary to factor
+airpass$time <- airpass$year + (airpass$month-1)/12
+airpass$month <- as.factor(airpass$month)
+attach(airpass)
+#Proceed as usual
+plot(y = passengers, x = time, type = "l",
+     ylab = "Monthly totals of international airline passengers (in thousands)")
+#Fit simple linear model with time as covariate
+sum_ap <- summary(fit_ap <- lm(passengers ~ time))
+lines(time, fitted(fit_ap), col = 2)
+#Create monthly dummies
+#create factor using `as.factor
+month <- as.factor(rep(1:12, length = length(time)))
+levels(month) <- month.abb #abbreviation of months
+#A fancier way would convert the fraction to units, 
+#month <- as.factor(1 + as.integer(c(time*12) %% 12)) # %% is modulo operator
+#quarter <- as.factor(rep(1:4, each = 3, length = length(time)))
+sum_ad <- summary(fit_ad <- lm(passengers ~ time + month))
+lines(time, fitted(fit_ad), lty = 2, col = 4) #dashed blue line
+#Prediction 
+predict(fit_ad, newdata = data.frame(time = 1962+11/12, month = month[12]))
+coef(fit_ad) %*% c(1, 1962 + 11/12, rep(0, 10), 1) #baseline is January if global mean included
+```
+
+We notice that the model does an overall good job at getting the big features, but misses many things. The first point is that the relationship is not quite linear: a residual plot shows a somewhat quadratic relation between the fitted values and the residuals. The second obvious feature not captured is the change in the variation (the amplitude of the wave pattern changes over time). Since the variance is increasing, a log-transformation may help stabilize it.
+The residuals are not apparently close to normal (the last values are systematically too large) and there is some skewness. The last few points have large leverage and drive the curve up.
+
+
+```{r} 
+n <- length(passengers)
+p <- length(coef(fit_ad)) 
+par(mfrow = c(2, 2))
+plot(fit_ad, which = 1) #residuals vs fitted values
+plot(fit_ad, which = 2) #Normal Q-Q plot
+plot(fit_ad, which = 3) #standardized residuals vs fitted values
+plot(fit_ad, which = 4, sub.caption = "") #Cook distance plot
+abline(h = 8/(n - 2*p), col = 2)
+par(mfrow = c(1, 1)) #return to one plot per window
+#Compute Cook statistic and other influence statistics
+infl_ad <- influence.measures(fit_ad)
+cookval_ad <- infl_ad$infmat[,"cook.d"] #cooks.distance
+#Diagonal values of the "hat" projection matrix
+h_ad <- infl_ad$infmat[, "hat"] #hatvalues
+plot(time, rstudent(fit_ad), ylab = "Externally studentized residuals", xlab = "Time (in years)")
+```
+
+Let us consider the log counts. The fit is much better and the quadratic relationship with the residuals vs fitted values is attenuated. While some points still have high leverage value, they are not considered outliers.
+
+
+```{r}
+fit_l <- lm(log(passengers) ~ time + month)
+plot(log(passengers) ~ time, main = "International airline passengers",
+ylab = "log of monthly total count (in thousands)", type = "l")
+lines(time, fitted(fit_l), lty = 2, col = 4)
+par(mfrow = c(2, 2), pch = 20)
+# Q-Q plot
+plot(x = qt((1:n)/(n+1), df = n - p + 1), y = sort(scale(rstudent(fit_l))),
+     xlab = "Theoretical quantiles", ylab = "Empirical quantiles",
+     main = "Quantile-quantile plot of\nexternally studentized residuals")
+abline(a = 0, b = 1)
+plot(fit_l, which = 1, sub.caption = "")
+plot(fit_l, which = 4, sub.caption = "")
+abline(h = 8/(n - 2*p), col = 2)
+```
+
+One hypothesis of the linear model that is clearly violated here is the independence of the errors. Even if the variance $\mathsf{Var}(\boldsymbol{e})=\sigma^2\mathbf{M}_{\mathbf{X}}$ need not have independent errors, there is positive dependence from residual to residual. This is confirmed by looking at the autocorrelation, which indicates geometric decay. This will be covered in MATH 342 (Time Series), but you should just think here of shocks carrying through until the next period before the model reverts to the mean.
+
+Ignoring the serial dependence in the error has consequences: the standard errors are too small (since errors are correlated, there is less units of information so we are overconfident in our uncertainty quantification).
+
+```{r}
+#Laggedresidual plots
+par(mfrow = c(1, 1))
+plot(x = resid(fit_l)[-1], y = resid(fit_l)[-n], 
+  ylab = expression(bold(e)[-n]), xlab = expression(bold(e)[-1]), 
+  main = "Lagged residual plot")
+#(partial) correlogram: if residuals have no structure
+#there should not be anything outside the bands 19 times out of 20
+#Covered in detail in MATH-342 (Time series)
+par(mfrow = c(1, 2))
+acf(resid(fit_l), main = "Autocorrelation of residuals", xlim = c(1,20))
+pacf(resid(fit_l), main = "Partial autocorrelation of residuals")
+#detach dataset
+detach(airpass)
+```
+
+### Exercise 7.4 - Determinants of earnings 
+
+```{r ex5.3}
+url4 <- "http://sma.epfl.ch/~lbelzile/math341/labour.dat"
+labour <- read.table(url4, header = TRUE)
+attach(labour)
+## Create dummy for extract columns
+## additional years of schooling after high school
+labour$pseduc  <- I(education >= 13) * (education - 13)
+educ_lm <- lm(lhwages ~ education + pseduc, data = labour)
+confint(educ_lm)
+## Plot with meaningful title + axis label
+## red for Male, black for Female
+plot(lhwages ~ education, pch = 20, col = as.integer(gender),
+     bty = "l", ylab = "Log hourly wage (in CAD)", 
+     xlab = "Education achievement (in years)", 
+      main = "Canadian Survey of Labour\nand Income Dynamics (1994)")
+## Create observations on a grid, reproducing the design
+predic <- cbind(1, 0:20, c(rep(0,12), 1:9)) %*% coef(educ_lm)
+lines(0:20, predic, lwd = 2)
+## Legend
+legend(x = "topleft", legend = c("Man","Woman"), col = c(2, 1), pch = 20, bty = "n")
+## Clear pattern: women are paid less for equivalent qualification
+
+## Add gender as covariate
+educ_lm <- lm(lhwages ~ ., data= labour) 
+# fit lm with all columns but lhwages
+## or equivalently
+#update(educ_lm, . ~ . + gender)
+summary(educ_lm)
+confint(educ_lm)
+detach(labour)
+```
+
+The coefficient for gender is still statistically significative at level $\alpha=5\%$ after adjusting for the education level. 

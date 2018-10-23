@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="basics-of-r.html">
+<link rel="prev" href="residuals.html">
+<link rel="next" href="quantile-quantile-plots.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -193,18 +193,60 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>You can find several introductions to <strong>R</strong> online. Have a look at the <a href="https://cran.r-project.org/manuals.html"><strong>R</strong> manuals</a> or better at <a href="https://cran.r-project.org/other-docs.html">contributed manuals</a>. A nice official reference is <a href="http://colinfay.me/intro-to-r/index.html">An introduction to <strong>R</strong></a>. You may wish to look up the following chapters of the <strong>R</strong> language definition (<a href="http://colinfay.me/r-language-definition/evaluation-of-expressions.html">Evaluation of expressions</a> and part of the <a href="http://colinfay.me/r-language-definition/objects.html"><em>Objects</em> chapter</a>).</p>
-<p>If you favor online courses, Data Camp offers a <a href="https://www.datacamp.com/courses/free-introduction-to-r">free introduction to R</a>.</p> 
+<div id="diagnostic-plots" class="section level2">
+<h2><span class="header-section-number">4.3</span> Diagnostic plots</h2>
+<p>If the underlying model is truly linear, a plot of <span class="math inline">\({\boldsymbol{e}}\)</span> against <span class="math inline">\(\hat{{\boldsymbol{y}}}\)</span>, should be flat because the two are by construction orthogonal. In practice, we rescale <span class="math inline">\({\boldsymbol{e}}\)</span> by <span class="math inline">\(s\)</span> to ensure that the variance is closer to unity. If there are omitted higher-order interactions, these will show up in such a plot.</p>
+<p>In practice, there is often little difference between the rescaled residuals <span class="math inline">\({\boldsymbol{e}}/s\)</span> and the internally studentized residuals <span class="math inline">\({\boldsymbol{r}}\)</span>. The former are orthogonal to <span class="math inline">\(\hat{{\boldsymbol{y}}}\)</span>, while the latter have equal variance.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="co">#split the graphic window (1 row, 2 columns)</span>
+<span class="co">#Fitted values vs raw residuals/s2</span>
+<span class="kw">plot</span>(<span class="dt">y =</span> e<span class="op">/</span><span class="kw">sqrt</span>(s2), <span class="dt">x =</span> yhat, 
+     <span class="dt">xlab =</span> <span class="st">&quot;fitted values&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;rescaled residuals&quot;</span>); <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="co">#Fitted values vs internally studentized residuals</span>
+<span class="kw">points</span>(<span class="dt">y =</span> r, <span class="dt">x =</span> yhat, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> <span class="dv">2</span>)
+<span class="co">#Regressor weight vs residuals</span>
+<span class="kw">plot</span>(<span class="dt">y =</span> e<span class="op">/</span><span class="kw">sqrt</span>(s2), <span class="dt">x =</span> X[,<span class="dv">2</span>], <span class="dt">xlab =</span> <span class="st">&quot;weight&quot;</span>, 
+     <span class="dt">ylab =</span> <span class="st">&quot;rescaled residuals&quot;</span>); <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">points</span>(<span class="dt">y =</span> r, <span class="dt">x =</span> mtcars<span class="op">$</span>wt, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> <span class="dv">2</span>)</code></pre></div>
+<p><img src="LinesRModels_files/figure-html/diagnostics-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#graphics.off()</span>
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</code></pre></div>
+<p>An alternative is <code>residualPlot(lm(mpg ~ hp + wt, data = mtcars))</code>, which adds the line for a quadratic regression of <span class="math inline">\(\hat{{\boldsymbol{y}}}\)</span> against standardized residuals.</p>
+<div id="added-variable-plots" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Added-variable plots</h3>
+<p>We can assess graphically whether a regressor should be included or not in the model. If the omitted regressor <span class="math inline">\(\mathbf{X}_2\)</span> is redundant, its coefficient should be zero and we can project onto the orthogonal complement of the remaining regressors <span class="math inline">\({\mathbf{M}}_{{\mathbf{X}}_1}\)</span> and the response to get the regression FWL for <span class="math inline">\({\boldsymbol{\beta}}_2\)</span>. The relationship between the two should have zero slope. The package <code>car</code> has a function <code>avPlot</code>.</p>
+<p>In the regression of fuel consumption as a function of weight, we have not included the potentially important regressor <code>hp</code>, which measures the power of the engine. The added variable plot shows that it is an important explanatory variable. In contrast, the displacement <code>disp</code> is either uncorrelated with <code>mpg</code> or its effect is already explained by <code>wt</code> and <code>hp</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;car&quot;)</span>
+<span class="kw">library</span>(car)</code></pre></div>
+<pre><code>## Loading required package: carData</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car<span class="op">::</span><span class="kw">avPlots</span>(<span class="dt">model =</span> <span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>hp <span class="op">+</span><span class="st"> </span>wt <span class="op">+</span><span class="st"> </span>disp, <span class="dt">data =</span> mtcars))</code></pre></div>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
+<div id="diagnostic-of-heteroscedasticity" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Diagnostic of heteroscedasticity</h3>
+<p>Unequal variance will often show up in time series. For example, many economic models postulate exponential growth, but this effect can appear linear at a small scale. However, the variance will not be constant and typically increase with the level of the observations. If there are factors, these may have different variances. A simple boxplot of the fitted values against the factor can flag heteroscedasticity.</p>
+</div>
+<div id="outliers" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> Outliers</h3>
+<p>If an outlier is present and it has high leverage, it will draw the regression line towards itself. One way of assessing this (assuming there is a single such point) is to compute <span class="math inline">\({\hat{\boldsymbol{\beta}}}\)</span> by fitting the model to all but the observation <span class="math inline">\(y_i\)</span>. The difference between this estimate <span class="math inline">\({\hat{\boldsymbol{\beta}}}_{-i}\)</span> and <span class="math inline">\({\hat{\boldsymbol{\beta}}}\)</span> is called difference of betas, or <code>dfbeta</code>. We can compute the effect of the deletion efficiently (details later on this) and similarly rescale the estimates to get a standardized difference.</p>
+<p>We can also look at the Cook’s distance, the leverage values and the externally studentized residuals. These are often combined in a bubble pplot in which the radius of the circle is proportional to Cook’s distance, with the leverage on the <span class="math inline">\(x\)</span>-axis and the value of the externally studentized residuals <span class="math inline">\({\boldsymbol{t}}\)</span> on the <span class="math inline">\(y\)</span>-axis.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dfbetaPlots</span>(<span class="dt">model =</span> <span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>hp <span class="op">+</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars))</code></pre></div>
+<p><img src="LinesRModels_files/figure-html/dfbeta-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">influencePlot</span>(<span class="dt">model =</span> <span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>hp <span class="op">+</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars))</code></pre></div>
+<p><img src="LinesRModels_files/figure-html/dfbeta-2.png" width="672" /></p>
+<pre><code>##                       StudRes        Hat     CookD
+## Lincoln Continental 0.4434296 0.20897838 0.0178091
+## Chrysler Imperial   2.5724776 0.18648721 0.4236109
+## Toyota Corolla      2.6051516 0.09950335 0.2083933
+## Maserati Bora       1.1250084 0.39420816 0.2720397</code></pre>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="basics-of-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="residuals.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="quantile-quantile-plots.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

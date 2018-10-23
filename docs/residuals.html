@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="basics-of-r.html">
+<link rel="prev" href="confidence-and-prediction-intervals.html">
+<link rel="next" href="diagnostic-plots.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -193,18 +193,48 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>You can find several introductions to <strong>R</strong> online. Have a look at the <a href="https://cran.r-project.org/manuals.html"><strong>R</strong> manuals</a> or better at <a href="https://cran.r-project.org/other-docs.html">contributed manuals</a>. A nice official reference is <a href="http://colinfay.me/intro-to-r/index.html">An introduction to <strong>R</strong></a>. You may wish to look up the following chapters of the <strong>R</strong> language definition (<a href="http://colinfay.me/r-language-definition/evaluation-of-expressions.html">Evaluation of expressions</a> and part of the <a href="http://colinfay.me/r-language-definition/objects.html"><em>Objects</em> chapter</a>).</p>
-<p>If you favor online courses, Data Camp offers a <a href="https://www.datacamp.com/courses/free-introduction-to-r">free introduction to R</a>.</p> 
+<div id="residuals" class="section level2">
+<h2><span class="header-section-number">4.2</span> Residuals</h2>
+<p>There are many types of residuals, which we cover in term. The model residuals are simply <span class="math inline">\({\boldsymbol{e}}={\mathbf{M}}_{{\mathbf{X}}}{\boldsymbol{y}}\)</span>, which can be obtained through <code>resid</code> for <code>lm</code> objects. We can verify numerically that <span class="math inline">\(\hat{{{\boldsymbol{y}}}} \perp {\boldsymbol{e}}\)</span> and verify that <span class="math inline">\({\mathbf{X}}^\top{\boldsymbol{e}}={\boldsymbol{0}}_p\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Fitted values    </span>
+yhat &lt;-<span class="st"> </span><span class="kw">fitted</span>(ols)
+<span class="co">#Residuals</span>
+e &lt;-<span class="st"> </span><span class="kw">resid</span>(ols)
+
+<span class="co">#Orthogonality (by construction)</span>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(e <span class="op">%*%</span><span class="st"> </span>yhat), <span class="dv">0</span>))</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(e <span class="op">%*%</span><span class="st"> </span>X), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>)))</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>In the sequel, we will look at calculation of various variants of the residuals. The first is the standardized residuals, also internally studentized residuals. These are obtained by scaling each <span class="math inline">\({\boldsymbol{e}}/s\)</span> by the invidual variance terms <span class="math inline">\(1-h_{ii}\)</span> to make them homoscedastic.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#we divide so they have the same variance - but not independent</span>
+r &lt;-<span class="st"> </span>e<span class="op">/</span><span class="kw">sqrt</span>(s2<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>leverage)) 
+<span class="co">#also obtainable via rstandard(ols)</span>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">rstandard</span>(ols), r))</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Because the <span class="math inline">\(i\)</span>th residual is used in both the numerator and in the denominator (in the calculation of <span class="math inline">\(s^2\)</span>), the standardized (internally studentized) residual follows marginally an approximate scaled Student distribution. However, because of the use of <span class="math inline">\(s^2\)</span> in the denominator, the entries of <span class="math inline">\(\boldsymbol{r}\)</span> are bounded by <span class="math inline">\(\pm n-p\)</span>. They are also not independent, even if this fact is often omitted in practice. While they will be approximately centered (with mean zero and variance one), they can (and should) be recentered before undertaking visual diagnostics.</p>
+<p>The externally studentized residuals <span class="math inline">\(t_i\)</span> are obtained by excluding the <span class="math inline">\(i\)</span>th observation from the calculation of the variance. The advantage of doing this is that <span class="math inline">\(\{t_i\}_{i=1}^n\)</span> are marginally Student distributed with <span class="math inline">\(n-p-1\)</span> degrees of freedom (but they are again not independent). These are typically the residuals that are displayed in Q-Q plots. The externally studentized residuals can be obtained with the function <code>rstudent</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Externally studentized residuals</span>
+smi &lt;-<span class="st"> </span><span class="kw">influence</span>(ols)<span class="op">$</span>sigma
+s2mi &lt;-((n<span class="op">-</span><span class="dv">2</span>)<span class="op">*</span>s2<span class="op">-</span>e<span class="op">^</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>leverage))<span class="op">/</span>(n<span class="op">-</span><span class="dv">3</span>)
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(smi<span class="op">^</span><span class="dv">2</span>, s2mi))</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">esr &lt;-<span class="st"> </span>e<span class="op">/</span><span class="kw">sqrt</span>(s2mi<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>leverage))
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">rstudent</span>(ols), esr))</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>The last type of residual is the leave-one-out cross validation residual. These are the residuals obtained by fitting the linear model to all observations, but the <span class="math inline">\(i\)</span>th, i.e., <span class="math inline">\({\boldsymbol{y}}_{-i}= {\mathbf{X}}_{-i}{\boldsymbol{\beta}}+ {\boldsymbol{{\varepsilon}}}\)</span>. Let <span class="math inline">\({\hat{\boldsymbol{\beta}}}_{-i}\)</span> denote the OLS coefficients from this regression and <span class="math inline">\(\hat{y}_{i,-i}=\mathbf{x}_i{\hat{\boldsymbol{\beta}}}_{-i}\)</span> the predicted value for the left-out <span class="math inline">\(\mathbf{x}_i\)</span> regressor. The <span class="math inline">\(i\)</span>th leave-one-out cross validation residual is <span class="math inline">\(e_{i,-i}=y_i - \hat{y}_{i,-i}=e_i/(1-h_{ii})\)</span>. We can use these to calculate the PRESS statistic, <span class="math inline">\(\mathsf{PRESS}=\sum_{i=1}^n e_{i, -i}^2\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># LOOCV residuals e/(1-leverage)</span>
+loocv &lt;-<span class="st"> </span>e<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>leverage)
+loocv_err &lt;-<span class="st"> </span><span class="kw">rstandard</span>(ols, <span class="dt">type =</span> <span class="st">&quot;pred&quot;</span>)
+PRESS &lt;-<span class="st"> </span><span class="kw">crossprod</span>(loocv_err)</code></pre></div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="basics-of-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="confidence-and-prediction-intervals.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="diagnostic-plots.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -93,6 +93,7 @@ Adding new variables affects the estimates of the coefficient vector $\boldsymbo
 
 Oftentimes, the regressors that are part of the design matrix will be categorical variables, which can be ordered or unordered. These are encoded using binary indicators, that is, vectors of zero/ones. In **R**, dummy variables (vectors of class `factor`) are used to indicate categorical variables; the component `levels` allows one to obtain meaningful category names. The function `lm` can deal with `factor` objects. Oftentimes, dummy indicators are cast to numeric vector in data frame. There is a risk that the vector be interpreted as a continuous numeric if the levels are integers (for example, advancement of the state of an illness that is encoded as 1, 2, 3, \ldots). The user can cast columns to factors using the function `as.factor`. Use `is.factor` to check whether the vector is a factor. The functions `class` also reports the encoding and `summary` displays counts of the various factor in place of the usual summary statistics.
 
+
 ### Example: seasonal effects
 
 Suppose we are interested in estimating the seasonal model for quarterly data. Since each observation is recorded on one trimester, it could be postulated that the time of the year affect the response. This effect can be built in the design and tested for.
@@ -104,6 +105,29 @@ $$\boldsymbol{y} = \mathbf{S}_1\alpha_1 +\mathbf{S}_2\alpha_2  + \mathbf{S}_3\al
 correspond to the intercept for season $i$. If we include instead the dummy $\mathbf{S}_1$ and fit
 $$\boldsymbol{y} = \mathbf{1}_n\gamma_1 +\mathbf{S}_2\gamma_2  + \mathbf{S}_3\gamma_3 + \mathbf{S}_4\gamma_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon},$$
 then the constant for season 1 is $\alpha_1=\gamma_1$, and is $\alpha_j=\gamma_1+\gamma_j$ for season $j \in \{2, 3, 4\}$. The reference level is therefore the first season $\gamma_1$ and the coefficients $\{\gamma_j\}, j \in \{2, 3, 4\}$ are contrasts (the difference between the baseline and the seasonal level).
+
+
+As just illustrated above, the interpretation of the coefficients when we have factors differs. Introducing factors lead to different intercepts for the different groups, whereas interactions with the factors lead to different slopes. Since we cannot include all levels of the factor as well as an intercept, the interpretation of the coefficient for the constant is the intercept of the baseline, i.e., the ommitted factor. 
+
+For simplicity, consider the simple case with an intercept and a single factor. Why do the coefficients $\beta_1$ and $\beta_1'$ associated to the first columns of models
+\begin{align*}
+ \mathbf{X}\boldsymbol{\beta} = \begin{pmatrix}
+       \bf{1}_{n_1} & \bf{0}_{n_1} \\
+       \bf{1}_{n_2} & \bf{1}_{n_2}  \\
+      \end{pmatrix}\begin{pmatrix} \beta_1 & \beta_2\end{pmatrix}^\top, \qquad 
+      \mathbf{X}'\boldsymbol{\beta}' =  \begin{pmatrix}
+       \bf{1}_{n_1} & \bf{0}_{n_1} \\
+       \bf{0}_{n_2} & \bf{1}_{n_2}  \\
+      \end{pmatrix}\begin{pmatrix} \beta_1' & \beta_2'\end{pmatrix}^\top
+\end{align*}
+have the same interpretation? For the matrix $\bX$ consisting of orthogonal regressors, this is 
+clear. For the matrix $\bX'$, recall the FWL theorem: the regression coefficient $\beta_1'$ is the same as that of the regression 
+$\Mmat_{\bx_2}\bs{y} = \Mmat_{\bx_2}\bf{1}_n + \bs{u}$ for $\bx_2 = (\bf{0}_{n_1}^\top, \bf{1}_{n_2}^\top)^\top$. The matrix 
+$\Mmat_{\bx_2}$ is a block matrix, whose first $n_1 \times n_1$ block contains entries $n_1^{-1}$ and the rest of the entries is zero.
+$\Mmat_{\bx_2}\bs{y}$ does not affect the last $n_2$ entries of $\bs{y}$, while $\Mmat_{\bx_2}\bf{1}_n = \bf{1}_n - \bx_2$. This 
+reasoning generalizes to more complex settings with a slope and other regressors.
+
+
 
 The discussion is illustrated on a dataset consisting of quarterly measurements of the gas consumption in the United Kingdom, from 1960 to 1986.
 
