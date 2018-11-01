@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,51 +46,76 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-pre, code { background-color: #f8f8f8; }
-code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code > span.dt { color: #204a87; } /* DataType */
-code > span.dv { color: #0000cf; } /* DecVal */
-code > span.bn { color: #0000cf; } /* BaseN */
-code > span.fl { color: #0000cf; } /* Float */
-code > span.ch { color: #4e9a06; } /* Char */
-code > span.st { color: #4e9a06; } /* String */
-code > span.co { color: #8f5902; font-style: italic; } /* Comment */
-code > span.ot { color: #8f5902; } /* Other */
-code > span.al { color: #ef2929; } /* Alert */
-code > span.fu { color: #000000; } /* Function */
-code > span.er { color: #a40000; font-weight: bold; } /* Error */
-code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #000000; } /* Constant */
-code > span.sc { color: #000000; } /* SpecialChar */
-code > span.vs { color: #4e9a06; } /* VerbatimString */
-code > span.ss { color: #4e9a06; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #000000; } /* Variable */
-code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code > span.ex { } /* Extension */
-code > span.at { color: #c4a000; } /* Attribute */
-code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="css/style.css" type="text/css" />
@@ -173,6 +198,13 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.5.4" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.4---determinants-of-earnings"><i class="fa fa-check"></i><b>4.5.4</b> Exercise 7.4 - Determinants of earnings</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="5" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>5</b> Analysis of variance</a><ul>
+<li class="chapter" data-level="5.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html"><i class="fa fa-check"></i><b>5.1</b> General decomposition with arbitrary covariates</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>5.1.1</b> Sum of squares decomposition</a></li>
+<li class="chapter" data-level="5.1.2" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.2</b> The decomposition of squares in <strong>R</strong></a></li>
+<li class="chapter" data-level="5.1.3" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.3</b> Dropping or adding variables</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -200,9 +232,13 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <h3><span class="header-section-number">3.2.1</span> Example: seasonal effects</h3>
 <p>Suppose we are interested in estimating the seasonal model for quarterly data. Since each observation is recorded on one trimester, it could be postulated that the time of the year affect the response. This effect can be built in the design and tested for.</p>
 <p>Consider a design matrix whose columns include <span class="math inline">\((\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4)\)</span>. The entries of the seasonal dummies are 0/1 depending on the season; for example, <span class="math inline">\(\mathrm{S}_{i1}=1\)</span> if the observation is recorded in the spring and <span class="math inline">\(\mathrm{S}_{i1}=0\)</span> otherwise, so that, for time ordered response vectors starting in the spring, we can write <span class="math inline">\(\mathbf{S}_1=(1,0,0,0,1,0,0,\ldots)^\top\)</span> and <span class="math inline">\(\mathbf{S}_1 + \mathbf{S}_2 + \mathbf{S}_3 + \mathbf{S}_4 = \mathbf{1}_n\)</span>. Thus, a regression model cannot include a mean and all four seasonal variables, but since <span class="math inline">\(\mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4) = \mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{1}_n) = \mathscr{M}(\mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4, \mathbf{1}_n)\)</span>, any set of four vectors can be used.</p>
-<p>If we drop the constant vector <span class="math inline">\(\mathbf{1}_n\)</span> from the regression (in <strong>R</strong>, by writing <code>0</code> or <code>-1</code> on the right hand side of the <code>lm</code> formula), the coefficients <span class="math inline">\(\alpha_i\)</span>, <span class="math inline">\(i=1, \ldots, 4\)</span> in regression <span class="math display">\[\boldsymbol{y} = \mathbf{S}_1\alpha_1 +\mathbf{S}_2\alpha_2  + \mathbf{S}_3\alpha_3 + \mathbf{S}_4\alpha_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span> correspond to the intercept for season <span class="math inline">\(i\)</span>. If we include instead the dummy <span class="math inline">\(\mathbf{S}_1\)</span> and fit <span class="math display">\[\boldsymbol{y} = \mathbf{1}_n\gamma_1 +\mathbf{S}_2\gamma_2  + \mathbf{S}_3\gamma_3 + \mathbf{S}_4\gamma_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon},\]</span> then the constant for season 1 is <span class="math inline">\(\alpha_1=\gamma_1\)</span>, and is <span class="math inline">\(\alpha_j=\gamma_1+\gamma_j\)</span> for season <span class="math inline">\(j \in \{2, 3, 4\}\)</span>. The reference level is therefore the first season <span class="math inline">\(\gamma_1\)</span> and the coefficients <span class="math inline">\(\{\gamma_j\}, j \in \{2, 3, 4\}\)</span> are contrasts (the difference between the baseline and the seasonal level).</p>
+<p>If we drop the constant vector <span class="math inline">\(\mathbf{1}_n\)</span> from the regression (in <strong>R</strong>, by writing <code>0</code> or <code>-1</code> on the right hand side of the <code>lm</code> formula), the coefficients <span class="math inline">\(\alpha_i\)</span>, <span class="math inline">\(i=1, \ldots, 4\)</span> in regression
+<span class="math display">\[\boldsymbol{y} = \mathbf{S}_1\alpha_1 +\mathbf{S}_2\alpha_2  + \mathbf{S}_3\alpha_3 + \mathbf{S}_4\alpha_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span>
+correspond to the intercept for season <span class="math inline">\(i\)</span>. If we include instead the dummy <span class="math inline">\(\mathbf{S}_1\)</span> and fit
+<span class="math display">\[\boldsymbol{y} = \mathbf{1}_n\gamma_1 +\mathbf{S}_2\gamma_2  + \mathbf{S}_3\gamma_3 + \mathbf{S}_4\gamma_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon},\]</span>
+then the constant for season 1 is <span class="math inline">\(\alpha_1=\gamma_1\)</span>, and is <span class="math inline">\(\alpha_j=\gamma_1+\gamma_j\)</span> for season <span class="math inline">\(j \in \{2, 3, 4\}\)</span>. The reference level is therefore the first season <span class="math inline">\(\gamma_1\)</span> and the coefficients <span class="math inline">\(\{\gamma_j\}, j \in \{2, 3, 4\}\)</span> are contrasts (the difference between the baseline and the seasonal level).</p>
 <p>As just illustrated above, the interpretation of the coefficients when we have factors differs. Introducing factors lead to different intercepts for the different groups, whereas interactions with the factors lead to different slopes. Since we cannot include all levels of the factor as well as an intercept, the interpretation of the coefficient for the constant is the intercept of the baseline, i.e., the ommitted factor.</p>
-For simplicity, consider the simple case with an intercept and a single factor. Why do the coefficients <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_1&#39;\)</span> associated to the first columns of models
+<p>For simplicity, consider the simple case with an intercept and a single factor. Why do the coefficients <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_1&#39;\)</span> associated to the first columns of models
 <span class="math display">\[\begin{align*}
  \mathbf{X}\boldsymbol{\beta} = \begin{pmatrix}
        \bf{1}_{n_1} &amp; \bf{0}_{n_1} \\
@@ -213,31 +249,37 @@ For simplicity, consider the simple case with an intercept and a single factor. 
        \bf{0}_{n_2} &amp; \bf{1}_{n_2}  \\
       \end{pmatrix}\begin{pmatrix} \beta_1&#39; &amp; \beta_2&#39;\end{pmatrix}^\top
 \end{align*}\]</span>
-<p>have the same interpretation? For the matrix <span class="math inline">\({{\mathbf{X}}}\)</span> consisting of orthogonal regressors, this is clear. For the matrix <span class="math inline">\({{\mathbf{X}}}&#39;\)</span>, recall the FWL theorem: the regression coefficient <span class="math inline">\(\beta_1&#39;\)</span> is the same as that of the regression <span class="math inline">\({\mathbf{M}}_{{{\mathbf{x}}}_2}{\boldsymbol{y}} = {\mathbf{M}}_{{{\mathbf{x}}}_2}\bf{1}_n + {\boldsymbol{u}}\)</span> for <span class="math inline">\({{\mathbf{x}}}_2 = (\bf{0}_{n_1}^\top, \bf{1}_{n_2}^\top)^\top\)</span>. The matrix <span class="math inline">\({\mathbf{M}}_{{{\mathbf{x}}}_2}\)</span> is a block matrix, whose first <span class="math inline">\(n_1 \times n_1\)</span> block contains entries <span class="math inline">\(n_1^{-1}\)</span> and the rest of the entries is zero. <span class="math inline">\({\mathbf{M}}_{{{\mathbf{x}}}_2}{\boldsymbol{y}}\)</span> does not affect the last <span class="math inline">\(n_2\)</span> entries of <span class="math inline">\({\boldsymbol{y}}\)</span>, while <span class="math inline">\({\mathbf{M}}_{{{\mathbf{x}}}_2}\bf{1}_n = \bf{1}_n - {{\mathbf{x}}}_2\)</span>. This reasoning generalizes to more complex settings with a slope and other regressors.</p>
+have the same interpretation? For the matrix <span class="math inline">\({\mathbf{X}}\)</span> consisting of orthogonal regressors, this is
+clear. For the matrix <span class="math inline">\({\mathbf{X}}&#39;\)</span>, recall the FWL theorem: the regression coefficient <span class="math inline">\(\beta_1&#39;\)</span> is the same as that of the regression
+<span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\boldsymbol{y} = \mathbf{M}_{{\mathbf{x}}_2}\bf{1}_n + \boldsymbol{u}\)</span> for <span class="math inline">\({\mathbf{x}}_2 = (\bf{0}_{n_1}^\top, \bf{1}_{n_2}^\top)^\top\)</span>. The matrix
+<span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\)</span> is a block matrix, whose first <span class="math inline">\(n_1 \times n_1\)</span> block contains entries <span class="math inline">\(n_1^{-1}\)</span> and the rest of the entries is zero.
+<span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\boldsymbol{y}\)</span> does not affect the last <span class="math inline">\(n_2\)</span> entries of <span class="math inline">\(\boldsymbol{y}\)</span>, while <span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\bf{1}_n = \bf{1}_n - {\mathbf{x}}_2\)</span>. This
+reasoning generalizes to more complex settings with a slope and other regressors.</p>
 <p>The discussion is illustrated on a dataset consisting of quarterly measurements of the gas consumption in the United Kingdom, from 1960 to 1986.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(UKgas)
-quarter &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">length =</span> <span class="kw">length</span>(UKgas)) <span class="co">#create vector 1, 2, 3, 4, 1, ...</span>
-<span class="kw">is.factor</span>(quarter)</code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" title="1"><span class="kw">data</span>(UKgas)</a>
+<a class="sourceLine" id="cb91-2" title="2">quarter &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">length =</span> <span class="kw">length</span>(UKgas)) <span class="co">#create vector 1, 2, 3, 4, 1, ...</span></a>
+<a class="sourceLine" id="cb91-3" title="3"><span class="kw">is.factor</span>(quarter)</a></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quarter &lt;-<span class="st"> </span><span class="kw">as.factor</span>(quarter) <span class="co">#cast the vector to a factor</span>
-<span class="kw">is.factor</span>(quarter)</code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" title="1">quarter &lt;-<span class="st"> </span><span class="kw">as.factor</span>(quarter) <span class="co">#cast the vector to a factor</span></a>
+<a class="sourceLine" id="cb93-2" title="2"><span class="kw">is.factor</span>(quarter)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(quarter)</code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" title="1"><span class="kw">class</span>(quarter)</a></code></pre></div>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#What is name of the dummies</span>
-<span class="kw">head</span>(quarter)</code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1"><span class="co">#What is name of the dummies</span></a>
+<a class="sourceLine" id="cb97-2" title="2"><span class="kw">head</span>(quarter)</a></code></pre></div>
 <pre><code>## [1] 1 2 3 4 1 2
 ## Levels: 1 2 3 4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(quarter)</code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" title="1"><span class="kw">levels</span>(quarter)</a></code></pre></div>
 <pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(quarter) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q3&quot;</span>, <span class="st">&quot;Q4&quot;</span>) <span class="co">#change names</span></code></pre></div>
-<p>The first model is of the form <span class="math display">\[ \boldsymbol{y} = \mathbf{Q}_1 \alpha_1 + \mathbf{Q}_2 \alpha_2 + \mathbf{Q}_3 \alpha_3 + \mathbf{Q}_4 \alpha_4 + \boldsymbol{\varepsilon}.
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" title="1"><span class="kw">levels</span>(quarter) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q3&quot;</span>, <span class="st">&quot;Q4&quot;</span>) <span class="co">#change names</span></a></code></pre></div>
+<p>The first model is of the form
+<span class="math display">\[ \boldsymbol{y} = \mathbf{Q}_1 \alpha_1 + \mathbf{Q}_2 \alpha_2 + \mathbf{Q}_3 \alpha_3 + \mathbf{Q}_4 \alpha_4 + \boldsymbol{\varepsilon}.
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gas_lm1 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
-<span class="kw">coef</span>(gas_lm1)</code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" title="1">gas_lm1 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb102-2" title="2"><span class="kw">coef</span>(gas_lm1)</a></code></pre></div>
 <pre><code>## quarterQ1 quarterQ2 quarterQ3 quarterQ4 
 ##  5.989307  5.586806  5.039595  5.700242</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm1), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" title="1"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm1), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##    quarterQ1 quarterQ2 quarterQ3 quarterQ4
 ## 1          1         0         0         0
 ## 2          0         1         0         0
@@ -249,14 +291,17 @@ quarter &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="d
 ## 8          0         0         0         1
 ## 9          1         0         0         0
 ## 10         0         1         0         0</code></pre>
-<p>The model with all the quarterly dummies gives the quarterly average value <span class="math inline">\(\exp(\alpha_j)\)</span> in quarter <span class="math inline">\(j\)</span>, <span class="math inline">\(j = 1, \ldots, 4\)</span>. If we include an intercept, the first factor is selected as baseline and the coefficients of the quarters <code>Q2</code> to <code>Q4</code> are contrasts. For this model, say <span class="math display">\[ \boldsymbol{y} = \mathbf{1}_n \gamma_1 + \mathbf{Q}_2 \gamma_2 + \mathbf{Q}_3 \gamma_3 + \mathbf{Q}_4 \gamma_4 + \boldsymbol{\varepsilon},
+<p>The model with all the quarterly dummies gives the quarterly average value <span class="math inline">\(\exp(\alpha_j)\)</span> in quarter <span class="math inline">\(j\)</span>, <span class="math inline">\(j = 1, \ldots, 4\)</span>.
+If we include an intercept, the first factor is selected as baseline and the coefficients of the quarters <code>Q2</code> to <code>Q4</code> are contrasts.
+For this model, say
+<span class="math display">\[ \boldsymbol{y} = \mathbf{1}_n \gamma_1 + \mathbf{Q}_2 \gamma_2 + \mathbf{Q}_3 \gamma_3 + \mathbf{Q}_4 \gamma_4 + \boldsymbol{\varepsilon},
 \]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#New parameterization, with a constant</span>
-gas_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter) <span class="co">#R drops collinear by default and fits with Q2-Q4</span>
-<span class="kw">coef</span>(gas_lm2)</code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" title="1"><span class="co">#New parameterization, with a constant</span></a>
+<a class="sourceLine" id="cb106-2" title="2">gas_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter) <span class="co">#R drops collinear by default and fits with Q2-Q4</span></a>
+<a class="sourceLine" id="cb106-3" title="3"><span class="kw">coef</span>(gas_lm2)</a></code></pre></div>
 <pre><code>## (Intercept)   quarterQ2   quarterQ3   quarterQ4 
 ##   5.9893074  -0.4025014  -0.9497127  -0.2890659</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm2), <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" title="1"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm2), <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##    (Intercept) quarterQ2 quarterQ3 quarterQ4
 ## 1            1         0         0         0
 ## 2            1         1         0         0
@@ -270,7 +315,7 @@ gas_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw
 ## 10           1         1         0         0</code></pre>
 <p>The estimated average gas consumption in millions of therms is <span class="math inline">\(\exp(\widehat{\gamma}_1)=\exp(\widehat{\alpha}_1)\)</span> for the first quarter, <span class="math inline">\(\exp(\widehat{\alpha}_2)=\exp(\widehat{\gamma}_1+\widehat{\gamma}_2)\)</span> for the second quarter, etc.</p>
 <p>We can check that the interpretation is correct.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((<span class="kw">coef</span>(gas_lm2)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(gas_lm2)[<span class="op">-</span><span class="dv">1</span>]), <span class="kw">coef</span>(gas_lm1)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" title="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((<span class="kw">coef</span>(gas_lm2)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(gas_lm2)[<span class="op">-</span><span class="dv">1</span>]), <span class="kw">coef</span>(gas_lm1)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 </div>
@@ -326,7 +371,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

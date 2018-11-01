@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,51 +46,76 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-pre, code { background-color: #f8f8f8; }
-code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code > span.dt { color: #204a87; } /* DataType */
-code > span.dv { color: #0000cf; } /* DecVal */
-code > span.bn { color: #0000cf; } /* BaseN */
-code > span.fl { color: #0000cf; } /* Float */
-code > span.ch { color: #4e9a06; } /* Char */
-code > span.st { color: #4e9a06; } /* String */
-code > span.co { color: #8f5902; font-style: italic; } /* Comment */
-code > span.ot { color: #8f5902; } /* Other */
-code > span.al { color: #ef2929; } /* Alert */
-code > span.fu { color: #000000; } /* Function */
-code > span.er { color: #a40000; font-weight: bold; } /* Error */
-code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #000000; } /* Constant */
-code > span.sc { color: #000000; } /* SpecialChar */
-code > span.vs { color: #4e9a06; } /* VerbatimString */
-code > span.ss { color: #4e9a06; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #000000; } /* Variable */
-code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code > span.ex { } /* Extension */
-code > span.at { color: #c4a000; } /* Attribute */
-code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="css/style.css" type="text/css" />
@@ -173,6 +198,13 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.5.4" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.4---determinants-of-earnings"><i class="fa fa-check"></i><b>4.5.4</b> Exercise 7.4 - Determinants of earnings</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="5" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>5</b> Analysis of variance</a><ul>
+<li class="chapter" data-level="5.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html"><i class="fa fa-check"></i><b>5.1</b> General decomposition with arbitrary covariates</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>5.1.1</b> Sum of squares decomposition</a></li>
+<li class="chapter" data-level="5.1.2" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.2</b> The decomposition of squares in <strong>R</strong></a></li>
+<li class="chapter" data-level="5.1.3" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.3</b> Dropping or adding variables</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -195,7 +227,8 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="quantile-quantile-plots" class="section level2">
 <h2><span class="header-section-number">4.4</span> Quantile-quantile plots</h2>
-<p>The distributional assumption is mostly assessed using quantile-quantile plots. However, the latter are hardly useful unless we superimpose some confidence intervals to the graph. We will cover two methods for producing Q-Q plots for linear models: one using an orthogonal transformation that makes the estimated residuals IID. The second uses the externally studentized residuals.</p>
+<p>The distributional assumption is mostly assessed using quantile-quantile plots. However, the latter are hardly useful unless we superimpose some confidence intervals to the graph.
+We will cover two methods for producing Q-Q plots for linear models: one using an orthogonal transformation that makes the estimated residuals IID. The second uses the externally studentized residuals.</p>
 <div id="quantile-quantile-plot-of-externally-studentized-errors" class="section level3">
 <h3><span class="header-section-number">4.4.1</span> Quantile-quantile plot of externally studentized errors</h3>
 <p>Recall that the quantile-quantile plot has</p>
@@ -204,42 +237,44 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
 <li>on the <span class="math inline">\(y\)</span>-axis, the empirical quantiles, <span class="math inline">\(X_i\)</span></li>
 </ul>
 <p>For a Gaussian Q-Q plot, we will need to estimate both the mean and the variance. The usual estimators will do, replacing <span class="math inline">\(\sigma^2\)</span> with <span class="math inline">\(s^2\)</span> in the calculations, but all results will be approximate. One can obtain standard residuals by subtracting the mean and scaling by the standard deviation (using e.g. the function <code>scale</code>). The function <code>qqnorm</code> plots a Normal Q-Q plot without rescaling and the function <code>qqline</code> adds a line passing through the first and third quartile. Since these are robust estimates, this is a sensible option but implies that the scales of the Q-Q plot are not the same on the <span class="math inline">\(x\)</span>-axis than on the <span class="math inline">\(y\)</span>-axis. It is preferable to use the estimate to rescale the data, so as to facilitate the inclusion of approximate confidence intervals.</p>
-<p>We now compute pointwise confidence intervals using the result on the distribution of the order statistic, which will be covered in Exercise 8.2 (in 2018).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Student plotting position F^(-1)(E[U_{(i)}])</span>
-emp_quant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="kw">rank</span>(esr)<span class="op">/</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>),  <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)  
-<span class="co">#Function to compute the pointwise confidence intervals</span>
-<span class="co">#You can simply copy-paste this for your own plots</span>
-confint.qqplot.ptw &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">dist =</span> <span class="st">&quot;norm&quot;</span>, ...){
-  <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="cf">function</span>(i){
-  <span class="co">#Beta order statistic quantiles, mapped to Student scale</span>
-    <span class="kw">do.call</span>(<span class="kw">paste0</span>(<span class="st">&#39;q&#39;</span>, dist), <span class="kw">list</span>(<span class="kw">qbeta</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), i, n <span class="op">-</span><span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ...))
-  }))
-}
-
-<span class="co">#Call the function</span>
-confint_lim &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(<span class="dt">n =</span> n, <span class="dt">dist =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)
-<span class="co">#Plot these confidence bands alongside with the empirical quantile plotting position</span>
-<span class="kw">matplot</span>(<span class="kw">sort</span>(emp_quant), confint_lim, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>,
-        <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>),
-        <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>)  
-<span class="co">#Theoretical line of fit</span>
-<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
-<span class="co">#Add observations</span>
-<span class="kw">points</span>(esr, emp_quant, <span class="dt">pch =</span> <span class="dv">20</span>)</code></pre></div>
+<p>We now compute pointwise confidence intervals using the
+result on the distribution of the order statistic, which will be covered in Exercise 8.2 (in 2018).</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" title="1"><span class="co">#Student plotting position F^(-1)(E[U_{(i)}])</span></a>
+<a class="sourceLine" id="cb144-2" title="2">emp_quant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="kw">rank</span>(esr)<span class="op">/</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>),  <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)  </a>
+<a class="sourceLine" id="cb144-3" title="3"><span class="co">#Function to compute the pointwise confidence intervals</span></a>
+<a class="sourceLine" id="cb144-4" title="4"><span class="co">#You can simply copy-paste this for your own plots</span></a>
+<a class="sourceLine" id="cb144-5" title="5">confint.qqplot.ptw &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">dist =</span> <span class="st">&quot;norm&quot;</span>, ...){</a>
+<a class="sourceLine" id="cb144-6" title="6">  <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="cf">function</span>(i){</a>
+<a class="sourceLine" id="cb144-7" title="7">  <span class="co">#Beta order statistic quantiles, mapped to Student scale</span></a>
+<a class="sourceLine" id="cb144-8" title="8">    <span class="kw">do.call</span>(<span class="kw">paste0</span>(<span class="st">&#39;q&#39;</span>, dist), <span class="kw">list</span>(<span class="kw">qbeta</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), i, n <span class="op">-</span><span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ...))</a>
+<a class="sourceLine" id="cb144-9" title="9">  }))</a>
+<a class="sourceLine" id="cb144-10" title="10">}</a>
+<a class="sourceLine" id="cb144-11" title="11"></a>
+<a class="sourceLine" id="cb144-12" title="12"><span class="co">#Call the function</span></a>
+<a class="sourceLine" id="cb144-13" title="13">confint_lim &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(<span class="dt">n =</span> n, <span class="dt">dist =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb144-14" title="14"><span class="co">#Plot these confidence bands alongside with the empirical quantile plotting position</span></a>
+<a class="sourceLine" id="cb144-15" title="15"><span class="kw">matplot</span>(<span class="kw">sort</span>(emp_quant), confint_lim, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>,</a>
+<a class="sourceLine" id="cb144-16" title="16">        <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb144-17" title="17">        <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>)  </a>
+<a class="sourceLine" id="cb144-18" title="18"><span class="co">#Theoretical line of fit</span></a>
+<a class="sourceLine" id="cb144-19" title="19"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb144-20" title="20"><span class="co">#Add observations</span></a>
+<a class="sourceLine" id="cb144-21" title="21"><span class="kw">points</span>(esr, emp_quant, <span class="dt">pch =</span> <span class="dv">20</span>)</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="quantile-quantile-plot-using-the-qr-decomposition" class="section level3">
 <h3><span class="header-section-number">4.4.2</span> Quantile-quantile plot using the QR decomposition</h3>
 <p>The problem with the residuals is that, while <span class="math inline">\(\boldsymbol{e}\)</span> are normally distributed with variance <span class="math inline">\(\sigma^2\mathbf{M}_{\mathbf{X}}\)</span>, they are linearly dependent (think of the constraint <span class="math inline">\(\mathbf{X}^\top\boldsymbol{e}=\boldsymbol{0}_p\)</span>).</p>
 <p>Therefore, <span class="math inline">\(\mathbf{M}_{\mathbf{X}}\)</span> is not invertible (it is an <span class="math inline">\(n \times n\)</span> matrix of rank <span class="math inline">\(n - p\)</span>) — <code>solve(diag(n) - Hmat)</code> typically returns an error message although some matrix decomposition such as the SVD handle the rank deficient case. One can use an orthogonal transformation to obtain a set of <span class="math inline">\(n-p\)</span> independent residuals, but it is then difficult to relate these to the regressors.</p>
-<p>One such orthogonal transformation is provided by the QR decomposition, <span class="math inline">\(\mathbf{X}=\mathbf{Q}\mathbf{R}\)</span> where <span class="math inline">\(\mathbf{Q}\)</span> is an orthogonal matrix. Consider the linear model <span class="math display">\[\mathbf{Q}^\top\boldsymbol{Y} = \mathbf{Q}^\top\mathbf{X}{\boldsymbol{\beta}}+ \boldsymbol{u};\]</span> the last <span class="math inline">\(n-p\)</span> estimated residuals of the vector <span class="math inline">\(\tilde{\boldsymbol{e}} =\mathbf{Q}^\top\boldsymbol{e}\)</span> will be IID Normal and the first <span class="math inline">\(p\)</span> identically zero. In <code>R</code>, use the function <code>t(qr.Q(qr(X), complete = TRUE))</code> to obtain the matrix <span class="math inline">\(\mathbf{Q}^\top\)</span> associated to the design matrix <code>X</code>.</p>
+<p>One such orthogonal transformation is provided by the QR decomposition, <span class="math inline">\(\mathbf{X}=\mathbf{Q}\mathbf{R}\)</span> where <span class="math inline">\(\mathbf{Q}\)</span> is an orthogonal matrix. Consider the linear model <span class="math display">\[\mathbf{Q}^\top\boldsymbol{Y} = \mathbf{Q}^\top\mathbf{X}\boldsymbol{\beta}+ \boldsymbol{u};\]</span> the last <span class="math inline">\(n-p\)</span> estimated residuals of the vector <span class="math inline">\(\tilde{\boldsymbol{e}} =\mathbf{Q}^\top\boldsymbol{e}\)</span> will be IID Normal and the first <span class="math inline">\(p\)</span> identically zero. In <code>R</code>, use the function <code>t(qr.Q(qr(X), complete = TRUE))</code> to obtain the matrix <span class="math inline">\(\mathbf{Q}^\top\)</span> associated to the design matrix <code>X</code>.</p>
 <p>Note that it is difficult to detect violation of the normality assumption because observations that arise from distributions that are not heavy-tailed still behave roughly like they are normally distributed when we scale them. This phenomenon, <em>supernormality</em>, is a consequence of the central limit theorem.</p>
 </div>
 <div id="monte-carlo-methods-for-confidence-intervals" class="section level3">
 <h3><span class="header-section-number">4.4.3</span> Monte Carlo methods for confidence intervals</h3>
 <p>You can safely skip this optional section, which contains advanced material that is not examinable.</p>
 <p>An alternative to asymptotic theory (which may be unreliable in small samples) is to rely on simulations. The idea is to obtain a statistic whose distribution is (at least asymptotically) pivotal, i.e. fully specified under the null hypothesis. One can simulate samples from the null distribution <span class="math inline">\(B\)</span> times and compare the resulting data points with the test statistic calculated from the observed sample. This method, which is termed bootstrap test, is particularly powerful when we want to obtain critical values for test statistics, like e.g. <span class="math inline">\(\max(|t_i|)\)</span>, whose distribution is untractable.</p>
-Under the null hypothesis of the Gaussian linear model, <span class="math inline">\(\{y_i\}_{i=1}^n\)</span> is a simple random sample from a Gaussian distribution <span class="math inline">\(\boldsymbol{Y} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2 \mathbf{I}_n)\)</span>. One can resort to simulations to obtain approximate confidence intervals at asymptotic level <span class="math inline">\(\alpha\)</span>. Specifically, the postulated data generating mechanism is <span class="math display">\[\boldsymbol{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.\]</span> We will replace the unknown parameters (here <span class="math inline">\(\boldsymbol{\beta}\)</span> and <span class="math inline">\(\sigma^2\)</span>) by their best linear unbiased estimate. For <span class="math inline">\(b=1, \ldots, B\)</span> where <span class="math inline">\(B/\alpha \in \mathbb{N}\)</span>, repeat the following steps:
+Under the null hypothesis of the Gaussian linear model, <span class="math inline">\(\{y_i\}_{i=1}^n\)</span> is a simple random sample from a Gaussian distribution <span class="math inline">\(\boldsymbol{Y} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2 \mathbf{I}_n)\)</span>. One can resort to simulations to obtain approximate confidence intervals at asymptotic level <span class="math inline">\(\alpha\)</span>. Specifically, the postulated data generating mechanism is <span class="math display">\[\boldsymbol{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.\]</span>
+We will replace the unknown parameters (here <span class="math inline">\(\boldsymbol{\beta}\)</span> and <span class="math inline">\(\sigma^2\)</span>) by their best linear unbiased estimate. For <span class="math inline">\(b=1, \ldots, B\)</span> where <span class="math inline">\(B/\alpha \in \mathbb{N}\)</span>, repeat the following steps:
 
 <p>This provides a pointwise confidence interval for each order statistic. We can assess the overall coverage of the intervals by checking whether or not one of the points falls outside the confidence envelope. Since we have <span class="math inline">\(B\)</span> datasets, we can check each in turn (using the others as reference for the interval) and check the fraction that have at least one observations outside the simulated pointwise bands. This gives a measure of the overall error rate. We can adjust <span class="math inline">\(k\)</span> until we get the correct overall empirical coverage.</p>
 <p>The calculation is rather simple.</p>
@@ -250,81 +285,86 @@ Under the null hypothesis of the Gaussian linear model, <span class="math inline
 </ul>
 <p>These methods are implemented in the package <code>boot</code> and returned by the function <code>boot::envelope</code>; you must supply a matrix of replicates test statistics. In our setting, these are the ordered samples from the externally studentized residuals <span class="math display">\[\left\{\big\{t^{b}_{(i)}\big\}_{i=1}^n\right\}_{b=1}^B.\]</span></p>
 <p>You should choose <span class="math inline">\(B\)</span> so that <span class="math inline">\(B+1\)</span> is divisible by <span class="math inline">\(\alpha\)</span> and rather large. <span class="math inline">\(B = 9999\)</span> should work well and not be too computationally costly for small datasets.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Dimensions of the design matrix</span>
-n &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw">model.matrix</span>(ols))
-p &lt;-<span class="st"> </span><span class="kw">ncol</span>(<span class="kw">model.matrix</span>(ols))
-<span class="co">#Bootstrap setting</span>
-B &lt;-<span class="st"> </span><span class="dv">9999</span>
-X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(ols)
-betahat &lt;-<span class="st"> </span><span class="kw">coef</span>(ols)
-boot_samp &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> B, <span class="dt">ncol =</span> n)
-<span class="cf">for</span>(b <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>B){
-  <span class="co">#Generate new errors</span>
-  eps_samp &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd =</span> <span class="kw">sqrt</span>(s2))
-  Xbeta &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>betahat
-  <span class="co">#Create new replicate dataset</span>
-  yb &lt;-<span class="st"> </span>Xbeta <span class="op">+</span><span class="st"> </span>eps_samp
-  <span class="co">#Obtain externally studentized residuals</span>
-  <span class="co">#Sort them in increasing order</span>
-  boot_samp[b, ] &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">rstudent</span>(<span class="kw">lm</span>(yb <span class="op">~</span><span class="st"> </span><span class="op">-</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>X)))
-}
-
-<span class="co">#Add the dataset to the replicates</span>
-res_samp &lt;-<span class="st"> </span><span class="kw">rbind</span>((esr &lt;-<span class="st"> </span><span class="kw">rstudent</span>(ols)), boot_samp)
-<span class="co">#Compute the quantiles of this experiment =&gt; per column means for each order statistic</span>
-confint_pw &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(res_samp, <span class="dv">2</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)))
-<span class="co">#Alternatively, could sort each column and pick the k and B-k-1 entries</span>
-
-<span class="co">#Computed automatically by package bootstrap</span>
-env &lt;-<span class="st"> </span>boot<span class="op">::</span><span class="kw">envelope</span>(<span class="dt">mat =</span> boot_samp)
-
-<span class="co">#Plot the confidence interval</span>
-<span class="kw">matplot</span>(<span class="dt">y =</span> <span class="kw">cbind</span>(<span class="kw">sort</span>(esr), confint_pw), <span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n) <span class="op">/</span><span class="st"> </span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), 
-       <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;grey&quot;</span>, <span class="st">&quot;grey&quot;</span>), <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;p&quot;</span>,<span class="st">&quot;l&quot;</span>,<span class="st">&quot;l&quot;</span>), 
-       <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>, <span class="dt">bty =</span> <span class="st">&#39;l&#39;</span>)
-<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
-
-<span class="co">#Simultaneous confidence interval</span>
-<span class="co">#In how many of the replicates datasets do we have </span>
-<span class="co">#observations outside of the pointwise confidence bands?</span>
-R &lt;-<span class="st"> </span><span class="kw">nrow</span>(boot_samp)
-alpha &lt;-<span class="st"> </span><span class="fl">0.05</span>
-k &lt;-<span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>(R <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span>
-<span class="co">#Simply check this as follows:</span>
-<span class="co">#For each column, return the rank of the simulation</span>
-rank_boot &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, rank)
-<span class="co">#For each row, keep minimum and maximum rank</span>
-minmax_rk &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(rank_boot, <span class="dv">1</span>, <span class="cf">function</span>(x){<span class="kw">c</span>(<span class="kw">min</span>(x), <span class="kw">max</span>(x))}))
-<span class="co">#Go outside of the pointwise confidence interval if </span>
-<span class="co">#min(rank) &lt; k or max(rank) &gt; R + 1 - k </span>
-emp_boot_cov &lt;-<span class="st"> </span><span class="cf">function</span>(k){
- <span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>((<span class="kw">I</span>(minmax_rk[,<span class="dv">1</span>] <span class="op">&gt;</span><span class="st"> </span>k))<span class="op">*</span><span class="kw">I</span>(minmax_rk[,<span class="dv">2</span>] <span class="op">&lt;</span><span class="st"> </span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>k)))
-}
-<span class="co">#In how many of the replicates datasets do </span>
-<span class="co">#we have observations outside of the bounds?</span>
-<span class="kw">emp_boot_cov</span>(k)</code></pre></div>
-<pre><code>## [1] 0.5758576</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Ouch! decrease k until we hit alpha percentage of exceedances (0.05)</span>
-boot_cov_k &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>k, emp_boot_cov)
-klev &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="ot">TRUE</span>, boot_cov_k <span class="op">&gt;</span><span class="st"> </span>alpha) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
-<span class="cf">if</span>(klev <span class="op">==</span><span class="st"> </span><span class="dv">0</span>){
- klev &lt;-<span class="st"> </span><span class="dv">1</span>
-}
-env_jt &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, sort)[<span class="kw">c</span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>klev, klev),]
-
-<span class="co">#This is what is returned by function envelope</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(env_jt, env<span class="op">$</span>overall))</code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" title="1"><span class="co">#Dimensions of the design matrix</span></a>
+<a class="sourceLine" id="cb145-2" title="2">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw">model.matrix</span>(ols))</a>
+<a class="sourceLine" id="cb145-3" title="3">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(<span class="kw">model.matrix</span>(ols))</a>
+<a class="sourceLine" id="cb145-4" title="4"><span class="co">#Bootstrap setting</span></a>
+<a class="sourceLine" id="cb145-5" title="5">B &lt;-<span class="st"> </span><span class="dv">9999</span></a>
+<a class="sourceLine" id="cb145-6" title="6">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(ols)</a>
+<a class="sourceLine" id="cb145-7" title="7">betahat &lt;-<span class="st"> </span><span class="kw">coef</span>(ols)</a>
+<a class="sourceLine" id="cb145-8" title="8">boot_samp &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> B, <span class="dt">ncol =</span> n)</a>
+<a class="sourceLine" id="cb145-9" title="9"><span class="cf">for</span>(b <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>B){</a>
+<a class="sourceLine" id="cb145-10" title="10">  <span class="co">#Generate new errors</span></a>
+<a class="sourceLine" id="cb145-11" title="11">  eps_samp &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd =</span> <span class="kw">sqrt</span>(s2))</a>
+<a class="sourceLine" id="cb145-12" title="12">  Xbeta &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>betahat</a>
+<a class="sourceLine" id="cb145-13" title="13">  <span class="co">#Create new replicate dataset</span></a>
+<a class="sourceLine" id="cb145-14" title="14">  yb &lt;-<span class="st"> </span>Xbeta <span class="op">+</span><span class="st"> </span>eps_samp</a>
+<a class="sourceLine" id="cb145-15" title="15">  <span class="co">#Obtain externally studentized residuals</span></a>
+<a class="sourceLine" id="cb145-16" title="16">  <span class="co">#Sort them in increasing order</span></a>
+<a class="sourceLine" id="cb145-17" title="17">  boot_samp[b, ] &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">rstudent</span>(<span class="kw">lm</span>(yb <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>X)))</a>
+<a class="sourceLine" id="cb145-18" title="18">}</a>
+<a class="sourceLine" id="cb145-19" title="19"></a>
+<a class="sourceLine" id="cb145-20" title="20"><span class="co">#Add the dataset to the replicates</span></a>
+<a class="sourceLine" id="cb145-21" title="21">res_samp &lt;-<span class="st"> </span><span class="kw">rbind</span>((esr &lt;-<span class="st"> </span><span class="kw">rstudent</span>(ols)), boot_samp)</a>
+<a class="sourceLine" id="cb145-22" title="22"><span class="co">#Compute the quantiles of this experiment =&gt; per column means for each order statistic</span></a>
+<a class="sourceLine" id="cb145-23" title="23">confint_pw &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(res_samp, <span class="dv">2</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)))</a>
+<a class="sourceLine" id="cb145-24" title="24"><span class="co">#Alternatively, could sort each column and pick the k and B-k-1 entries</span></a>
+<a class="sourceLine" id="cb145-25" title="25"></a>
+<a class="sourceLine" id="cb145-26" title="26"><span class="co">#Computed automatically by package bootstrap</span></a>
+<a class="sourceLine" id="cb145-27" title="27">env &lt;-<span class="st"> </span>boot<span class="op">::</span><span class="kw">envelope</span>(<span class="dt">mat =</span> boot_samp)</a>
+<a class="sourceLine" id="cb145-28" title="28"></a>
+<a class="sourceLine" id="cb145-29" title="29"><span class="co">#Plot the confidence interval</span></a>
+<a class="sourceLine" id="cb145-30" title="30"><span class="kw">matplot</span>(<span class="dt">y =</span> <span class="kw">cbind</span>(<span class="kw">sort</span>(esr), confint_pw), <span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n) <span class="op">/</span><span class="st"> </span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb145-31" title="31">       <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;grey&quot;</span>, <span class="st">&quot;grey&quot;</span>), <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;p&quot;</span>,<span class="st">&quot;l&quot;</span>,<span class="st">&quot;l&quot;</span>), </a>
+<a class="sourceLine" id="cb145-32" title="32">       <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>, <span class="dt">bty =</span> <span class="st">&#39;l&#39;</span>)</a>
+<a class="sourceLine" id="cb145-33" title="33"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb145-34" title="34"></a>
+<a class="sourceLine" id="cb145-35" title="35"><span class="co">#Simultaneous confidence interval</span></a>
+<a class="sourceLine" id="cb145-36" title="36"><span class="co">#In how many of the replicates datasets do we have </span></a>
+<a class="sourceLine" id="cb145-37" title="37"><span class="co">#observations outside of the pointwise confidence bands?</span></a>
+<a class="sourceLine" id="cb145-38" title="38">R &lt;-<span class="st"> </span><span class="kw">nrow</span>(boot_samp)</a>
+<a class="sourceLine" id="cb145-39" title="39">alpha &lt;-<span class="st"> </span><span class="fl">0.05</span></a>
+<a class="sourceLine" id="cb145-40" title="40">k &lt;-<span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>(R <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb145-41" title="41"><span class="co">#Simply check this as follows:</span></a>
+<a class="sourceLine" id="cb145-42" title="42"><span class="co">#For each column, return the rank of the simulation</span></a>
+<a class="sourceLine" id="cb145-43" title="43">rank_boot &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, rank)</a>
+<a class="sourceLine" id="cb145-44" title="44"><span class="co">#For each row, keep minimum and maximum rank</span></a>
+<a class="sourceLine" id="cb145-45" title="45">minmax_rk &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(rank_boot, <span class="dv">1</span>, <span class="cf">function</span>(x){<span class="kw">c</span>(<span class="kw">min</span>(x), <span class="kw">max</span>(x))}))</a>
+<a class="sourceLine" id="cb145-46" title="46"><span class="co">#Go outside of the pointwise confidence interval if </span></a>
+<a class="sourceLine" id="cb145-47" title="47"><span class="co">#min(rank) &lt; k or max(rank) &gt; R + 1 - k </span></a>
+<a class="sourceLine" id="cb145-48" title="48">emp_boot_cov &lt;-<span class="st"> </span><span class="cf">function</span>(k){</a>
+<a class="sourceLine" id="cb145-49" title="49"> <span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>((<span class="kw">I</span>(minmax_rk[,<span class="dv">1</span>] <span class="op">&gt;</span><span class="st"> </span>k))<span class="op">*</span><span class="kw">I</span>(minmax_rk[,<span class="dv">2</span>] <span class="op">&lt;</span><span class="st"> </span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>k)))</a>
+<a class="sourceLine" id="cb145-50" title="50">}</a>
+<a class="sourceLine" id="cb145-51" title="51"><span class="co">#In how many of the replicates datasets do </span></a>
+<a class="sourceLine" id="cb145-52" title="52"><span class="co">#we have observations outside of the bounds?</span></a>
+<a class="sourceLine" id="cb145-53" title="53"><span class="kw">emp_boot_cov</span>(k)</a></code></pre></div>
+<pre><code>## [1] 0.579558</code></pre>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" title="1"><span class="co">#Ouch! decrease k until we hit alpha percentage of exceedances (0.05)</span></a>
+<a class="sourceLine" id="cb147-2" title="2">boot_cov_k &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>k, emp_boot_cov)</a>
+<a class="sourceLine" id="cb147-3" title="3">klev &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="ot">TRUE</span>, boot_cov_k <span class="op">&gt;</span><span class="st"> </span>alpha) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb147-4" title="4"><span class="cf">if</span>(klev <span class="op">==</span><span class="st"> </span><span class="dv">0</span>){</a>
+<a class="sourceLine" id="cb147-5" title="5"> klev &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb147-6" title="6">}</a>
+<a class="sourceLine" id="cb147-7" title="7">env_jt &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, sort)[<span class="kw">c</span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>klev, klev),]</a>
+<a class="sourceLine" id="cb147-8" title="8"></a>
+<a class="sourceLine" id="cb147-9" title="9"><span class="co">#This is what is returned by function envelope</span></a>
+<a class="sourceLine" id="cb147-10" title="10"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(env_jt, env<span class="op">$</span>overall))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#matplot(x = qt((1:n)/(n+1), df = n - p - 1), y = t(env$point), col = 2, add = TRUE, type = &quot;l&quot;, lty = 1)</span>
-<span class="kw">matplot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">-</span><span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">t</span>(env<span class="op">$</span>overall), 
-       <span class="dt">col =</span> <span class="st">&quot;darkgrey&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" title="1"><span class="co">#matplot(x = qt((1:n)/(n+1), df = n - p - 1), y = t(env$point), col = 2, add = TRUE, type = &quot;l&quot;, lty = 1)</span></a>
+<a class="sourceLine" id="cb149-2" title="2"><span class="kw">matplot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="dv">-1</span>), <span class="dt">y =</span> <span class="kw">t</span>(env<span class="op">$</span>overall), </a>
+<a class="sourceLine" id="cb149-3" title="3">       <span class="dt">col =</span> <span class="st">&quot;darkgrey&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="parametric-bootstrap-confidence-intervals-using-the-qr-decomposition" class="section level3">
 <h3><span class="header-section-number">4.4.4</span> Parametric bootstrap confidence intervals using the QR decomposition</h3>
 <p>This section is also <strong>optional material</strong>.</p>
-<p>There is an alternative way to obtain pointwise (and even simultaneous) confidence intervals for the QR decomposition. Under the null hypothesis: <span class="math inline">\(\boldsymbol{\varepsilon} \sim \mathcal{N}_{n}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)\)</span>, we get <span class="math inline">\(\tilde{\boldsymbol{\varepsilon}} \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)\)</span> and therefore <span class="math inline">\((\tilde{\boldsymbol{\varepsilon}}- \overline{\boldsymbol{\tilde{\varepsilon}}})/\mathrm{sd}(\boldsymbol{\tilde{\varepsilon}}) \stackrel{\cdot}{\sim} \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)\)</span> is asymptotically pivotal. A pivotal quantity has a fully specified distribution.</p>
-<p>We have only observed one sample, so comparisons are difficult because the measurements are limited. Under the null hypothesis, it is however easy to generate new datasets: simply generate new observations <span class="math inline">\(\tilde{\boldsymbol{\epsilon}}_b \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)\)</span> and standardize them, mimicking what we have done to obtain our sample quantiles. This gives us a potentially unlimited number of samples to compare our observations to. By ordering each new set of errors of the <span class="math inline">\(B\)</span> replicates, we get a matrix of observations whose rows are order statistics from a run and whose columns corresponds to the empirical distribution of each order statistic. A symmetric 95% confidence interval is obtained by taking the empirical (0.025, 0.975) percentiles of each order statistic.</p>
+<p>There is an alternative way to obtain pointwise (and even simultaneous) confidence intervals for the QR decomposition.
+Under the null hypothesis: <span class="math inline">\(\boldsymbol{\varepsilon} \sim \mathcal{N}_{n}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)\)</span>, we get <span class="math inline">\(\tilde{\boldsymbol{\varepsilon}} \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)\)</span> and therefore <span class="math inline">\((\tilde{\boldsymbol{\varepsilon}}- \overline{\boldsymbol{\tilde{\varepsilon}}})/\mathrm{sd}(\boldsymbol{\tilde{\varepsilon}}) \stackrel{\cdot}{\sim} \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)\)</span> is asymptotically pivotal. A pivotal quantity has a fully specified distribution.</p>
+<p>We have only observed one sample, so comparisons are difficult because the measurements are limited.
+Under the null hypothesis, it is however easy to generate new datasets: simply generate new observations
+<span class="math inline">\(\tilde{\boldsymbol{\epsilon}}_b \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)\)</span> and standardize them, mimicking what we have done to obtain our sample quantiles.
+This gives us a potentially unlimited number of samples to compare our observations to.
+By ordering each new set of errors of the <span class="math inline">\(B\)</span> replicates, we get a matrix of observations whose rows are order statistics from a run and whose columns corresponds to the empirical distribution of each order statistic. A symmetric 95% confidence interval is obtained by taking the empirical (0.025, 0.975) percentiles of each order statistic.</p>
 </div>
 </div>
             </section>
@@ -379,7 +419,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

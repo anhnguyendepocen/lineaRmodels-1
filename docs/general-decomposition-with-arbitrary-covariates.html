@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>lineaRmodels</title>
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="lineaRmodels" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="github-repo" content="lbelzile/lineaRmodels" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="lineaRmodels" />
+  
+  <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  
+
+<meta name="author" content="Léo Belzile">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="analysis-of-variance.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
+<script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
+<script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Linear Models</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="basics-of-r.html"><a href="basics-of-r.html"><i class="fa fa-check"></i><b>1.1</b> Basics of <strong>R</strong></a><ul>
+<li class="chapter" data-level="1.1.1" data-path="basics-of-r.html"><a href="basics-of-r.html#help"><i class="fa fa-check"></i><b>1.1.1</b> Help</a></li>
+<li class="chapter" data-level="1.1.2" data-path="basics-of-r.html"><a href="basics-of-r.html#basic-commands"><i class="fa fa-check"></i><b>1.1.2</b> Basic commands</a></li>
+<li class="chapter" data-level="1.1.3" data-path="basics-of-r.html"><a href="basics-of-r.html#linear-algebra-in-r"><i class="fa fa-check"></i><b>1.1.3</b> Linear algebra in <strong>R</strong></a></li>
+<li class="chapter" data-level="1.1.4" data-path="basics-of-r.html"><a href="basics-of-r.html#packages"><i class="fa fa-check"></i><b>1.1.4</b> Packages</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="week1.html"><a href="week1.html"><i class="fa fa-check"></i><b>1.2</b> Tutorial 1</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="week1.html"><a href="week1.html#datasets"><i class="fa fa-check"></i><b>1.2.1</b> Datasets</a></li>
+<li class="chapter" data-level="1.2.2" data-path="week1.html"><a href="week1.html#graphics"><i class="fa fa-check"></i><b>1.2.2</b> Graphics</a></li>
+<li class="chapter" data-level="1.2.3" data-path="week1.html"><a href="week1.html#projection-matrices"><i class="fa fa-check"></i><b>1.2.3</b> Projection matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.3</b> Exercises</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="exercises.html"><a href="exercises.html#auto-dataset"><i class="fa fa-check"></i><b>1.3.1</b> Auto dataset</a></li>
+<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#oblique-projections-exercise-1.4"><i class="fa fa-check"></i><b>1.3.2</b> Oblique projections (exercise 1.4)</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.4</b> Summary of week 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#normal-equations"><i class="fa fa-check"></i><b>2.1.1</b> Normal equations</a></li>
+<li class="chapter" data-level="2.1.2" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.1.2</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
+<li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
+<li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
+<li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
+<li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
+<li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
+<li class="chapter" data-level="2.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>2.8</b> Exercises</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="exercises-1.html"><a href="exercises-1.html#prostate-cancer-dataset"><i class="fa fa-check"></i><b>2.8.1</b> Prostate cancer dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.9</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
+<li class="chapter" data-level="3.1" data-path="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><a href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><i class="fa fa-check"></i><b>3.1</b> Revisiting the interpretation of the parameters of a linear model</a></li>
+<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
+<li class="chapter" data-level="4.1" data-path="confidence-and-prediction-intervals.html"><a href="confidence-and-prediction-intervals.html"><i class="fa fa-check"></i><b>4.1</b> Confidence and prediction intervals</a></li>
+<li class="chapter" data-level="4.2" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>4.2</b> Residuals</a></li>
+<li class="chapter" data-level="4.3" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html"><i class="fa fa-check"></i><b>4.3</b> Diagnostic plots</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#added-variable-plots"><i class="fa fa-check"></i><b>4.3.1</b> Added-variable plots</a></li>
+<li class="chapter" data-level="4.3.2" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#diagnostic-of-heteroscedasticity"><i class="fa fa-check"></i><b>4.3.2</b> Diagnostic of heteroscedasticity</a></li>
+<li class="chapter" data-level="4.3.3" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#outliers"><i class="fa fa-check"></i><b>4.3.3</b> Outliers</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
+<li class="chapter" data-level="4.4.2" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4.3" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
+<li class="chapter" data-level="4.4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="solutions-2.html"><a href="solutions-2.html"><i class="fa fa-check"></i><b>4.5</b> Solutions</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.1---study-of-growth-hormones"><i class="fa fa-check"></i><b>4.5.1</b> Exercise 7.1 - Study of growth hormones</a></li>
+<li class="chapter" data-level="4.5.2" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.2---electric-production-of-windmills"><i class="fa fa-check"></i><b>4.5.2</b> Exercise 7.2 - Electric production of windmills</a></li>
+<li class="chapter" data-level="4.5.3" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.3---air-traffic"><i class="fa fa-check"></i><b>4.5.3</b> Exercise 7.3 - Air traffic</a></li>
+<li class="chapter" data-level="4.5.4" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.4---determinants-of-earnings"><i class="fa fa-check"></i><b>4.5.4</b> Exercise 7.4 - Determinants of earnings</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>5</b> Analysis of variance</a><ul>
+<li class="chapter" data-level="5.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html"><i class="fa fa-check"></i><b>5.1</b> General decomposition with arbitrary covariates</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>5.1.1</b> Sum of squares decomposition</a></li>
+<li class="chapter" data-level="5.1.2" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.2</b> The decomposition of squares in <strong>R</strong></a></li>
+<li class="chapter" data-level="5.1.3" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.3</b> Dropping or adding variables</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">lineaRmodels</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="general-decomposition-with-arbitrary-covariates" class="section level2">
+<h2><span class="header-section-number">5.1</span> General decomposition with arbitrary covariates</h2>
+<p>Consider the linear model <span class="math inline">\(\boldsymbol{Y} = \mathbf{1}_n\alpha + \mathbf{Z}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\)</span>
+where <span class="math inline">\(\mathbf{X}=(\mathbf{1}_n^\top, \mathbf{Z}^\top)^\top\)</span> is a full rank <span class="math inline">\(n \times p\)</span> design matrix.
+Let as usual <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y}\)</span>, the total sum of square, and <span class="math inline">\(\mathrm{RSS}= \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y}\)</span>, the sum of squared residuals.
+The <span class="math inline">\(F\)</span>-test statistic for testing the null hypothesis <span class="math inline">\(\boldsymbol{\beta}=\mathbf{0}_{p-1}\)</span> can be written as
+<span class="math display">\[F = \frac{(\mathrm{TSS}-\mathrm{RSS})/(p-1)}{\mathrm{RSS}/(n-p)}.\]</span>
+Under the null hypothesis, <span class="math inline">\(F \sim \mathcal{F}(p-1, n-p)\)</span>.</p>
+<p>An ANOVA table (<code>anova</code>) arranges the information about the sum of squaresdecomposition, the degree of freedom and the value of the <span class="math inline">\(F\)</span> test statistic in the following manner.</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="18%" />
+<col width="15%" />
+<col width="9%" />
+<col width="9%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sum of squares</th>
+<th align="center">Degrees of freedom</th>
+<th align="center">Scaled sum of squares</th>
+<th>Test statistic</th>
+<th><span class="math inline">\(P\)</span>-value</th>
+<th align="right"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ESS (regression)</td>
+<td align="center"><span class="math inline">\(p-1\)</span></td>
+<td align="center">ESS/(<span class="math inline">\(p-1\)</span>)</td>
+<td><span class="math inline">\(F\)</span></td>
+<td><span class="math inline">\(1-\)</span><code>pf</code>(<span class="math inline">\(F, p-1, n-p\)</span>)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td>RSS (residuals)</td>
+<td align="center"><span class="math inline">\(n-p\)</span></td>
+<td align="center">RSS/(<span class="math inline">\(n-p\)</span>)</td>
+<td></td>
+<td></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<div id="sum-of-squares-decomposition" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> Sum of squares decomposition</h3>
+<p>Consider the orthogonal decomposition <span class="math display">\[\boldsymbol{y}^\top\boldsymbol{y} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y} + \boldsymbol{y}^\top\mathbf{H}_{\mathbf{X}}\boldsymbol{y},\]</span> along with the model <span class="math display">\[\boldsymbol{y}  = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1 + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}.\]</span></p>
+<p>We consider four concurrent models, for <span class="math inline">\(\mathbf{X}_1\)</span> an <span class="math inline">\(n \times p_1\)</span> matrix and <span class="math inline">\(\mathbf{X}_2\)</span> and <span class="math inline">\(n \times p_2\)</span> matrix and <span class="math inline">\(\mathbf{X}_a = (\mathbf{1}_n^\top, \mathbf{X}_1^\top, \mathbf{X}_2^\top)^\top\)</span> and <span class="math inline">\(n \times p = n \times (1+p_1+p_2)\)</span> full rank matrix.</p>
+<ol style="list-style-type: lower-alpha">
+<li>the full model with both predictors, <span class="math inline">\(\mathrm{M}_a: \boldsymbol{y} = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1 + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}.\)</span>,</li>
+<li>the restricted model with <span class="math inline">\(\mathrm{M}_b: \boldsymbol{\beta}_2=0\)</span> and only the first predictor, of the form <span class="math inline">\(\boldsymbol{y} = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1 + \boldsymbol{\varepsilon}.\)</span>,</li>
+<li>the restricted model with <span class="math inline">\(\mathrm{M}_c: \boldsymbol{\beta}_1=0\)</span> and only the second predictor, of the form <span class="math inline">\(\boldsymbol{y} = \beta_0\mathbf{1}_n + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}.\)</span></li>
+<li>the intercept-only model <span class="math inline">\(\mathrm{M}_d: \boldsymbol{y} = \beta_0\mathbf{1}_n + \boldsymbol{\varepsilon}\)</span>.</li>
+</ol>
+<p>Let <span class="math inline">\(\mathbf{X}_a\)</span>, <span class="math inline">\(\mathbf{X}_b\)</span>, <span class="math inline">\(\mathbf{X}_c\)</span>, and <span class="math inline">\(\mathbf{X}_d\)</span> be the corresponding design matrices.</p>
+<p><strong>R</strong> uses an orthogonal decomposition of the projection matrix on to <span class="math inline">\(\mathbf{X}_a\)</span>, <span class="math inline">\(\mathbf{H}_{\mathbf{X}_a}\)</span> into two parts: <span class="math inline">\(\mathbf{H}_{\mathbf{X}_a}= \mathbf{H}_{\mathbf{X}_b} + \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}\)</span>. The last term is the contribution of <span class="math inline">\(\mathbf{X}_2\)</span> to the model fit when <span class="math inline">\(\mathbf{1}_n, \mathbf{X}_1\)</span> are already part of the model. We can form the sum of squares of the regression using this decomposition. We use the notation <span class="math inline">\(\mathrm{SSR}(\mathbf{H}) = \boldsymbol{y}^\top\mathbf{H}\boldsymbol{y}\)</span> to denote the sum of squares obtained by projecting <span class="math inline">\(\boldsymbol{y}\)</span> onto the span of <span class="math inline">\(\mathbf{H}\)</span>.</p>
+<p>We have
+<span class="math display">\[\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}) = \mathrm{SSR}(\mathbf{H}_{\mathbf{X}_a}) - \mathrm{SSR}(\mathbf{H}_{\mathbf{X}_b}).\]</span>
+that is, the difference in sum of squared from the regression with model <span class="math inline">\(\mathrm{M}_a\)</span> versus that from regression <span class="math inline">\(\mathrm{M}_b\)</span>. This is the sum of squares from the regression that are due to the addition of <span class="math inline">\(\mathbf{X}_2\)</span> to a model that already contains <span class="math inline">\((\mathbf{1}_n, \mathbf{X}_1)\)</span> as regressors.</p>
+<p>The usual <span class="math inline">\(F\)</span>-test statistic for the null hypothesis <span class="math inline">\(\mathscr{H}_0: \boldsymbol{\beta}_2=0\)</span> can be written as
+<span class="math display">\[F = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2})/p_2}{\mathrm{RSS}_a/(n-p)} = \frac{(\mathrm{RSS}_b-\mathrm{RSS}_a)/p_2}{\mathrm{RSS}_a/(n-p)} \sim \mathcal{F}(p_2, n-p).\]</span>
+The last equality follows by noting that <span class="math inline">\(\mathrm{SSR}(\mathbf{H}_{\mathbf{X}_b})+ \mathrm{RSS}_b=\mathrm{SSR}(\mathbf{H}_{\mathbf{X}_a})+ \mathrm{RSS}_a\)</span>.</p>
+</div>
+<div id="the-decomposition-of-squares-in-r" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> The decomposition of squares in <strong>R</strong></h3>
+<p>Let us illustrate how to obtain the various quantities presented above using the <strong>R</strong> outputs.</p>
+<p>First, we look at some data. The dataset <code>Chirot</code> from the package <code>carData</code> contains information about the 1907 Romanian peasant rebellion. We model the intensity of the rebellion as a function of commercialization of agriculture and a measure oif traditionalism. We start by fitting the four models <span class="math inline">\(\mathrm{M}_a, \mathrm{M}_b, \mathrm{M}_c, \mathrm{M}_d\)</span> detailed above with the regressors <span class="math inline">\(\mathbf{X}_1 \equiv\)</span><code>commerce</code>, <span class="math inline">\(\mathbf{X}_2 \equiv\)</span><code>tradition</code> and an intercept.</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb189-1" title="1"><span class="co">#install.packages(&quot;carData&quot;)</span></a>
+<a class="sourceLine" id="cb189-2" title="2"><span class="kw">data</span>(Chirot, <span class="dt">package =</span> <span class="st">&quot;carData&quot;</span>)</a>
+<a class="sourceLine" id="cb189-3" title="3"><span class="co">## Fit linear model with commerce and tradition as explanatory variables</span></a>
+<a class="sourceLine" id="cb189-4" title="4">mod.a &lt;-<span class="st"> </span><span class="kw">lm</span>(intensity <span class="op">~</span><span class="st"> </span>commerce <span class="op">+</span><span class="st"> </span>tradition, <span class="dt">data =</span> Chirot)</a>
+<a class="sourceLine" id="cb189-5" title="5">mod.b &lt;-<span class="st"> </span><span class="kw">update</span>(mod.a, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>tradition)  <span class="co">#remove tradition</span></a>
+<a class="sourceLine" id="cb189-6" title="6"><span class="co">## mod.b is equivalent to </span></a>
+<a class="sourceLine" id="cb189-7" title="7"><span class="co"># mod.b &lt;- lm(intensity ~ commerce, data = Chirot)</span></a>
+<a class="sourceLine" id="cb189-8" title="8">mod.c &lt;-<span class="st"> </span><span class="kw">update</span>(mod.a, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>commerce)  <span class="co">#remove tradition</span></a>
+<a class="sourceLine" id="cb189-9" title="9">mod.d &lt;-<span class="st"> </span><span class="kw">lm</span>(intensity <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> Chirot)</a></code></pre></div>
+<p>First, the RSS from model <span class="math inline">\(\mathrm{M}_a\)</span> can be extracted from the table returned by <code>summary</code> under the label <code>Residual standard error:</code>. This gives <span class="math inline">\(\widehat{\sigma}\)</span>, and <span class="math inline">\(\mathrm{RSS}_d = (n-p)\widehat{\sigma}\)</span>, where <span class="math inline">\(n-p=29\)</span> in the present setting.</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb190-1" title="1">RSS.a &lt;-<span class="st"> </span><span class="kw">crossprod</span>(<span class="kw">resid</span>(mod.a))</a>
+<a class="sourceLine" id="cb190-2" title="2">RSS.a[<span class="dv">1</span>,<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>## [1] 41.43137</code></pre>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb192-1" title="1"><span class="kw">all.equal</span>(<span class="kw">c</span>(RSS.a), <span class="kw">summary</span>(mod.a)<span class="op">$</span>df[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span><span class="kw">summary</span>(mod.a)<span class="op">$</span>sigma<span class="op">^</span><span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>The function <code>anova</code> outputs the following:</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb194-1" title="1"><span class="kw">anova</span>(mod.a)</a></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: intensity
+##           Df Sum Sq Mean Sq F value      Pr(&gt;F)    
+## commerce   1 50.066  50.066 35.0438 0.000001985 ***
+## tradition  1  6.074   6.074  4.2514     0.04828 *  
+## Residuals 29 41.431   1.429                        
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The function <code>anova</code> considers the <em>sequential</em> decomposition
+<span class="math inline">\(\mathbf{H}_{\mathbf{X}_a}=\mathbf{H}_{\mathbf{1}_n} + \mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1} + \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}\)</span>.
+The column <code>Sum Sq</code> gives</p>
+<ul>
+<li>1st line: the contribution for <code>commerce</code>, <span class="math inline">\(\boldsymbol{y}^\top\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1}\boldsymbol{y}\)</span>,</li>
+<li>2nd line: <span class="math inline">\(\boldsymbol{y}^\top\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}\boldsymbol{y}\)</span> and</li>
+<li>3rd line: the residuals sum of squares <span class="math inline">\(\mathrm{RSS}_a\)</span>.</li>
+</ul>
+<p>These are the conditional sum of squares from the regression for the additional variable.
+The test statistics corresponding to the <span class="math inline">\(F\)</span> and <span class="math inline">\(P\)</span>-values in the table are
+<span class="math display">\[F_1 = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1})/p_1}{\mathrm{RSS}/(n-p)}\]</span>
+and
+<span class="math display">\[F_2 = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2})/p_2}{\mathrm{RSS}/(n-p)}.\]</span>
+Note that the residual sum of squares from the denominator is that of the full model in both cases. It is orthogonal to the numerator, but not equal to the residuals from the model <span class="math inline">\(\mathrm{M}_b\)</span> for <span class="math inline">\(F_1\)</span>.</p>
+<p>Recall that the order in which the variables enter the model matters when performing model selection unless your regressors are orthogonal. We thus obtain a different output if we specify instead</p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb196-1" title="1"><span class="kw">anova</span>(<span class="kw">lm</span>(intensity <span class="op">~</span><span class="st"> </span>tradition <span class="op">+</span><span class="st"> </span>commerce, <span class="dt">data =</span> Chirot))</a></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: intensity
+##           Df Sum Sq Mean Sq F value     Pr(&gt;F)    
+## tradition  1 19.673  19.673  13.770   0.000872 ***
+## commerce   1 36.467  36.467  25.525 0.00002194 ***
+## Residuals 29 41.431   1.429                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The <code>F</code> and <code>Pr(&gt;F)</code> columns now correspond to
+<span class="math display">\[F_1&#39; = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_2})/p_2}{\mathrm{RSS}/(n-p)}\]</span>
+and
+<span class="math display">\[F_2&#39; = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_c}\mathbf{X}_1})/p_1}{\mathrm{RSS}/(n-p)}.\]</span></p>
+</div>
+<div id="dropping-or-adding-variables" class="section level3">
+<h3><span class="header-section-number">5.1.3</span> Dropping or adding variables</h3>
+<p>The function <code>drop1</code> allows you to test for model simplification, the hypothesis that either model (<span class="math inline">\(b\)</span>) or model (<span class="math inline">\(c\)</span>) is an adequate simplification of the full model (<span class="math inline">\(a\)</span>). The output includes the RSS value in addition to the sum of squared decomposition from the previous tables. In both cases here, the null hypothesis that the simpler model with <span class="math inline">\(\beta_2=0\)</span> or <span class="math inline">\(\beta_1=0\)</span> is rejected at significance level <span class="math inline">\(\alpha = 5\%\)</span>.</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb198-1" title="1"><span class="kw">drop1</span>(mod.a, <span class="dt">test =</span> <span class="st">&#39;F&#39;</span>)</a></code></pre></div>
+<pre><code>## Single term deletions
+## 
+## Model:
+## intensity ~ commerce + tradition
+##           Df Sum of Sq    RSS    AIC F value     Pr(&gt;F)    
+## &lt;none&gt;                 41.431 14.266                       
+## commerce   1    36.467 77.898 32.469 25.5252 0.00002194 ***
+## tradition  1     6.074 47.505 16.643  4.2514    0.04828 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>These <span class="math inline">\(F\)</span> values are the same as those obtained with the call on <code>anova</code> for the full model and the output is probably less confusing.</p>
+<p>There is a similar command to add variables, called <code>add1</code>. You can try running <code>add1(mod.c, scope = .~. + tradition, test = 'F')</code> to obtain similar output to the <code>anova</code> call.</p>
+<p>To test for a simplified model in which many of the variables are removed, we can use the general linear hypothesis framework. The function <code>glht</code> in the package <code>multcomp</code> handles this, as does the function <code>linearHypothesis</code> in <code>car</code>.</p>
+<p>Note that in general, multiple testing leads to inflated Type-I error for the set of tests, meaning that the probability of rejecting at least one null hypothesis for <span class="math inline">\(m\)</span> tests provided that they are all true is greater than the significance level <span class="math inline">\(\alpha\)</span> of the individual tests. A Bonferroni correction could be made to alleviate this at the cost of lower power.</p>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb200-1" title="1"><span class="co">#install packages `multcomp` and `car` if necessary</span></a>
+<a class="sourceLine" id="cb200-2" title="2"><span class="co">#Test both hypothesis separately with Bonferroni correction</span></a>
+<a class="sourceLine" id="cb200-3" title="3">jt_test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(mod.a, <span class="dt">linfct =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)), <span class="dt">test =</span> <span class="kw">adjusted</span>(<span class="st">&quot;bonf&quot;</span>))</a>
+<a class="sourceLine" id="cb200-4" title="4"><span class="kw">summary</span>(jt_test)</a></code></pre></div>
+<pre><code>## 
+##   Simultaneous Tests for General Linear Hypotheses
+## 
+## Fit: lm(formula = intensity ~ commerce + tradition, data = Chirot)
+## 
+## Linear Hypotheses:
+##        Estimate Std. Error t value  Pr(&gt;|t|)    
+## 1 == 0  0.09522    0.01885   5.052 0.0000437 ***
+## 2 == 0  0.11992    0.05816   2.062    0.0911 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Adjusted p values reported -- single-step method)</code></pre>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" title="1"><span class="kw">summary</span>(jt_test, multcomp<span class="op">::</span><span class="kw">Ftest</span>())</a></code></pre></div>
+<pre><code>## 
+##   General Linear Hypotheses
+## 
+## Linear Hypotheses:
+##        Estimate
+## 1 == 0  0.09522
+## 2 == 0  0.11992
+## 
+## Global Test:
+##       F DF1 DF2      Pr(&gt;F)
+## 1 19.65   2  29 0.000004038</code></pre>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb204-1" title="1"><span class="co">#Test hypothesis jointly using GLHT (see Exercise series 9)</span></a>
+<a class="sourceLine" id="cb204-2" title="2">car<span class="op">::</span><span class="kw">linearHypothesis</span>(mod.a, <span class="dt">hypothesis.matrix =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a></code></pre></div>
+<pre><code>## Linear hypothesis test
+## 
+## Hypothesis:
+## commerce = 0
+## tradition = 0
+## 
+## Model 1: restricted model
+## Model 2: intensity ~ commerce + tradition
+## 
+##   Res.Df    RSS Df Sum of Sq      F      Pr(&gt;F)    
+## 1     31 97.571                                    
+## 2     29 41.431  2     56.14 19.648 0.000004038 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>You can also use the function ANOVA to test with nested model. The syntax is slightly different, but the output is exactly the same.</p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb206-1" title="1"><span class="co">#Simpler to more complex nested models</span></a>
+<a class="sourceLine" id="cb206-2" title="2"><span class="kw">anova</span>(mod.d, mod.a)</a></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: intensity ~ 1
+## Model 2: intensity ~ commerce + tradition
+##   Res.Df    RSS Df Sum of Sq      F      Pr(&gt;F)    
+## 1     31 97.571                                    
+## 2     29 41.431  2     56.14 19.648 0.000004038 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>At this point, it is important to note that we will get different test statistics (due to different denominator) if we consider the residuals sum of squares (RSS) from the full model or the simplified model in the <span class="math inline">\(F\)</span>-test.</p>
+<p>There are two possible scenarios:</p>
+<ol style="list-style-type: decimal">
+<li>Underfitting: you omit a variable that should be present in the model(misspecified model).</li>
+</ol>
+<p>Omitting relevant variables undully inflates the residual sum of squares. Indeed, if the true model is <span class="math inline">\(\mathrm{M}_a\)</span> with <span class="math inline">\(\beta_2 \neq 0\)</span>, but that we fit model <span class="math inline">\(\mathrm{M}_b\)</span> of the form <span class="math inline">\(\boldsymbol{y} = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1 + \boldsymbol{\varepsilon}\)</span>, then the residuals sum of squares we obtain will be <span class="math inline">\(\mathrm{RSS}_{a} + \mathrm{SSR}( \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2})\)</span>. This reduces the statistical significance of the other variables in turn because the <span class="math inline">\(F\)</span>-statistic is pulled toward zero. Since our null hypothesis is that the simpler model is adequate, our power to reject the null is smaller.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Overfitting: suppose on the contrary that we use a bigger model <span class="math inline">\(\mathrm{M}_a\)</span> with spurious variables (overfit) and that the true model is <span class="math inline">\(\mathrm{M}_b\)</span>. The parameter estimate <span class="math inline">\(\hat{\beta}_2\)</span> should have expectation zero and, as a result, the additional decrease in the sum of squared residuals should be also zero for the redundant variable conditional on the rest. The only difference is that we use up additional degrees of freedom in the test.</li>
+</ol>
+<p>This is best illustrated using a little simulation:</p>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb208-1" title="1"><span class="kw">set.seed</span>(<span class="dv">1234</span>) <span class="co">#RNG sequence - makes output reproducible</span></a>
+<a class="sourceLine" id="cb208-2" title="2">x1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb208-3" title="3">x2 &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb208-4" title="4">x3 &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">size =</span> <span class="dv">100</span>, <span class="dt">p =</span> <span class="fl">0.2</span>)</a>
+<a class="sourceLine" id="cb208-5" title="5">x4 &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb208-6" title="6">y &lt;-<span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x3 <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dt">sd =</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb208-7" title="7"><span class="co">#RSS/(n-p)</span></a>
+<a class="sourceLine" id="cb208-8" title="8">a_u &lt;-<span class="st"> </span><span class="kw">anova</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2)) <span class="co">#underfit</span></a>
+<a class="sourceLine" id="cb208-9" title="9">a_c  &lt;-<span class="st"> </span><span class="kw">anova</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x3)) <span class="co">#correct</span></a>
+<a class="sourceLine" id="cb208-10" title="10">a_o &lt;-<span class="st"> </span><span class="kw">anova</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x3 <span class="op">+</span><span class="st"> </span>x4 )) <span class="co">#overfit</span></a>
+<a class="sourceLine" id="cb208-11" title="11"></a>
+<a class="sourceLine" id="cb208-12" title="12"><span class="kw">print</span>(<span class="kw">c</span>(<span class="st">&quot;Underfit&quot;</span> =<span class="st"> </span>a_u[<span class="st">&#39;Residuals&#39;</span>,<span class="st">&#39;Mean Sq&#39;</span>], </a>
+<a class="sourceLine" id="cb208-13" title="13">         <span class="st">&quot;Correct&quot;</span> =<span class="st"> </span>a_c[<span class="st">&#39;Residuals&#39;</span>,<span class="st">&#39;Mean Sq&#39;</span>], </a>
+<a class="sourceLine" id="cb208-14" title="14">        <span class="st">&quot;Overfit&quot;</span> =<span class="st"> </span>a_o[<span class="st">&#39;Residuals&#39;</span>,<span class="st">&#39;Mean Sq&#39;</span>]</a>
+<a class="sourceLine" id="cb208-15" title="15">))</a></code></pre></div>
+<pre><code>## Underfit  Correct  Overfit 
+## 34.39788 19.77853 19.96968</code></pre>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" title="1"><span class="co">#What is Underfit sum of square?</span></a>
+<a class="sourceLine" id="cb210-2" title="2">(a_c[<span class="st">&#39;Residuals&#39;</span>,<span class="st">&#39;Sum Sq&#39;</span>] <span class="op">+</span><span class="st"> </span>a_c[<span class="st">&#39;x3&#39;</span>,<span class="st">&#39;Sum Sq&#39;</span>])<span class="op">/</span>(a_c[<span class="st">&#39;Residuals&#39;</span>,<span class="st">&#39;Df&#39;</span>] <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a></code></pre></div>
+<pre><code>## [1] 34.39788</code></pre>
+<p>If there are no interactions and you wish to compare main effects conditional on all the others main effects present in the model for each of the explanatory variables, you can use the function <code>Anova</code> from the package <code>car</code>. This is the so-called Type II Anova decomposition. You could retrieve the output directly from repeated calls to <code>anova</code>. See this <a href="http://goanna.cs.rmit.edu.au/~fscholer/anova.php">post</a> for more details.</p>
+
+</div>
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="analysis-of-variance.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

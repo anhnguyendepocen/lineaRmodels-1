@@ -1,0 +1,185 @@
+# Analysis of variance
+
+
+In common language, analysis of variance is used for tests for equality of means in different subpopulations. Under the assumption that the observations have a common variance and that they are normally distributed, this corresponds to a Gaussian linear model with binary indicators (factors) as explanatories.
+Suppose there are $L$ possible levels and $n_j$ is the number of observations for group $j=1,\ldots, L$. 
+
+The one-way ANOVA model can be written as
+\[y_{i_j,j} = \alpha_j + \varepsilon_{i_j,j}, \quad  \varepsilon_{i_j,j} \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(0, \sigma^2)\qquad (j = 1, \ldots, L, i_j= 1, \ldots, n_j). \]
+Let $\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})^\top$ denote the vector of observations for the first group and similarly for $\boldsymbol{\varepsilon_j}$; we can stack observations into a single regression with a matrix $\mathbf{X}$ of indicators variables, viz.
+\[\begin{pmatrix}\boldsymbol{y}_1 \\\boldsymbol{y}_2 \\ \vdots \\ \boldsymbol{y}_L\end{pmatrix} = \begin{pmatrix} \mathbf{1}_{n_1} & \mathbf{0}_{n_1}&\cdots & \mathbf{0}_{n_1} \\
+\mathbf{0}_{n_2} & \mathbf{1}_{n_2}&\ddots & \mathbf{0}_{n_2} \\
+\vdots & \ddots & \ddots & \vdots\\
+\mathbf{0}_{n_L} & \mathbf{0}_{n_L}&\cdots & \mathbf{1}_{n_L} 
+\end{pmatrix}\begin{pmatrix} \alpha_1 \\ \alpha_2 \\\vdots \\ \alpha_L\end{pmatrix} + \begin{pmatrix}\boldsymbol{\varepsilon}_1 \\\boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_L\end{pmatrix}. \]
+
+To test $\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L$, we can use the usual sum of squares decomposition and an $F$ statistic. 
+
+## General decomposition with arbitrary covariates
+
+
+Consider the linear model $\boldsymbol{Y} = \mathbf{1}_n\alpha + \mathbf{Z}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$
+  where $\mathbf{X}=(\mathbf{1}_n^\top, \mathbf{Z}^\top)^\top$ is a full rank $n \times p$ design matrix.
+  Let as usual $\mathrm{TSS} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y}$, the total sum of square, and $\mathrm{RSS}= \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y}$, the sum of squared residuals.
+The $F$-test statistic for testing the null hypothesis $\boldsymbol{\beta}=\mathbf{0}_{p-1}$ can be written as
+\[F = \frac{(\mathrm{TSS}-\mathrm{RSS})/(p-1)}{\mathrm{RSS}/(n-p)}.\]
+Under the null hypothesis, $F \sim \mathcal{F}(p-1, n-p)$.
+
+An ANOVA table (`anova`) arranges the information about the sum of squaresdecomposition, the degree of freedom and the value of the $F$ test statistic in the following manner.
+
+|Sum of squares| Degrees of freedom	| Scaled sum of squares  	| Test statistic  | $P$-value |
+|------	|:----:|:---:|---	|---	|--------: |
+| ESS (regression)     	| $p-1$   	|  ESS/($p-1$) 	|  $F$ 	|  $1-$`pf`($F, p-1, n-p$) 	|
+| RSS (residuals)     	|  $n-p$  	| RSS/($n-p$)  	|   	|   	|
+
+
+
+### Sum of squares decomposition
+
+Consider the orthogonal decomposition \[\boldsymbol{y}^\top\boldsymbol{y} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y} + \boldsymbol{y}^\top\mathbf{H}_{\mathbf{X}}\boldsymbol{y},\] along with the model \[\boldsymbol{y}  = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1 + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}.\]
+
+We consider four concurrent models, for $\mathbf{X}_1$ an $n \times p_1$ matrix and $\mathbf{X}_2$ and $n \times p_2$ matrix and $\mathbf{X}_a = (\mathbf{1}_n^\top, \mathbf{X}_1^\top, \mathbf{X}_2^\top)^\top$ and $n \times p = n \times (1+p_1+p_2)$ full rank matrix.
+
+(a) the full model with both predictors, $\mathrm{M}_a: \boldsymbol{y}  = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1 + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}.$, 
+(b) the restricted model with $\mathrm{M}_b: \boldsymbol{\beta}_2=0$ and only the first predictor, of the form $\boldsymbol{y}  = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1  + \boldsymbol{\varepsilon}.$, 
+(c) the restricted model with $\mathrm{M}_c: \boldsymbol{\beta}_1=0$ and only the second predictor, of the form $\boldsymbol{y}  = \beta_0\mathbf{1}_n + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}.$
+(d) the intercept-only model $\mathrm{M}_d: \boldsymbol{y}  = \beta_0\mathbf{1}_n + \boldsymbol{\varepsilon}$.
+
+Let $\mathbf{X}_a$, $\mathbf{X}_b$, $\mathbf{X}_c$, and $\mathbf{X}_d$ be the corresponding design matrices.
+
+**R** uses an orthogonal decomposition of the projection matrix on to $\mathbf{X}_a$, $\mathbf{H}_{\mathbf{X}_a}$ into two parts: $\mathbf{H}_{\mathbf{X}_a}= \mathbf{H}_{\mathbf{X}_b} + \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}$. The last term is the contribution of $\mathbf{X}_2$ to the model fit when $\mathbf{1}_n, \mathbf{X}_1$ are already part of the model. We can form the sum of squares of the regression using this decomposition. We use the notation $\mathrm{SSR}(\mathbf{H}) = \boldsymbol{y}^\top\mathbf{H}\boldsymbol{y}$ to denote the sum of squares obtained by projecting $\boldsymbol{y}$ onto the span of $\mathbf{H}$.
+
+We have 
+\[\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}) = \mathrm{SSR}(\mathbf{H}_{\mathbf{X}_a}) - \mathrm{SSR}(\mathbf{H}_{\mathbf{X}_b}).\]
+that is, the difference in sum of squared from the regression with model $\mathrm{M}_a$ versus that from regression $\mathrm{M}_b$. This is the sum of squares from the regression that are due to the addition of $\mathbf{X}_2$ to a model that already contains $(\mathbf{1}_n, \mathbf{X}_1)$ as regressors.
+
+The usual $F$-test statistic for the null hypothesis $\mathscr{H}_0: \boldsymbol{\beta}_2=0$ can be written as
+\[F = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2})/p_2}{\mathrm{RSS}_a/(n-p)} = \frac{(\mathrm{RSS}_b-\mathrm{RSS}_a)/p_2}{\mathrm{RSS}_a/(n-p)} \sim \mathcal{F}(p_2, n-p).\]
+The last equality follows by noting that  $\mathrm{SSR}(\mathbf{H}_{\mathbf{X}_b})+ \mathrm{RSS}_b=\mathrm{SSR}(\mathbf{H}_{\mathbf{X}_a})+ \mathrm{RSS}_a$.
+
+### The decomposition of squares in **R**
+
+Let us illustrate how to obtain the various quantities presented above using the **R** outputs.
+
+First, we look at some data. The dataset `Chirot` from the package `carData` contains information about the 1907 Romanian peasant rebellion. We model the intensity of the rebellion as a function of commercialization of agriculture and a measure oif traditionalism. We start by fitting the four models $\mathrm{M}_a, \mathrm{M}_b, \mathrm{M}_c, \mathrm{M}_d$ detailed above with the regressors $\mathbf{X}_1 \equiv$`commerce`, $\mathbf{X}_2 \equiv$`tradition` and an intercept.
+
+```{r} 
+#install.packages("carData")
+data(Chirot, package = "carData")
+## Fit linear model with commerce and tradition as explanatory variables
+mod.a <- lm(intensity ~ commerce + tradition, data = Chirot)
+mod.b <- update(mod.a, .~. - tradition)  #remove tradition
+## mod.b is equivalent to 
+# mod.b <- lm(intensity ~ commerce, data = Chirot)
+mod.c <- update(mod.a, .~. - commerce)  #remove tradition
+mod.d <- lm(intensity ~ 1, data = Chirot)
+```
+
+First, the RSS from model $\mathrm{M}_a$ can be extracted from the table returned by `summary` under the label `Residual standard error:`. This gives $\widehat{\sigma}$, and $\mathrm{RSS}_d = (n-p)\widehat{\sigma}$, where $n-p=29$ in the present setting.
+
+```{r}
+RSS.a <- crossprod(resid(mod.a))
+RSS.a[1,1]
+all.equal(c(RSS.a), summary(mod.a)$df[2] * summary(mod.a)$sigma^2)
+```
+
+The function `anova` outputs the following:
+```{r}
+anova(mod.a)
+```
+
+
+The function `anova` considers the *sequential* decomposition
+$\mathbf{H}_{\mathbf{X}_a}=\mathbf{H}_{\mathbf{1}_n} + \mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1} + \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}$. 
+The column `Sum Sq` gives 
+
+-  1st line: the contribution for `commerce`, $\boldsymbol{y}^\top\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1}\boldsymbol{y}$, 
+- 2nd line:  $\boldsymbol{y}^\top\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}\boldsymbol{y}$ and 
+- 3rd line: the residuals sum of squares $\mathrm{RSS}_a$.  
+
+These are the conditional sum of squares from the regression for the additional variable. 
+The test statistics corresponding to the $F$ and $P$-values in the table are 
+\[F_1 = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1})/p_1}{\mathrm{RSS}/(n-p)}\]
+and
+\[F_2 = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2})/p_2}{\mathrm{RSS}/(n-p)}.\]
+Note that the residual sum of squares from the denominator is that of the full model in both cases. It is orthogonal to the numerator, but not equal to the residuals from the model $\mathrm{M}_b$ for $F_1$.
+
+Recall that the order in which the variables enter the model matters when performing model selection unless your regressors are orthogonal. We thus obtain a different output if we specify instead
+```{r}
+anova(lm(intensity ~ tradition + commerce, data = Chirot))
+```
+
+The `F` and `Pr(>F)` columns now correspond to
+\[F_1' = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_2})/p_2}{\mathrm{RSS}/(n-p)}\]
+and
+\[F_2' = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_c}\mathbf{X}_1})/p_1}{\mathrm{RSS}/(n-p)}.\]
+
+### Dropping or adding variables
+
+
+The function `drop1` allows you to test for model simplification, the hypothesis that either model ($b$) or model ($c$) is an adequate simplification of the full model ($a$). The output includes the RSS value in addition to the sum of squared decomposition from the previous tables. In both cases here, the null hypothesis that the simpler model with $\beta_2=0$ or $\beta_1=0$ is rejected at significance level $\alpha = 5\%$.
+```{r}
+drop1(mod.a, test = 'F')
+```
+
+These $F$ values are the same as those obtained with the call on `anova` for the full model and the output is probably less confusing. 
+
+There is a similar command to add variables, called `add1`. You can try running `add1(mod.c, scope = .~. + tradition, test = 'F')` to obtain similar output to the `anova` call.
+
+To test for a simplified model in which many of the variables are removed, we can use the general linear hypothesis framework. The function `glht` in the package `multcomp` handles this, as does the function `linearHypothesis` in `car`.
+
+Note that in general, multiple testing leads to inflated Type-I error for the set of tests, meaning that the probability of rejecting at least one null hypothesis for $m$ tests provided that they are all true is greater than the significance level $\alpha$ of the individual tests. A Bonferroni correction could be made to alleviate this at the cost of lower power.
+
+```{r}
+#install packages `multcomp` and `car` if necessary
+#Test both hypothesis separately with Bonferroni correction
+jt_test <- multcomp::glht(mod.a, linfct = rbind(c(0, 1, 0), c(0, 0, 1)), test = adjusted("bonf"))
+summary(jt_test)
+summary(jt_test, multcomp::Ftest())
+#Test hypothesis jointly using GLHT (see Exercise series 9)
+car::linearHypothesis(mod.a, hypothesis.matrix = rbind(c(0, 1, 0), c(0, 0, 1)), test = "F")
+```
+
+You can also use the function ANOVA to test with nested model. The syntax is slightly different, but the output is exactly the same. 
+
+```{r}
+#Simpler to more complex nested models
+anova(mod.d, mod.a)
+```
+
+At this point, it is important to note that we will get different test statistics (due to different denominator) if we consider the residuals sum of squares (RSS) from the full model or the simplified model in the $F$-test. 
+
+
+There are two possible scenarios:
+
+1. Underfitting: you omit a variable that should be present in the model(misspecified model).
+
+Omitting relevant variables undully inflates the residual sum of squares. Indeed, if the true model is $\mathrm{M}_a$ with $\beta_2 \neq 0$, but that we fit model $\mathrm{M}_b$ of the form $\boldsymbol{y}  = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1  + \boldsymbol{\varepsilon}$, then the residuals sum of squares we obtain will be $\mathrm{RSS}_{a} + \mathrm{SSR}( \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2})$. This reduces the statistical significance of the other variables in turn because the $F$-statistic is pulled toward zero. Since our null hypothesis is that the simpler model is adequate, our power to reject the null is smaller.
+
+2. Overfitting: suppose on the contrary that we use a bigger model $\mathrm{M}_a$ with spurious variables (overfit) and that the true model is $\mathrm{M}_b$. The parameter estimate $\hat{\beta}_2$ should have expectation zero and, as a result, the additional decrease in the sum of squared residuals should be also zero for the redundant variable conditional on the rest. The only difference is that we use up additional degrees of freedom in the test.
+
+
+This is best illustrated using a little simulation:
+
+```{r}
+set.seed(1234) #RNG sequence - makes output reproducible
+x1 <- rnorm(100)
+x2 <- rexp(100)
+x3 <- rbinom(n = 100, size = 100, p = 0.2)
+x4 <- runif(100)
+y <- x1 + x2 + x3 + rnorm(100, sd = 4)
+#RSS/(n-p)
+a_u <- anova(lm(y ~ x1 + x2)) #underfit
+a_c  <- anova(lm(y ~ x1 + x2 + x3)) #correct
+a_o <- anova(lm(y ~ x1 + x2 + x3 + x4 )) #overfit
+
+print(c("Underfit" = a_u['Residuals','Mean Sq'], 
+         "Correct" = a_c['Residuals','Mean Sq'], 
+        "Overfit" = a_o['Residuals','Mean Sq']
+))
+#What is Underfit sum of square?
+(a_c['Residuals','Sum Sq'] + a_c['x3','Sum Sq'])/(a_c['Residuals','Df'] + 1)
+```
+
+
+If there are no interactions and you wish to compare main effects conditional on all the others main effects present in the model for each of the explanatory variables, you can use the function `Anova` from the package `car`. This is the so-called Type II Anova decomposition. You could retrieve the output directly from repeated calls to `anova`. See this [post](http://goanna.cs.rmit.edu.au/~fscholer/anova.php) for more details.
