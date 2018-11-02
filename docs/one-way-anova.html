@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="summary-of-week-2.html">
-<link rel="next" href="solutions.html">
+<link rel="prev" href="sum-of-squares-decomposition.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -225,31 +225,29 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="exercises-1" class="section level2">
-<h2><span class="header-section-number">2.8</span> Exercises</h2>
-<div id="prostate-cancer-dataset" class="section level3">
-<h3><span class="header-section-number">2.8.1</span> Prostate cancer dataset</h3>
-<p>The following questions refer to the dataset <code>prostate</code> from the package <code>ElemStatLearn</code>.</p>
-<ol style="list-style-type: lower-alpha">
-<li>Briefly describe the dataset.</li>
-<li>Look at summaries of <code>lbph</code>. What likely value was imputed in places of zeros in `lbph} (before taking the logarithm)?</li>
-<li>Produce a plot of the pair of variables <code>lcavol</code> and <code>lpsa</code> on the log and on the original scale. Comment on the relationship between <code>lcavol</code> and <code>lpsa</code>.</li>
-<li>Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> of the parameters, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span> using the formulas given in class.</li>
-<li>Compare the quantities you obtained with the output of the function <code>lm</code>.</li>
-<li>Add the fitted regression line to the scatterplot of <code>lcavol</code> against <code>lpsa</code>.</li>
-<li>Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.</li>
-<li>Obtain the orthogonal projection matrix <span class="math inline">\(\bf{H}_\mathbf{X}\)</span> and the OLS coefficients <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> using a SVD decomposition of <span class="math inline">\(\mathbf{X}\)</span> (<code>svd</code>).</li>
-<li>Compute the <span class="math inline">\(R^2_c\)</span> coefficient and compare with the one in <code>summary</code> output of the <code>lm</code> function. What can you say about the explanatory power of the covariate <code>lpsa</code>?</li>
-</ol>
+<div id="one-way-anova" class="section level2">
+<h2><span class="header-section-number">5.2</span> One-way ANOVA</h2>
+<p>A one-way ANOVA is a test for equality of means in different subpopulations. Under the assumption that the observations have a common variance and that they are normally distributed, this corresponds to a Gaussian linear model with binary indicators (factors) as explanatories.
+Suppose there are <span class="math inline">\(L\)</span> possible levels and <span class="math inline">\(n_j\)</span> is the number of observations for group <span class="math inline">\(j=1,\ldots, L\)</span>.</p>
+<p>The one-way ANOVA model can be written as
+<span class="math display">\[y_{i_j,j} = \alpha_j + \varepsilon_{i_j,j}, \quad  \varepsilon_{i_j,j} \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(0, \sigma^2)\qquad (j = 1, \ldots, L, i_j= 1, \ldots, n_j). \]</span>
+Let <span class="math inline">\(\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})^\top\)</span> denote the vector of observations for the first group and similarly for <span class="math inline">\(\boldsymbol{\varepsilon_j}\)</span>; we can stack observations into a single regression with a matrix <span class="math inline">\(\mathbf{X}\)</span> of indicators variables, viz.
+<span class="math display">\[\begin{pmatrix}\boldsymbol{y}_1 \\\boldsymbol{y}_2 \\ \vdots \\ \boldsymbol{y}_L\end{pmatrix} = \begin{pmatrix} \mathbf{1}_{n_1} &amp; \mathbf{0}_{n_1}&amp;\cdots &amp; \mathbf{0}_{n_1} \\
+\mathbf{0}_{n_2} &amp; \mathbf{1}_{n_2}&amp;\ddots &amp; \mathbf{0}_{n_2} \\
+\vdots &amp; \ddots &amp; \ddots &amp; \vdots\\
+\mathbf{0}_{n_L} &amp; \mathbf{0}_{n_L}&amp;\cdots &amp; \mathbf{1}_{n_L} 
+\end{pmatrix}\begin{pmatrix} \alpha_1 \\ \alpha_2 \\\vdots \\ \alpha_L\end{pmatrix} + \begin{pmatrix}\boldsymbol{\varepsilon}_1 \\\boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_L\end{pmatrix}. \]</span></p>
+<p>To test <span class="math inline">\(\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L\)</span>, we can use the usual sum of squares decomposition and an <span class="math inline">\(F\)</span> statistic.</p>
+
 </div>
-</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="summary-of-week-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="solutions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sum-of-squares-decomposition.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -199,11 +199,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>5</b> Analysis of variance</a><ul>
-<li class="chapter" data-level="5.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html"><i class="fa fa-check"></i><b>5.1</b> General decomposition with arbitrary covariates</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>5.1.1</b> Sum of squares decomposition</a></li>
-<li class="chapter" data-level="5.1.2" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.2</b> The decomposition of squares in <strong>R</strong></a></li>
-<li class="chapter" data-level="5.1.3" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.3</b> Dropping or adding variables</a></li>
+<li class="chapter" data-level="5.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html"><i class="fa fa-check"></i><b>5.1</b> Sum of squares decomposition</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.1</b> The decomposition of squares in <strong>R</strong></a></li>
+<li class="chapter" data-level="5.1.2" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.2</b> Dropping or adding variables</a></li>
 </ul></li>
+<li class="chapter" data-level="5.2" data-path="one-way-anova.html"><a href="one-way-anova.html"><i class="fa fa-check"></i><b>5.2</b> One-way ANOVA</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -230,50 +230,50 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>We are now ready to fit a simple linear model with an intercept and a linear effect for the weight,
 <span class="math display">\[ \texttt{mpg}_i = \beta_0 + \texttt{hp}_i\beta_1 +\varepsilon_i.\]</span>
 We form the design matrix <span class="math inline">\((\boldsymbol{1}_n^\top, \texttt{hp}^\top)^\top\)</span> and the vector of regressand <span class="math inline">\(\texttt{mpg}\)</span>, then proceed with calculating the OLS coefficients <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, the hat matrix <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span>, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span>.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co">#Design matrix</span></a>
-<a class="sourceLine" id="cb47-2" title="2">hp &lt;-<span class="st"> </span>Auto<span class="op">$</span>horsepower</a>
-<a class="sourceLine" id="cb47-3" title="3">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
-<a class="sourceLine" id="cb47-4" title="4">mpg &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb47-5" title="5"><span class="co">#OLS estimates</span></a>
-<a class="sourceLine" id="cb47-6" title="6">XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))</a>
-<a class="sourceLine" id="cb47-7" title="7">beta_hat &lt;-<span class="st"> </span><span class="kw">c</span>(XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>mpg)</a>
-<a class="sourceLine" id="cb47-8" title="8"><span class="co">#Form orthogonal projection matrix</span></a>
-<a class="sourceLine" id="cb47-9" title="9">Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
-<a class="sourceLine" id="cb47-10" title="10"><span class="co">#Create residuals and fitted values</span></a>
-<a class="sourceLine" id="cb47-11" title="11">fitted &lt;-<span class="st"> </span>Hmat <span class="op">%*%</span><span class="st"> </span>mpg</a>
-<a class="sourceLine" id="cb47-12" title="12">res &lt;-<span class="st"> </span>mpg <span class="op">-</span><span class="st"> </span>fitted</a>
-<a class="sourceLine" id="cb47-13" title="13">fitted &lt;-<span class="st"> </span>Hmat <span class="op">%*%</span><span class="st"> </span>mpg</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Design matrix</span>
+hp &lt;-<span class="st"> </span>Auto<span class="op">$</span>horsepower
+X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)
+mpg &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg
+<span class="co">#OLS estimates</span>
+XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))
+beta_hat &lt;-<span class="st"> </span><span class="kw">c</span>(XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>mpg)
+<span class="co">#Form orthogonal projection matrix</span>
+Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)
+<span class="co">#Create residuals and fitted values</span>
+fitted &lt;-<span class="st"> </span>Hmat <span class="op">%*%</span><span class="st"> </span>mpg
+res &lt;-<span class="st"> </span>mpg <span class="op">-</span><span class="st"> </span>fitted
+fitted &lt;-<span class="st"> </span>Hmat <span class="op">%*%</span><span class="st"> </span>mpg</code></pre>
 <p>The residuals <span class="math inline">\(\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}\)</span> can be interpreted as the <em>vertical</em> distance between the regression slope and the observation. For each observation <span class="math inline">\(y_i\)</span>, a vertical line at distance <span class="math inline">\(e_i\)</span> is drawn from the prediction <span class="math inline">\(\hat{y}_i\)</span>.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="kw">plot</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower,  <span class="dt">data =</span> Auto, </a>
-<a class="sourceLine" id="cb48-2" title="2">     <span class="dt">xlab =</span> <span class="st">&quot;Power of engine (hp)&quot;</span>, </a>
-<a class="sourceLine" id="cb48-3" title="3">     <span class="dt">ylab =</span> <span class="st">&quot;Fuel economy (miles/US gallon)&quot;</span>, </a>
-<a class="sourceLine" id="cb48-4" title="4">     <span class="dt">main =</span> <span class="st">&quot;Fuel economy of automobiles&quot;</span>,</a>
-<a class="sourceLine" id="cb48-5" title="5">     <span class="co"># the subsequent commands for `plot`  tweak the display</span></a>
-<a class="sourceLine" id="cb48-6" title="6">     <span class="co"># check for yourself the effect of removing them</span></a>
-<a class="sourceLine" id="cb48-7" title="7">     <span class="co"># bty = &quot;l&quot; gives L shaped graphical windows (not boxed)</span></a>
-<a class="sourceLine" id="cb48-8" title="8">     <span class="co"># pch = 20 gives full dots rather than empty circles for points</span></a>
-<a class="sourceLine" id="cb48-9" title="9">     <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>) </a>
-<a class="sourceLine" id="cb48-10" title="10"><span class="co">#Line of best linear fit</span></a>
-<a class="sourceLine" id="cb48-11" title="11"><span class="kw">abline</span>(<span class="dt">a =</span> beta_hat[<span class="dv">1</span>], <span class="dt">b =</span> beta_hat[<span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb48-12" title="12"></a>
-<a class="sourceLine" id="cb48-13" title="13"><span class="co">#Residuals are vertical distance from line to </span></a>
-<a class="sourceLine" id="cb48-14" title="14"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)){</a>
-<a class="sourceLine" id="cb48-15" title="15">  <span class="kw">segments</span>(<span class="dt">x0 =</span> hp[i], <span class="dt">y0 =</span> fitted[i], <span class="dt">y1 =</span> fitted[i] <span class="op">+</span><span class="st"> </span>res[i], <span class="dt">col =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb48-16" title="16">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower,  <span class="dt">data =</span> Auto, 
+     <span class="dt">xlab =</span> <span class="st">&quot;Power of engine (hp)&quot;</span>, 
+     <span class="dt">ylab =</span> <span class="st">&quot;Fuel economy (miles/US gallon)&quot;</span>, 
+     <span class="dt">main =</span> <span class="st">&quot;Fuel economy of automobiles&quot;</span>,
+     <span class="co"># the subsequent commands for `plot`  tweak the display</span>
+     <span class="co"># check for yourself the effect of removing them</span>
+     <span class="co"># bty = &quot;l&quot; gives L shaped graphical windows (not boxed)</span>
+     <span class="co"># pch = 20 gives full dots rather than empty circles for points</span>
+     <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>) 
+<span class="co">#Line of best linear fit</span>
+<span class="kw">abline</span>(<span class="dt">a =</span> beta_hat[<span class="dv">1</span>], <span class="dt">b =</span> beta_hat[<span class="dv">2</span>])
+
+<span class="co">#Residuals are vertical distance from line to </span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)){
+  <span class="kw">segments</span>(<span class="dt">x0 =</span> hp[i], <span class="dt">y0 =</span> fitted[i], <span class="dt">y1 =</span> fitted[i] <span class="op">+</span><span class="st"> </span>res[i], <span class="dt">col =</span> <span class="dv">2</span>)
+}</code></pre>
 <p><img src="LinesRModels_files/figure-html/verticaldist-1.png" width="672" /></p>
 <p>The same scatterplot, this time using <code>ggplot2</code>.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="kw">library</span>(ggplot2, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb49-2" title="2"><span class="co">#Create data frame with segments</span></a>
-<a class="sourceLine" id="cb49-3" title="3">vlines &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> hp, <span class="dt">y1 =</span> fitted, <span class="dt">y2 =</span> fitted <span class="op">+</span><span class="st"> </span>res)</a>
-<a class="sourceLine" id="cb49-4" title="4">ggg &lt;-<span class="st"> </span><span class="kw">ggplot</span>(Auto, <span class="kw">aes</span>(<span class="dt">x =</span> horsepower, <span class="dt">y =</span> mpg)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb49-5" title="5"><span class="st">        </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb49-6" title="6"><span class="st">        </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Power of engine (hp)&quot;</span>, </a>
-<a class="sourceLine" id="cb49-7" title="7">             <span class="dt">y =</span> <span class="st">&quot;Fuel economy (miles/US gallon)&quot;</span>, </a>
-<a class="sourceLine" id="cb49-8" title="8">             <span class="dt">title =</span> <span class="st">&quot;Fuel economy of automobiles&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb49-9" title="9"><span class="st">      </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">x =</span> x1, <span class="dt">y =</span> y1, <span class="dt">xend =</span> x1, <span class="dt">yend =</span> y2, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>), </a>
-<a class="sourceLine" id="cb49-10" title="10">                   <span class="dt">data =</span> vlines, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb49-11" title="11"><span class="st">      </span><span class="kw">geom_abline</span>(<span class="dt">slope =</span> beta_hat[<span class="dv">2</span>], <span class="dt">intercept =</span> beta_hat[<span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb49-12" title="12"><span class="kw">print</span>(ggg)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)
+<span class="co">#Create data frame with segments</span>
+vlines &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> hp, <span class="dt">y1 =</span> fitted, <span class="dt">y2 =</span> fitted <span class="op">+</span><span class="st"> </span>res)
+ggg &lt;-<span class="st"> </span><span class="kw">ggplot</span>(Auto, <span class="kw">aes</span>(<span class="dt">x =</span> horsepower, <span class="dt">y =</span> mpg)) <span class="op">+</span><span class="st"> </span>
+<span class="st">        </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">        </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Power of engine (hp)&quot;</span>, 
+             <span class="dt">y =</span> <span class="st">&quot;Fuel economy (miles/US gallon)&quot;</span>, 
+             <span class="dt">title =</span> <span class="st">&quot;Fuel economy of automobiles&quot;</span>) <span class="op">+</span>
+<span class="st">      </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">x =</span> x1, <span class="dt">y =</span> y1, <span class="dt">xend =</span> x1, <span class="dt">yend =</span> y2, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>), 
+                   <span class="dt">data =</span> vlines, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">geom_abline</span>(<span class="dt">slope =</span> beta_hat[<span class="dv">2</span>], <span class="dt">intercept =</span> beta_hat[<span class="dv">1</span>])
+<span class="kw">print</span>(ggg)</code></pre>
 <p><img src="LinesRModels_files/figure-html/ggplotmtcars-1.png" width="672" /></p>
 </div>
             </section>

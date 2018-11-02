@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -199,11 +199,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>5</b> Analysis of variance</a><ul>
-<li class="chapter" data-level="5.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html"><i class="fa fa-check"></i><b>5.1</b> General decomposition with arbitrary covariates</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>5.1.1</b> Sum of squares decomposition</a></li>
-<li class="chapter" data-level="5.1.2" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.2</b> The decomposition of squares in <strong>R</strong></a></li>
-<li class="chapter" data-level="5.1.3" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.3</b> Dropping or adding variables</a></li>
+<li class="chapter" data-level="5.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html"><i class="fa fa-check"></i><b>5.1</b> Sum of squares decomposition</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.1</b> The decomposition of squares in <strong>R</strong></a></li>
+<li class="chapter" data-level="5.1.2" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.2</b> Dropping or adding variables</a></li>
 </ul></li>
+<li class="chapter" data-level="5.2" data-path="one-way-anova.html"><a href="one-way-anova.html"><i class="fa fa-check"></i><b>5.2</b> One-way ANOVA</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -229,38 +229,38 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.2</span> Residuals</h2>
 <p>There are many types of residuals, which we cover in term. The model residuals are simply <span class="math inline">\(\boldsymbol{e}=\mathbf{M}_{\mathbf{X}}\boldsymbol{y}\)</span>, which can be obtained through <code>resid</code> for <code>lm</code> objects.
 We can verify numerically that <span class="math inline">\(\hat{{\boldsymbol{y}}} \perp \boldsymbol{e}\)</span> and verify that <span class="math inline">\(\mathbf{X}^\top\boldsymbol{e}=\boldsymbol{0}_p\)</span>.</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" title="1"><span class="co">#Fitted values    </span></a>
-<a class="sourceLine" id="cb125-2" title="2">yhat &lt;-<span class="st"> </span><span class="kw">fitted</span>(ols)</a>
-<a class="sourceLine" id="cb125-3" title="3"><span class="co">#Residuals</span></a>
-<a class="sourceLine" id="cb125-4" title="4">e &lt;-<span class="st"> </span><span class="kw">resid</span>(ols)</a>
-<a class="sourceLine" id="cb125-5" title="5"></a>
-<a class="sourceLine" id="cb125-6" title="6"><span class="co">#Orthogonality (by construction)</span></a>
-<a class="sourceLine" id="cb125-7" title="7"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(e <span class="op">%*%</span><span class="st"> </span>yhat), <span class="dv">0</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Fitted values    </span>
+yhat &lt;-<span class="st"> </span><span class="kw">fitted</span>(ols)
+<span class="co">#Residuals</span>
+e &lt;-<span class="st"> </span><span class="kw">resid</span>(ols)
+
+<span class="co">#Orthogonality (by construction)</span>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(e <span class="op">%*%</span><span class="st"> </span>yhat), <span class="dv">0</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" title="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(e <span class="op">%*%</span><span class="st"> </span>X), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>)))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(e <span class="op">%*%</span><span class="st"> </span>X), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>)))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>In the sequel, we will look at calculation of various variants of the residuals. The first is the standardized residuals, also internally studentized residuals. These are obtained by scaling each <span class="math inline">\(\boldsymbol{e}/s\)</span> by the invidual variance terms <span class="math inline">\(1-h_{ii}\)</span> to make them homoscedastic.</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" title="1"><span class="co">#we divide so they have the same variance - but not independent</span></a>
-<a class="sourceLine" id="cb129-2" title="2">r &lt;-<span class="st"> </span>e<span class="op">/</span><span class="kw">sqrt</span>(s2<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>leverage)) </a>
-<a class="sourceLine" id="cb129-3" title="3"><span class="co">#also obtainable via rstandard(ols)</span></a>
-<a class="sourceLine" id="cb129-4" title="4"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">rstandard</span>(ols), r))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#we divide so they have the same variance - but not independent</span>
+r &lt;-<span class="st"> </span>e<span class="op">/</span><span class="kw">sqrt</span>(s2<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>leverage)) 
+<span class="co">#also obtainable via rstandard(ols)</span>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">rstandard</span>(ols), r))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>Because the <span class="math inline">\(i\)</span>th residual is used in both the numerator and in the denominator (in the calculation of <span class="math inline">\(s^2\)</span>), the standardized (internally studentized) residual follows marginally an approximate scaled Student distribution. However, because of the use of <span class="math inline">\(s^2\)</span> in the denominator, the entries of <span class="math inline">\(\boldsymbol{r}\)</span> are bounded by <span class="math inline">\(\pm n-p\)</span>. They are also not independent, even if this fact is often omitted in practice. While they will be approximately centered (with mean zero and variance one), they can (and should) be recentered before undertaking visual diagnostics.</p>
 <p>The externally studentized residuals <span class="math inline">\(t_i\)</span> are obtained by excluding the <span class="math inline">\(i\)</span>th observation from the calculation of the variance. The advantage of doing this is that <span class="math inline">\(\{t_i\}_{i=1}^n\)</span> are marginally Student distributed with <span class="math inline">\(n-p-1\)</span> degrees of freedom (but they are again not independent). These are typically the residuals that are displayed in Q-Q plots. The externally studentized residuals can be obtained with the function <code>rstudent</code>.</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" title="1"><span class="co">#Externally studentized residuals</span></a>
-<a class="sourceLine" id="cb131-2" title="2">smi &lt;-<span class="st"> </span><span class="kw">influence</span>(ols)<span class="op">$</span>sigma</a>
-<a class="sourceLine" id="cb131-3" title="3">s2mi &lt;-((n<span class="dv">-2</span>)<span class="op">*</span>s2<span class="op">-</span>e<span class="op">^</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>leverage))<span class="op">/</span>(n<span class="dv">-3</span>)</a>
-<a class="sourceLine" id="cb131-4" title="4"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(smi<span class="op">^</span><span class="dv">2</span>, s2mi))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Externally studentized residuals</span>
+smi &lt;-<span class="st"> </span><span class="kw">influence</span>(ols)<span class="op">$</span>sigma
+s2mi &lt;-((n<span class="dv">-2</span>)<span class="op">*</span>s2<span class="op">-</span>e<span class="op">^</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>leverage))<span class="op">/</span>(n<span class="dv">-3</span>)
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(smi<span class="op">^</span><span class="dv">2</span>, s2mi))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" title="1">esr &lt;-<span class="st"> </span>e<span class="op">/</span><span class="kw">sqrt</span>(s2mi<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>leverage))</a>
-<a class="sourceLine" id="cb133-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">rstudent</span>(ols), esr))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">esr &lt;-<span class="st"> </span>e<span class="op">/</span><span class="kw">sqrt</span>(s2mi<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>leverage))
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">rstudent</span>(ols), esr))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>The last type of residual is the leave-one-out cross validation residual. These are the residuals obtained by fitting the linear model to all observations, but the <span class="math inline">\(i\)</span>th, i.e.,
 <span class="math inline">\(\boldsymbol{y}_{-i}= \mathbf{X}_{-i}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span>. Let <span class="math inline">\(\hat{\boldsymbol{\beta}}_{-i}\)</span> denote the OLS coefficients from this regression and <span class="math inline">\(\hat{y}_{i,-i}=\mathbf{x}_i\hat{\boldsymbol{\beta}}_{-i}\)</span> the predicted value for the left-out <span class="math inline">\(\mathbf{x}_i\)</span> regressor. The <span class="math inline">\(i\)</span>th leave-one-out cross validation residual is <span class="math inline">\(e_{i,-i}=y_i - \hat{y}_{i,-i}=e_i/(1-h_{ii})\)</span>. We can use these to calculate the PRESS statistic, <span class="math inline">\(\mathsf{PRESS}=\sum_{i=1}^n e_{i, -i}^2\)</span></p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" title="1"><span class="co"># LOOCV residuals e/(1-leverage)</span></a>
-<a class="sourceLine" id="cb135-2" title="2">loocv &lt;-<span class="st"> </span>e<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>leverage)</a>
-<a class="sourceLine" id="cb135-3" title="3">loocv_err &lt;-<span class="st"> </span><span class="kw">rstandard</span>(ols, <span class="dt">type =</span> <span class="st">&quot;pred&quot;</span>)</a>
-<a class="sourceLine" id="cb135-4" title="4">PRESS &lt;-<span class="st"> </span><span class="kw">crossprod</span>(loocv_err)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># LOOCV residuals e/(1-leverage)</span>
+loocv &lt;-<span class="st"> </span>e<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>leverage)
+loocv_err &lt;-<span class="st"> </span><span class="kw">rstandard</span>(ols, <span class="dt">type =</span> <span class="st">&quot;pred&quot;</span>)
+PRESS &lt;-<span class="st"> </span><span class="kw">crossprod</span>(loocv_err)</code></pre>
 </div>
             </section>
 

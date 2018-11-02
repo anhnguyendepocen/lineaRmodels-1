@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="solutions-2.html">
-<link rel="next" href="general-decomposition-with-arbitrary-covariates.html">
+<link rel="next" href="sum-of-squares-decomposition.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -199,11 +199,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="analysis-of-variance.html"><a href="analysis-of-variance.html"><i class="fa fa-check"></i><b>5</b> Analysis of variance</a><ul>
-<li class="chapter" data-level="5.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html"><i class="fa fa-check"></i><b>5.1</b> General decomposition with arbitrary covariates</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#sum-of-squares-decomposition"><i class="fa fa-check"></i><b>5.1.1</b> Sum of squares decomposition</a></li>
-<li class="chapter" data-level="5.1.2" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.2</b> The decomposition of squares in <strong>R</strong></a></li>
-<li class="chapter" data-level="5.1.3" data-path="general-decomposition-with-arbitrary-covariates.html"><a href="general-decomposition-with-arbitrary-covariates.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.3</b> Dropping or adding variables</a></li>
+<li class="chapter" data-level="5.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html"><i class="fa fa-check"></i><b>5.1</b> Sum of squares decomposition</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.1</b> The decomposition of squares in <strong>R</strong></a></li>
+<li class="chapter" data-level="5.1.2" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.2</b> Dropping or adding variables</a></li>
 </ul></li>
+<li class="chapter" data-level="5.2" data-path="one-way-anova.html"><a href="one-way-anova.html"><i class="fa fa-check"></i><b>5.2</b> One-way ANOVA</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -227,17 +227,51 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="analysis-of-variance" class="section level1">
 <h1><span class="header-section-number">5</span> Analysis of variance</h1>
-<p>In common language, analysis of variance is used for tests for equality of means in different subpopulations. Under the assumption that the observations have a common variance and that they are normally distributed, this corresponds to a Gaussian linear model with binary indicators (factors) as explanatories.
-Suppose there are <span class="math inline">\(L\)</span> possible levels and <span class="math inline">\(n_j\)</span> is the number of observations for group <span class="math inline">\(j=1,\ldots, L\)</span>.</p>
-<p>The one-way ANOVA model can be written as
-<span class="math display">\[y_{i_j,j} = \alpha_j + \varepsilon_{i_j,j}, \quad  \varepsilon_{i_j,j} \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(0, \sigma^2)\qquad (j = 1, \ldots, L, i_j= 1, \ldots, n_j). \]</span>
-Let <span class="math inline">\(\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})^\top\)</span> denote the vector of observations for the first group and similarly for <span class="math inline">\(\boldsymbol{\varepsilon_j}\)</span>; we can stack observations into a single regression with a matrix <span class="math inline">\(\mathbf{X}\)</span> of indicators variables, viz.
-<span class="math display">\[\begin{pmatrix}\boldsymbol{y}_1 \\\boldsymbol{y}_2 \\ \vdots \\ \boldsymbol{y}_L\end{pmatrix} = \begin{pmatrix} \mathbf{1}_{n_1} &amp; \mathbf{0}_{n_1}&amp;\cdots &amp; \mathbf{0}_{n_1} \\
-\mathbf{0}_{n_2} &amp; \mathbf{1}_{n_2}&amp;\ddots &amp; \mathbf{0}_{n_2} \\
-\vdots &amp; \ddots &amp; \ddots &amp; \vdots\\
-\mathbf{0}_{n_L} &amp; \mathbf{0}_{n_L}&amp;\cdots &amp; \mathbf{1}_{n_L} 
-\end{pmatrix}\begin{pmatrix} \alpha_1 \\ \alpha_2 \\\vdots \\ \alpha_L\end{pmatrix} + \begin{pmatrix}\boldsymbol{\varepsilon}_1 \\\boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_L\end{pmatrix}. \]</span></p>
-<p>To test <span class="math inline">\(\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L\)</span>, we can use the usual sum of squares decomposition and an <span class="math inline">\(F\)</span> statistic.</p> 
+<p>Consider the linear model <span class="math inline">\(\boldsymbol{Y} = \mathbf{1}_n\alpha + \mathbf{Z}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\)</span>
+where <span class="math inline">\(\mathbf{X}=(\mathbf{1}_n^\top, \mathbf{Z}^\top)^\top\)</span> is a full rank <span class="math inline">\(n \times p\)</span> design matrix.
+Let as usual <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y}\)</span>, the total sum of square, and <span class="math inline">\(\mathrm{RSS}= \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y}\)</span>, the sum of squared residuals.
+The <span class="math inline">\(F\)</span>-test statistic for testing the null hypothesis <span class="math inline">\(\boldsymbol{\beta}=\mathbf{0}_{p-1}\)</span> can be written as
+<span class="math display">\[F = \frac{(\mathrm{TSS}-\mathrm{RSS})/(p-1)}{\mathrm{RSS}/(n-p)}.\]</span>
+Under the null hypothesis, <span class="math inline">\(F \sim \mathcal{F}(p-1, n-p)\)</span>.</p>
+<p>An ANOVA table (<code>anova</code>) arranges the information about the sum of squares decomposition, the degree of freedom and the value of the <span class="math inline">\(F\)</span> test statistic in the following manner.</p>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="8%" />
+<col width="7%" />
+<col width="27%" />
+<col width="8%" />
+<col width="42%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sum of squares</th>
+<th align="center">Degrees of freedom</th>
+<th align="center">Scaled sum of squares</th>
+<th align="center">Test statistic</th>
+<th align="center"><span class="math inline">\(P\)</span>-value</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ESS</td>
+<td align="center"><span class="math inline">\(p-1\)</span></td>
+<td align="center"><span class="math inline">\(\mathrm{ESS}/(p-1)\)</span></td>
+<td align="center"><span class="math inline">\(F\)</span></td>
+<td align="center"><span class="math inline">\(1-\texttt{pf}(F, p-1, n-p)\)</span></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td>RSS</td>
+<td align="center"><span class="math inline">\(n-p\)</span></td>
+<td align="center"><span class="math inline">\(\mathrm{RSS}/(n-p)\)</span></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table> 
 </div>
             </section>
 
@@ -245,7 +279,7 @@ Let <span class="math inline">\(\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})
         </div>
       </div>
 <a href="solutions-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="general-decomposition-with-arbitrary-covariates.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sum-of-squares-decomposition.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

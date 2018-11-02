@@ -1,23 +1,6 @@
 # Analysis of variance
 
 
-In common language, analysis of variance is used for tests for equality of means in different subpopulations. Under the assumption that the observations have a common variance and that they are normally distributed, this corresponds to a Gaussian linear model with binary indicators (factors) as explanatories.
-Suppose there are $L$ possible levels and $n_j$ is the number of observations for group $j=1,\ldots, L$. 
-
-The one-way ANOVA model can be written as
-\[y_{i_j,j} = \alpha_j + \varepsilon_{i_j,j}, \quad  \varepsilon_{i_j,j} \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(0, \sigma^2)\qquad (j = 1, \ldots, L, i_j= 1, \ldots, n_j). \]
-Let $\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})^\top$ denote the vector of observations for the first group and similarly for $\boldsymbol{\varepsilon_j}$; we can stack observations into a single regression with a matrix $\mathbf{X}$ of indicators variables, viz.
-\[\begin{pmatrix}\boldsymbol{y}_1 \\\boldsymbol{y}_2 \\ \vdots \\ \boldsymbol{y}_L\end{pmatrix} = \begin{pmatrix} \mathbf{1}_{n_1} & \mathbf{0}_{n_1}&\cdots & \mathbf{0}_{n_1} \\
-\mathbf{0}_{n_2} & \mathbf{1}_{n_2}&\ddots & \mathbf{0}_{n_2} \\
-\vdots & \ddots & \ddots & \vdots\\
-\mathbf{0}_{n_L} & \mathbf{0}_{n_L}&\cdots & \mathbf{1}_{n_L} 
-\end{pmatrix}\begin{pmatrix} \alpha_1 \\ \alpha_2 \\\vdots \\ \alpha_L\end{pmatrix} + \begin{pmatrix}\boldsymbol{\varepsilon}_1 \\\boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_L\end{pmatrix}. \]
-
-To test $\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L$, we can use the usual sum of squares decomposition and an $F$ statistic. 
-
-## General decomposition with arbitrary covariates
-
-
 Consider the linear model $\boldsymbol{Y} = \mathbf{1}_n\alpha + \mathbf{Z}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$
   where $\mathbf{X}=(\mathbf{1}_n^\top, \mathbf{Z}^\top)^\top$ is a full rank $n \times p$ design matrix.
   Let as usual $\mathrm{TSS} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y}$, the total sum of square, and $\mathrm{RSS}= \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y}$, the sum of squared residuals.
@@ -25,16 +8,16 @@ The $F$-test statistic for testing the null hypothesis $\boldsymbol{\beta}=\math
 \[F = \frac{(\mathrm{TSS}-\mathrm{RSS})/(p-1)}{\mathrm{RSS}/(n-p)}.\]
 Under the null hypothesis, $F \sim \mathcal{F}(p-1, n-p)$.
 
-An ANOVA table (`anova`) arranges the information about the sum of squaresdecomposition, the degree of freedom and the value of the $F$ test statistic in the following manner.
+An ANOVA table (`anova`) arranges the information about the sum of squares decomposition, the degree of freedom and the value of the $F$ test statistic in the following manner.
 
 |Sum of squares| Degrees of freedom	| Scaled sum of squares  	| Test statistic  | $P$-value |
-|------	|:----:|:---:|---	|---	|--------: |
-| ESS (regression)     	| $p-1$   	|  ESS/($p-1$) 	|  $F$ 	|  $1-$`pf`($F, p-1, n-p$) 	|
-| RSS (residuals)     	|  $n-p$  	| RSS/($n-p$)  	|   	|   	|
+|----	|:--------:|:---:|:-----------------:|:----:	|:-----------------------------|
+| ESS 	| $p-1$   	|  $\mathrm{ESS}/(p-1)$ 	|  $F$ 	| $1-\texttt{pf}(F, p-1, n-p)$  	|
+| RSS  	|  $n-p$  	| $\mathrm{RSS}/(n-p)$  	|   	|   	|
 
 
 
-### Sum of squares decomposition
+## Sum of squares decomposition
 
 Consider the orthogonal decomposition \[\boldsymbol{y}^\top\boldsymbol{y} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y} + \boldsymbol{y}^\top\mathbf{H}_{\mathbf{X}}\boldsymbol{y},\] along with the model \[\boldsymbol{y}  = \beta_0\mathbf{1}_n + \mathbf{X}_1\boldsymbol{\beta}_1 + \mathbf{X}_2\boldsymbol{\beta}_2 + \boldsymbol{\varepsilon}.\]
 
@@ -47,11 +30,11 @@ We consider four concurrent models, for $\mathbf{X}_1$ an $n \times p_1$ matrix 
 
 Let $\mathbf{X}_a$, $\mathbf{X}_b$, $\mathbf{X}_c$, and $\mathbf{X}_d$ be the corresponding design matrices.
 
-**R** uses an orthogonal decomposition of the projection matrix on to $\mathbf{X}_a$, $\mathbf{H}_{\mathbf{X}_a}$ into two parts: $\mathbf{H}_{\mathbf{X}_a}= \mathbf{H}_{\mathbf{X}_b} + \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}$. The last term is the contribution of $\mathbf{X}_2$ to the model fit when $\mathbf{1}_n, \mathbf{X}_1$ are already part of the model. We can form the sum of squares of the regression using this decomposition. We use the notation $\mathrm{SSR}(\mathbf{H}) = \boldsymbol{y}^\top\mathbf{H}\boldsymbol{y}$ to denote the sum of squares obtained by projecting $\boldsymbol{y}$ onto the span of $\mathbf{H}$.
+**R** uses an orthogonal decomposition of the projection matrix on to $\mathbf{X}_a$, $\mathbf{H}_{\mathbf{X}_a}$ into two parts: $\mathbf{H}_{\mathbf{X}_a}= \mathbf{H}_{\mathbf{X}_b} + \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}.$ The last term is the contribution of $\mathbf{X}_2$ to the model fit when $\mathbf{1}_n, \mathbf{X}_1$ are already part of the model. We can form the sum of squares of the regression using this decomposition. We use the notation $\mathrm{SSR}(\mathbf{H}) = \boldsymbol{y}^\top\mathbf{H}\boldsymbol{y}$ to denote the sum of squares obtained by projecting $\boldsymbol{y}$ onto the span of $\mathbf{H}$.
 
 We have 
 \[\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}) = \mathrm{SSR}(\mathbf{H}_{\mathbf{X}_a}) - \mathrm{SSR}(\mathbf{H}_{\mathbf{X}_b}).\]
-that is, the difference in sum of squared from the regression with model $\mathrm{M}_a$ versus that from regression $\mathrm{M}_b$. This is the sum of squares from the regression that are due to the addition of $\mathbf{X}_2$ to a model that already contains $(\mathbf{1}_n, \mathbf{X}_1)$ as regressors.
+that is, the difference in sum of squared from the regression with model $\mathrm{M}_a$ versus that from regression $\mathrm{M}_b.$ This is the sum of squares from the regression that are due to the addition of $\mathbf{X}_2$ to a model that already contains $(\mathbf{1}_n, \mathbf{X}_1)$ as regressors.
 
 The usual $F$-test statistic for the null hypothesis $\mathscr{H}_0: \boldsymbol{\beta}_2=0$ can be written as
 \[F = \frac{\mathrm{SSR}(\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2})/p_2}{\mathrm{RSS}_a/(n-p)} = \frac{(\mathrm{RSS}_b-\mathrm{RSS}_a)/p_2}{\mathrm{RSS}_a/(n-p)} \sim \mathcal{F}(p_2, n-p).\]
@@ -93,7 +76,7 @@ The function `anova` considers the *sequential* decomposition
 $\mathbf{H}_{\mathbf{X}_a}=\mathbf{H}_{\mathbf{1}_n} + \mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1} + \mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}$. 
 The column `Sum Sq` gives 
 
--  1st line: the contribution for `commerce`, $\boldsymbol{y}^\top\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1}\boldsymbol{y}$, 
+- 1st line: the contribution for `commerce`, $\boldsymbol{y}^\top\mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}_1}\boldsymbol{y}$, 
 - 2nd line:  $\boldsymbol{y}^\top\mathbf{H}_{\mathbf{M}_{\mathbf{X}_b}\mathbf{X}_2}\boldsymbol{y}$ and 
 - 3rd line: the residuals sum of squares $\mathrm{RSS}_a$.  
 
@@ -128,7 +111,7 @@ There is a similar command to add variables, called `add1`. You can try running 
 
 To test for a simplified model in which many of the variables are removed, we can use the general linear hypothesis framework. The function `glht` in the package `multcomp` handles this, as does the function `linearHypothesis` in `car`.
 
-Note that in general, multiple testing leads to inflated Type-I error for the set of tests, meaning that the probability of rejecting at least one null hypothesis for $m$ tests provided that they are all true is greater than the significance level $\alpha$ of the individual tests. A Bonferroni correction could be made to alleviate this at the cost of lower power.
+Note that in general, multiple testing leads to inflated Type-I error for the set of tests, meaning that the probability of rejecting at least one null hypothesis for $m$ tests provided that they are all true is greater than the significance level $\alpha$ of the individual tests. A Bonferroni correction (take $\alpha/m$ as level if you perform $m$ tests) could be made to alleviate this, but the power to detect will be lower.
 
 ```{r}
 #install packages `multcomp` and `car` if necessary
@@ -182,4 +165,23 @@ print(c("Underfit" = a_u['Residuals','Mean Sq'],
 ```
 
 
-If there are no interactions and you wish to compare main effects conditional on all the others main effects present in the model for each of the explanatory variables, you can use the function `Anova` from the package `car`. This is the so-called Type II Anova decomposition. You could retrieve the output directly from repeated calls to `anova`. See this [post](http://goanna.cs.rmit.edu.au/~fscholer/anova.php) for more details.
+If there are no interactions and you wish to compare main effects conditional on all the others main effects present in the model for each of the explanatory variables, you can use the function `Anova` from the package `car`. This is the so-called Type II Anova decomposition. You could retrieve the output directly from repeated calls to `anova`. 
+<!--
+See this [post](http://goanna.cs.rmit.edu.au/~fscholer/anova.php) for more details. 
+-->
+
+## One-way ANOVA
+
+A one-way ANOVA is a test for equality of means in different subpopulations. Under the assumption that the observations have a common variance and that they are normally distributed, this corresponds to a Gaussian linear model with binary indicators (factors) as explanatories.
+Suppose there are $L$ possible levels and $n_j$ is the number of observations for group $j=1,\ldots, L$. 
+
+The one-way ANOVA model can be written as
+\[y_{i_j,j} = \alpha_j + \varepsilon_{i_j,j}, \quad  \varepsilon_{i_j,j} \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(0, \sigma^2)\qquad (j = 1, \ldots, L, i_j= 1, \ldots, n_j). \]
+Let $\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})^\top$ denote the vector of observations for the first group and similarly for $\boldsymbol{\varepsilon_j}$; we can stack observations into a single regression with a matrix $\mathbf{X}$ of indicators variables, viz.
+\[\begin{pmatrix}\boldsymbol{y}_1 \\\boldsymbol{y}_2 \\ \vdots \\ \boldsymbol{y}_L\end{pmatrix} = \begin{pmatrix} \mathbf{1}_{n_1} & \mathbf{0}_{n_1}&\cdots & \mathbf{0}_{n_1} \\
+\mathbf{0}_{n_2} & \mathbf{1}_{n_2}&\ddots & \mathbf{0}_{n_2} \\
+\vdots & \ddots & \ddots & \vdots\\
+\mathbf{0}_{n_L} & \mathbf{0}_{n_L}&\cdots & \mathbf{1}_{n_L} 
+\end{pmatrix}\begin{pmatrix} \alpha_1 \\ \alpha_2 \\\vdots \\ \alpha_L\end{pmatrix} + \begin{pmatrix}\boldsymbol{\varepsilon}_1 \\\boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_L\end{pmatrix}. \]
+
+To test $\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L$, we can use the usual sum of squares decomposition and an $F$ statistic. 
