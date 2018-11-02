@@ -44,7 +44,7 @@ The last equality follows by noting that  $\mathrm{SSR}(\mathbf{H}_{\mathbf{X}_b
 
 Let us illustrate how to obtain the various quantities presented above using the **R** outputs.
 
-First, we look at some data. The dataset `Chirot` from the package `carData` contains information about the 1907 Romanian peasant rebellion. We model the intensity of the rebellion as a function of commercialization of agriculture and a measure oif traditionalism. We start by fitting the four models $\mathrm{M}_a, \mathrm{M}_b, \mathrm{M}_c, \mathrm{M}_d$ detailed above with the regressors $\mathbf{X}_1 \equiv$`commerce`, $\mathbf{X}_2 \equiv$`tradition` and an intercept.
+First, we look at some data. The dataset `Chirot` from the package `carData` contains information about the 1907 Romanian peasant rebellion. We model the intensity of the rebellion as a function of commercialization of agriculture and a measure of traditionalism. We start by fitting the four models $\mathrm{M}_a, \mathrm{M}_b, \mathrm{M}_c, \mathrm{M}_d$ detailed above with the regressors $\mathbf{X}_1 \equiv$`commerce`, $\mathbf{X}_2 \equiv$`tradition` and an intercept.
 
 ```{r} 
 #install.packages("carData")

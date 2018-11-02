@@ -175,7 +175,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a></li>
+<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.3.1</b> Exercise 4.4</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
 <li class="chapter" data-level="4.1" data-path="confidence-and-prediction-intervals.html"><a href="confidence-and-prediction-intervals.html"><i class="fa fa-check"></i><b>4.1</b> Confidence and prediction intervals</a></li>
@@ -185,11 +187,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3.2" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#diagnostic-of-heteroscedasticity"><i class="fa fa-check"></i><b>4.3.2</b> Diagnostic of heteroscedasticity</a></li>
 <li class="chapter" data-level="4.3.3" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#outliers"><i class="fa fa-check"></i><b>4.3.3</b> Outliers</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
-<li class="chapter" data-level="4.4.1" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
-<li class="chapter" data-level="4.4.2" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
-<li class="chapter" data-level="4.4.3" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
-<li class="chapter" data-level="4.4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4" data-path="qqplot.html"><a href="qqplot.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="qqplot.html"><a href="qqplot.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
+<li class="chapter" data-level="4.4.2" data-path="qqplot.html"><a href="qqplot.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4.3" data-path="qqplot.html"><a href="qqplot.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
+<li class="chapter" data-level="4.4.4" data-path="qqplot.html"><a href="qqplot.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="solutions-2.html"><a href="solutions-2.html"><i class="fa fa-check"></i><b>4.5</b> Solutions</a><ul>
 <li class="chapter" data-level="4.5.1" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.1---study-of-growth-hormones"><i class="fa fa-check"></i><b>4.5.1</b> Exercise 7.1 - Study of growth hormones</a></li>
@@ -234,14 +236,14 @@ The <span class="math inline">\(F\)</span>-test statistic for testing the null h
 <span class="math display">\[F = \frac{(\mathrm{TSS}-\mathrm{RSS})/(p-1)}{\mathrm{RSS}/(n-p)}.\]</span>
 Under the null hypothesis, <span class="math inline">\(F \sim \mathcal{F}(p-1, n-p)\)</span>.</p>
 <p>An ANOVA table (<code>anova</code>) arranges the information about the sum of squares decomposition, the degree of freedom and the value of the <span class="math inline">\(F\)</span> test statistic in the following manner.</p>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="5%" />
+<col width="13%" />
+<col width="6%" />
+<col width="25%" />
 <col width="8%" />
-<col width="7%" />
-<col width="27%" />
-<col width="8%" />
-<col width="42%" />
+<col width="40%" />
 </colgroup>
 <thead>
 <tr class="header">

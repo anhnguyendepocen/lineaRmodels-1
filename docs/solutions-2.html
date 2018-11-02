@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="quantile-quantile-plots.html">
+<link rel="prev" href="qqplot.html">
 <link rel="next" href="analysis-of-variance.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -175,7 +175,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a></li>
+<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.3.1</b> Exercise 4.4</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
 <li class="chapter" data-level="4.1" data-path="confidence-and-prediction-intervals.html"><a href="confidence-and-prediction-intervals.html"><i class="fa fa-check"></i><b>4.1</b> Confidence and prediction intervals</a></li>
@@ -185,11 +187,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3.2" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#diagnostic-of-heteroscedasticity"><i class="fa fa-check"></i><b>4.3.2</b> Diagnostic of heteroscedasticity</a></li>
 <li class="chapter" data-level="4.3.3" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#outliers"><i class="fa fa-check"></i><b>4.3.3</b> Outliers</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
-<li class="chapter" data-level="4.4.1" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
-<li class="chapter" data-level="4.4.2" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
-<li class="chapter" data-level="4.4.3" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
-<li class="chapter" data-level="4.4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4" data-path="qqplot.html"><a href="qqplot.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="qqplot.html"><a href="qqplot.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
+<li class="chapter" data-level="4.4.2" data-path="qqplot.html"><a href="qqplot.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4.3" data-path="qqplot.html"><a href="qqplot.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
+<li class="chapter" data-level="4.4.4" data-path="qqplot.html"><a href="qqplot.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="solutions-2.html"><a href="solutions-2.html"><i class="fa fa-check"></i><b>4.5</b> Solutions</a><ul>
 <li class="chapter" data-level="4.5.1" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.1---study-of-growth-hormones"><i class="fa fa-check"></i><b>4.5.1</b> Exercise 7.1 - Study of growth hormones</a></li>
@@ -322,6 +324,7 @@ summ1 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm_wind1)
 <span class="kw">abline</span>(lm_wind1)
 <span class="co">#Repeat with second dataset</span>
 summ2 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm_wind2 &lt;-<span class="st"> </span><span class="kw">lm</span>(output <span class="op">~</span><span class="st"> </span>recip_velo))
+<span class="co">#alternatively summary(lm_wind2 &lt;- lm(output ~ I(1/velocity)))</span>
 <span class="co">#Note above how we can assign variables inside call to other functions</span>
 <span class="kw">plot</span>(output <span class="op">~</span><span class="st"> </span>recip_velo, <span class="dt">xlab =</span> <span class="st">&quot;reciprocal wind velocity (in mph)&quot;</span>)
 <span class="kw">abline</span>(lm_wind2)</code></pre>
@@ -392,11 +395,16 @@ interv_length &lt;-<span class="st"> </span><span class="kw">qt</span>(<span cla
 <p>The function <code>update</code> changes the arguments of the linear model. Here, the <code>.</code> means keep all variables on lhs or rhs. You can also use it with a dataset to fit all the remaining variables after specifying the response variable, like for example <code>lm(output ~ .,  data = windmill)</code> would have <code>velocity</code> as covariate.</p>
 <p>We notice first that the confidence interval for <span class="math inline">\(\beta_0\)</span>, the intercept, includes zero, we cannot reject the null hypothesis that <span class="math inline">\(\beta_0=0\)</span> at level <span class="math inline">\(0.95\)</span>.</p>
 <p>The coefficient <span class="math inline">\(\beta_1\)</span> corresponding to the effect of velocity has a smaller standard error than the first model. Does this make sense? If a model is correctly specified, addition of new variables that are unrelated does not introduce bias, but ncessarily inflates the standard errors by Gauss–Markov theorem. However, if the intercept should truly be there (this can be made necessary because of measurement errors) and <span class="math inline">\(\beta_0 \neq 0\)</span>, then the tests and confidence intervals will be invalid in the simplified model.</p>
-<p>The multiple <span class="math inline">\(\mathrm{R}^2_c\)</span> goes up the roof, but makes no sense here because it compares two models that are not nested (the model with a single mean versus which has no constant). A consequence of the removal of the intercept is that the average of the residuals is not zero anymore.</p>
-<p>We now produce the quantile-quantile plots using.</p>
+<p>The multiple <span class="math inline">\(\mathrm{R}^2_c\)</span> goes up the roof, but makes no sense here because it compares two models that are not nested (the model with a single mean versus which has no constant). A consequence of the removal of the intercept is that the average of the residuals is not zero anymore and that R returns different values for the <code>Multiple R-squared</code>.</p>
+
+<div class="rmdnote">
+If you remove the intercept in a <code>lm</code> object using <code>-1</code>, the value returned by <code>summary</code> for the coefficient <code>Multiple R-squared</code> is the <span class="math inline">\(R^2\)</span>, not <span class="math inline">\(R^2_c\)</span>!
+</div>
+
+<p>We now produce the quantile-quantile plots using the results described in <a href="qqplot.html#qqplot">4.4</a>.</p>
 <pre class="sourceCode r"><code class="sourceCode r">Q &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">qr.Q</span>(<span class="kw">qr</span>(Xmat1), <span class="dt">complete =</span> <span class="ot">TRUE</span>))
 resQ1 &lt;-<span class="st"> </span>(<span class="kw">t</span>(Q) <span class="op">%*%</span><span class="st"> </span><span class="kw">resid</span>(lm_wind1))[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]
-<span class="co">#Function from Tutorial 3</span>
+<span class="co">#Function to add confidence intervals using order statitics</span>
 confint.qqplot.ptw &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">dist =</span> <span class="st">&quot;norm&quot;</span>, ...){
   <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="cf">function</span>(i){
   <span class="co">#Beta order statistic quantiles, mapped to scale dist</span>
@@ -430,12 +438,12 @@ resQ2 &lt;-<span class="st"> </span>(<span class="kw">t</span>(Q) <span class="o
 <span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
 confint_ptwise &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(N)
 <span class="co">#Simulated pointwise bands</span>
-<span class="kw">lines</span>(rankit, confint_boot[<span class="dv">1</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
-<span class="kw">lines</span>(rankit, confint_boot[<span class="dv">2</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(rankit, confint_boot[<span class="dv">1</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)
+<span class="kw">lines</span>(rankit, confint_boot[<span class="dv">2</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)
 <span class="co">#Theoretical bands based on order statistics distribution</span>
-<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)
-<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>The simulated pointwise confidence interval are shorter and account for the scaling.</p>
 </div>
 <div id="exercise-7.3---air-traffic" class="section level3">
@@ -464,7 +472,7 @@ month &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span clas
 <span class="co">#quarter &lt;- as.factor(rep(1:4, each = 3, length = length(time)))</span>
 sum_ad &lt;-<span class="st"> </span><span class="kw">summary</span>(fit_ad &lt;-<span class="st"> </span><span class="kw">lm</span>(passengers <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month))
 <span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_ad), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>) <span class="co">#dashed blue line</span></code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Prediction </span>
 <span class="kw">predict</span>(fit_ad, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">time =</span> <span class="dv">1962</span><span class="op">+</span><span class="dv">11</span><span class="op">/</span><span class="dv">12</span>, <span class="dt">month =</span> month[<span class="dv">12</span>]))</code></pre>
 <pre><code>##       1 
@@ -482,7 +490,7 @@ p &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">
 <span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">3</span>) <span class="co">#standardized residuals vs fitted values</span>
 <span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>) <span class="co">#Cook distance plot</span>
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) <span class="co">#return to one plot per window</span>
 <span class="co">#Compute Cook statistic and other influence statistics</span>
 infl_ad &lt;-<span class="st"> </span><span class="kw">influence.measures</span>(fit_ad)
@@ -490,13 +498,13 @@ cookval_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[
 <span class="co">#Diagonal values of the &quot;hat&quot; projection matrix</span>
 h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <span class="st">&quot;hat&quot;</span>] <span class="co">#hatvalues</span>
 <span class="kw">plot</span>(time, <span class="kw">rstudent</span>(fit_ad), <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (in years)&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
 <p>Let us consider the log counts. The fit is much better and the quadratic relationship with the residuals vs fitted values is attenuated. While some points still have high leverage value, they are not considered outliers.</p>
 <pre class="sourceCode r"><code class="sourceCode r">fit_l &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month)
 <span class="kw">plot</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time, <span class="dt">main =</span> <span class="st">&quot;International airline passengers&quot;</span>,
 <span class="dt">ylab =</span> <span class="st">&quot;log of monthly total count (in thousands)&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)
 <span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_l), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">20</span>)
 <span class="co"># Q-Q plot</span>
 <span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">sort</span>(<span class="kw">scale</span>(<span class="kw">rstudent</span>(fit_l))),
@@ -506,7 +514,7 @@ h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <spa
 <span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">1</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)
 <span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
 <p>One hypothesis of the linear model that is clearly violated here is the independence of the errors. Even if the variance <span class="math inline">\(\mathsf{Var}(\boldsymbol{e})=\sigma^2\mathbf{M}_{\mathbf{X}}\)</span> need not have independent errors, there is positive dependence from residual to residual. This is confirmed by looking at the autocorrelation, which indicates geometric decay. This will be covered in MATH 342 (Time Series), but you should just think here of shocks carrying through until the next period before the model reverts to the mean.</p>
 <p>Ignoring the serial dependence in the error has consequences: the standard errors are too small (since errors are correlated, there is less units of information so we are overconfident in our uncertainty quantification).</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Laggedresidual plots</span>
@@ -514,14 +522,14 @@ h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <spa
 <span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">y =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span>n], 
   <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span>n]), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span><span class="dv">1</span>]), 
   <span class="dt">main =</span> <span class="st">&quot;Lagged residual plot&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#(partial) correlogram: if residuals have no structure</span>
 <span class="co">#there should not be anything outside the bands 19 times out of 20</span>
 <span class="co">#Covered in detail in MATH-342 (Time series)</span>
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 <span class="kw">acf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Autocorrelation of residuals&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">20</span>))
 <span class="kw">pacf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Partial autocorrelation of residuals&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#detach dataset</span>
 <span class="kw">detach</span>(airpass)</code></pre>
 </div>
@@ -596,7 +604,7 @@ educ_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(lhwages <span c
           </div>
         </div>
       </div>
-<a href="quantile-quantile-plots.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="qqplot.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="analysis-of-variance.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

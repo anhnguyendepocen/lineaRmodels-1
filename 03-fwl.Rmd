@@ -176,6 +176,7 @@ isTRUE(all.equal((coef(gas_lm2)[1] + coef(gas_lm2)[-1]), coef(gas_lm1)[-1], chec
 
 ## Solutions 
 
+### Exercise 4.4
 
 Consider the linear model $$\boldsymbol{y} = \mathbf{X}_1\boldsymbol{\beta}_1 +\mathbf{X}_2\boldsymbol{\beta}_1 + \boldsymbol{\varepsilon}$$ and suppose that $\mathbf{X}_1$ includes a column of ones.
 

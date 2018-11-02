@@ -179,7 +179,7 @@ dfbetaPlots(model = lm(mpg ~ hp + wt, data = mtcars))
 influencePlot(model = lm(mpg ~ hp + wt, data = mtcars))
 ```
 
-## Quantile-quantile plots
+## Quantile-quantile plots {#qqplot}
 
 The distributional assumption is mostly assessed using quantile-quantile plots. However, the latter are hardly useful unless we superimpose some confidence intervals to the graph.
 We will cover two methods for producing Q-Q plots for linear models: one using an orthogonal transformation that makes the estimated residuals IID. The second uses the externally studentized residuals.
@@ -192,10 +192,18 @@ Recall that the quantile-quantile plot has
 - on the $x$-axis, the theoretical quantiles, $F^{-1}(\mathrm{rank}(X_i)/(n+1))$
 - on the $y$-axis, the empirical quantiles, $X_i$
 
-For a Gaussian Q-Q plot, we will need to estimate both the mean and the variance. The usual estimators will do, replacing $\sigma^2$ with $s^2$ in the calculations, but all results will be  approximate. One can obtain standard residuals by subtracting the mean and scaling by the standard deviation (using e.g. the function `scale`). The function `qqnorm` plots a Normal Q-Q plot without rescaling and the function `qqline` adds a line passing through the first and third quartile. Since these are robust estimates, this is a sensible option but implies that the scales of the Q-Q plot are not the same on the $x$-axis than on the $y$-axis. It is preferable to use the estimate to rescale the data, so as to facilitate the inclusion of approximate confidence intervals.
+For a Gaussian Q-Q plot, we will need to estimate both the mean and the variance. The usual estimators will do, replacing $\sigma^2$ with $s^2$ in the calculations, but all results will be  approximate. One can obtain standard residuals by subtracting the mean and scaling by the standard deviation (using e.g. the function `scale`). The function `qqnorm` plots a Normal Q-Q plot without rescaling and the function `qqline` adds a line passing through the first and third quartile. Since these are robust estimates, this is a sensible option but implies that the scales of the Q-Q plot are not the same on the $x$-axis than on the $y$-axis. It is preferable to use these estimates to rescale the data, so as to facilitate the inclusion of approximate confidence intervals.
+
+
 
 We now compute pointwise confidence intervals using the 
-result on the distribution of the order statistic, which will be covered in Exercise 8.2 (in 2018). 
+result on the distribution of the order statistic, which will be covered in Exercise 9.2 (in 2018). 
+
+Suppose $\{X_i\}_{i=1}^n$ are independent random variables with absolutely continuous distribution function $F$ and density $f$. 
+Let $X_{(k)}$ denote the $k$th order statistic: $X_{(1)} \leq \cdots \leq X_{(n)}$; then $F(X_{(k)})$ follows a Beta distribution with parameters $k$ and $n + 1 - k$. Let $\mathfrak{b}_{\eta}$ denote the $\eta$-quantile of the $\mathsf{Beta}(k, n+1-k)$ distribution. Then,
+\[\Pr\left\{\mathfrak{b}_{\alpha/2} \leq  F(X_{(k)}) \leq \mathfrak{b}_{1-\alpha/2}\right\} = 1-\alpha\]
+
+so an approximate confidence interval for $X_{(k)}$ is $[F^{-1}(\mathfrak{b}_{\alpha/2}), F^{-1}(\mathfrak{b}_{1-\alpha/2})]$.
 
 ```{r}
 #Student plotting position F^(-1)(E[U_{(i)}])
@@ -234,7 +242,7 @@ Note that it is difficult to detect violation of the normality assumption becaus
 
 ### Monte Carlo methods for confidence intervals
 
-You can safely skip this optional section, which contains advanced material that is not examinable.
+This section is **optional material**. It contains advanced material that can be skipped upon first reading.
 
 An alternative to asymptotic theory (which may be unreliable in small samples) is to rely on simulations.  The idea is to obtain a statistic whose distribution is (at least asymptotically) pivotal, i.e. fully specified under the null hypothesis. One can simulate samples from the null distribution $B$ times and compare the resulting data points with the test statistic calculated from the observed sample. This method, which is termed bootstrap test, is particularly powerful when we want to obtain critical values for test statistics, like e.g. $\max(|t_i|)$, whose distribution is untractable. 
 
@@ -332,7 +340,7 @@ matplot(x = qt((1:n)/(n+1), df = n - p -1), y = t(env$overall),
 
 ### Parametric bootstrap confidence intervals using the QR decomposition
 
-This section is also **optional material**.
+This section is **optional material**.
 
 There is an alternative way to obtain pointwise (and even simultaneous) confidence intervals for the QR decomposition.
 Under the null hypothesis: $\boldsymbol{\varepsilon} \sim \mathcal{N}_{n}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)$, we get $\tilde{\boldsymbol{\varepsilon}} \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)$ and therefore $(\tilde{\boldsymbol{\varepsilon}}- \overline{\boldsymbol{\tilde{\varepsilon}}})/\mathrm{sd}(\boldsymbol{\tilde{\varepsilon}}) \stackrel{\cdot}{\sim} \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)$ is asymptotically pivotal. A pivotal quantity has a fully specified distribution.
@@ -403,6 +411,7 @@ plot(y = output, x = velocity, xlab = "wind velocity (in mph)")
 abline(lm_wind1)
 #Repeat with second dataset
 summ2 <- summary(lm_wind2 <- lm(output ~ recip_velo))
+#alternatively summary(lm_wind2 <- lm(output ~ I(1/velocity)))
 #Note above how we can assign variables inside call to other functions
 plot(output ~ recip_velo, xlab = "reciprocal wind velocity (in mph)")
 abline(lm_wind2)
@@ -467,14 +476,18 @@ We notice first that the confidence interval for $\beta_0$, the intercept, inclu
 
 The coefficient $\beta_1$ corresponding to the effect of velocity has a smaller standard error than the first model. Does this make sense? If a model is correctly specified, addition of new variables that are unrelated does not introduce bias, but ncessarily inflates the standard errors by Gauss--Markov theorem. However, if the intercept should truly be there (this can be made necessary because of measurement errors) and $\beta_0 \neq 0$, then the tests and confidence intervals will be invalid in the simplified model. 
 
-The multiple $\mathrm{R}^2_c$ goes up the roof, but makes no sense here because it compares two models that are not nested (the model with a single mean versus which has no constant). A consequence of the removal of the intercept is that the average of the residuals is not zero anymore.
+The multiple $\mathrm{R}^2_c$ goes up the roof, but makes no sense here because it compares two models that are not nested (the model with a single mean versus which has no constant). A consequence of the removal of the intercept is that the average of the residuals is not zero anymore and that R returns different values for the `Multiple R-squared`.
 
-We now produce the quantile-quantile plots using.
+```{block2, type="rmdnote"}
+If you remove the intercept in a `lm` object using `-1`, the value returned by `summary` for the coefficient `Multiple R-squared` is the $R^2$, not $R^2_c$!
+```
+
+We now produce the quantile-quantile plots using the results described in \@ref(qqplot).
 
 ```{r confints}
 Q <- t(qr.Q(qr(Xmat1), complete = TRUE))
 resQ1 <- (t(Q) %*% resid(lm_wind1))[-(1:2)]
-#Function from Tutorial 3
+#Function to add confidence intervals using order statitics
 confint.qqplot.ptw <- function(n, dist = "norm", ...){
   t(sapply(1:n, function(i){
   #Beta order statistic quantiles, mapped to scale dist
@@ -510,11 +523,11 @@ plot(rankit, sort(scale(resQ2)), xlab = "Theoretical quantiles",
 abline(a = 0, b = 1)
 confint_ptwise <- confint.qqplot.ptw(N)
 #Simulated pointwise bands
-lines(rankit, confint_boot[1,], col = "red", lty = 2)
-lines(rankit, confint_boot[2,], col = "red", lty = 2)
+lines(rankit, confint_boot[1,], col = "red", lty = 3)
+lines(rankit, confint_boot[2,], col = "red", lty = 3)
 #Theoretical bands based on order statistics distribution
-lines(rankit, confint_ptwise[,1], col = "gray", lty = 3)
-lines(rankit, confint_ptwise[,2], col = "gray", lty = 3)
+lines(rankit, confint_ptwise[,1], col = "gray", lty = 2)
+lines(rankit, confint_ptwise[,2], col = "gray", lty = 2)
 ```
 
 The simulated pointwise confidence interval are shorter and account for the scaling. 

@@ -175,7 +175,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a></li>
+<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.3.1</b> Exercise 4.4</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
 <li class="chapter" data-level="4.1" data-path="confidence-and-prediction-intervals.html"><a href="confidence-and-prediction-intervals.html"><i class="fa fa-check"></i><b>4.1</b> Confidence and prediction intervals</a></li>
@@ -185,11 +187,11 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3.2" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#diagnostic-of-heteroscedasticity"><i class="fa fa-check"></i><b>4.3.2</b> Diagnostic of heteroscedasticity</a></li>
 <li class="chapter" data-level="4.3.3" data-path="diagnostic-plots.html"><a href="diagnostic-plots.html#outliers"><i class="fa fa-check"></i><b>4.3.3</b> Outliers</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
-<li class="chapter" data-level="4.4.1" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
-<li class="chapter" data-level="4.4.2" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
-<li class="chapter" data-level="4.4.3" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
-<li class="chapter" data-level="4.4.4" data-path="quantile-quantile-plots.html"><a href="quantile-quantile-plots.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4" data-path="qqplot.html"><a href="qqplot.html"><i class="fa fa-check"></i><b>4.4</b> Quantile-quantile plots</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="qqplot.html"><a href="qqplot.html#quantile-quantile-plot-of-externally-studentized-errors"><i class="fa fa-check"></i><b>4.4.1</b> Quantile-quantile plot of externally studentized errors</a></li>
+<li class="chapter" data-level="4.4.2" data-path="qqplot.html"><a href="qqplot.html#quantile-quantile-plot-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.2</b> Quantile-quantile plot using the QR decomposition</a></li>
+<li class="chapter" data-level="4.4.3" data-path="qqplot.html"><a href="qqplot.html#monte-carlo-methods-for-confidence-intervals"><i class="fa fa-check"></i><b>4.4.3</b> Monte Carlo methods for confidence intervals</a></li>
+<li class="chapter" data-level="4.4.4" data-path="qqplot.html"><a href="qqplot.html#parametric-bootstrap-confidence-intervals-using-the-qr-decomposition"><i class="fa fa-check"></i><b>4.4.4</b> Parametric bootstrap confidence intervals using the QR decomposition</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="solutions-2.html"><a href="solutions-2.html"><i class="fa fa-check"></i><b>4.5</b> Solutions</a><ul>
 <li class="chapter" data-level="4.5.1" data-path="solutions-2.html"><a href="solutions-2.html#exercise-7.1---study-of-growth-hormones"><i class="fa fa-check"></i><b>4.5.1</b> Exercise 7.1 - Study of growth hormones</a></li>
@@ -246,7 +248,7 @@ The last equality follows by noting that <span class="math inline">\(\mathrm{SSR
 <div id="the-decomposition-of-squares-in-r" class="section level3">
 <h3><span class="header-section-number">5.1.1</span> The decomposition of squares in <strong>R</strong></h3>
 <p>Let us illustrate how to obtain the various quantities presented above using the <strong>R</strong> outputs.</p>
-<p>First, we look at some data. The dataset <code>Chirot</code> from the package <code>carData</code> contains information about the 1907 Romanian peasant rebellion. We model the intensity of the rebellion as a function of commercialization of agriculture and a measure oif traditionalism. We start by fitting the four models <span class="math inline">\(\mathrm{M}_a, \mathrm{M}_b, \mathrm{M}_c, \mathrm{M}_d\)</span> detailed above with the regressors <span class="math inline">\(\mathbf{X}_1 \equiv\)</span><code>commerce</code>, <span class="math inline">\(\mathbf{X}_2 \equiv\)</span><code>tradition</code> and an intercept.</p>
+<p>First, we look at some data. The dataset <code>Chirot</code> from the package <code>carData</code> contains information about the 1907 Romanian peasant rebellion. We model the intensity of the rebellion as a function of commercialization of agriculture and a measure of traditionalism. We start by fitting the four models <span class="math inline">\(\mathrm{M}_a, \mathrm{M}_b, \mathrm{M}_c, \mathrm{M}_d\)</span> detailed above with the regressors <span class="math inline">\(\mathbf{X}_1 \equiv\)</span><code>commerce</code>, <span class="math inline">\(\mathbf{X}_2 \equiv\)</span><code>tradition</code> and an intercept.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;carData&quot;)</span>
 <span class="kw">data</span>(Chirot, <span class="dt">package =</span> <span class="st">&quot;carData&quot;</span>)
 <span class="co">## Fit linear model with commerce and tradition as explanatory variables</span>
