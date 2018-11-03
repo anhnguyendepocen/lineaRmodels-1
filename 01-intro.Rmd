@@ -1,20 +1,8 @@
 # Introduction 
 
-\newcommand{\bs}[1]{\boldsymbol{#1}}
-\newcommand{\Hmat}{\mathbf{H}}
-\newcommand{\Mmat}{\mathbf{M}}
-\newcommand{\mX}{\mathbf{X}}
-\newcommand{\bX}{{\mathbf{X}}}
-\newcommand{\bx}{{\mathbf{x}}}
-\newcommand{\by}{{\boldsymbol{y}}}
-\newcommand{\bY}{{\boldsymbol{Y}}}
-\newcommand{\eps}{\varepsilon}
-\newcommand{\beps}{\boldsymbol{\varepsilon}}
-\newcommand{\bbeta}{\boldsymbol{\beta}}
-\newcommand{\hbb}{\hat{\boldsymbol{\beta}}}
-\newcommand{\limni}{\lim_{n \ra \infty}}
-\newcommand{\Sp}{\mathsf{span}}
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, out.width = '70%', fig.align = 'center')
+```
 
 You can find several introductions to **R** online. Have a look at the [**R** manuals](https://cran.r-project.org/manuals.html) or better at [contributed manuals](https://cran.r-project.org/other-docs.html). A nice official reference is [An introduction to  **R**](http://colinfay.me/intro-to-r/index.html). 
 You may wish to look up the following chapters of the **R** language definition ([Evaluation of expressions](http://colinfay.me/r-language-definition/evaluation-of-expressions.html) and part of the [*Objects* chapter](http://colinfay.me/r-language-definition/objects.html)).
@@ -230,6 +218,8 @@ Be careful: if `A` is an $n \times p$ matrix, `length(A)` returns the number of 
 - Create a scatterplot of `y` against `x`. Is there evidence of a linear relationship between the two variables?
 - Append a column vector of ones to `x` and create a projection matrix.
 - Check that the resulting projection matrix is symmetric and idempotent.
+
+## Solutions
 
 ### Exercise 1.4 - Oblique projections
 

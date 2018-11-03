@@ -1,3 +1,7 @@
+\usepackage[mathscr]{eucal}
+\DeclareMathAlphabet{\mathcrl}{U}{rsfs}{m}{n}
+\usepackage{fourier}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 \usepackage{booktabs}
 \usepackage{amsthm}
 \makeatletter
@@ -15,7 +19,6 @@
 \renewcommand{\bottomfraction}{0.8}
 \renewcommand{\floatpagefraction}{0.75}
 
-\renewenvironment{quote}{\begin{VF}}{\end{VF}}
 \let\oldhref\href
 \renewcommand{\href}[2]{#2\footnote{\url{#1}}}
 

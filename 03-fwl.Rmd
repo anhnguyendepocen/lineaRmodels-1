@@ -1,31 +1,26 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
+
 # Frisch--Waugh--Lovell theorem
 
 The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.
 
 Consider the following linear regression 
 $$
- \by = \bX_1\bbeta_1+\bX_2\bbeta_2+ \bs{u}, \label{eq1}
+ \by = \mathbf{X}_1\bbeta_1+\mathbf{X}_2\bbeta_2+ \bs{u}, \label{eq1}
 $$
 where the response vector $\by$ is $n \times 1$, the vector of errors $\bs{u}$ is a realization from a mean zero random 
-variable. The $n \times p$ full-rank design matrix $\bX$ can be written as the partitioned 
-matrix $(\bX_1^\top, \bX_2^\top)^\top$ with blocks $\bX_1$, an $n \times p_1$ matrix, and $\bX_2$, an $n \times p_2$ matrix. Let 
+variable. The $n \times p$ full-rank design matrix $\mathbf{X}$ can be written as the partitioned 
+matrix $(\mathbf{X}_1^\top, \mathbf{X}_2^\top)^\top$ with blocks $\mathbf{X}_1$, an $n \times p_1$ matrix, and $\mathbf{X}_2$, an $n \times p_2$ matrix. Let 
 $\hbb_1$ 
 and $\hbb_2$ be the ordinary 
-least square (OLS) parameter estimates from running this regression. Define the orthogonal projection matrix $\Hmat_\bX$ as usual and 
-$\Hmat_{\bX_i} = 
-\bX_i^{\vphantom{\top}}(\bX_i^\top\bX_i^{\vphantom{\top}})^{-1}\bX_i^\top$ for $i=1, 2$. Similarly, 
-define the complementary projection matrices $\Mmat_{\bX_1}=\mathbf{I}_n-\Hmat_{\bX_1}$ and $\Mmat_{\bX_2}=\mathbf{I}_n-\Hmat_{\bX_2}$.
+least square (OLS) parameter estimates from running this regression. Define the orthogonal projection matrix $\Hmat_\mathbf{X}$ as usual and 
+$\Hmat_{\mathbf{X}_i} = \mathbf{X}_i(\mathbf{X}_i^\top\mathbf{X}_i)^{-1}\mathbf{X}_i^\top$ for $i=1, 2$. Similarly, 
+define the complementary projection matrices $\Mmat_{\mathbf{X}_1}=\mathbf{I}_n-\Hmat_{\mathbf{X}_1}$ and $\Mmat_{\mathbf{X}_2}=\mathbf{I}_n-\Hmat_{\mathbf{X}_2}$.
 
 ```{theorem}
 The ordinary least square estimates of $\bbeta_2$ and the residuals from \eqref{eq1} are identical to those obtained by 
 running the regression 
 $$
- \Mmat_{\bX_1}\by = \Mmat_{\bX_1}\bX_2\bbeta_2 + \text{residuals}. \label{eq2} \
+ \Mmat_{\mathbf{X}_1}\by = \Mmat_{\mathbf{X}_1}\mathbf{X}_2\bbeta_2 + \text{residuals}. \label{eq2} \
 $$
 ```
 
@@ -118,7 +113,7 @@ Oftentimes, the regressors that are part of the design matrix will be categorica
 
 Suppose we are interested in estimating the seasonal model for quarterly data. Since each observation is recorded on one trimester, it could be postulated that the time of the year affect the response. This effect can be built in the design and tested for.
 
-Consider a design matrix whose columns include $(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4)$. The entries of the seasonal dummies are 0/1 depending on the season; for example, $\mathrm{S}_{i1}=1$ if the observation is recorded in the spring and $\mathrm{S}_{i1}=0$ otherwise, so that, for time ordered response vectors starting in the spring, we can write $\mathbf{S}_1=(1,0,0,0,1,0,0,\ldots)^\top$ and $\mathbf{S}_1 + \mathbf{S}_2 + \mathbf{S}_3 + \mathbf{S}_4 = \mathbf{1}_n$. Thus, a regression model cannot include a mean and all four seasonal variables, but since $\mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4) = \mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{1}_n) = \mathscr{M}(\mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4, \mathbf{1}_n)$, any set of four vectors can be used.
+Consider a design matrix whose columns include $(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4)$. The entries of the seasonal dummies are 0/1 depending on the season; for example, $\mathrm{S}_{i1}=1$ if the observation is recorded in the spring and $\mathrm{S}_{i1}=0$ otherwise, so that, for time ordered response vectors starting in the spring, we can write $\mathbf{S}_1=(1,0,0,0,1,0,0,\ldots)^\top$ and $\mathbf{S}_1 + \mathbf{S}_2 + \mathbf{S}_3 + \mathbf{S}_4 = \mathbf{1}_n$. Thus, a regression model cannot include a mean and all four seasonal variables, but since $\Sp(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4) = \Sp(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{1}_n) = \Sp(\mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4, \mathbf{1}_n)$, any set of four vectors can be used.
 
 If we drop the constant vector $\mathbf{1}_n$ from the regression (in **R**, by writing `0` or `-1` on the right hand side of the `lm` formula), the coefficients $\alpha_i$, $i=1, \ldots, 4$ in regression 
 $$\boldsymbol{y} = \mathbf{S}_1\alpha_1 +\mathbf{S}_2\alpha_2  + \mathbf{S}_3\alpha_3 + \mathbf{S}_4\alpha_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$$
@@ -132,19 +127,19 @@ As just illustrated above, the interpretation of the coefficients when we have f
 For simplicity, consider the simple case with an intercept and a single factor. Why do the coefficients $\beta_1$ and $\beta_1'$ associated to the first columns of models
 \begin{align*}
  \mathbf{X}\boldsymbol{\beta} = \begin{pmatrix}
-       \bf{1}_{n_1} & \bf{0}_{n_1} \\
-       \bf{1}_{n_2} & \bf{1}_{n_2}  \\
+       \mathbf{1}_{n_1} & \mathbf{0}_{n_1} \\
+       \mathbf{1}_{n_2} & \mathbf{1}_{n_2}  \\
       \end{pmatrix}\begin{pmatrix} \beta_1 & \beta_2\end{pmatrix}^\top, \qquad 
       \mathbf{X}'\boldsymbol{\beta}' =  \begin{pmatrix}
-       \bf{1}_{n_1} & \bf{0}_{n_1} \\
-       \bf{0}_{n_2} & \bf{1}_{n_2}  \\
+       \mathbf{1}_{n_1} & \mathbf{0}_{n_1} \\
+       \mathbf{0}_{n_2} & \mathbf{1}_{n_2}  \\
       \end{pmatrix}\begin{pmatrix} \beta_1' & \beta_2'\end{pmatrix}^\top
 \end{align*}
-have the same interpretation? For the matrix $\bX$ consisting of orthogonal regressors, this is 
-clear. For the matrix $\bX'$, recall the FWL theorem: the regression coefficient $\beta_1'$ is the same as that of the regression 
-$\Mmat_{\bx_2}\bs{y} = \Mmat_{\bx_2}\bf{1}_n + \bs{u}$ for $\bx_2 = (\bf{0}_{n_1}^\top, \bf{1}_{n_2}^\top)^\top$. The matrix 
-$\Mmat_{\bx_2}$ is a block matrix, whose first $n_1 \times n_1$ block contains entries $n_1^{-1}$ and the rest of the entries is zero.
-$\Mmat_{\bx_2}\bs{y}$ does not affect the last $n_2$ entries of $\bs{y}$, while $\Mmat_{\bx_2}\bf{1}_n = \bf{1}_n - \bx_2$. This 
+have the same interpretation? For the matrix $\mathbf{X}$ consisting of orthogonal regressors, this is 
+clear. For the matrix $\mathbf{X}'$, recall the FWL theorem: the regression coefficient $\beta_1'$ is the same as that of the regression 
+$\Mmat_{\mathbf{X}_2}\bs{y} = \Mmat_{\mathbf{X}_2}\mathbf{1}_n + \bs{u}$ for $\mathbf{X}_2 = (\mathbf{0}_{n_1}^\top, \mathbf{1}_{n_2}^\top)^\top$. The matrix 
+$\Mmat_{\mathbf{X}_2}$ is a block matrix, whose first $n_1 \times n_1$ block contains entries $n_1^{-1}$ and the rest of the entries is zero.
+$\Mmat_{\mathbf{X}_2}\bs{y}$ does not affect the last $n_2$ entries of $\bs{y}$, while $\Mmat_{\mathbf{X}_2}\mathbf{1}_n = \mathbf{1}_n - \mathbf{X}_2$. This 
 reasoning generalizes to more complex settings with a slope and other regressors.
 
 
@@ -191,7 +186,8 @@ The estimated average gas consumption in millions of therms is $\exp(\widehat{\g
 
 We can check that the interpretation is correct.
 ```{r}
-isTRUE(all.equal((coef(gas_lm2)[1] + coef(gas_lm2)[-1]), coef(gas_lm1)[-1], check.attributes = FALSE))
+isTRUE(all.equal((coef(gas_lm2)[1] + coef(gas_lm2)[-1]), 
+                 coef(gas_lm1)[-1], check.attributes = FALSE))
 ```
 
 ## Solutions 

@@ -1,8 +1,6 @@
 # Computational considerations
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 In this tutorial, we will explore some basic **R** commands and illustrate their use on the Auto dataset (`Auto`) from the `ISLR` package.
 
 
@@ -197,9 +195,13 @@ However, the observations will always be such that $z = x^2$, so our fitted valu
 
 The following 3D depiction hopefully captures this better and shows the fitted hyperplane along with the line on which all the ($x_i, z_i$) observations lie.
 
+```{r hyperplane_config, echo = FALSE, eval = FALSE}
+library(knitr)
+knit_hooks$set(rgl = hook_rgl)
+```
+
 ```{r hyperplane, echo = FALSE}
 library(rgl)
-#knit_hooks$set(rgl = hook_rgl)
 plot3d(y = Auto$mpg, x = Auto$horsepower, z = I(Auto$horsepower^2),
           xlab = "Power of engine (hp)", 
           ylab = "Fuel economy (miles/US gallon)", 
@@ -323,7 +325,7 @@ d.  Fit a linear model using the log cancer volume as response variable, includi
 e. Compare the quantities you obtained with the output of the function `lm`.
 f. Add the fitted regression line to the scatterplot of `lcavol` against `lpsa`.
 g.  Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.
-h.  Obtain the orthogonal projection matrix $\bf{H}_\mX$ and the OLS coefficients $\hbb$ using a SVD decomposition of $\mX$ (`svd`).
+h.  Obtain the orthogonal projection matrix $\mathbf{H}_\mX$ and the OLS coefficients $\hbb$ using a SVD decomposition of $\mX$ (`svd`).
 i.  Compute the $R^2_c$ coefficient and compare with the one in `summary` output of the `lm` function. What can you say about the explanatory power of the covariate `lpsa`?
 
 

@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="the-hyperplane-of-fitted-values.html">
-<link rel="next" href="summary-of-week-2.html">
+<link rel="prev" href="one-way-anova.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -227,71 +227,97 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="centered-coefficient-of-determination" class="section level2">
-<h2><span class="header-section-number">2.6</span> (Centered) coefficient of determination</h2>
-<p>Recall the decomposition of observations into fitted and residual vectors,
-<span class="math display">\[\boldsymbol{y} = (\boldsymbol{y} - \mathbf{X}\hat{\boldsymbol{\beta}}) + \mathbf{X}\hat{\boldsymbol{\beta}}= \boldsymbol{e} + \hat{\boldsymbol{y}}\]</span>
-where <span class="math inline">\(\boldsymbol{e} \equiv \mathbf{M}_{\mathbf{X}}\boldsymbol{y} \perp \hat{\boldsymbol{y}} \equiv \mathbf{H}_{\mathbf{X}}\boldsymbol{y}\)</span>.</p>
-<p>The centered coefficient of determination, <span class="math inline">\(R^2_c\)</span> measures the proportion of variation explained by the centered fitted values relative to the centered observations, i.e.,
-<span class="math display">\[ R^2_c = \frac{\|\hat{\boldsymbol{y}}-\bar{y}\mathbf{1}_n\|^2}{\|\boldsymbol{y}-\bar{y}\mathbf{1}_n\|^2}=\frac{\|\hat{\boldsymbol{y}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}{\|\boldsymbol{y}\|^2-\|\bar{y}\mathbf{1}_n\|^2}.\]</span>
-since the vectors <span class="math inline">\(\bar{y}\mathbf{1}_n \perp \hat{\boldsymbol{y}}-\bar{y}\mathbf{1}_n\)</span>.</p>
-<p>Provided that <span class="math inline">\(\mathbf{1}_n \in \mathscr{S}(\mathbf{X})\)</span>, it is obvious that the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> are invariant to linear transformations of the covariates <span class="math inline">\(\mathbf{X}\)</span> (by which I mean you can transform the design matrix column by column, with <span class="math inline">\(\mathbf{x}_i \mapsto \alpha_i+\mathbf{x}_i\gamma_i\)</span> for <span class="math inline">\(i=1, \ldots, p\)</span>). Multiplicative changes in <span class="math inline">\(\boldsymbol{y}\)</span> lead to an equivalent change in <span class="math inline">\(\boldsymbol{e}\)</span> and <span class="math inline">\(\hat{\boldsymbol{y}}\)</span>. However, location-changes in <span class="math inline">\(\boldsymbol{y}\)</span> are only reflected in <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> (they are absorbed by the intercept). This is why <span class="math inline">\(R^2\)</span> is not invariant to location-changes in the response, since the ratio <span class="math inline">\(\|\hat{\boldsymbol{y}}\|^2/\|\boldsymbol{y}\|^2\)</span> increases to 1 if <span class="math inline">\({\boldsymbol{y}}\mapsto {\boldsymbol{y}}+ a \mathbf{1}_n\)</span>.</p>
-<p>This invariance is precisely the reason we dismissed <span class="math inline">\(R^2\)</span>. For example, a change of units from Farenheit to Celcius, viz. <span class="math inline">\(T_c = 5 (T_F - 32)/9\)</span>, leads to different values of <span class="math inline">\(R^2\)</span>:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1"><span class="kw">data</span>(aatemp, <span class="dt">package =</span> <span class="st">&quot;faraway&quot;</span>)</a>
-<a class="sourceLine" id="cb54-2" title="2"><span class="kw">plot</span>(temp <span class="op">~</span><span class="st"> </span>year, <span class="dt">data =</span> aatemp, <span class="dt">ylab =</span> <span class="st">&quot;Temperature (in F)&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a>
-<a class="sourceLine" id="cb54-3" title="3"><span class="co">#Form design matrix and two response vectors</span></a>
-<a class="sourceLine" id="cb54-4" title="4">yF &lt;-<span class="st"> </span>aatemp<span class="op">$</span>temp</a>
-<a class="sourceLine" id="cb54-5" title="5">n &lt;-<span class="st"> </span><span class="kw">length</span>(yF)</a>
-<a class="sourceLine" id="cb54-6" title="6">yC &lt;-<span class="st"> </span><span class="dv">5</span><span class="op">/</span><span class="dv">9</span><span class="op">*</span>(aatemp<span class="op">$</span>temp <span class="op">-</span><span class="st"> </span><span class="dv">32</span>)</a>
-<a class="sourceLine" id="cb54-7" title="7">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, aatemp<span class="op">$</span>year)</a>
-<a class="sourceLine" id="cb54-8" title="8"><span class="co"># Obtain OLS coefficients and fitted values</span></a>
-<a class="sourceLine" id="cb54-9" title="9">XtX &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))</a>
-<a class="sourceLine" id="cb54-10" title="10">beta_hat_F &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yF)</a>
-<a class="sourceLine" id="cb54-11" title="11"><span class="kw">abline</span>(<span class="dt">a =</span> beta_hat_F[<span class="dv">1</span>], <span class="dt">b =</span> beta_hat_F[<span class="dv">2</span>])</a></code></pre></div>
-<p><img src="LinesRModels_files/figure-html/faraway-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1">beta_hat_C &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yC)</a>
-<a class="sourceLine" id="cb55-2" title="2">fitted_F &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_F</a>
-<a class="sourceLine" id="cb55-3" title="3">fitted_C &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_C</a>
-<a class="sourceLine" id="cb55-4" title="4"><span class="co"># Compute coefficient of determination</span></a>
-<a class="sourceLine" id="cb55-5" title="5">R2_F &lt;-<span class="st"> </span><span class="kw">sum</span>(fitted_F<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yF<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb55-6" title="6">R2_C &lt;-<span class="st">  </span><span class="kw">sum</span>(fitted_C<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yC<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb55-7" title="7"><span class="co">#Centered R^2</span></a>
-<a class="sourceLine" id="cb55-8" title="8">R2c_F &lt;-<span class="st"> </span><span class="kw">sum</span>((fitted_F<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yF<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb55-9" title="9">R2c_C &lt;-<span class="st">  </span><span class="kw">sum</span>((fitted_C<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yC<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb55-10" title="10"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(R2c_F, R2c_C))</a></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>The difference <span class="math inline">\(R^2(F)-R^2(C)=\)</span> 0.00752 is small because the <span class="math inline">\(R^2\)</span> value is very high, but the coefficient itself is also meaningless. In this example, <span class="math inline">\(R^2(F)=\)</span> 0.9991, which seems to indicate excellent fit but in fact only 8.54% of the variability is explained by year and we do an equally good job by simply taking <span class="math inline">\(\hat{y}_i=\bar{y}\)</span>.</p>
-<p><span class="math inline">\(R^2_c\)</span> makes the comparison between the adjusted linear model and the null model with only a constant, which predicts each <span class="math inline">\(y_i (i=1, \ldots, n)\)</span> by the average <span class="math inline">\(\bar{y}\)</span>.</p>
-<p>If <span class="math inline">\(R^2_c\)</span> gives a very rough overview of how much explanatory power <span class="math inline">\(\mathbf{X}\)</span> has, it is not a panacea. If we add new covariates in <span class="math inline">\(\mathbf{X}\)</span>, the value of <span class="math inline">\(R^2_c\)</span> necessarily increases. In the most extreme scenario, we could add a set of <span class="math inline">\(n-p\)</span> linearly independent vectors to <span class="math inline">\(\mathbf{X}\)</span> and form a new design matrix <span class="math inline">\(mX^*\)</span> with those. The fitted values from running a regression with <span class="math inline">\(\mathbf{X}^*\)</span> will be exactly equal to the observations <span class="math inline">\(\boldsymbol{y}\)</span> and thus <span class="math inline">\(R^2_c=1\)</span>. However, I hope it is clear that this model will <em>not</em> be useful. Overfitting leads to poor predictive performance; if we get a new set of <span class="math inline">\(\mathbf{x}_*\)</span>, we would predict the unobserved <span class="math inline">\(y_*\)</span> using its conditional average <span class="math inline">\(\mathbf{x}_i^*\hat{\boldsymbol{\beta}}\)</span> and this estimate will be rubish if we included too many meaningless covariates.</p>
-<p>Other versions of <span class="math inline">\(R^2_c\)</span> exist that include a penalty term for the number of covariates; these are not widely used and can be negative in extreme cases. We will cover better goodness-of-fit diagnostics later in the course.</p>
+<div id="hypothesis-testing" class="section level1">
+<h1><span class="header-section-number">6</span> Hypothesis testing</h1>
+<p>This is a refresher on the notions related to hypothesis testing.</p>
+<p><strong>Trial analogy</strong>: suppose you are a member of the jury for a trial where the potential culprit stands accused of murder. If you declare him guilty, the sentence will likely be death penalty. The null hypothesis is innocence: the accusee is innocent until proven guilty. You will deliver a verdict of culpability only if the evidences are overwhelming against the accusee (you do not want to send an innocent to the death row and make a wrongful conviction).</p>
+<p>In this setting, the verdict at the end of the trial will reflect “this innocent until proven guilty” mindset: you can usually only conclude that there are not enough proofs to sentence the accusee of murder, not that the person is innocent. This is why we “fail to reject the null hypothesis”, since you gave the accusee the benefit of the doubt in the first place and examined the evidence in this optic.</p>
+<p>Test statistics are realizations of random variables, so the <strong>size</strong> of a test is the probability of falsely rejecting the null hypothesis,
+<span class="math display">\[\alpha = \Pr(\text{reject }\mathrm{H}_0 \mid \mathrm{H}_0 \text{ is true}).\]</span>This is fixed beforehand: if we take <span class="math inline">\(\alpha = 0.05\)</span>, there will be 95% of the cases we will correctly release an innocent and 5% of the cases where we will convict him undully (due to circumstancial factors, for example).</p>
+<p>We illustrate various concepts with the simple model <span class="math display">\[Y_i = \beta_0 + \varepsilon_i, \qquad\varepsilon_i \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(0, \sigma^2) \qquad (i=1, \ldots, n)\]</span></p>
+<p>The Wald test statistic for the null hypothesis <span class="math inline">\(\mathrm{H}_0: \beta_0=0\)</span> against the alternative <span class="math inline">\(\mathrm{H}_a: \beta_0 \neq 0\)</span> is <span class="math inline">\(t = \hat{\beta}_0/\mathrm{se}(\hat{\beta}_0) \sim \mathcal{T}(n-p)\)</span>.
+We can compare the Student distribution with the empirical distribution of <span class="math inline">\(t\)</span>-test obtained by simulating a large number of test statistics from the model; these should match.</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" title="1">test &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, 10000L)</a>
+<a class="sourceLine" id="cb216-2" title="2">n &lt;-<span class="st"> </span>10L</a>
+<a class="sourceLine" id="cb216-3" title="3"><span class="co">#Simulate Normal samples, compute t-test stat</span></a>
+<a class="sourceLine" id="cb216-4" title="4"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(test)){</a>
+<a class="sourceLine" id="cb216-5" title="5">  y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n)</a>
+<a class="sourceLine" id="cb216-6" title="6">  test[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(y) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(y)<span class="op">/</span><span class="kw">sqrt</span>(n))</a>
+<a class="sourceLine" id="cb216-7" title="7">}</a>
+<a class="sourceLine" id="cb216-8" title="8"><span class="co">#Create histogram, superimpose density of T(n-1)</span></a>
+<a class="sourceLine" id="cb216-9" title="9"><span class="kw">hist</span>(test, <span class="dt">breaks =</span> <span class="dv">50</span>, <span class="dt">probability =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb216-10" title="10">     <span class="dt">main =</span> <span class="st">&quot;Distribution of Wald test&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;T&quot;</span>,</a>
+<a class="sourceLine" id="cb216-11" title="11">     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb216-12" title="12"><span class="kw">curve</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb216-13" title="13">      <span class="dt">from =</span> <span class="dv">-5</span>, <span class="dt">to =</span> <span class="dv">5</span>)</a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/distrtest-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>If the value <span class="math inline">\(|t|\)</span> is very large, then there are evidences that <span class="math inline">\(\beta_0 \neq 0\)</span>. In this case, the probability of observing something larger than <span class="math inline">\(|t|\)</span> under <span class="math inline">\(T \sim \mathcal{T}(n-p)\)</span> is <span class="math inline">\(P = 1-\Pr(-t &lt; T &lt; t) = 1-2 \Pr(|T| &lt; t)\)</span>, by virtue of the symmetry of the Student distribution. This probability <span class="math inline">\(P\)</span> is called <strong><span class="math inline">\(P\)</span>-value</strong>, the probability of observing something as extreme under the null distribution.</p>
+<p>The <strong>power</strong> of a test is
+<span class="math display">\[\mathrm{power} = \Pr(\text{reject } \mathrm{H}_0 \mid \mathrm{H}_a \text{ is true}).\]</span>
+Consider the alternative <span class="math inline">\(\mathrm{H}_a: \beta = \mu \neq 0\)</span>.
+For the <span class="math inline">\(t\)</span>-test, the power is a function of <span class="math inline">\(\mu, \sigma^2\)</span> and <span class="math inline">\(n\)</span>. Intuitively, the further <span class="math inline">\(\mu\)</span> is from zero, the larger the chance of correctly detecting that <span class="math inline">\(\mu \neq 0\)</span>. Similarly, the more precise our mean estimate is (when <span class="math inline">\(\sigma^2\)</span> is small), the more we have. Lastly, evidence accumulates with the sample size - here through the degrees of freedom parameter.</p>
+<p>Even if we don’t know the distribution of the test statistic under the alternative, we can simulate the power curve as a function of <span class="math inline">\(\mu, \sigma\)</span> and <span class="math inline">\(n\)</span>.</p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" title="1">n &lt;-<span class="st"> </span>10L</a>
+<a class="sourceLine" id="cb217-2" title="2">nrep &lt;-<span class="st"> </span>10000L</a>
+<a class="sourceLine" id="cb217-3" title="3">mu &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dt">length =</span> <span class="dv">101</span>)</a>
+<a class="sourceLine" id="cb217-4" title="4">store &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw">length</span>(mu), <span class="dt">ncol =</span> nrep)</a>
+<a class="sourceLine" id="cb217-5" title="5"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mu)){</a>
+<a class="sourceLine" id="cb217-6" title="6">  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nrep){</a>
+<a class="sourceLine" id="cb217-7" title="7">    <span class="co"># Simulate y = mu + eps, eps ~ N(0,1)</span></a>
+<a class="sourceLine" id="cb217-8" title="8">    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> mu[i])</a>
+<a class="sourceLine" id="cb217-9" title="9">    tstat &lt;-<span class="st"> </span><span class="kw">mean</span>(y) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(y)<span class="op">/</span><span class="kw">sqrt</span>(n))</a>
+<a class="sourceLine" id="cb217-10" title="10">    <span class="co"># Compute P-value, i.e., probability Pr(|T| &gt; t)</span></a>
+<a class="sourceLine" id="cb217-11" title="11">    pval &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(tstat), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb217-12" title="12">    store[i, j] &lt;-<span class="st"> </span>pval</a>
+<a class="sourceLine" id="cb217-13" title="13">  }</a>
+<a class="sourceLine" id="cb217-14" title="14">}</a>
+<a class="sourceLine" id="cb217-15" title="15"><span class="co"># Compute the proportion of time where p-value is below zero.</span></a>
+<a class="sourceLine" id="cb217-16" title="16"><span class="kw">plot</span>(mu, <span class="kw">rowSums</span>(store <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)<span class="op">/</span>nrep,</a>
+<a class="sourceLine" id="cb217-17" title="17">     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(mu), </a>
+<a class="sourceLine" id="cb217-18" title="18">     <span class="dt">ylab =</span> <span class="st">&quot;Empirical power&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,</a>
+<a class="sourceLine" id="cb217-19" title="19">     <span class="dt">main =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">&quot;Power curve, &quot;</span>, alpha, <span class="st">&quot;=0.05&quot;</span>)))</a>
+<a class="sourceLine" id="cb217-20" title="20"><span class="co">#size of test</span></a>
+<a class="sourceLine" id="cb217-21" title="21"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="fl">0.05</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb217-22" title="22"><span class="co">#theoretical power - derivation follows </span></a>
+<a class="sourceLine" id="cb217-23" title="23">tquant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="fl">0.975</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb217-24" title="24">pow &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>(<span class="kw">pt</span>(tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb217-25" title="25"><span class="st">                 </span><span class="kw">pt</span>(<span class="op">-</span>tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb217-26" title="26"><span class="kw">lines</span>(mu, pow, <span class="dt">col =</span> <span class="dv">2</span>)</a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/power-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Under <span class="math inline">\(\mathrm{H}_0\)</span>, our test statistic <span class="math inline">\(T=\hat{\beta}_0/\mathrm{se}(\hat{\beta}_0)\)</span> followed a <span class="math inline">\(\mathcal{T}(n-1)\)</span> distribution and the cutoff value was <span class="math inline">\(\mathfrak{t}_{1-\alpha/2}\)</span>, so that under <span class="math inline">\(\mathrm{H}_0\)</span>, <span class="math inline">\(\Pr(|T| &gt; \mathfrak{t}_{1-\alpha/2}) = \alpha\)</span>.</p>
+<p>We can compute the power exactly as a function of <span class="math inline">\(\mu\)</span> in this example: it is
+<span class="math display">\[\begin{align*}
+\beta(\mu) &amp;= 1-\Pr\left(\mathfrak{t}_{1-\alpha/2}  \leq T \leq \mathfrak{t}_{1-\alpha/2}; {\mathrm{H}_a}\right)
+\\&amp;=1-\Pr\left(\mathfrak{t}_{1-\alpha/2}  \leq \frac{\hat{\beta}_0-\mu+\mu}{\mathrm{se}(\hat{\beta}_0)} \leq \mathfrak{t}_{1-\alpha/2}; {\mathrm{H}_a}\right)
+\\&amp;=1-\Pr\left(\mathfrak{t}_{1-\alpha/2}+\frac{\mu}{\mathrm{se}(\hat{\beta}_0)}  \leq \frac{\hat{\beta}_0-\mu}{\mathrm{se}(\hat{\beta}_0)} \leq \mathfrak{t}_{1-\alpha/2}+\frac{\mu}{\mathrm{se}(\hat{\beta}_0)};{\mathrm{H}_a}\right).
+\end{align*}\]</span></p>
+<p>since now <span class="math inline">\(T^*=(\hat{\beta}_0-\mu)/\mathrm{se}(\hat{\beta}_0) \sim \mathcal{T}(n-1)\)</span> under <span class="math inline">\(\mathrm{H}_a\)</span>. If we superimpose this curve as a function of <span class="math inline">\(\mu\)</span>, we see it matches the empirical power.</p>
+<p>The power curve at <span class="math inline">\(\mu=0\)</span> is 0.05, since the size of the test is <span class="math inline">\(\alpha= 0.05\)</span> in this experiment. If we increase the size of the test, then power increases:</p>
+<p>The probability of Type I error (falsely rejecting the null) is the size of the test, so increases with <span class="math inline">\(\alpha\)</span>. The lower the <span class="math inline">\(\alpha\)</span>, the higher the probability of Type 2 errors (not rejecting the null when the alternative is true) and the lower the power.</p>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" title="1"><span class="kw">plot</span>(mu, pow,</a>
+<a class="sourceLine" id="cb218-2" title="2">     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(mu), </a>
+<a class="sourceLine" id="cb218-3" title="3">     <span class="dt">ylab =</span> <span class="st">&quot;Power&quot;</span>, </a>
+<a class="sourceLine" id="cb218-4" title="4">     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,</a>
+<a class="sourceLine" id="cb218-5" title="5">     <span class="dt">main =</span> <span class="st">&quot;Power curve&quot;</span>)</a>
+<a class="sourceLine" id="cb218-6" title="6"> alphav &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb218-7" title="7"><span class="cf">for</span>(alpha_ind <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>){</a>
+<a class="sourceLine" id="cb218-8" title="8">  alpha &lt;-<span class="st"> </span>alphav[alpha_ind]</a>
+<a class="sourceLine" id="cb218-9" title="9">  tquant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="dv">1</span><span class="op">-</span>alpha<span class="op">/</span><span class="dv">2</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb218-10" title="10">  pow &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>(<span class="kw">pt</span>(tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb218-11" title="11"><span class="st">                   </span><span class="kw">pt</span>(<span class="op">-</span>tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb218-12" title="12"><span class="kw">lines</span>(mu, pow, <span class="dt">col =</span> alpha_ind)</a>
+<a class="sourceLine" id="cb218-13" title="13">}</a>
+<a class="sourceLine" id="cb218-14" title="14"><span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> alphav ,<span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">lty =</span> <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>))</a></code></pre></div>
+<p><img src="LinesRModels_files/figure-html/powermore-1.png" width="70%" style="display: block; margin: auto;" /></p>
 
-<div class="rmdcaution">
-In <strong>R</strong>, the function <code>lm</code> returns <span class="math inline">\(R^2_c\)</span> by default (in the <code>summary</code> table, under the label <code>Multiple R-squared</code>. However, if you remove the intercept, you will get <span class="math inline">\(R^2\)</span> without warning!
-Contrast
-</div>
-
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1">mod &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower, <span class="dt">data =</span> Auto)</a>
-<a class="sourceLine" id="cb57-2" title="2">rsqc_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(mod)<span class="op">$</span>r.squared</a>
-<a class="sourceLine" id="cb57-3" title="3"><span class="co">#same model, now X = [1 horsepower] and y = mpg</span></a>
-<a class="sourceLine" id="cb57-4" title="4">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
-<a class="sourceLine" id="cb57-5" title="5">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb57-6" title="6">rsq_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))<span class="op">$</span>r.squared </a>
-<a class="sourceLine" id="cb57-7" title="7"></a>
-<a class="sourceLine" id="cb57-8" title="8"><span class="co">#Compute quantities manually</span></a>
-<a class="sourceLine" id="cb57-9" title="9">rsqc_man &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(<span class="kw">fitted</span>(mod) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)) <span class="op">/</span><span class="st"> </span><span class="kw">crossprod</span>(y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)))</a>
-<a class="sourceLine" id="cb57-10" title="10"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(rsqc_man, rsqc_lm))</a></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">rsq_man &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(<span class="kw">fitted</span>(mod))<span class="op">/</span><span class="kw">crossprod</span>(y))</a>
-<a class="sourceLine" id="cb59-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(rsq_man, rsq_lm))</a></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="the-hyperplane-of-fitted-values.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="summary-of-week-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="one-way-anova.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

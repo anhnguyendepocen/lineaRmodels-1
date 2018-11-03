@@ -76,7 +76,9 @@ lines(xstar, ystar_confint[ ,3], lty = 2, col = 'green')
 ystar_predint <- predict(ols, newdata = data.frame(wt = xstar), interval = 'prediction')
 lines(xstar, ystar_predint[ ,2], lty = 2, col = 'blue')
 lines(xstar, ystar_predint[ ,3], lty = 2, col = 'blue')
-legend(x = "topright", col = c("red", "green","blue"), lty = c(1, 2, 2), legend = c("Prediction","Conf. inter.","Pred. inter."), bty = "n")
+legend(x = "topright", col = c("red", "green","blue"), 
+       lty = c(1, 2, 2), bty = "n",
+       legend = c("Prediction","Conf. inter.","Pred. inter."))
 ```
 
 The function `predict` takes as imput a `data.frame` object containing the same column names as those of the fitted `lm` object. The names can be obtained from `names(ols$model)[-1]`.
@@ -264,7 +266,7 @@ An alternative to asymptotic theory (which may be unreliable in small samples) i
 Under the null hypothesis of the Gaussian linear model, $\{y_i\}_{i=1}^n$ is a simple random sample from a Gaussian distribution $\boldsymbol{Y} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2 \mathbf{I}_n)$. One can resort to simulations to obtain approximate confidence intervals at asymptotic level $\alpha$. Specifically, the postulated data generating mechanism is  \[\boldsymbol{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.\]
 We will replace the unknown parameters (here $\boldsymbol{\beta}$ and $\sigma^2$) by their best linear unbiased estimate. For $b=1, \ldots,  B$ where $B/\alpha \in \mathbb{N}$, repeat the following steps:
  \begin{enumerate}
-\item sample $\boldsymbol{\varepsilon}_{b} \sim \mathcal{N}_n(\boldsymbol{0}_n, s^2\bf{I}_n)$ and form $\boldsymbol{y}_b = \mathbf{X} \hat{\boldsymbol{\beta}} + \boldsymbol{\varepsilon}_{b}$. 
+\item sample $\boldsymbol{\varepsilon}_{b} \sim \mathcal{N}_n(\boldsymbol{0}_n, s^2\mathbf{I}_n)$ and form $\boldsymbol{y}_b = \mathbf{X} \hat{\boldsymbol{\beta}} + \boldsymbol{\varepsilon}_{b}$. 
 \item run least squares with the design matrix $\mathbf{X}$ and extract the residuals $\boldsymbol{e}_b$. Compute 
 the centered externally Studentized version.
 \item sort the samples and the $\alpha/2$ and $1-\alpha/2$ empirical quantiles of each vector of order statistics
@@ -347,7 +349,6 @@ env_jt <- apply(boot_samp, 2, sort)[c(R+1-klev, klev),]
 #This is what is returned by function envelope
 isTRUE(all.equal(env_jt, env$overall))
 
-#matplot(x = qt((1:n)/(n+1), df = n - p - 1), y = t(env$point), col = 2, add = TRUE, type = "l", lty = 1)
 matplot(x = qt((1:n)/(n+1), df = n - p -1), y = t(env$overall), 
        col = "darkgrey", add = TRUE, type = "l", lty = 1)
 ```
@@ -644,7 +645,7 @@ detach(airpass)
 
 ```{r ex5.3}
 url4 <- "http://sma.epfl.ch/~lbelzile/math341/labour.dat"
-labour <- read.table(url4, header = TRUE)
+labour <- read.table(url4, header = TRUE, stringsAsFactors = TRUE)
 attach(labour)
 ## Create dummy for extract columns
 ## additional years of schooling after high school
@@ -661,7 +662,8 @@ plot(lhwages ~ education, pch = 20, col = as.integer(gender),
 predic <- cbind(1, 0:20, c(rep(0,12), 1:9)) %*% coef(educ_lm)
 lines(0:20, predic, lwd = 2)
 ## Legend
-legend(x = "topleft", legend = c("Man","Woman"), col = c(2, 1), pch = 20, bty = "n")
+legend(x = "topleft", legend = c("Man","Woman"), 
+       col = c(2, 1), pch = 20, bty = "n")
 ## Clear pattern: women are paid less for equivalent qualification
 
 ## Add gender as covariate
