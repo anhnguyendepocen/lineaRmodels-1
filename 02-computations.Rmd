@@ -7,16 +7,20 @@ In this tutorial, we will explore some basic **R** commands and illustrate their
 
 
 ## Calculation of least square estimates
+
 Consider as usual $\boldsymbol{y}$ and $n$-vector of response variables and a full-rank $n \times p$ design matrix $\mathbf{X}$. We are interested in finding the ordinary least square coefficient $\hat{\boldsymbol{\beta}}$, the fitted values $\hat{\boldsymbol{y}} =  \mathbf{X}\hat{\boldsymbol{\beta}}$ and the residuals $\boldsymbol{e} = \boldsymbol{y} - \mathbf{X}\boldsymbol{\beta}$.
 
 Whereas orthogonal projection matrices are useful for theoretical derivations, they are not used for computations. Building $\mathbf{H}_{\mathbf{X}}$ involves a matrix inversion and the storage of an $n \times n$ matrix. In Exercise series 2, we looked at two matrix decompositions: a singular value decomposition (SVD) and a QR decomposition. These are more numerically stable than using the normal equations $(\mathbf{X}^\top\mathbf{X})\boldsymbol{\beta} = \mathbf{X}^\top\boldsymbol{y}$ (the condition number of the matrix $\mathbf{X}^\top\mathbf{X}$ is the square of that of $\mathbf{X}$ --- more on this later). 
+The code related to the SVD and QR decompositions is provided for reference, so you can validate the derivations in the exercise. You won't need it in practice.
 
+**Optional** material: for more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of [Lee](www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf). 
 
-_Optional material_: for more details about the complexity and algorithms underlying the different methods, the reader is referred to these notes of [Lee](www.math.uchicago.edu/~may/REU2012/REUPapers/Lee.pdf). 
+We can fit a simple linear model with an intercept and a linear effect for the weight,
+$$ \texttt{mpg}_i = \beta_0 + \texttt{hp}_i\beta_1 +\varepsilon_i.$$
 
-### Normal equations
-The following simply illustrates what has been derived in Exercise series 2. You will probably never use these commands, as **R** has devoted functions that are coded more efficiently. 
-We can compute first the ordinary least square estimates using the formula $\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\boldsymbol{y}$.
+We form the design matrix $(\boldsymbol{1}_n^\top, \texttt{hp}^\top)^\top$ and the vector of regressand $\texttt{mpg}$, then proceed with calculating the OLS coefficients $\hat{\boldsymbol{\beta}}$, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$.
+
+We can compute first the ordinary least square estimates using the formula $\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\boldsymbol{y}$. The fitted values are $\hat{\boldsymbol{y}} = \mathbf{X}\hat{\boldsymbol{\beta}}$ and the residuals $\boldsymbol{e} = \boldsymbol{y} - \hat{\boldsymbol{y}}$.
 
 ```{r loadmtcars}
 data(Auto, package = "ISLR")
@@ -24,83 +28,18 @@ y <- Auto$mpg
 X <- cbind(1, Auto$horsepower)
 n <- nrow(X)
 p <- ncol(X)
-# Estimation of betahat:
+# Estimation of beta_hat:
 XtX <- crossprod(X)
 Xty <- crossprod(X, y)
 # Solve normal equations
-betahat <- as.vector(solve(XtX, Xty))
-#same as betahat <- solve(t(X) %*% X) %*% t(X) %*% y
+beta_hat <- as.vector(solve(XtX, Xty))
+#same as beta_hat <- solve(t(X) %*% X) %*% t(X) %*% y
+
+##Create residuals and fitted values
+fitted <- as.vector(X %*% beta_hat)
+res <- y - fitted
 ```
 
-### Singular value decomposition 
-The SVD decomposition in **R** returns a list with elements `u`, `d` and `v`. `u` is the orthonormal $n \times p$ matrix, `d` is a vector containing the diagonal elements of $\mathbf{D}$ and `v` is the $p \times p$ orthogonal matrix. Recall that the decomposition is 
-\[\mathbf{X} = \mathbf{UDV}^\top\]
-and that $\mathbf{VV}^\top= \mathbf{V}^\top\mathbf{V}=\mathbf{U}^\top\mathbf{U}=\mathbf{I}_p$. The matrix $\mathbf{D}$ contains the singular values of $\mathbf{X}$, and the diagonal elements $\mathrm{d}_{ii}^2$ corresponds to the (ordered) eigenvalues of $\mathbf{X}^\top\mathbf{X}$.
-
-```{r svd}
-svdX <- svd(X)
-# Projection matrix
-Hx <- tcrossprod(svdX$u)
-# t(U) %*% U gives p by p identity matrix
-all.equal(crossprod(svdX$u), diag(p))
-# V is an orthogonal matrix
-all.equal(tcrossprod(svdX$v), diag(p))
-all.equal(crossprod(svdX$v), diag(p))
-# D contains singular values
-all.equal(svdX$d^2, eigen(XtX, only.values = TRUE)$values)
-# OLS coefficient from SVD
-betahat_svd <- c(svdX$v %*%  diag(1/svdX$d) %*% t(svdX$u) %*% y)
-all.equal(betahat_svd, betahat)
-```
-
-
-### QR decomposition
-**R** uses a QR-decomposition to calculate the OLS. There are specific functions to return coefficients, fitted values and residuals. One can also obtain the $n \times p$ matrix $\mathbf{Q}_1$ and the upper triangular $p \times p$ matrix $\mathbf{R}$ from the thinned QR decomposition, 
-\[\mathbf{X} = \mathbf{Q}_1\mathbf{R}.\]
-
-```{r qr}
-qrX <- qr(X)
-Q1 <- qr.Q(qrX)
-R <- qr.R(qrX)
-# Compute betahat from QR
-betahat_qr1 <- qr.coef(qrX, y) #using built-in function
-betahat_qr2 <- c(backsolve(R, t(Q1) %*% y)) #manually
-all.equal(betahat, betahat_qr1, check.attributes = FALSE)
-all.equal(betahat, betahat_qr2, check.attributes = FALSE)
-# Compute residuals
-qre <- qr.resid(qrX, y)
-all.equal(qre, c(y - X %*% betahat), check.attributes = FALSE)
-# Compute fitted values
-qryhat <- qr.fitted(qrX, y)
-all.equal(qryhat, c(X %*% betahat), check.attributes = FALSE)
-# Compute orthogonal projection matrix
-qrHx <- tcrossprod(Q1)
-all.equal(qrHx, Hx)
-```
-
-
-
-## Parameter estimation
-
-We are now ready to fit a simple linear model with an intercept and a linear effect for the weight,
-$$ \texttt{mpg}_i = \beta_0 + \texttt{hp}_i\beta_1 +\varepsilon_i.$$
-We form the design matrix $(\boldsymbol{1}_n^\top, \texttt{hp}^\top)^\top$ and the vector of regressand $\texttt{mpg}$, then proceed with calculating the OLS coefficients $\hat{\boldsymbol{\beta}}$, the hat matrix $\mathbf{H}_{\mathbf{X}}$, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$.
-
-```{r fitbyhand}
-#Design matrix
-hp <- Auto$horsepower
-X <- cbind(1, Auto$horsepower)
-mpg <- Auto$mpg
-#OLS estimates
-XtXinv <- solve(crossprod(X))
-beta_hat <- c(XtXinv %*% t(X) %*% mpg)
-#Form orthogonal projection matrix
-Hmat <- X %*% XtXinv %*% t(X)
-#Create residuals and fitted values
-fitted <- Hmat %*% mpg
-res <- mpg - fitted
-fitted <- Hmat %*% mpg
-```
 
 The residuals $\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}$ can be interpreted as the *vertical* distance between the regression slope and the observation. For each observation $y_i$, a vertical line at distance $e_i$ is drawn from the prediction $\hat{y}_i$. 
 
@@ -109,6 +48,7 @@ plot(mpg ~ horsepower,  data = Auto,
      xlab = "Power of engine (hp)", 
      ylab = "Fuel economy (miles/US gallon)", 
      main = "Fuel economy of automobiles",
+     ylim = c(0, 50),
      # the subsequent commands for `plot`  tweak the display
      # check for yourself the effect of removing them
      # bty = "l" gives L shaped graphical windows (not boxed)
@@ -119,7 +59,7 @@ abline(a = beta_hat[1], b = beta_hat[2])
 
 #Residuals are vertical distance from line to 
 for(i in 1:nrow(X)){
-  segments(x0 = hp[i], y0 = fitted[i], y1 = fitted[i] + res[i], col = 2)
+  segments(x0 = Auto$horsepower[i], y0 = fitted[i], y1 = fitted[i] + res[i], col = 2)
 }
 ```
 
@@ -128,7 +68,7 @@ The same scatterplot, this time using `ggplot2`.
 ```{r ggplotmtcars}
 library(ggplot2, warn.conflicts = FALSE, quietly = TRUE)
 #Create data frame with segments
-vlines <- data.frame(x1 = hp, y1 = fitted, y2 = fitted + res)
+vlines <- data.frame(x1 = Auto$horsepower, y1 = fitted, y2 = fitted + res)
 ggg <- ggplot(Auto, aes(x = horsepower, y = mpg)) + 
         geom_point() + 
         labs(x = "Power of engine (hp)", 
@@ -170,6 +110,67 @@ Many methods allow you to extract specific objects. For example, the functions `
 names(fit)
 names(fit_summary)
 ```
+
+
+The following simply illustrates what has been derived in Exercise series 2.  **R** has devoted functions that are coded more efficiently. 
+
+### Singular value decomposition
+
+
+The SVD decomposition in **R** returns a list with elements `u`, `d` and `v`. `u` is the orthonormal $n \times p$ matrix, `d` is a vector containing the diagonal elements of $\mathbf{D}$ and `v` is the $p \times p$ orthogonal matrix. Recall that the decomposition is 
+\[\mathbf{X} = \mathbf{UDV}^\top\]
+and that $\mathbf{VV}^\top= \mathbf{V}^\top\mathbf{V}=\mathbf{U}^\top\mathbf{U}=\mathbf{I}_p$. The matrix $\mathbf{D}$ contains the singular values of $\mathbf{X}$, and the diagonal elements $\mathrm{d}_{ii}^2$ corresponds to the (ordered) eigenvalues of $\mathbf{X}^\top\mathbf{X}$.
+
+The following shows how to use the SVD decomposition in **R**. This material is **optional** and provided for reference only.
+
+```{r svd}
+svdX <- svd(X)
+# Projection matrix
+Hx <- tcrossprod(svdX$u)
+# t(U) %*% U gives p by p identity matrix
+all.equal(crossprod(svdX$u), diag(p))
+# V is an orthogonal matrix
+all.equal(tcrossprod(svdX$v), diag(p))
+all.equal(crossprod(svdX$v), diag(p))
+# D contains singular values
+all.equal(svdX$d^2, eigen(XtX, only.values = TRUE)$values)
+# OLS coefficient from SVD
+beta_hat_svd <- c(svdX$v %*%  diag(1/svdX$d) %*% t(svdX$u) %*% y)
+all.equal(beta_hat_svd, beta_hat)
+```
+
+
+### QR decomposition
+
+**R** uses a QR-decomposition to calculate the OLS estimates in the function `lm`. There are specific functions to return coefficients, fitted values and residuals. One can also obtain the $n \times p$ matrix $\mathbf{Q}_1$ and the upper triangular $p \times p$ matrix $\mathbf{R}$ from the thinned QR decomposition, 
+\[\mathbf{X} = \mathbf{Q}_1\mathbf{R}.\]
+
+The following shows how to use the QR decomposition in **R**. This material is **optional** and provided for reference only.
+
+```{r qr}
+Hx <- X %*% solve(crossprod(X)) %*% t(X)
+qrX <- qr(X)
+Q1 <- qr.Q(qrX)
+R <- qr.R(qrX)
+# Compute beta_hat from QR
+beta_hat_qr1 <- qr.coef(qrX, y) #using built-in function
+beta_hat_qr2 <- c(backsolve(R, t(Q1) %*% y)) #manually
+all.equal(beta_hat, beta_hat_qr1, check.attributes = FALSE)
+all.equal(beta_hat, beta_hat_qr2, check.attributes = FALSE)
+# Compute residuals
+qre <- qr.resid(qrX, y)
+all.equal(qre, c(y - X %*% beta_hat), check.attributes = FALSE)
+# Compute fitted values
+qryhat <- qr.fitted(qrX, y)
+all.equal(qryhat, c(X %*% beta_hat), check.attributes = FALSE)
+# Compute orthogonal projection matrix
+qrHx <- tcrossprod(Q1)
+all.equal(qrHx, Hx)
+```
+
+
+## Parameter estimation
+
 
 ## The hyperplane of fitted values
 
@@ -264,6 +265,25 @@ If $R^2_c$ gives a very rough overview of how much explanatory power $\mX$ has, 
 Other versions of $R^2_c$ exist that include a penalty term for the number of covariates; these are not widely used and can be negative in extreme cases. We will cover better goodness-of-fit diagnostics later in the course.
 
 
+```{block2, type = "rmdcaution"}
+In **R**, the function `lm` returns $R^2_c$ by default (in the `summary` table, under the label `Multiple R-squared`. However, if you remove the intercept, you will get $R^2$ without warning!
+Contrast
+```
+
+```{r}
+mod <- lm(mpg ~ horsepower, data = Auto)
+rsqc_lm <- summary(mod)$r.squared
+#same model, now X = [1 horsepower] and y = mpg
+X <- cbind(1, Auto$horsepower)
+y <- Auto$mpg
+rsq_lm <- summary(lm(y ~ X - 1))$r.squared 
+
+#Compute quantities manually
+rsqc_man <- c(crossprod(fitted(mod) - mean(y)) / crossprod(y - mean(y)))
+isTRUE(all.equal(rsqc_man, rsqc_lm))
+rsq_man <- c(crossprod(fitted(mod))/crossprod(y))
+isTRUE(all.equal(rsq_man, rsq_lm))
+```
 
 ## Summary of week 2
 
@@ -291,9 +311,8 @@ $\|\bs{y}\|^2 = \|\hat{\bs{y}}\|^2 + \|\bs{e}\|^2.$
 
 
 
-## Exercises
+## Solutions
 
-### Prostate cancer dataset
 
 The following questions refer to the dataset `prostate` from the package `ElemStatLearn`.
 
@@ -307,8 +326,8 @@ g.  Interpret the changes in cancer volume (not the log cancer volume), includin
 h.  Obtain the orthogonal projection matrix $\bf{H}_\mX$ and the OLS coefficients $\hbb$ using a SVD decomposition of $\mX$ (`svd`).
 i.  Compute the $R^2_c$ coefficient and compare with the one in `summary` output of the `lm` function. What can you say about the explanatory power of the covariate `lpsa`?
 
-## Solutions
 
+### Exercise 3.5 - Prostate cancer
 
 The following questions refer to the dataset `prostate` from the package `ElemStatLearn`.
 

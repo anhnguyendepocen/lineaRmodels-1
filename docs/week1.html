@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -149,34 +149,31 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.3</b> Exercises</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="exercises.html"><a href="exercises.html#auto-dataset"><i class="fa fa-check"></i><b>1.3.1</b> Auto dataset</a></li>
-<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#oblique-projections-exercise-1.4"><i class="fa fa-check"></i><b>1.3.2</b> Oblique projections (exercise 1.4)</a></li>
+<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#exercise-1.4---oblique-projections"><i class="fa fa-check"></i><b>1.3.2</b> Exercise 1.4 - Oblique projections</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.4</b> Summary of week 1</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
-<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#normal-equations"><i class="fa fa-check"></i><b>2.1.1</b> Normal equations</a></li>
-<li class="chapter" data-level="2.1.2" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.1.2</b> Singular value decomposition</a></li>
-<li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a></li>
+<li class="chapter" data-level="2.2" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.2</b> Interpretation of the coefficients</a></li>
+<li class="chapter" data-level="2.3" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.3</b> The <code>lm</code> function</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.3.1</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.3.2</b> QR decomposition</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
-<li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
-<li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
+<li class="chapter" data-level="2.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.4</b> Parameter estimation</a></li>
 <li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
 <li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
 <li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
-<li class="chapter" data-level="2.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>2.8</b> Exercises</a><ul>
-<li class="chapter" data-level="2.8.1" data-path="exercises-1.html"><a href="exercises-1.html#prostate-cancer-dataset"><i class="fa fa-check"></i><b>2.8.1</b> Prostate cancer dataset</a></li>
+<li class="chapter" data-level="2.8" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.8</b> Solutions</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="solutions.html"><a href="solutions.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.8.1</b> Exercise 3.5 - Prostate cancer</a></li>
 </ul></li>
-<li class="chapter" data-level="2.9" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.9</b> Solutions</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
 <li class="chapter" data-level="3.1" data-path="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><a href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><i class="fa fa-check"></i><b>3.1</b> Revisiting the interpretation of the parameters of a linear model</a></li>
-<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.3.1</b> Exercise 4.4</a></li>
+<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a></li>
+<li class="chapter" data-level="3.3" data-path="example-seasonal-effects.html"><a href="example-seasonal-effects.html"><i class="fa fa-check"></i><b>3.3</b> Example: seasonal effects</a></li>
+<li class="chapter" data-level="3.4" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.4</b> Solutions</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.4.1</b> Exercise 4.4</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
@@ -245,12 +242,12 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li><code>head</code> (<code>tail</code>) prints the first (last) <span class="math inline">\(n\)</span> lines of the object to the console (default is <span class="math inline">\(n=6\)</span>).</li>
 </ul>
 <p>We start by loading a dataset of the Old Faithful Geyser of Yellowstone National park and looking at its entries.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load Old faithful dataset</span>
-<span class="kw">data</span>(faithful, <span class="dt">package =</span> <span class="st">&quot;datasets&quot;</span>)
-<span class="co"># Query the database for documentation</span>
-?faithful
-<span class="co"># look at first entries</span>
-<span class="kw">head</span>(faithful)</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># Load Old faithful dataset</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">data</span>(faithful, <span class="dt">package =</span> <span class="st">&quot;datasets&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># Query the database for documentation</span></a>
+<a class="sourceLine" id="cb1-4" title="4">?faithful</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co"># look at first entries</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="kw">head</span>(faithful)</a></code></pre></div>
 <pre><code>##   eruptions waiting
 ## 1     3.600      79
 ## 2     1.800      54
@@ -258,18 +255,20 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## 4     2.283      62
 ## 5     4.533      85
 ## 6     2.883      55</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(faithful)</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">str</span>(faithful)</a></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    272 obs. of  2 variables:
 ##  $ eruptions: num  3.6 1.8 3.33 2.28 4.53 ...
 ##  $ waiting  : num  79 54 74 62 85 55 88 85 51 85 ...</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># What kind of object is faithful? </span>
-<span class="kw">class</span>(faithful)</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># What kind of object is faithful? </span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">class</span>(faithful)</a></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>Other common classes of objects:
-- <code>matrix</code>: an object with attributes <code>dim</code>, <code>ncol</code> and <code>nrow</code> in addition to <code>length</code>, which gives the total number of elements.
-- <code>array</code>: a higher dimensional extension of <code>matrix</code> with arguments <code>dim</code> and <code>dimnames</code>.
-- <code>list</code>: an unstructured class whose elements are accessed using double indexing <code>[[ ]]</code> and elements are typically accessed using <code>$</code> symbol with names. To delete an element from a list, assign <code>NULL</code> to it.
-- <code>data.frame</code> is a special type of list where all the elements are vectors of potentially different type, but of the same length.</p>
+<p>Other common classes of objects:</p>
+<ul>
+<li><code>matrix</code>: an object with attributes <code>dim</code>, <code>ncol</code> and <code>nrow</code> in addition to <code>length</code>, which gives the total number of elements.</li>
+<li><code>array</code>: a higher dimensional extension of <code>matrix</code> with arguments <code>dim</code> and <code>dimnames</code>.</li>
+<li><code>list</code>: an unstructured class whose elements are accessed using double indexing <code>[[ ]]</code> and elements are typically accessed using <code>$</code> symbol with names. To delete an element from a list, assign <code>NULL</code> to it.</li>
+<li><code>data.frame</code> is a special type of list where all the elements are vectors of potentially different type, but of the same length.</li>
+</ul>
 </div>
 <div id="graphics" class="section level3">
 <h3><span class="header-section-number">1.2.2</span> Graphics</h3>
@@ -287,62 +286,72 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>There are two options for basic graphics: the base graphics package and the package <code>ggplot2</code>. The latter is a more recent proposal that builds on a modular approach and is more easily customizable — I suggest you stick to either and <code>ggplot2</code> is a good option if you don’t know <strong>R</strong> already, as the learning curve will be about the same. Even if the display from <code>ggplot2</code> is nicer, this is no excuse for not making proper graphics. Always label the axis and include measurement units!</p>
 </div>
 
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Scatterplots</span>
-<span class="co"># Using default R commands</span>
-<span class="kw">plot</span>(waiting <span class="op">~</span><span class="st"> </span>eruptions, <span class="dt">data =</span> faithful, 
-     <span class="dt">xlab =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, 
-     <span class="dt">ylab =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>,
-     <span class="dt">main =</span> <span class="st">&quot;Old Faithful Geyser Data&quot;</span>)
-<span class="co">#using the grammar of graphics (more modular)</span>
-<span class="co">#install.packages(&quot;ggplot2&quot;) #do this once only</span>
-<span class="kw">library</span>(ggplot2)</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># Scatterplots</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="co"># Using default R commands</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">plot</span>(waiting <span class="op">~</span><span class="st"> </span>eruptions, <span class="dt">data =</span> faithful, </a>
+<a class="sourceLine" id="cb7-4" title="4">     <span class="dt">xlab =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, </a>
+<a class="sourceLine" id="cb7-5" title="5">     <span class="dt">ylab =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>,</a>
+<a class="sourceLine" id="cb7-6" title="6">     <span class="dt">main =</span> <span class="st">&quot;Old Faithful Geyser Data&quot;</span>)</a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#using the grammar of graphics (more modular)</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#install.packages(&quot;ggplot2&quot;) #do this once only</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/week1_scatterplot-1.png" width="672" /></p>
-<pre class="sourceCode r"><code class="sourceCode r">ggplot2<span class="op">::</span><span class="kw">ggplot</span>(<span class="dt">data =</span> faithful, <span class="kw">aes</span>(<span class="dt">x =</span> eruptions, <span class="dt">y =</span> waiting)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Old Faithful Geyser Data&quot;</span>, 
-       <span class="dt">x =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, 
-       <span class="dt">y =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">ggplot2<span class="op">::</span><span class="kw">ggplot</span>(<span class="dt">data =</span> faithful, <span class="kw">aes</span>(<span class="dt">x =</span> eruptions, <span class="dt">y =</span> waiting)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Old Faithful Geyser Data&quot;</span>, </a>
+<a class="sourceLine" id="cb8-4" title="4">       <span class="dt">x =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, </a>
+<a class="sourceLine" id="cb8-5" title="5">       <span class="dt">y =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>)</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/week1_scatterplot-2.png" width="672" /></p>
 <p>A simple linear model of the form <span class="math display">\[y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i,\]</span> where <span class="math inline">\(\varepsilon_i\)</span> is a noise variable with expectation zero and <span class="math inline">\(\mathbf{x} = \mathsf{eruptions}\)</span> and <span class="math inline">\(\boldsymbol{y} = \mathsf{waiting}\)</span>. We first create a matrix with a column of <span class="math inline">\(\mathbf{1}_n\)</span> for the intercept. We bind vectors by column (<code>cbind</code>) into a matrix, recycling arguments if necessary. Use <code>$</code> to obtain a column of the data frame based on the name of the variable (partial matching is allowed, e.g., <code>faithful$er</code> is equivalent to <code>faithful$eruptions</code> in this case).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Manipulating matrices</span>
-n &lt;-<span class="st"> </span><span class="kw">nrow</span>(faithful)
-p &lt;-<span class="st"> </span><span class="kw">ncol</span>(faithful)
-y &lt;-<span class="st"> </span>faithful<span class="op">$</span>waiting
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, faithful<span class="op">$</span>eruptions)</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">## Manipulating matrices</span></a>
+<a class="sourceLine" id="cb9-2" title="2">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(faithful)</a>
+<a class="sourceLine" id="cb9-3" title="3">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(faithful)</a>
+<a class="sourceLine" id="cb9-4" title="4">y &lt;-<span class="st"> </span>faithful<span class="op">$</span>waiting</a>
+<a class="sourceLine" id="cb9-5" title="5">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, faithful<span class="op">$</span>eruptions)</a></code></pre></div>
 </div>
 <div id="projection-matrices" class="section level3">
 <h3><span class="header-section-number">1.2.3</span> Projection matrices</h3>
 <p>Recall that <span class="math inline">\(\mathbf{H}_{\mathbf{X}} \equiv \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\)</span> is the orthogonal projection matrix onto
-<span class="math inline">\(\mathsf{span}(\mathbf{X})\)</span>. The latter has <span class="math inline">\(p=2\)</span> eigenvalues equal to 1, is an <span class="math inline">\(n \times n\)</span> matrix of rank <span class="math inline">\(p\)</span>, is symmetric and idempotent.
-We can verify the properties of <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> numerically.</p>
+<span class="math inline">\(\mathsf{span}(\mathbf{X})\)</span>. The latter has <span class="math inline">\(p=2\)</span> eigenvalues equal to 1, is an <span class="math inline">\(n \times n\)</span> matrix of rank <span class="math inline">\(p\)</span>, is symmetric and idempotent.</p>
+
+<div class="rmdnote">
+<span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> is a great theoretical tool, but make no mistake: we will never use it in practice other than to verify statements made in class. The underlying reason is that it is an <span class="math inline">\(n \times n\)</span> matrix, so storage is costly if <span class="math inline">\(n\)</span> is large. In practice, there are other ways to obtain quantities of interest such as coefficients, residuals and fitted values.
+</div>
+
+<p>We can verify the properties of <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> numerically.</p>
 
 <div class="rmdcaution">
 <p>Whereas we will frequently use <code>==</code> to check for equality of booleans, the latter should be avoided for comparisons because computer arithmetic is exact only in base 2. For example, <code>1/10 + 2/10 - 3/10 == 0</code> will return <code>FALSE</code>, whereas <code>all.equal(1/10 + 2/10 - 3/10, 0)</code> will return <code>TRUE</code>.
 Use <code>all.equal</code> to check for equalities.</p>
 </div>
 
-<pre class="sourceCode r"><code class="sourceCode r">Hx &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)
-<span class="co"># Create projection matrix onto complement </span>
-<span class="co"># `diag(n)` is the n by n identity matrix</span>
-Mx &lt;-<span class="st"> </span><span class="kw">diag</span>(n) <span class="op">-</span><span class="st"> </span>Hx
-<span class="co">#Check that projection leaves X invariant</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(X, Hx <span class="op">%*%</span><span class="st"> </span>X))</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">Hx &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co"># Create projection matrix onto complement </span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co"># `diag(n)` is the n by n identity matrix</span></a>
+<a class="sourceLine" id="cb10-4" title="4">Mx &lt;-<span class="st"> </span><span class="kw">diag</span>(n) <span class="op">-</span><span class="st"> </span>Hx</a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">#Check that projection leaves X invariant</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(X, Hx <span class="op">%*%</span><span class="st"> </span>X))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Check that orthogonal projection maps X to zero matrix of dimension (n, p)</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> n, <span class="dt">ncol =</span> p), Mx <span class="op">%*%</span><span class="st"> </span>X))</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co">#Check that orthogonal projection maps X to zero matrix of dimension (n, p)</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> n, <span class="dt">ncol =</span> p), Mx <span class="op">%*%</span><span class="st"> </span>X))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Check that the matrix Hx is idempotent</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Hx <span class="op">%*%</span><span class="st"> </span>Hx, Hx))</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co">#Check that the matrix Hx is idempotent</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Hx <span class="op">%*%</span><span class="st"> </span>Hx, Hx))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Check that the matrix Hx is symmetric</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">t</span>(Hx), Hx))</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co">#Check that the matrix Hx is symmetric</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">t</span>(Hx), Hx))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Check that only a two eigenvalue are 1 and the rest are zero</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">eigen</span>(Hx, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values, <span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, p), <span class="kw">rep</span>(<span class="dv">0</span>, n <span class="op">-</span><span class="st"> </span>p))))</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">#Check that only a two eigenvalue are 1 and the rest are zero</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">eigen</span>(Hx, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values, <span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, p), <span class="kw">rep</span>(<span class="dv">0</span>, n <span class="op">-</span><span class="st"> </span>p))))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Check that the matrix has rank p</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Matrix<span class="op">::</span><span class="kw">rankMatrix</span>(Hx), p, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">#Check that the matrix has rank p</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Matrix<span class="op">::</span><span class="kw">rankMatrix</span>(Hx), p, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
+
+<div class="rmdcaution">
+<p>Be careful: if <code>A</code> is an <span class="math inline">\(n \times p\)</span> matrix, <code>length(A)</code> returns the number of elements in the matrix, meaning <span class="math inline">\(np\)</span>. Use <code>nrow(A)</code> for the number of observations.</p>
+</div>
+
 </div>
 </div>
             </section>

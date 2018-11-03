@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html">
-<link rel="next" href="solutions-1.html">
+<link rel="next" href="example-seasonal-effects.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -149,34 +149,31 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.3</b> Exercises</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="exercises.html"><a href="exercises.html#auto-dataset"><i class="fa fa-check"></i><b>1.3.1</b> Auto dataset</a></li>
-<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#oblique-projections-exercise-1.4"><i class="fa fa-check"></i><b>1.3.2</b> Oblique projections (exercise 1.4)</a></li>
+<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#exercise-1.4---oblique-projections"><i class="fa fa-check"></i><b>1.3.2</b> Exercise 1.4 - Oblique projections</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.4</b> Summary of week 1</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
-<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#normal-equations"><i class="fa fa-check"></i><b>2.1.1</b> Normal equations</a></li>
-<li class="chapter" data-level="2.1.2" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.1.2</b> Singular value decomposition</a></li>
-<li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a></li>
+<li class="chapter" data-level="2.2" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.2</b> Interpretation of the coefficients</a></li>
+<li class="chapter" data-level="2.3" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.3</b> The <code>lm</code> function</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.3.1</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.3.2</b> QR decomposition</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
-<li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
-<li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
+<li class="chapter" data-level="2.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.4</b> Parameter estimation</a></li>
 <li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
 <li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
 <li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
-<li class="chapter" data-level="2.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>2.8</b> Exercises</a><ul>
-<li class="chapter" data-level="2.8.1" data-path="exercises-1.html"><a href="exercises-1.html#prostate-cancer-dataset"><i class="fa fa-check"></i><b>2.8.1</b> Prostate cancer dataset</a></li>
+<li class="chapter" data-level="2.8" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.8</b> Solutions</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="solutions.html"><a href="solutions.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.8.1</b> Exercise 3.5 - Prostate cancer</a></li>
 </ul></li>
-<li class="chapter" data-level="2.9" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.9</b> Solutions</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
 <li class="chapter" data-level="3.1" data-path="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><a href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><i class="fa fa-check"></i><b>3.1</b> Revisiting the interpretation of the parameters of a linear model</a></li>
-<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.3.1</b> Exercise 4.4</a></li>
+<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a></li>
+<li class="chapter" data-level="3.3" data-path="example-seasonal-effects.html"><a href="example-seasonal-effects.html"><i class="fa fa-check"></i><b>3.3</b> Example: seasonal effects</a></li>
+<li class="chapter" data-level="3.4" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.4</b> Solutions</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.4.1</b> Exercise 4.4</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
@@ -230,96 +227,6 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="factors" class="section level2">
 <h2><span class="header-section-number">3.2</span> Factors</h2>
 <p>Oftentimes, the regressors that are part of the design matrix will be categorical variables, which can be ordered or unordered. These are encoded using binary indicators, that is, vectors of zero/ones. In <strong>R</strong>, dummy variables (vectors of class <code>factor</code>) are used to indicate categorical variables; the component <code>levels</code> allows one to obtain meaningful category names. The function <code>lm</code> can deal with <code>factor</code> objects. Oftentimes, dummy indicators are cast to numeric vector in data frame. There is a risk that the vector be interpreted as a continuous numeric if the levels are integers (for example, advancement of the state of an illness that is encoded as 1, 2, 3, ). The user can cast columns to factors using the function <code>as.factor</code>. Use <code>is.factor</code> to check whether the vector is a factor. The functions <code>class</code> also reports the encoding and <code>summary</code> displays counts of the various factor in place of the usual summary statistics.</p>
-<div id="example-seasonal-effects" class="section level3">
-<h3><span class="header-section-number">3.2.1</span> Example: seasonal effects</h3>
-<p>Suppose we are interested in estimating the seasonal model for quarterly data. Since each observation is recorded on one trimester, it could be postulated that the time of the year affect the response. This effect can be built in the design and tested for.</p>
-<p>Consider a design matrix whose columns include <span class="math inline">\((\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4)\)</span>. The entries of the seasonal dummies are 0/1 depending on the season; for example, <span class="math inline">\(\mathrm{S}_{i1}=1\)</span> if the observation is recorded in the spring and <span class="math inline">\(\mathrm{S}_{i1}=0\)</span> otherwise, so that, for time ordered response vectors starting in the spring, we can write <span class="math inline">\(\mathbf{S}_1=(1,0,0,0,1,0,0,\ldots)^\top\)</span> and <span class="math inline">\(\mathbf{S}_1 + \mathbf{S}_2 + \mathbf{S}_3 + \mathbf{S}_4 = \mathbf{1}_n\)</span>. Thus, a regression model cannot include a mean and all four seasonal variables, but since <span class="math inline">\(\mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4) = \mathscr{M}(\mathbf{S}_1, \mathbf{S}_2, \mathbf{S}_3, \mathbf{1}_n) = \mathscr{M}(\mathbf{S}_2, \mathbf{S}_3, \mathbf{S}_4, \mathbf{1}_n)\)</span>, any set of four vectors can be used.</p>
-<p>If we drop the constant vector <span class="math inline">\(\mathbf{1}_n\)</span> from the regression (in <strong>R</strong>, by writing <code>0</code> or <code>-1</code> on the right hand side of the <code>lm</code> formula), the coefficients <span class="math inline">\(\alpha_i\)</span>, <span class="math inline">\(i=1, \ldots, 4\)</span> in regression
-<span class="math display">\[\boldsymbol{y} = \mathbf{S}_1\alpha_1 +\mathbf{S}_2\alpha_2  + \mathbf{S}_3\alpha_3 + \mathbf{S}_4\alpha_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span>
-correspond to the intercept for season <span class="math inline">\(i\)</span>. If we include instead the dummy <span class="math inline">\(\mathbf{S}_1\)</span> and fit
-<span class="math display">\[\boldsymbol{y} = \mathbf{1}_n\gamma_1 +\mathbf{S}_2\gamma_2  + \mathbf{S}_3\gamma_3 + \mathbf{S}_4\gamma_4 + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon},\]</span>
-then the constant for season 1 is <span class="math inline">\(\alpha_1=\gamma_1\)</span>, and is <span class="math inline">\(\alpha_j=\gamma_1+\gamma_j\)</span> for season <span class="math inline">\(j \in \{2, 3, 4\}\)</span>. The reference level is therefore the first season <span class="math inline">\(\gamma_1\)</span> and the coefficients <span class="math inline">\(\{\gamma_j\}, j \in \{2, 3, 4\}\)</span> are contrasts (the difference between the baseline and the seasonal level).</p>
-<p>As just illustrated above, the interpretation of the coefficients when we have factors differs. Introducing factors lead to different intercepts for the different groups, whereas interactions with the factors lead to different slopes. Since we cannot include all levels of the factor as well as an intercept, the interpretation of the coefficient for the constant is the intercept of the baseline, i.e., the ommitted factor.</p>
-<p>For simplicity, consider the simple case with an intercept and a single factor. Why do the coefficients <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_1&#39;\)</span> associated to the first columns of models
-<span class="math display">\[\begin{align*}
- \mathbf{X}\boldsymbol{\beta} = \begin{pmatrix}
-       \bf{1}_{n_1} &amp; \bf{0}_{n_1} \\
-       \bf{1}_{n_2} &amp; \bf{1}_{n_2}  \\
-      \end{pmatrix}\begin{pmatrix} \beta_1 &amp; \beta_2\end{pmatrix}^\top, \qquad 
-      \mathbf{X}&#39;\boldsymbol{\beta}&#39; =  \begin{pmatrix}
-       \bf{1}_{n_1} &amp; \bf{0}_{n_1} \\
-       \bf{0}_{n_2} &amp; \bf{1}_{n_2}  \\
-      \end{pmatrix}\begin{pmatrix} \beta_1&#39; &amp; \beta_2&#39;\end{pmatrix}^\top
-\end{align*}\]</span>
-have the same interpretation? For the matrix <span class="math inline">\({\mathbf{X}}\)</span> consisting of orthogonal regressors, this is
-clear. For the matrix <span class="math inline">\({\mathbf{X}}&#39;\)</span>, recall the FWL theorem: the regression coefficient <span class="math inline">\(\beta_1&#39;\)</span> is the same as that of the regression
-<span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\boldsymbol{y} = \mathbf{M}_{{\mathbf{x}}_2}\bf{1}_n + \boldsymbol{u}\)</span> for <span class="math inline">\({\mathbf{x}}_2 = (\bf{0}_{n_1}^\top, \bf{1}_{n_2}^\top)^\top\)</span>. The matrix
-<span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\)</span> is a block matrix, whose first <span class="math inline">\(n_1 \times n_1\)</span> block contains entries <span class="math inline">\(n_1^{-1}\)</span> and the rest of the entries is zero.
-<span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\boldsymbol{y}\)</span> does not affect the last <span class="math inline">\(n_2\)</span> entries of <span class="math inline">\(\boldsymbol{y}\)</span>, while <span class="math inline">\(\mathbf{M}_{{\mathbf{x}}_2}\bf{1}_n = \bf{1}_n - {\mathbf{x}}_2\)</span>. This
-reasoning generalizes to more complex settings with a slope and other regressors.</p>
-<p>The discussion is illustrated on a dataset consisting of quarterly measurements of the gas consumption in the United Kingdom, from 1960 to 1986.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(UKgas)
-quarter &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">length =</span> <span class="kw">length</span>(UKgas)) <span class="co">#create vector 1, 2, 3, 4, 1, ...</span>
-<span class="kw">is.factor</span>(quarter)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">quarter &lt;-<span class="st"> </span><span class="kw">as.factor</span>(quarter) <span class="co">#cast the vector to a factor</span>
-<span class="kw">is.factor</span>(quarter)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(quarter)</code></pre>
-<pre><code>## [1] &quot;factor&quot;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#What is name of the dummies</span>
-<span class="kw">head</span>(quarter)</code></pre>
-<pre><code>## [1] 1 2 3 4 1 2
-## Levels: 1 2 3 4</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(quarter)</code></pre>
-<pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(quarter) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q3&quot;</span>, <span class="st">&quot;Q4&quot;</span>) <span class="co">#change names</span></code></pre>
-<p>The first model is of the form
-<span class="math display">\[ \boldsymbol{y} = \mathbf{Q}_1 \alpha_1 + \mathbf{Q}_2 \alpha_2 + \mathbf{Q}_3 \alpha_3 + \mathbf{Q}_4 \alpha_4 + \boldsymbol{\varepsilon}.
-\]</span></p>
-<pre class="sourceCode r"><code class="sourceCode r">gas_lm1 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
-<span class="kw">coef</span>(gas_lm1)</code></pre>
-<pre><code>## quarterQ1 quarterQ2 quarterQ3 quarterQ4 
-##  5.989307  5.586806  5.039595  5.700242</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm1), <span class="dv">10</span>)</code></pre>
-<pre><code>##    quarterQ1 quarterQ2 quarterQ3 quarterQ4
-## 1          1         0         0         0
-## 2          0         1         0         0
-## 3          0         0         1         0
-## 4          0         0         0         1
-## 5          1         0         0         0
-## 6          0         1         0         0
-## 7          0         0         1         0
-## 8          0         0         0         1
-## 9          1         0         0         0
-## 10         0         1         0         0</code></pre>
-<p>The model with all the quarterly dummies gives the quarterly average value <span class="math inline">\(\exp(\alpha_j)\)</span> in quarter <span class="math inline">\(j\)</span>, <span class="math inline">\(j = 1, \ldots, 4\)</span>.
-If we include an intercept, the first factor is selected as baseline and the coefficients of the quarters <code>Q2</code> to <code>Q4</code> are contrasts.
-For this model, say
-<span class="math display">\[ \boldsymbol{y} = \mathbf{1}_n \gamma_1 + \mathbf{Q}_2 \gamma_2 + \mathbf{Q}_3 \gamma_3 + \mathbf{Q}_4 \gamma_4 + \boldsymbol{\varepsilon},
-\]</span></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#New parameterization, with a constant</span>
-gas_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter) <span class="co">#R drops collinear by default and fits with Q2-Q4</span>
-<span class="kw">coef</span>(gas_lm2)</code></pre>
-<pre><code>## (Intercept)   quarterQ2   quarterQ3   quarterQ4 
-##   5.9893074  -0.4025014  -0.9497127  -0.2890659</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm2), <span class="dv">10</span>)</code></pre>
-<pre><code>##    (Intercept) quarterQ2 quarterQ3 quarterQ4
-## 1            1         0         0         0
-## 2            1         1         0         0
-## 3            1         0         1         0
-## 4            1         0         0         1
-## 5            1         0         0         0
-## 6            1         1         0         0
-## 7            1         0         1         0
-## 8            1         0         0         1
-## 9            1         0         0         0
-## 10           1         1         0         0</code></pre>
-<p>The estimated average gas consumption in millions of therms is <span class="math inline">\(\exp(\widehat{\gamma}_1)=\exp(\widehat{\alpha}_1)\)</span> for the first quarter, <span class="math inline">\(\exp(\widehat{\alpha}_2)=\exp(\widehat{\gamma}_1+\widehat{\gamma}_2)\)</span> for the second quarter, etc.</p>
-<p>We can check that the interpretation is correct.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((<span class="kw">coef</span>(gas_lm2)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(gas_lm2)[<span class="op">-</span><span class="dv">1</span>]), <span class="kw">coef</span>(gas_lm1)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-</div>
 </div>
             </section>
 
@@ -327,7 +234,7 @@ gas_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw
         </div>
       </div>
 <a href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="solutions-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="example-seasonal-effects.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

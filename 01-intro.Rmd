@@ -119,6 +119,7 @@ class(faithful)
 ```
 
 Other common classes of objects:
+
 - `matrix`: an object with attributes `dim`, `ncol` and `nrow` in addition to `length`, which gives the total number of elements. 
 - `array`: a higher dimensional extension of `matrix` with arguments `dim` and `dimnames`.
 - `list`: an unstructured class whose elements are accessed using double indexing `[[ ]]` and elements are typically accessed using `$` symbol with names. To delete an element from a list, assign  `NULL` to it. 
@@ -176,6 +177,12 @@ X <- cbind(1, faithful$eruptions)
 
 Recall that $\mathbf{H}_{\mathbf{X}} \equiv \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top$ is the orthogonal projection matrix onto 
  $\mathsf{span}(\mathbf{X})$. The latter has $p=2$ eigenvalues equal to 1, is an $n \times n$ matrix of rank $p$, is symmetric and idempotent.
+ 
+ ```{block2, type="rmdnote"}
+
+$\mathbf{H}_{\mathbf{X}}$ is a great theoretical tool, but make no mistake: we will never use it in practice other than to verify statements made in class. The underlying reason is that it is an $n \times n$ matrix, so storage is costly if $n$ is large. In practice, there are other ways to obtain quantities of interest such as coefficients, residuals and fitted values. 
+```
+
  We can verify the properties of $\mathbf{H}_{\mathbf{X}}$ numerically. 
 
 ```{block2, type="rmdcaution"}
@@ -204,6 +211,14 @@ isTRUE(all.equal(eigen(Hx, only.values = TRUE)$values, c(rep(1, p), rep(0, n - p
 isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
 ```
 
+
+
+```{block2, type="rmdcaution"}
+
+Be careful: if `A` is an $n \times p$ matrix, `length(A)` returns the number of elements in the matrix, meaning $np$. Use `nrow(A)` for the number of observations.
+
+```
+
 ## Exercises
 
 ### Auto dataset
@@ -216,7 +231,7 @@ isTRUE(all.equal(Matrix::rankMatrix(Hx), p, check.attributes = FALSE))
 - Append a column vector of ones to `x` and create a projection matrix.
 - Check that the resulting projection matrix is symmetric and idempotent.
 
-### Oblique projections (exercise 1.4)
+### Exercise 1.4 - Oblique projections
 
 Suppose that $\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})$, that both $\mathbf{X}$ and $\mathbf{W}$ are full-rank $n \times p$ matrices such that $\mathbf{X}^\top\mathbf{W}$ and $\mathbf{W}^\top\mathbf{X}$ are invertible. An oblique projection matrix is of the form $\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top$ and appears in instrumental variable regression. The oblique projection is such that $\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})$, but $\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)$. This fact is illustrated below.
 

@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="factors.html">
+<link rel="prev" href="example-seasonal-effects.html">
 <link rel="next" href="gaussian-linear-model.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -149,34 +149,31 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.3</b> Exercises</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="exercises.html"><a href="exercises.html#auto-dataset"><i class="fa fa-check"></i><b>1.3.1</b> Auto dataset</a></li>
-<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#oblique-projections-exercise-1.4"><i class="fa fa-check"></i><b>1.3.2</b> Oblique projections (exercise 1.4)</a></li>
+<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#exercise-1.4---oblique-projections"><i class="fa fa-check"></i><b>1.3.2</b> Exercise 1.4 - Oblique projections</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.4</b> Summary of week 1</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
-<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#normal-equations"><i class="fa fa-check"></i><b>2.1.1</b> Normal equations</a></li>
-<li class="chapter" data-level="2.1.2" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.1.2</b> Singular value decomposition</a></li>
-<li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a></li>
+<li class="chapter" data-level="2.2" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.2</b> Interpretation of the coefficients</a></li>
+<li class="chapter" data-level="2.3" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.3</b> The <code>lm</code> function</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.3.1</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.3.2</b> QR decomposition</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
-<li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
-<li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
+<li class="chapter" data-level="2.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.4</b> Parameter estimation</a></li>
 <li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
 <li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
 <li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
-<li class="chapter" data-level="2.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>2.8</b> Exercises</a><ul>
-<li class="chapter" data-level="2.8.1" data-path="exercises-1.html"><a href="exercises-1.html#prostate-cancer-dataset"><i class="fa fa-check"></i><b>2.8.1</b> Prostate cancer dataset</a></li>
+<li class="chapter" data-level="2.8" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.8</b> Solutions</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="solutions.html"><a href="solutions.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.8.1</b> Exercise 3.5 - Prostate cancer</a></li>
 </ul></li>
-<li class="chapter" data-level="2.9" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.9</b> Solutions</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
 <li class="chapter" data-level="3.1" data-path="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><a href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><i class="fa fa-check"></i><b>3.1</b> Revisiting the interpretation of the parameters of a linear model</a></li>
-<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.3.1</b> Exercise 4.4</a></li>
+<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a></li>
+<li class="chapter" data-level="3.3" data-path="example-seasonal-effects.html"><a href="example-seasonal-effects.html"><i class="fa fa-check"></i><b>3.3</b> Example: seasonal effects</a></li>
+<li class="chapter" data-level="3.4" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.4</b> Solutions</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.4.1</b> Exercise 4.4</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
@@ -228,101 +225,101 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="solutions-1" class="section level2">
-<h2><span class="header-section-number">3.3</span> Solutions</h2>
+<h2><span class="header-section-number">3.4</span> Solutions</h2>
 <div id="exercise-4.4" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> Exercise 4.4</h3>
+<h3><span class="header-section-number">3.4.1</span> Exercise 4.4</h3>
 <p>Consider the linear model <span class="math display">\[\boldsymbol{y} = \mathbf{X}_1\boldsymbol{\beta}_1 +\mathbf{X}_2\boldsymbol{\beta}_1 + \boldsymbol{\varepsilon}\]</span> and suppose that <span class="math inline">\(\mathbf{X}_1\)</span> includes a column of ones.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)
-y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg
-X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)
-X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" title="1"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)</a>
+<a class="sourceLine" id="cb115-2" title="2">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb115-3" title="3">X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
+<a class="sourceLine" id="cb115-4" title="4">X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</a></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li>Form the projection matrices <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span>, <span class="math inline">\(\mathbf{H}_{1}\)</span>, <span class="math inline">\(\mathbf{H}_{2}\)</span> and the complementary projection matrices (the functions <code>cbind</code>, <code>%*%</code>, <code>solve</code> and <code>t</code> may be useful).</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)
-y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg
-X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)
-X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight
-<span class="co">##Warning: output not displayed </span>
-<span class="co">#Projection matrices</span>
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(X1, X2) 
-<span class="co">#Helper functions</span>
-<span class="co">#Create a function: function(args){ ...}</span>
-<span class="co">#last line will be object returned (if not assigned)</span>
-<span class="co">#otherwise use `return( )`: see below for example</span>
-proj_mat &lt;-<span class="st"> </span><span class="cf">function</span>(x){
-  x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x)
-}
-coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){
-  coefs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>y) 
-  <span class="kw">return</span>(coefs)
-  <span class="co">#`c` transform output from n x 1 matrix to n-vector</span>
-}
-resid_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){
-  <span class="kw">c</span>((<span class="kw">diag</span>(<span class="dv">1</span>, <span class="kw">length</span>(y)) <span class="op">-</span><span class="st"> </span>pmat)  <span class="op">%*%</span><span class="st"> </span>y) 
-  <span class="co">#diag(1, ...) creates identity matrix</span>
-}
-fitted_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){
-  <span class="kw">c</span>(pmat <span class="op">%*%</span><span class="st"> </span>y)
-}
-
-<span class="co">#Create projection matrices</span>
-H  &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X)
-H1 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X1)
-H2 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X2)
-M  &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H
-M1 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H1
-M2 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H2</code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" title="1"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)</a>
+<a class="sourceLine" id="cb116-2" title="2">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb116-3" title="3">X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
+<a class="sourceLine" id="cb116-4" title="4">X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</a>
+<a class="sourceLine" id="cb116-5" title="5"><span class="co">##Warning: output not displayed </span></a>
+<a class="sourceLine" id="cb116-6" title="6"><span class="co">#Projection matrices</span></a>
+<a class="sourceLine" id="cb116-7" title="7">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(X1, X2) </a>
+<a class="sourceLine" id="cb116-8" title="8"><span class="co">#Helper functions</span></a>
+<a class="sourceLine" id="cb116-9" title="9"><span class="co">#Create a function: function(args){ ...}</span></a>
+<a class="sourceLine" id="cb116-10" title="10"><span class="co">#last line will be object returned (if not assigned)</span></a>
+<a class="sourceLine" id="cb116-11" title="11"><span class="co">#otherwise use `return( )`: see below for example</span></a>
+<a class="sourceLine" id="cb116-12" title="12">proj_mat &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb116-13" title="13">  x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x)</a>
+<a class="sourceLine" id="cb116-14" title="14">}</a>
+<a class="sourceLine" id="cb116-15" title="15">coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){</a>
+<a class="sourceLine" id="cb116-16" title="16">  coefs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>y) </a>
+<a class="sourceLine" id="cb116-17" title="17">  <span class="kw">return</span>(coefs)</a>
+<a class="sourceLine" id="cb116-18" title="18">  <span class="co">#`c` transform output from n x 1 matrix to n-vector</span></a>
+<a class="sourceLine" id="cb116-19" title="19">}</a>
+<a class="sourceLine" id="cb116-20" title="20">resid_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){</a>
+<a class="sourceLine" id="cb116-21" title="21">  <span class="kw">c</span>((<span class="kw">diag</span>(<span class="dv">1</span>, <span class="kw">length</span>(y)) <span class="op">-</span><span class="st"> </span>pmat)  <span class="op">%*%</span><span class="st"> </span>y) </a>
+<a class="sourceLine" id="cb116-22" title="22">  <span class="co">#diag(1, ...) creates identity matrix</span></a>
+<a class="sourceLine" id="cb116-23" title="23">}</a>
+<a class="sourceLine" id="cb116-24" title="24">fitted_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){</a>
+<a class="sourceLine" id="cb116-25" title="25">  <span class="kw">c</span>(pmat <span class="op">%*%</span><span class="st"> </span>y)</a>
+<a class="sourceLine" id="cb116-26" title="26">}</a>
+<a class="sourceLine" id="cb116-27" title="27"></a>
+<a class="sourceLine" id="cb116-28" title="28"><span class="co">#Create projection matrices</span></a>
+<a class="sourceLine" id="cb116-29" title="29">H  &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X)</a>
+<a class="sourceLine" id="cb116-30" title="30">H1 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X1)</a>
+<a class="sourceLine" id="cb116-31" title="31">H2 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X2)</a>
+<a class="sourceLine" id="cb116-32" title="32">M  &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H</a>
+<a class="sourceLine" id="cb116-33" title="33">M1 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H1</a>
+<a class="sourceLine" id="cb116-34" title="34">M2 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H2</a></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Obtain the OLS estimates <span class="math inline">\(\widehat{\boldsymbol{\beta}}_1\)</span>, <span class="math inline">\(\widehat{\boldsymbol{\beta}}_2\)</span></li>
 <li>Use the projection matrices to obtain the fitted values <span class="math inline">\(\widehat{\boldsymbol{y}}\)</span> and the estimated residuals <span class="math inline">\(\widehat{\boldsymbol{\varepsilon}}\)</span>.</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#OLS coefficients</span>
-beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(X, y)
-beta_hat
-<span class="co">#Fitted values</span>
-<span class="kw">fitted_vals</span>(y, H)
-<span class="co">#Residuals</span>
-<span class="kw">resid_vals</span>(y, H)</code></pre>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" title="1"><span class="co">#OLS coefficients</span></a>
+<a class="sourceLine" id="cb117-2" title="2">beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(X, y)</a>
+<a class="sourceLine" id="cb117-3" title="3">beta_hat</a>
+<a class="sourceLine" id="cb117-4" title="4"><span class="co">#Fitted values</span></a>
+<a class="sourceLine" id="cb117-5" title="5"><span class="kw">fitted_vals</span>(y, H)</a>
+<a class="sourceLine" id="cb117-6" title="6"><span class="co">#Residuals</span></a>
+<a class="sourceLine" id="cb117-7" title="7"><span class="kw">resid_vals</span>(y, H)</a></code></pre></div>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>What happens to the residuals if your regressors do not include a vector of constants?</li>
 </ol>
 <p>If a constant is not included, the residuals are not centered unless the columns of the design matrix and the response were
 centered, meaning they had expectation zero. This is why a column vector of ones is always included unless the mean is known
 (from theory or otherwise) to be zero.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Removing the row of constants</span>
-res_uncentered &lt;-<span class="st"> </span><span class="kw">resid_vals</span>(y, <span class="kw">proj_mat</span>(X[,<span class="op">-</span><span class="dv">1</span>])) <span class="co">#subset [row, column]</span>
-<span class="co">#X[,-1] take all rows, all columns but first</span>
-<span class="kw">mean</span>(res_uncentered)</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" title="1"><span class="co">#Removing the row of constants</span></a>
+<a class="sourceLine" id="cb118-2" title="2">res_uncentered &lt;-<span class="st"> </span><span class="kw">resid_vals</span>(y, <span class="kw">proj_mat</span>(X[,<span class="op">-</span><span class="dv">1</span>])) <span class="co">#subset [row, column]</span></a>
+<a class="sourceLine" id="cb118-3" title="3"><span class="co">#X[,-1] take all rows, all columns but first</span></a>
+<a class="sourceLine" id="cb118-4" title="4"><span class="kw">mean</span>(res_uncentered)</a></code></pre></div>
 <pre><code>## [1] 3.32711</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Consequence of not centering is that residuals are not mean zero</span></code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" title="1"><span class="co">#Consequence of not centering is that residuals are not mean zero</span></a></code></pre></div>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Verify numerically Frisch–Waugh–Lovell’s theorem and test the different regression models from Exercice 2.4 to validate your answers.</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#The null models regression has</span>
-coef_<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> y)[<span class="kw">ncol</span>(X)]
-res_<span class="dv">0</span>  &lt;-<span class="st"> </span><span class="kw">resid_vals</span> (<span class="dt">y =</span> y, <span class="dt">pmat =</span> H)
-<span class="co">#The following function checks equality of the coefficients</span>
-<span class="co">#beta 2 is the last coef (here 1d)</span>
-check_FWL &lt;-<span class="st"> </span><span class="cf">function</span>(xmat, yvec, <span class="dt">coef0 =</span> coef_<span class="dv">0</span>, <span class="dt">res0 =</span> res_<span class="dv">0</span>){
-  <span class="kw">c</span>(<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">coefs_vals</span>(<span class="dt">x =</span> xmat, <span class="dt">y =</span> yvec)[<span class="kw">ncol</span>(xmat)], coef0)),
-    <span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">resid_vals</span>(<span class="dt">y =</span> yvec, <span class="dt">pmat =</span> <span class="kw">proj_mat</span>(xmat)), res0))
-  )
-}
-
-<span class="co">#Check the results of 4.3</span>
-res_mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> y, <span class="dt">xmat =</span> X2), <span class="co">#1</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#2</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> H1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#3</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X), <span class="co">#4</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#5</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#6</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#7 and 9</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> <span class="kw">cbind</span>(X1, M1 <span class="op">%*%</span><span class="st"> </span>X2)), <span class="co">#8</span>
-<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2)) <span class="co">#10</span>
-<span class="kw">colnames</span>(res_mat) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;(1)&quot;</span>, <span class="st">&quot;(2)&quot;</span>, <span class="st">&quot;(3)&quot;</span>, <span class="st">&quot;(4)&quot;</span>, <span class="st">&quot;(5)&quot;</span>, <span class="st">&quot;(6)&quot;</span>, <span class="st">&quot;(7,9)&quot;</span>,<span class="st">&quot;(8)&quot;</span>,<span class="st">&quot;(10)&quot;</span>)
-<span class="kw">rownames</span>(res_mat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;coefficients&quot;</span>,<span class="st">&quot;residuals&quot;</span>)
-<span class="kw">print</span>(res_mat)</code></pre>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" title="1"><span class="co">#The null models regression has</span></a>
+<a class="sourceLine" id="cb121-2" title="2">coef_<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> y)[<span class="kw">ncol</span>(X)]</a>
+<a class="sourceLine" id="cb121-3" title="3">res_<span class="dv">0</span>  &lt;-<span class="st"> </span><span class="kw">resid_vals</span> (<span class="dt">y =</span> y, <span class="dt">pmat =</span> H)</a>
+<a class="sourceLine" id="cb121-4" title="4"><span class="co">#The following function checks equality of the coefficients</span></a>
+<a class="sourceLine" id="cb121-5" title="5"><span class="co">#beta 2 is the last coef (here 1d)</span></a>
+<a class="sourceLine" id="cb121-6" title="6">check_FWL &lt;-<span class="st"> </span><span class="cf">function</span>(xmat, yvec, <span class="dt">coef0 =</span> coef_<span class="dv">0</span>, <span class="dt">res0 =</span> res_<span class="dv">0</span>){</a>
+<a class="sourceLine" id="cb121-7" title="7">  <span class="kw">c</span>(<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">coefs_vals</span>(<span class="dt">x =</span> xmat, <span class="dt">y =</span> yvec)[<span class="kw">ncol</span>(xmat)], coef0)),</a>
+<a class="sourceLine" id="cb121-8" title="8">    <span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">resid_vals</span>(<span class="dt">y =</span> yvec, <span class="dt">pmat =</span> <span class="kw">proj_mat</span>(xmat)), res0))</a>
+<a class="sourceLine" id="cb121-9" title="9">  )</a>
+<a class="sourceLine" id="cb121-10" title="10">}</a>
+<a class="sourceLine" id="cb121-11" title="11"></a>
+<a class="sourceLine" id="cb121-12" title="12"><span class="co">#Check the results of 4.3</span></a>
+<a class="sourceLine" id="cb121-13" title="13">res_mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> y, <span class="dt">xmat =</span> X2), <span class="co">#1</span></a>
+<a class="sourceLine" id="cb121-14" title="14"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#2</span></a>
+<a class="sourceLine" id="cb121-15" title="15"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> H1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#3</span></a>
+<a class="sourceLine" id="cb121-16" title="16"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X), <span class="co">#4</span></a>
+<a class="sourceLine" id="cb121-17" title="17"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#5</span></a>
+<a class="sourceLine" id="cb121-18" title="18"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#6</span></a>
+<a class="sourceLine" id="cb121-19" title="19"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#7 and 9</span></a>
+<a class="sourceLine" id="cb121-20" title="20"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> <span class="kw">cbind</span>(X1, M1 <span class="op">%*%</span><span class="st"> </span>X2)), <span class="co">#8</span></a>
+<a class="sourceLine" id="cb121-21" title="21"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2)) <span class="co">#10</span></a>
+<a class="sourceLine" id="cb121-22" title="22"><span class="kw">colnames</span>(res_mat) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;(1)&quot;</span>, <span class="st">&quot;(2)&quot;</span>, <span class="st">&quot;(3)&quot;</span>, <span class="st">&quot;(4)&quot;</span>, <span class="st">&quot;(5)&quot;</span>, <span class="st">&quot;(6)&quot;</span>, <span class="st">&quot;(7,9)&quot;</span>,<span class="st">&quot;(8)&quot;</span>,<span class="st">&quot;(10)&quot;</span>)</a>
+<a class="sourceLine" id="cb121-23" title="23"><span class="kw">rownames</span>(res_mat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;coefficients&quot;</span>,<span class="st">&quot;residuals&quot;</span>)</a>
+<a class="sourceLine" id="cb121-24" title="24"><span class="kw">print</span>(res_mat)</a></code></pre></div>
 <pre><code>##                (1)   (2)   (3)   (4)   (5)   (6) (7,9)  (8)  (10)
 ## coefficients FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE TRUE  TRUE
 ## residuals    FALSE FALSE FALSE FALSE FALSE FALSE  TRUE TRUE FALSE</code></pre>
@@ -335,7 +332,7 @@ res_mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class=
           </div>
         </div>
       </div>
-<a href="factors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="example-seasonal-effects.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="gaussian-linear-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

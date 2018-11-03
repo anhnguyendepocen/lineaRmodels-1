@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="calculation-of-least-square-estimates.html">
-<link rel="next" href="interpretation-of-the-coefficients.html">
+<link rel="prev" href="the-lm-function.html">
+<link rel="next" href="the-hyperplane-of-fitted-values.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -149,34 +149,31 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.3</b> Exercises</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="exercises.html"><a href="exercises.html#auto-dataset"><i class="fa fa-check"></i><b>1.3.1</b> Auto dataset</a></li>
-<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#oblique-projections-exercise-1.4"><i class="fa fa-check"></i><b>1.3.2</b> Oblique projections (exercise 1.4)</a></li>
+<li class="chapter" data-level="1.3.2" data-path="exercises.html"><a href="exercises.html#exercise-1.4---oblique-projections"><i class="fa fa-check"></i><b>1.3.2</b> Exercise 1.4 - Oblique projections</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.4</b> Summary of week 1</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
-<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#normal-equations"><i class="fa fa-check"></i><b>2.1.1</b> Normal equations</a></li>
-<li class="chapter" data-level="2.1.2" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.1.2</b> Singular value decomposition</a></li>
-<li class="chapter" data-level="2.1.3" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#qr-decomposition"><i class="fa fa-check"></i><b>2.1.3</b> QR decomposition</a></li>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a></li>
+<li class="chapter" data-level="2.2" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.2</b> Interpretation of the coefficients</a></li>
+<li class="chapter" data-level="2.3" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.3</b> The <code>lm</code> function</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.3.1</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.3.2</b> QR decomposition</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.2</b> Parameter estimation</a></li>
-<li class="chapter" data-level="2.3" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.3</b> Interpretation of the coefficients</a></li>
-<li class="chapter" data-level="2.4" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.4</b> The <code>lm</code> function</a></li>
+<li class="chapter" data-level="2.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.4</b> Parameter estimation</a></li>
 <li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
 <li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
 <li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
-<li class="chapter" data-level="2.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>2.8</b> Exercises</a><ul>
-<li class="chapter" data-level="2.8.1" data-path="exercises-1.html"><a href="exercises-1.html#prostate-cancer-dataset"><i class="fa fa-check"></i><b>2.8.1</b> Prostate cancer dataset</a></li>
+<li class="chapter" data-level="2.8" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.8</b> Solutions</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="solutions.html"><a href="solutions.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.8.1</b> Exercise 3.5 - Prostate cancer</a></li>
 </ul></li>
-<li class="chapter" data-level="2.9" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>2.9</b> Solutions</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
 <li class="chapter" data-level="3.1" data-path="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><a href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"><i class="fa fa-check"></i><b>3.1</b> Revisiting the interpretation of the parameters of a linear model</a></li>
-<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="factors.html"><a href="factors.html#example-seasonal-effects"><i class="fa fa-check"></i><b>3.2.1</b> Example: seasonal effects</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.3</b> Solutions</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.3.1</b> Exercise 4.4</a></li>
+<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3.2</b> Factors</a></li>
+<li class="chapter" data-level="3.3" data-path="example-seasonal-effects.html"><a href="example-seasonal-effects.html"><i class="fa fa-check"></i><b>3.3</b> Example: seasonal effects</a></li>
+<li class="chapter" data-level="3.4" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>3.4</b> Solutions</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-4.4"><i class="fa fa-check"></i><b>3.4.1</b> Exercise 4.4</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="gaussian-linear-model.html"><a href="gaussian-linear-model.html"><i class="fa fa-check"></i><b>4</b> Gaussian linear model</a><ul>
@@ -228,63 +225,15 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="parameter-estimation" class="section level2">
-<h2><span class="header-section-number">2.2</span> Parameter estimation</h2>
-<p>We are now ready to fit a simple linear model with an intercept and a linear effect for the weight,
-<span class="math display">\[ \texttt{mpg}_i = \beta_0 + \texttt{hp}_i\beta_1 +\varepsilon_i.\]</span>
-We form the design matrix <span class="math inline">\((\boldsymbol{1}_n^\top, \texttt{hp}^\top)^\top\)</span> and the vector of regressand <span class="math inline">\(\texttt{mpg}\)</span>, then proceed with calculating the OLS coefficients <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, the hat matrix <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span>, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Design matrix</span>
-hp &lt;-<span class="st"> </span>Auto<span class="op">$</span>horsepower
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)
-mpg &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg
-<span class="co">#OLS estimates</span>
-XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))
-beta_hat &lt;-<span class="st"> </span><span class="kw">c</span>(XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>mpg)
-<span class="co">#Form orthogonal projection matrix</span>
-Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)
-<span class="co">#Create residuals and fitted values</span>
-fitted &lt;-<span class="st"> </span>Hmat <span class="op">%*%</span><span class="st"> </span>mpg
-res &lt;-<span class="st"> </span>mpg <span class="op">-</span><span class="st"> </span>fitted
-fitted &lt;-<span class="st"> </span>Hmat <span class="op">%*%</span><span class="st"> </span>mpg</code></pre>
-<p>The residuals <span class="math inline">\(\boldsymbol{e} = \boldsymbol{y} -\hat{\boldsymbol{y}}\)</span> can be interpreted as the <em>vertical</em> distance between the regression slope and the observation. For each observation <span class="math inline">\(y_i\)</span>, a vertical line at distance <span class="math inline">\(e_i\)</span> is drawn from the prediction <span class="math inline">\(\hat{y}_i\)</span>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower,  <span class="dt">data =</span> Auto, 
-     <span class="dt">xlab =</span> <span class="st">&quot;Power of engine (hp)&quot;</span>, 
-     <span class="dt">ylab =</span> <span class="st">&quot;Fuel economy (miles/US gallon)&quot;</span>, 
-     <span class="dt">main =</span> <span class="st">&quot;Fuel economy of automobiles&quot;</span>,
-     <span class="co"># the subsequent commands for `plot`  tweak the display</span>
-     <span class="co"># check for yourself the effect of removing them</span>
-     <span class="co"># bty = &quot;l&quot; gives L shaped graphical windows (not boxed)</span>
-     <span class="co"># pch = 20 gives full dots rather than empty circles for points</span>
-     <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>) 
-<span class="co">#Line of best linear fit</span>
-<span class="kw">abline</span>(<span class="dt">a =</span> beta_hat[<span class="dv">1</span>], <span class="dt">b =</span> beta_hat[<span class="dv">2</span>])
-
-<span class="co">#Residuals are vertical distance from line to </span>
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)){
-  <span class="kw">segments</span>(<span class="dt">x0 =</span> hp[i], <span class="dt">y0 =</span> fitted[i], <span class="dt">y1 =</span> fitted[i] <span class="op">+</span><span class="st"> </span>res[i], <span class="dt">col =</span> <span class="dv">2</span>)
-}</code></pre>
-<p><img src="LinesRModels_files/figure-html/verticaldist-1.png" width="672" /></p>
-<p>The same scatterplot, this time using <code>ggplot2</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)
-<span class="co">#Create data frame with segments</span>
-vlines &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> hp, <span class="dt">y1 =</span> fitted, <span class="dt">y2 =</span> fitted <span class="op">+</span><span class="st"> </span>res)
-ggg &lt;-<span class="st"> </span><span class="kw">ggplot</span>(Auto, <span class="kw">aes</span>(<span class="dt">x =</span> horsepower, <span class="dt">y =</span> mpg)) <span class="op">+</span><span class="st"> </span>
-<span class="st">        </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">        </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Power of engine (hp)&quot;</span>, 
-             <span class="dt">y =</span> <span class="st">&quot;Fuel economy (miles/US gallon)&quot;</span>, 
-             <span class="dt">title =</span> <span class="st">&quot;Fuel economy of automobiles&quot;</span>) <span class="op">+</span>
-<span class="st">      </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">x =</span> x1, <span class="dt">y =</span> y1, <span class="dt">xend =</span> x1, <span class="dt">yend =</span> y2, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>), 
-                   <span class="dt">data =</span> vlines, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">      </span><span class="kw">geom_abline</span>(<span class="dt">slope =</span> beta_hat[<span class="dv">2</span>], <span class="dt">intercept =</span> beta_hat[<span class="dv">1</span>])
-<span class="kw">print</span>(ggg)</code></pre>
-<p><img src="LinesRModels_files/figure-html/ggplotmtcars-1.png" width="672" /></p>
+<h2><span class="header-section-number">2.4</span> Parameter estimation</h2>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="calculation-of-least-square-estimates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="interpretation-of-the-coefficients.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="the-lm-function.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-hyperplane-of-fitted-values.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -5,7 +5,7 @@ output:
 ---
 # Frisch--Waugh--Lovell theorem
 
-This result dates back to the work of [Frisch, R. and F. Waugh (1933)](https://www.jstor.org/stable/1907330) and of [M. Lovell (1963)](https://doi.org/10.1080/01621459.1963.10480682). The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.
+The FWL theorem has two components: it gives a formula for partitioned OLS estimates and shows that residuals from sequential regressions are identical.
 
 Consider the following linear regression 
 $$
@@ -28,6 +28,22 @@ $$
  \Mmat_{\bX_1}\by = \Mmat_{\bX_1}\bX_2\bbeta_2 + \text{residuals}. \label{eq2} \
 $$
 ```
+
+
+```{block2, type = "rmdcaution"}
+In general, premultiplying both sides of the regression model by a projection matrix alters the model, so you will get different fitted values and residuals. Similarly, the model 
+\[\boldsymbol{Y} = \mX_1 \bbeta_1 + \mX_2\bbeta_2 + \beps\]
+is **not** equivalent to 
+\[
+\mathbf{M}_{\mathbf{X}_1}\boldsymbol{y} = \mathbf{M}_{\mathbf{X}_1}\mX_2 \bbeta_2 + \mathbf{M}_{\mathbf{X}_1}\beps
+\]
+because $\beps$ is not in $\mathbf{M}_\mathbf{X}$. This is true for the orthogonal decomposition
+\[
+\mathbf{M}_{\mathbf{X}_1}\boldsymbol{y} = \mathbf{M}_{\mathbf{X}_1}\mX_2 \hat{\bbeta}_2 + \mathbf{M}_{\mathbf{X}_1}\boldsymbol{e}
+\]
+```
+
+Below is an algebraic proof of the equality of the OLS coefficients. The following material is **optional**. 
 
 ```{proof}
 The easiest proof uses projection matrices, but we demonstrate the result for OLS coefficients directly.
@@ -67,6 +83,10 @@ and plug-in this result back in the equation for the least squares yields
 The proof that the residuals are the same is left as an exercise.
 ```
 
+
+The Frisch--Waugh--Lovell theorem dates back to the work of [Frisch, R. and F. Waugh (1933)](https://www.jstor.org/stable/1907330) and of [M. Lovell (1963)](https://doi.org/10.1080/01621459.1963.10480682).
+
+
 ## Revisiting the interpretation of the parameters of a linear model 
 
 Geometrically, the linear model $\boldsymbol{y} = \mathbf{X} \boldsymbol{\beta} + \text{residuals}$ corresponds to the projection on to the span of $\mathbf{X}$ and gives the line of best fit in that space.
@@ -94,7 +114,7 @@ Adding new variables affects the estimates of the coefficient vector $\boldsymbo
 Oftentimes, the regressors that are part of the design matrix will be categorical variables, which can be ordered or unordered. These are encoded using binary indicators, that is, vectors of zero/ones. In **R**, dummy variables (vectors of class `factor`) are used to indicate categorical variables; the component `levels` allows one to obtain meaningful category names. The function `lm` can deal with `factor` objects. Oftentimes, dummy indicators are cast to numeric vector in data frame. There is a risk that the vector be interpreted as a continuous numeric if the levels are integers (for example, advancement of the state of an illness that is encoded as 1, 2, 3, \ldots). The user can cast columns to factors using the function `as.factor`. Use `is.factor` to check whether the vector is a factor. The functions `class` also reports the encoding and `summary` displays counts of the various factor in place of the usual summary statistics.
 
 
-### Example: seasonal effects
+## Example: seasonal effects
 
 Suppose we are interested in estimating the seasonal model for quarterly data. Since each observation is recorded on one trimester, it could be postulated that the time of the year affect the response. This effect can be built in the design and tested for.
 

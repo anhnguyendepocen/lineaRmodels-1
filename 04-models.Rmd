@@ -16,7 +16,7 @@ Residual plots are useful to diagnostic
 
 ## Confidence and prediction intervals
 
-Recall that in the linear model with IID errors $\beps \sim \mathsf{IID}(0, \sigma^2)$, we have $\mathsf{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1}$. The standard errors for $\hbb$ are then simply the square root of the diagonal entries (which are the variance $\mathsf{Var}(\hat{\beta}_j)$ for $j=1, \ldots, p$. Confidence intervals for the coefficients are given by $\hat{\beta}_i \pm t_{n-p}({0.025})\mathsf{se}(\hat{\beta}_i)$.
+In the linear model with IID errors $\beps \sim \mathsf{IID}(0, \sigma^2)$, we have $\mathsf{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1}$. The standard errors for $\hbb$ are then simply the square root of the diagonal entries (which are the variance $\mathsf{Var}(\hat{\beta}_j)$ for $j=1, \ldots, p$. Confidence intervals for the coefficients are given by $\hat{\beta}_i \pm t_{n-p}({0.025})\mathsf{se}(\hat{\beta}_i)$.
 
 We can also draw intervals around the regression line by considering combinations $\mathbf{x} = (1, \texttt{mpg})$ for different values of $\texttt{mpg}$ as illustrated below. The reasoning is similar, except that we now obtain the interval for a function of $\widehat{\boldsymbol{\beta}}$. For each new vector of regressors $\mathbf{x}^i \equiv \mathbf{c}$,  we get new fitted values $\hat{y}^i= \mathbf{x}^i\widehat{\boldsymbol{\beta}}$ whose variance is, by the delta-method, given by $\mathsf{Var}(y^i)={\sigma^2}\mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i$. We replace $\sigma^2$ by the usual estimator $s^2$ and thus the pointwise confidence interval is given by the usual Student-$t$ test statistics, with this time 
 \[\hat{y}^i \pm t_{n-p}({0.025})\mathsf{se}(\hat{y}^i) =  \mathbf{x}^i\widehat{\boldsymbol{\beta}} \pm t_{n-p}({0.025})\sqrt{s^2\mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i}.\]
@@ -43,13 +43,20 @@ Sigma <- vcov(summary(ols))
 isTRUE(all.equal(Sigma, s2 * solve(crossprod(X)), check.attributes = FALSE))
 #Standard error of estimates
 std_err <- sqrt(diag(Sigma))
-#Projection matrix
-Hmat <- X %*% solve(crossprod(X)) %*% t(X)
-#Diagonal elements (aka leverage points)
-leverage <- diag(Hmat)
+#Extract leverage values h_ii
+leverage <- as.vector(hatvalues(ols))
+# Compare with manual calculation from diagonal matrix
+leverage_man <- rep(0, n)
+XtXinv <- solve(crossprod(X))
+for(i in 1:n){
+  leverage_man[i] <- X[i,] %*% XtXinv %*% X[i,]
+}
+isTRUE(all.equal(leverage, leverage_man))
 
 # Plot data set
-plot(mpg ~ wt, data = mtcars, xlab = "weight (1000 lbs)", ylab = "Fuel consumption (in miles/US gallon)", 
+plot(mpg ~ wt, data = mtcars, 
+     xlab = "weight (1000 lbs)", 
+     ylab = "Fuel consumption (in miles/US gallon)", 
      main = "Fuel consumption of automobiles, 1974 Motor Trend", 
      bty = "l", pch = 20, ylim = c(0, 35), xlim = c(0, 6))
 abline(beta_hat, col = 'red', lwd = 2)
@@ -69,18 +76,25 @@ lines(xstar, ystar_confint[ ,3], lty = 2, col = 'green')
 ystar_predint <- predict(ols, newdata = data.frame(wt = xstar), interval = 'prediction')
 lines(xstar, ystar_predint[ ,2], lty = 2, col = 'blue')
 lines(xstar, ystar_predint[ ,3], lty = 2, col = 'blue')
+legend(x = "topright", col = c("red", "green","blue"), lty = c(1, 2, 2), legend = c("Prediction","Conf. inter.","Pred. inter."), bty = "n")
+```
 
+The function `predict` takes as imput a `data.frame` object containing the same column names as those of the fitted `lm` object. The names can be obtained from `names(ols$model)[-1]`.
+
+As usual, we can verify we get the same result if we computed the intervals manually.
+
+```{r confint_man, eval = FALSE}
 #Manually (see class notes)
 confint_xstar <- tqu * sqrt(s2 * apply(cbind(1, xstar), 1, function(cvec){t(cvec) %*% solve(crossprod(X)) %*% cvec}))
 fitted_xstar <- cbind(1, xstar) %*% cbind(beta_hat)
 lines(xstar,  fitted_xstar - confint_xstar, lty = 2, col = 'green')
 lines(xstar,  fitted_xstar + confint_xstar, lty = 2, col = 'green')
-legend(x = "topright", col = c("red", "green","blue"), lty = c(1, 2, 2), legend = c("Prediction","Conf. inter.","Pred. inter."), bty = "n")
+
 ```
 
 ## Residuals
 
-There are many types of residuals, which we cover in term. The model residuals are simply $\bs{e}=\Mmat_{\mX}\bs{y}$, which can be obtained through `resid` for `lm` objects.
+There are many types of residuals. The model residuals are simply $\bs{e}=\Mmat_{\mX}\bs{y}$, which can be obtained through `resid` for `lm` objects.
 We can verify numerically that $\hat{\by} \perp \bs{e}$ and verify that $\mX^\top\bs{e}=\bs{0}_p$.
 
 ```{r}
@@ -94,7 +108,7 @@ isTRUE(all.equal(c(e %*% yhat), 0))
 isTRUE(all.equal(c(e %*% X), rep(0, 2)))
 ```
 
-In the sequel, we will look at calculation of various variants of the residuals. The first is the standardized residuals, also internally studentized residuals. These are obtained by scaling each $\bs{e}/s$ by the invidual variance terms $1-h_{ii}$ to make them homoscedastic.
+In the sequel, we will look at calculation of various variants of the residuals. The first are the standardized residuals, also internally studentized residuals. These are defined as $r_i = e_i/\{s(1-h_{ii})^{1/2}\}$, i.e. each residual $e_i$ is scaled by its individual variance to create  homoscedastic residuals $r_i$.
 
 ```{r qties}    
 #we divide so they have the same variance - but not independent
@@ -242,7 +256,7 @@ Note that it is difficult to detect violation of the normality assumption becaus
 
 ### Monte Carlo methods for confidence intervals
 
-This section is **optional material**. It contains advanced material that can be skipped upon first reading.
+This section contains **optional** material. It contains advanced material that can be skipped upon first reading.
 
 An alternative to asymptotic theory (which may be unreliable in small samples) is to rely on simulations.  The idea is to obtain a statistic whose distribution is (at least asymptotically) pivotal, i.e. fully specified under the null hypothesis. One can simulate samples from the null distribution $B$ times and compare the resulting data points with the test statistic calculated from the observed sample. This method, which is termed bootstrap test, is particularly powerful when we want to obtain critical values for test statistics, like e.g. $\max(|t_i|)$, whose distribution is untractable. 
 
@@ -340,7 +354,7 @@ matplot(x = qt((1:n)/(n+1), df = n - p -1), y = t(env$overall),
 
 ### Parametric bootstrap confidence intervals using the QR decomposition
 
-This section is **optional material**.
+This section contains **optional** material.
 
 There is an alternative way to obtain pointwise (and even simultaneous) confidence intervals for the QR decomposition.
 Under the null hypothesis: $\boldsymbol{\varepsilon} \sim \mathcal{N}_{n}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)$, we get $\tilde{\boldsymbol{\varepsilon}} \sim \mathcal{N}_{n-p}(\mathbf{0}_n, \sigma^2\mathbf{I}_n)$ and therefore $(\tilde{\boldsymbol{\varepsilon}}- \overline{\boldsymbol{\tilde{\varepsilon}}})/\mathrm{sd}(\boldsymbol{\tilde{\varepsilon}}) \stackrel{\cdot}{\sim} \mathcal{N}_{n-p}(\mathbf{0}_n, \mathbf{I}_n)$ is asymptotically pivotal. A pivotal quantity has a fully specified distribution.
@@ -482,7 +496,7 @@ The multiple $\mathrm{R}^2_c$ goes up the roof, but makes no sense here because 
 If you remove the intercept in a `lm` object using `-1`, the value returned by `summary` for the coefficient `Multiple R-squared` is the $R^2$, not $R^2_c$!
 ```
 
-We now produce the quantile-quantile plots using the results described in \@ref(qqplot).
+We now produce the quantile-quantile plots using the results described in Section \@ref(qqplot).
 
 ```{r confints}
 Q <- t(qr.Q(qr(Xmat1), complete = TRUE))
