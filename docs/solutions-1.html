@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -286,73 +286,73 @@ aggressive; the two grades are then added together to produce the Gleason score.
 <li><code>lpsa</code>: log of prostate specific antigen (PSA), a concentration measured in ng/m</li>
 </ul>
 <p>To load the data set, use</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1"><span class="co">#Install package if you get an error message</span></a>
-<a class="sourceLine" id="cb61-2" title="2"><span class="co">#install.packages(&quot;ElemStatLearn&quot;)</span></a>
-<a class="sourceLine" id="cb61-3" title="3"><span class="kw">data</span>(prostate, <span class="dt">package =</span> <span class="st">&quot;ElemStatLearn&quot;</span>)</a>
-<a class="sourceLine" id="cb61-4" title="4">?ElemStatLearn<span class="op">::</span>prostate</a>
-<a class="sourceLine" id="cb61-5" title="5"><span class="kw">attach</span>(prostate) </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Install package if you get an error message</span>
+<span class="co">#install.packages(&quot;ElemStatLearn&quot;)</span>
+<span class="kw">data</span>(prostate, <span class="dt">package =</span> <span class="st">&quot;ElemStatLearn&quot;</span>)
+?ElemStatLearn<span class="op">::</span>prostate
+<span class="kw">attach</span>(prostate) </code></pre>
 <p>The command <code>attach</code> allows you to access column (variables) without using <code>$</code> by adding the columns of the data frame to your work environment. <strong>Always</strong> detach the data once you are done with your analysis to avoid overriding or hidding variables.</p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Look at summaries of <code>lbph</code>. What likely value was imputed in places of zeros in <code>lbph</code> (before taking the logarithm)?</li>
 </ol>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1">bph &lt;-<span class="st"> </span><span class="kw">exp</span>(lbph) </a>
-<a class="sourceLine" id="cb62-2" title="2"><span class="kw">head</span>(bph) <span class="co">#look up first elements</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">bph &lt;-<span class="st"> </span><span class="kw">exp</span>(lbph) 
+<span class="kw">head</span>(bph) <span class="co">#look up first elements</span></code></pre>
 <pre><code>## [1] 0.25 0.25 0.25 0.25 0.25 0.25</code></pre>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1"><span class="kw">min</span>(bph) <span class="co">#return minimum</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">min</span>(bph) <span class="co">#return minimum</span></code></pre>
 <pre><code>## [1] 0.25</code></pre>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1"><span class="kw">hist</span>(bph, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;benign prostatic hyperplasia&quot;</span>)</a>
-<a class="sourceLine" id="cb66-2" title="2"><span class="kw">rug</span>(bph) </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(bph, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;benign prostatic hyperplasia&quot;</span>)
+<span class="kw">rug</span>(bph) </code></pre>
 <p><img src="LinesRModels_files/figure-html/prostate_question_b2-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" title="1"><span class="co">#histogram, with lines below where the observations are</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#histogram, with lines below where the observations are</span></code></pre>
 <p>It seems likely that in order to take a logarithm, zeros were changed to 0.25. As such, we have to be careful with the interpretation of this coefficient if we include <code>bph</code> in the regression.</p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Produce a plot of the pair of variables <code>lcavol</code> and <code>lpsa</code> on the log and on the original scale. Comment on the relationship between <code>lcavol</code> and <code>lpsa</code>.</li>
 </ol>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="co">#graphical parameters: two graphs per window</span></a>
-<a class="sourceLine" id="cb68-2" title="2"><span class="co">#Function plot is plot(x = , y = ) or plot(y ~ x)</span></a>
-<a class="sourceLine" id="cb68-3" title="3"><span class="co">#this works for vectors! (error message otherwise)</span></a>
-<a class="sourceLine" id="cb68-4" title="4"><span class="kw">plot</span>(<span class="kw">exp</span>(lcavol) <span class="op">~</span><span class="st"> </span><span class="kw">exp</span>(lpsa),</a>
-<a class="sourceLine" id="cb68-5" title="5"><span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc)&quot;</span>, <span class="co">#y-axis label</span></a>
-<a class="sourceLine" id="cb68-6" title="6"><span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="co">#x-axis label</span></a>
-<a class="sourceLine" id="cb68-7" title="7"><span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>, <span class="co">#title</span></a>
-<a class="sourceLine" id="cb68-8" title="8"><span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>) <span class="co">#bty: remove box, only x-y axis</span></a>
-<a class="sourceLine" id="cb68-9" title="9"><span class="co">#pch: type of plotting symbol (small filled circle)</span></a>
-<a class="sourceLine" id="cb68-10" title="10"><span class="kw">plot</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa,</a>
-<a class="sourceLine" id="cb68-11" title="11"><span class="dt">ylab =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,</a>
-<a class="sourceLine" id="cb68-12" title="12"><span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, </a>
-<a class="sourceLine" id="cb68-13" title="13"><span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,</a>
-<a class="sourceLine" id="cb68-14" title="14"><span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb68-15" title="15"></a>
-<a class="sourceLine" id="cb68-16" title="16"><span class="kw">hist</span>(<span class="kw">exp</span>(lcavol), <span class="dt">xlab =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>)</a>
-<a class="sourceLine" id="cb68-17" title="17"><span class="kw">rug</span>(<span class="kw">exp</span>(lcavol))</a>
-<a class="sourceLine" id="cb68-18" title="18"><span class="kw">hist</span>(<span class="kw">exp</span>(lpsa), <span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>)</a>
-<a class="sourceLine" id="cb68-19" title="19"><span class="kw">rug</span>(<span class="kw">exp</span>(lpsa))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="co">#graphical parameters: two graphs per window</span>
+<span class="co">#Function plot is plot(x = , y = ) or plot(y ~ x)</span>
+<span class="co">#this works for vectors! (error message otherwise)</span>
+<span class="kw">plot</span>(<span class="kw">exp</span>(lcavol) <span class="op">~</span><span class="st"> </span><span class="kw">exp</span>(lpsa),
+<span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc)&quot;</span>, <span class="co">#y-axis label</span>
+<span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="co">#x-axis label</span>
+<span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>, <span class="co">#title</span>
+<span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>) <span class="co">#bty: remove box, only x-y axis</span>
+<span class="co">#pch: type of plotting symbol (small filled circle)</span>
+<span class="kw">plot</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa,
+<span class="dt">ylab =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
+<span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, 
+<span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,
+<span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)
+
+<span class="kw">hist</span>(<span class="kw">exp</span>(lcavol), <span class="dt">xlab =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>)
+<span class="kw">rug</span>(<span class="kw">exp</span>(lcavol))
+<span class="kw">hist</span>(<span class="kw">exp</span>(lpsa), <span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>)
+<span class="kw">rug</span>(<span class="kw">exp</span>(lpsa))</code></pre>
 <p>With <code>ggplot2</code>, the same graphs</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb69-2" title="2"></a>
-<a class="sourceLine" id="cb69-3" title="3"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb69-5" title="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,</a>
-<a class="sourceLine" id="cb69-6" title="6">       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,</a>
-<a class="sourceLine" id="cb69-7" title="7">       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+
+<span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,
+       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
+       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> <span class="kw">exp</span>(lcavol), <span class="dt">x =</span> <span class="kw">exp</span>(lpsa))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb70-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb70-3" title="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>,</a>
-<a class="sourceLine" id="cb70-4" title="4">       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,</a>
-<a class="sourceLine" id="cb70-5" title="5">       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> <span class="kw">exp</span>(lcavol), <span class="dt">x =</span> <span class="kw">exp</span>(lpsa))) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>,
+       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,
+       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-2.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">exp</span>(lcavol))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb71-2" title="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">30</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_rug</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb71-3" title="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,</a>
-<a class="sourceLine" id="cb71-4" title="4">       <span class="dt">title =</span> <span class="st">&quot;Histogram&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">exp</span>(lcavol))) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">30</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_rug</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,
+       <span class="dt">title =</span> <span class="st">&quot;Histogram&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-3.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>We can see that both variables are positive and positively skewed, so a log transform may lead to a more linear relationship, as indicated by the pairs plot. A multiplicative model on the original scale is thus reasonable.</p>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> of the parameters, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span> using the formulae given in class.</li>
 </ol>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate)</a>
-<a class="sourceLine" id="cb72-2" title="2"><span class="kw">summary</span>(fit)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate)
+<span class="kw">summary</span>(fit)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = lcavol ~ lpsa, data = prostate)
@@ -371,49 +371,49 @@ aggressive; the two grades are then added together to produce the Gleason score.
 ## Residual standard error: 0.8041 on 95 degrees of freedom
 ## Multiple R-squared:  0.5394, Adjusted R-squared:  0.5346 
 ## F-statistic: 111.3 on 1 and 95 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="co">#Create response vector and design matrix</span></a>
-<a class="sourceLine" id="cb74-2" title="2">y &lt;-<span class="st"> </span>lcavol</a>
-<a class="sourceLine" id="cb74-3" title="3">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, lpsa)</a>
-<a class="sourceLine" id="cb74-4" title="4"><span class="co">#Create function to compute coefs &quot;by hand&quot;</span></a>
-<a class="sourceLine" id="cb74-5" title="5">coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){</a>
-<a class="sourceLine" id="cb74-6" title="6">  <span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(x), <span class="kw">crossprod</span>(x, y)))</a>
-<a class="sourceLine" id="cb74-7" title="7">}</a>
-<a class="sourceLine" id="cb74-8" title="8"><span class="co"># Compute coefficients, fitted values and residuals</span></a>
-<a class="sourceLine" id="cb74-9" title="9">beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> lcavol)</a>
-<a class="sourceLine" id="cb74-10" title="10">yhat &lt;-<span class="st"> </span><span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>beta_hat)</a>
-<a class="sourceLine" id="cb74-11" title="11">e &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span>yhat</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create response vector and design matrix</span>
+y &lt;-<span class="st"> </span>lcavol
+X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, lpsa)
+<span class="co">#Create function to compute coefs &quot;by hand&quot;</span>
+coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){
+  <span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(x), <span class="kw">crossprod</span>(x, y)))
+}
+<span class="co"># Compute coefficients, fitted values and residuals</span>
+beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> lcavol)
+yhat &lt;-<span class="st"> </span><span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>beta_hat)
+e &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span>yhat</code></pre>
 <p>The function <code>lm</code> fits a linear model by least squares to a dataset. The function <code>summary</code> will return coefficient estimates, standard errors and various other statistics and print them in the console.</p>
 <p>The formula for <code>lm</code> must be of the form <code>y ~</code>, and any combination of the variables appearing on the right hand side of the <code>~</code> will be added as new columns of the design matrix. By default, the latter includes a column of ones. To remove it, use <code>+0</code> or <code>-1</code>. If you have two covariates <code>x1</code> and <code>x2</code>, the model <code>x1+x2</code> will have for <span class="math inline">\(i\)</span>th row <span class="math inline">\((1, x_{i1}, x_{i2})\)</span>, while the model <code>x1+x2+x1:x2</code><span class="math inline">\(\equiv\)</span><code>x1*x2</code> will include an <em>interaction</em> term <code>x1:x2</code>. The latter just means product, so the <span class="math inline">\(i\)</span>th row of the design matrix would be <span class="math inline">\((1, x_{i1}, x_{i2}, x_{i1}x_{i2})\)</span>. <strong>R</strong> will drop any collinear vectors, warn you and report <code>NA</code> in the summary output.</p>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Compare the quantities you obtained in the last question with the output of the function <code>lm</code>.</li>
 </ol>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1">beta_hat <span class="co"># equivalent to print(beta_hat)</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">beta_hat <span class="co"># equivalent to print(beta_hat)</span></code></pre>
 <pre><code>## [1] -0.5085796  0.7499189</code></pre>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1"><span class="kw">coef</span>(fit) <span class="co"># coefficients from object of class `lm`</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(fit) <span class="co"># coefficients from object of class `lm`</span></code></pre>
 <pre><code>## (Intercept)        lpsa 
 ##  -0.5085796   0.7499189</code></pre>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(beta_hat, <span class="kw">coef</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(beta_hat, <span class="kw">coef</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" title="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(yhat), <span class="kw">fitted</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(yhat), <span class="kw">fitted</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(e, <span class="kw">resid</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(e, <span class="kw">resid</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>Add the fitted regression line to the scatterplot of lcavol against lpsa .</li>
 </ol>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb85-2" title="2"><span class="kw">plot</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate,</a>
-<a class="sourceLine" id="cb85-3" title="3">  <span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc), log scale&quot;</span>,</a>
-<a class="sourceLine" id="cb85-4" title="4">  <span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, </a>
-<a class="sourceLine" id="cb85-5" title="5">  <span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,</a>
-<a class="sourceLine" id="cb85-6" title="6">  <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb85-7" title="7"><span class="kw">abline</span>(fit, <span class="dt">lwd =</span> <span class="dv">2</span>) <span class="co">#simply add regression line, lwd is line width</span></a></code></pre></div>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb86-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb86-3" title="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,</a>
-<a class="sourceLine" id="cb86-4" title="4">       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,</a>
-<a class="sourceLine" id="cb86-5" title="5">       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb86-6" title="6"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw">plot</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate,
+  <span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc), log scale&quot;</span>,
+  <span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, 
+  <span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,
+  <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)
+<span class="kw">abline</span>(fit, <span class="dt">lwd =</span> <span class="dv">2</span>) <span class="co">#simply add regression line, lwd is line width</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,
+       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
+       <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/question_eggplot2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <ol start="7" style="list-style-type: lower-alpha">
 <li>Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.</li>
@@ -426,31 +426,31 @@ For example, an increase of the PSA level from 5.25 ng/mll to 6.15 ng/mll leads 
 <ol start="8" style="list-style-type: lower-alpha">
 <li>Using the results of Exercise 4.2, obtain the orthogonal projection matrix <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> using a SVD decomposition (<code>svd</code>). Check your output.</li>
 </ol>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1"><span class="co">#Hat matrix</span></a>
-<a class="sourceLine" id="cb87-2" title="2">Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
-<a class="sourceLine" id="cb87-3" title="3"><span class="co">#SVD decomposition of X</span></a>
-<a class="sourceLine" id="cb87-4" title="4">svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)</a>
-<a class="sourceLine" id="cb87-5" title="5"><span class="co">#OLS coefficients</span></a>
-<a class="sourceLine" id="cb87-6" title="6">beta_hat_svd &lt;-<span class="st"> </span>svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st"> </span>(<span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>lcavol <span class="op">/</span><span class="st"> </span>svdX<span class="op">$</span>d)</a>
-<a class="sourceLine" id="cb87-7" title="7">Hmat_svd &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)</a>
-<a class="sourceLine" id="cb87-8" title="8"><span class="co">#Check that both quantities are equal</span></a>
-<a class="sourceLine" id="cb87-9" title="9"><span class="kw">all.equal</span>(Hmat, Hmat_svd, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>) </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Hat matrix</span>
+Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)
+<span class="co">#SVD decomposition of X</span>
+svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)
+<span class="co">#OLS coefficients</span>
+beta_hat_svd &lt;-<span class="st"> </span>svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st"> </span>(<span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>lcavol <span class="op">/</span><span class="st"> </span>svdX<span class="op">$</span>d)
+Hmat_svd &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)
+<span class="co">#Check that both quantities are equal</span>
+<span class="kw">all.equal</span>(Hmat, Hmat_svd, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>) </code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1"><span class="co">#use check.attributes = FALSE </span></a>
-<a class="sourceLine" id="cb89-2" title="2"><span class="co">#if you want to compare only the values</span></a>
-<a class="sourceLine" id="cb89-3" title="3"><span class="co">#and not e.g. the column names</span></a>
-<a class="sourceLine" id="cb89-4" title="4"><span class="kw">all.equal</span>(<span class="kw">c</span>(beta_hat_svd), beta_hat)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#use check.attributes = FALSE </span>
+<span class="co">#if you want to compare only the values</span>
+<span class="co">#and not e.g. the column names</span>
+<span class="kw">all.equal</span>(<span class="kw">c</span>(beta_hat_svd), beta_hat)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <ol style="list-style-type: lower-roman">
 <li>Compute the <span class="math inline">\(R^2_c\)</span> coefficient and compare with the one in summary output of the <code>lm</code> function. What
 can you say about the explanatory power of the covariate <code>lpsa</code> ?</li>
 </ol>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" title="1">R2c &lt;-<span class="st"> </span><span class="kw">sum</span>((yhat<span class="op">-</span><span class="kw">mean</span>(y))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((y<span class="op">-</span><span class="kw">mean</span>(y))<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb91-2" title="2">R2c_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)<span class="op">$</span>r.squared <span class="co">#this is centered version</span></a>
-<a class="sourceLine" id="cb91-3" title="3"><span class="kw">all.equal</span>(R2c, R2c_lm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">R2c &lt;-<span class="st"> </span><span class="kw">sum</span>((yhat<span class="op">-</span><span class="kw">mean</span>(y))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((y<span class="op">-</span><span class="kw">mean</span>(y))<span class="op">^</span><span class="dv">2</span>)
+R2c_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)<span class="op">$</span>r.squared <span class="co">#this is centered version</span>
+<span class="kw">all.equal</span>(R2c, R2c_lm)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" title="1"><span class="co">#Detach prostate from environment</span></a>
-<a class="sourceLine" id="cb93-2" title="2"><span class="kw">detach</span>(prostate)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Detach prostate from environment</span>
+<span class="kw">detach</span>(prostate)</code></pre>
 <p>The value of <span class="math inline">\(R^2_c\)</span> is about 0.54, so about half the variability can be explained by the model. There is reasonable explanatory power. Note that presence of cancer causes the prostate specific antigens to increase (not the other way around!). A linear model could nevertheless be sensible here if we wished to obtain a non-invasive detector for predicting presence/absence of cancer, assuming the antigen is present in blood samples, but that detection of cancer would require otherwise a biopsy.</p>
 
 </div>

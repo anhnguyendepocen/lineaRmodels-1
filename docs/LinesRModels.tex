@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{version of 2018-11-03}
+    \date{version of 2018-11-06}
 
 \usepackage[mathscr]{eucal}
 \DeclareMathAlphabet{\mathcrl}{U}{rsfs}{m}{n}
@@ -225,10 +225,11 @@
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{lemma}{Lemma}[chapter]
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[chapter]
 \newtheorem{corollary}{Corollary}[chapter]
 \newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{conjecture}{Conjecture}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
 \theoremstyle{definition}
@@ -1276,7 +1277,11 @@ The following 3D depiction hopefully captures this better and shows the
 fitted hyperplane along with the line on which all the (\(x_i, z_i\))
 observations lie.
 
-\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/hyperplane-1} \end{center}
+\begin{verbatim}
+## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+\end{verbatim}
+
+\hypertarget{rgl36727}{}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -2148,20 +2153,42 @@ unless the new variables are orthogonal to the existing lot.
 \section{Factors}\label{factors}}
 
 Oftentimes, the regressors that are part of the design matrix will be
-categorical variables, which can be ordered or unordered. These are
-encoded using binary indicators, that is, vectors of zero/ones. In
-\textbf{R}, dummy variables (vectors of class \texttt{factor}) are used
-to indicate categorical variables; the component \texttt{levels} allows
-one to obtain meaningful category names. The function \texttt{lm} can
-deal with \texttt{factor} objects. Oftentimes, dummy indicators are cast
-to numeric vector in data frame. There is a risk that the vector be
-interpreted as a continuous numeric if the levels are integers (for
-example, advancement of the state of an illness that is encoded as 1, 2,
-3, \ldots). The user can cast columns to factors using the function
-\texttt{as.factor}. Use \texttt{is.factor} to check whether the vector
-is a factor. The functions \texttt{class} also reports the encoding and
-\texttt{summary} displays counts of the various factor in place of the
-usual summary statistics.
+categorical variables, which can be ordered or unordered. In the design
+matrix, these will appear as matrix of binary indicators. In \textbf{R},
+dummy variables (vectors of class \texttt{factor}) are used to indicate
+categorical variables, which are often encoded as strings or (perhaps
+worse) integers. The function \texttt{read.table} has an argument,
+\texttt{stringsAsFactors}, that will automatically cast strings to
+factors. Oftentimes, dummy indicators are encoded as integer vectors in
+data frames. There is a risk that the vector be interpreted as a
+continuous numeric if the levels are integers (for example, advancement
+of the state of an illness that is encoded as 1, 2, 3, \ldots).
+
+Useful functions to deal with factors include
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{as.factor}: casts column vectors to factors;\\
+\item
+  \texttt{is.factor}: to check whether the vector is a factor;
+\item
+  \texttt{class}: reports the encoding (\texttt{factor} for factor
+  objects);
+\item
+  \texttt{summary}: displays counts of the various levels of a factor in
+  place of the usual summary statistics;
+\item
+  \texttt{levels}: the names of the different levels of a factor; can be
+  used to replace existing category names by more meaningful ones;
+\end{itemize}
+
+The function \texttt{lm} knows how to deal with \texttt{factor} objects
+and will automatically transform it to a matrix of binary indiactors.
+For identifiability constraints, one level of the factor must be dropped
+and the convention in \textbf{R} is that the categories whose
+\texttt{levels} is first in alphabetical order is used as baseline. See
+\texttt{?factor} for more details.
 
 \hypertarget{example-seasonal-effects}{%
 \section{Example: seasonal effects}\label{example-seasonal-effects}}
@@ -3226,7 +3253,7 @@ computationally costly for small datasets.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.5824582
+## [1] 0.5724572
 \end{verbatim}
 
 \begin{Shaded}
@@ -3310,12 +3337,12 @@ order) is dropped and the intercept becomes the mean of this level.
 \end{Shaded}
 
 \begin{verbatim}
-##        y               x             group          
-##  Min.   :107.0   Min.   : 78.00   Length:20         
-##  1st Qu.:122.0   1st Qu.: 93.75   Class :character  
-##  Median :140.0   Median :100.50   Mode  :character  
-##  Mean   :142.4   Mean   :100.90                     
-##  3rd Qu.:156.5   3rd Qu.:109.25                     
+##        y               x                 group   
+##  Min.   :107.0   Min.   : 78.00   control   :10  
+##  1st Qu.:122.0   1st Qu.: 93.75   thiouracil:10  
+##  Median :140.0   Median :100.50                  
+##  Mean   :142.4   Mean   :100.90                  
+##  3rd Qu.:156.5   3rd Qu.:109.25                  
 ##  Max.   :185.0   Max.   :123.00
 \end{verbatim}
 
@@ -3879,11 +3906,11 @@ earnings}\label{exercise-7.4---determinants-of-earnings}}
 ## -2.10953 -0.25249  0.02989  0.28176  1.27908 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value     Pr(>|t|)    
-## (Intercept) 2.200103   0.055375  39.731      < 2e-16 ***
-## education   0.026589   0.004673   5.690 0.0000000138 ***
-## genderMale  0.256471   0.014771  17.363      < 2e-16 ***
-## pseduc      0.037459   0.007322   5.116 0.0000003308 ***
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 2.200103   0.055375  39.731  < 2e-16 ***
+## education   0.026589   0.004673   5.690 1.38e-08 ***
+## genderMale  0.256471   0.014771  17.363  < 2e-16 ***
+## pseduc      0.037459   0.007322   5.116 3.31e-07 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -4111,10 +4138,10 @@ The function \texttt{anova} outputs the following:
 ## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value      Pr(>F)    
-## commerce   1 50.066  50.066 35.0438 0.000001985 ***
-## tradition  1  6.074   6.074  4.2514     0.04828 *  
-## Residuals 29 41.431   1.429                        
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## commerce   1 50.066  50.066 35.0438 1.985e-06 ***
+## tradition  1  6.074   6.074  4.2514   0.04828 *  
+## Residuals 29 41.431   1.429                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
@@ -4161,10 +4188,10 @@ We thus obtain a different output if we specify instead
 ## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value     Pr(>F)    
-## tradition  1 19.673  19.673  13.770   0.000872 ***
-## commerce   1 36.467  36.467  25.525 0.00002194 ***
-## Residuals 29 41.431   1.429                       
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## tradition  1 19.673  19.673  13.770  0.000872 ***
+## commerce   1 36.467  36.467  25.525 2.194e-05 ***
+## Residuals 29 41.431   1.429                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
@@ -4198,10 +4225,10 @@ with \(\beta_2=0\) or \(\beta_1=0\) is rejected at significance level
 ## 
 ## Model:
 ## intensity ~ commerce + tradition
-##           Df Sum of Sq    RSS    AIC F value     Pr(>F)    
-## <none>                 41.431 14.266                       
-## commerce   1    36.467 77.898 32.469 25.5252 0.00002194 ***
-## tradition  1     6.074 47.505 16.643  4.2514    0.04828 *  
+##           Df Sum of Sq    RSS    AIC F value    Pr(>F)    
+## <none>                 41.431 14.266                      
+## commerce   1    36.467 77.898 32.469 25.5252 2.194e-05 ***
+## tradition  1     6.074 47.505 16.643  4.2514   0.04828 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
@@ -4244,9 +4271,9 @@ lower.
 ## Fit: lm(formula = intensity ~ commerce + tradition, data = Chirot)
 ## 
 ## Linear Hypotheses:
-##        Estimate Std. Error t value  Pr(>|t|)    
-## 1 == 0  0.09522    0.01885   5.052 0.0000437 ***
-## 2 == 0  0.11992    0.05816   2.062    0.0911 .  
+##        Estimate Std. Error t value Pr(>|t|)    
+## 1 == 0  0.09522    0.01885   5.052 4.37e-05 ***
+## 2 == 0  0.11992    0.05816   2.062   0.0911 .  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## (Adjusted p values reported -- single-step method)
@@ -4268,8 +4295,8 @@ lower.
 ## 2 == 0  0.11992
 ## 
 ## Global Test:
-##       F DF1 DF2      Pr(>F)
-## 1 19.65   2  29 0.000004038
+##       F DF1 DF2    Pr(>F)
+## 1 19.65   2  29 4.038e-06
 \end{verbatim}
 
 \begin{Shaded}
@@ -4289,9 +4316,9 @@ lower.
 ## Model 1: restricted model
 ## Model 2: intensity ~ commerce + tradition
 ## 
-##   Res.Df    RSS Df Sum of Sq      F      Pr(>F)    
-## 1     31 97.571                                    
-## 2     29 41.431  2     56.14 19.648 0.000004038 ***
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1     31 97.571                                  
+## 2     29 41.431  2     56.14 19.648 4.038e-06 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
@@ -4311,9 +4338,9 @@ syntax is slightly different, but the output is exactly the same.
 ## 
 ## Model 1: intensity ~ 1
 ## Model 2: intensity ~ commerce + tradition
-##   Res.Df    RSS Df Sum of Sq      F      Pr(>F)    
-## 1     31 97.571                                    
-## 2     29 41.431  2     56.14 19.648 0.000004038 ***
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1     31 97.571                                  
+## 2     29 41.431  2     56.14 19.648 4.038e-06 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}

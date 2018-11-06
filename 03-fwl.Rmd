@@ -106,7 +106,18 @@ Adding new variables affects the estimates of the coefficient vector $\boldsymbo
 
 ## Factors
 
-Oftentimes, the regressors that are part of the design matrix will be categorical variables, which can be ordered or unordered. These are encoded using binary indicators, that is, vectors of zero/ones. In **R**, dummy variables (vectors of class `factor`) are used to indicate categorical variables; the component `levels` allows one to obtain meaningful category names. The function `lm` can deal with `factor` objects. Oftentimes, dummy indicators are cast to numeric vector in data frame. There is a risk that the vector be interpreted as a continuous numeric if the levels are integers (for example, advancement of the state of an illness that is encoded as 1, 2, 3, \ldots). The user can cast columns to factors using the function `as.factor`. Use `is.factor` to check whether the vector is a factor. The functions `class` also reports the encoding and `summary` displays counts of the various factor in place of the usual summary statistics.
+Oftentimes, the regressors that are part of the design matrix will be categorical variables, which can be ordered or unordered. In the design matrix, these will appear as matrix of binary indicators. In **R**, dummy variables (vectors of class `factor`) are used to indicate categorical variables, which are often encoded as strings or (perhaps worse) integers. The function `read.table` has an argument, `stringsAsFactors`, that will automatically cast strings to factors. Oftentimes, dummy indicators are encoded as integer vectors in data frames. There is a risk that the vector be interpreted as a continuous numeric if the levels are integers (for example, advancement of the state of an illness that is encoded as 1, 2, 3, \ldots). 
+
+Useful functions to deal with factors include 
+
+- `as.factor`: casts column vectors to factors;  
+- `is.factor`: to check whether the vector is a factor;
+- `class`: reports the encoding (`factor` for factor objects);
+- `summary`: displays counts of the various levels of a factor in place of the usual summary statistics;
+- `levels`: the names of the different levels of a factor; can be used to replace existing category names by more meaningful ones;
+
+
+The function `lm` knows how to deal with `factor` objects and will automatically transform it to a matrix of binary indiactors. For identifiability constraints, one level of the factor must be dropped and the convention in **R** is that the categories whose `levels` is first in alphabetical order is used as baseline. See `?factor` for more details.
 
 
 ## Example: seasonal effects
