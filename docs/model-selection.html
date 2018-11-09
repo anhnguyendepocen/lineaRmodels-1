@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="calculation-of-least-square-estimates.html">
-<link rel="next" href="the-lm-function.html">
+<link rel="prev" href="hypothesis-testing.html">
+<link rel="next" href="example-price-of-diamonds.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -240,19 +240,26 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="interpretation-of-the-coefficients" class="section level2">
-<h2><span class="header-section-number">2.2</span> Interpretation of the coefficients</h2>
-<p>If the regression model is
-<span class="math display">\[y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,\]</span> the interpretation of <span class="math inline">\(\beta_1\)</span> in the linear model is as follows: a unit increase in <span class="math inline">\(x\)</span> leads to <span class="math inline">\(\beta_1\)</span> units increase in <span class="math inline">\(y\)</span>, everything else (i.e., <span class="math inline">\(\mathrm{x}_{i2}\)</span>) being held constant.</p>
-<p>For the <code>Auto</code> regression above, an increase of the power of the engine by one horsepower leads to an average decrease of 0.16 miles per US gallon in distance covered by the car. We could easily get an equivalent statement in terms of increase of the car fuel consumption for a given distance.</p>
+<div id="model-selection" class="section level1">
+<h1><span class="header-section-number">7</span> Model selection</h1>
+<p>My (personal) general strategy for model selection, given the tools covered in MATH 341, is the following:</p>
+<ol style="list-style-type: decimal">
+<li>Start with a complex model (all additive terms, say). Look at the individual Wald tests for the marginal significance of the coefficients.</li>
+<li>Try to simplify the full model using an ANOVA, potentially dropping multiple terms at once. This preserves power (recall the potential bias in the estimate of RSS in the denominator) and reduces the multiple testing problem that inflates Type I errors (reject the null more than <span class="math inline">\(\alpha\%\)</span> of the time when you shouldn’t).</li>
+<li>Use <code>drop1</code> to further reduce the model.</li>
+<li>Try adding interactions between variables, if any.</li>
+<li>Select the best forward selection / backward elimination models and some additional ones (that have a nice interpretation, have low information criterion values). Compare them in terms of prediction and goodness-of-fit.</li>
+</ol>
+<p>Once you have a final model, you can interpret coefficients. Model selection <strong>invalides</strong> classical inference, so report coefficients and standard errors as is without overinterpreting the <span class="math inline">\(P\)</span>-values from <code>summary</code>.</p>
+<p>The best tool to assess your model is the use of cross-validation. If there is no temporal structure, you can use e.g. five-fold cross validation to find the best fitting model. Criteria such as BIC (more stringent than AIC) can also be useful.</p> 
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="calculation-of-least-square-estimates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="the-lm-function.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="hypothesis-testing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="example-price-of-diamonds.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

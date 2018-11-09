@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="calculation-of-least-square-estimates.html">
-<link rel="next" href="the-lm-function.html">
+<link rel="prev" href="one-way-anova.html">
+<link rel="next" href="hypothesis-testing.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -240,19 +240,210 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="interpretation-of-the-coefficients" class="section level2">
-<h2><span class="header-section-number">2.2</span> Interpretation of the coefficients</h2>
-<p>If the regression model is
-<span class="math display">\[y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,\]</span> the interpretation of <span class="math inline">\(\beta_1\)</span> in the linear model is as follows: a unit increase in <span class="math inline">\(x\)</span> leads to <span class="math inline">\(\beta_1\)</span> units increase in <span class="math inline">\(y\)</span>, everything else (i.e., <span class="math inline">\(\mathrm{x}_{i2}\)</span>) being held constant.</p>
-<p>For the <code>Auto</code> regression above, an increase of the power of the engine by one horsepower leads to an average decrease of 0.16 miles per US gallon in distance covered by the car. We could easily get an equivalent statement in terms of increase of the car fuel consumption for a given distance.</p>
+<div id="solutions-4" class="section level2">
+<h2><span class="header-section-number">5.3</span> Solutions</h2>
+<div id="exercise-9.3---one-way-analysis-of-variance" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> Exercise 9.3 - One-way analysis of variance</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">show.signif.stars =</span> <span class="ot">FALSE</span>)
+<span class="co">#http://www.stat.ufl.edu/~winner/data/meniscus.txt</span>
+meniscus &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/meniscus.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="kw">boxplot</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus, <span class="dt">ylab =</span> <span class="st">&quot;Displacement (in mm)&quot;</span>)</code></pre>
+<p><img src="LinesRModels_files/figure-html/unnamed-chunk-41-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">lmod_men &lt;-<span class="st"> </span><span class="kw">lm</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus)
+summ_men &lt;-<span class="st"> </span><span class="kw">summary</span>(lmod_men)
+<span class="co">#ANOVA table</span>
+anov_men &lt;-<span class="st"> </span><span class="kw">anova</span>(lmod_men)
+<span class="co">#F statistic with dof</span>
+summ_men<span class="op">$</span>fstatistic</code></pre>
+<pre><code>##     value     numdf     dendf 
+##  5.783689  2.000000 15.000000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#P-value</span>
+anov_men[<span class="dv">1</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>]</code></pre>
+<pre><code>## [1] 0.01374261</code></pre>
+<p>The <span class="math inline">\(F\)</span> statistic for the null hypothesis <span class="math inline">\(\mu_1=\mu_2=\mu_3\)</span> is 5.78 against the alternative that at least one group mean differ. Under the assumption of the Gaussian linear model, <span class="math inline">\(F\)</span> follows a Fisher distribution with 2 and 15 degrees of freedom. The <span class="math inline">\(P\)</span>-value is thus 0.01 and we therefore reject the null hypothesis that the treatment is equal at level <span class="math inline">\(\alpha = 0.05\)</span>.</p>
+<p>The <code>meniscus</code> dat set is a balanced design, which implies that the number of observations is the same for each level of the factor. Since the entries of <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> depend on the counts for each level, they will be the same here. This implies that the standard errors are also identical for each level (except for the baseline, symbolized by the intercept). Removing the latter changes the parametrization from baseline and constrast to individual group mean.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lmod_men2 &lt;-<span class="st"> </span><span class="kw">lm</span>(displacement <span class="op">~</span><span class="st"> </span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = displacement ~ 0 + method, data = meniscus)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.2667 -1.8500  0.2833  1.7708  5.3333 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)
+## methodFasT-Fix          17.467      1.403  12.454 2.60e-09
+## methodMeniscus Arrow    11.383      1.403   8.116 7.21e-07
+## methodVertical Suture   16.950      1.403  12.085 3.92e-09
+## 
+## Residual standard error: 3.435 on 15 degrees of freedom
+## Multiple R-squared:  0.9607, Adjusted R-squared:  0.9529 
+## F-statistic: 122.3 on 3 and 15 DF,  p-value: 9.081e-11</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crossprod</span>(<span class="kw">model.matrix</span>(lmod_men2))</code></pre>
+<pre><code>##                       methodFasT-Fix methodMeniscus Arrow
+## methodFasT-Fix                     6                    0
+## methodMeniscus Arrow               0                    6
+## methodVertical Suture              0                    0
+##                       methodVertical Suture
+## methodFasT-Fix                            0
+## methodMeniscus Arrow                      0
+## methodVertical Suture                     6</code></pre>
+<p>Note that the value of the multiple R-squared value is not the same, nor is the <span class="math inline">\(F\)</span>-statistic. The residuals sum of square does not change because the adjustment is the same. However, without an intercept, <strong>R</strong> computes the decomposition
+<span class="math inline">\(\boldsymbol{y}^\top\boldsymbol{y} = \mathrm{RSS} + \boldsymbol{y}^\top\mathbf{H}_{\mathbf{X}}\boldsymbol{y}\)</span> rather than <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y}= \mathrm{ESS}+\mathrm{RSS}\)</span>.
+We have <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\boldsymbol{y}-n\bar{y}^2\)</span>.</p>
+<p>We can compute the mean using the information on the total number of cases, since <span class="math inline">\(\bar{y} = (\hat{\mu}_1+\hat{\mu}_2 + \hat{\mu}_3)/3\)</span>.</p>
 </div>
+<div id="exercise-9.4---two-way-analysis-of-variance" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> Exercise 9.4 - Two-way analysis of variance</h3>
+<pre class="sourceCode r"><code class="sourceCode r">diet &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/diet.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="co">#Cast strings to factors</span>
+diet<span class="op">$</span>diet.type &lt;-<span class="st"> </span><span class="kw">as.factor</span>(diet<span class="op">$</span>diet.type)
+diet<span class="op">$</span>gender &lt;-<span class="st"> </span><span class="kw">as.factor</span>(diet<span class="op">$</span>gender)
+
+<span class="co">#Check mean and variance by combination of factor</span>
+<span class="co">#Warning: small sample sizes</span>
+facs &lt;-<span class="st"> </span><span class="kw">list</span>(diet<span class="op">$</span>diet.type, diet<span class="op">$</span>gender)
+<span class="kw">tapply</span>(diet<span class="op">$</span>weight.loss, facs, mean)</code></pre>
+<pre><code>##      Female      Male
+## A -3.050000 -3.650000
+## B -2.607143 -4.109091
+## C -5.880000 -4.233333</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tapply</span>(diet<span class="op">$</span>weight.loss, facs, var)</code></pre>
+<pre><code>##     Female     Male
+## A 4.264231 6.431667
+## B 5.239176 6.376909
+## C 3.570286 7.376970</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Variance may not be homogeneous for men/women - </span>
+<span class="co"># Could use weighted least squares</span>
+<span class="co">#Fit model with interaction</span>
+M5 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">*</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)
+M4 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)
+M3 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)
+M2 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data =</span> diet)
+M1 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> diet)
+<span class="co">#ANOVA Tables (recall sequential decomposition) - prefered option</span>
+<span class="kw">anova</span>(M5)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: weight.loss
+##                  Df Sum Sq Mean Sq F value   Pr(&gt;F)
+## gender            1   0.28  0.2785  0.0518 0.820623
+## diet.type         2  60.42 30.2086  5.6190 0.005456
+## gender:diet.type  2  33.90 16.9520  3.1532 0.048842
+## Residuals        70 376.33  5.3761</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#anova(M5) uses RSS from M5 in denominator, read table from bottom to top</span>
+<span class="co">#RSS values</span>
+RSS &lt;-<span class="st"> </span><span class="kw">anova</span>(M1, M2, M3, M4, M5)[,<span class="st">&quot;RSS&quot;</span>]
+<span class="co">#Backward model selection (more complex to simpler)</span>
+<span class="kw">drop1</span>(M5, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
+<pre><code>## Single term deletions
+## 
+## Model:
+## weight.loss ~ gender * diet.type
+##                  Df Sum of Sq    RSS    AIC F value  Pr(&gt;F)
+## &lt;none&gt;                        376.33 133.58                
+## gender:diet.type  2    33.904 410.23 136.13  3.1532 0.04884</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Manual calculation</span>
+F45 &lt;-<span class="st"> </span>((RSS[<span class="dv">4</span>]<span class="op">-</span>RSS[<span class="dv">5</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(RSS[<span class="dv">5</span>]<span class="op">/</span>M5<span class="op">$</span>df.residual)
+
+<span class="co">#Forward model selection - ASSUMES weight~gender is CORRECT...</span>
+<span class="kw">anova</span>(<span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">*</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet))[<span class="st">&quot;gender&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;F value&quot;</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>)] <span class="co">#gender not significant</span></code></pre>
+<pre><code>##        F value Pr(&gt;F)
+## gender  0.0518 0.8206</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(<span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>diet.type <span class="op">*</span><span class="st"> </span>gender, <span class="dt">data =</span> diet))[<span class="st">&quot;diet.type&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;F value&quot;</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>)] <span class="co">#diet type significant</span></code></pre>
+<pre><code>##           F value   Pr(&gt;F)
+## diet.type  5.6292 0.005408</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Alternatively</span>
+<span class="kw">add1</span>(M1, <span class="dt">scope =</span> <span class="kw">c</span>(<span class="st">&quot;diet.type&quot;</span>,<span class="st">&quot;gender&quot;</span>), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
+<pre><code>## Single term additions
+## 
+## Model:
+## weight.loss ~ 1
+##           Df Sum of Sq    RSS    AIC F value   Pr(&gt;F)
+## &lt;none&gt;                 470.93 140.62                 
+## diet.type  2    60.527 410.40 134.17  5.3831 0.006596
+## gender     1     0.278 470.65 142.58  0.0438 0.834827</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Note that RSS is that of the more complext model, but not the full model</span>
+<span class="kw">add1</span>(M3, <span class="dt">scope =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
+<pre><code>## Single term additions
+## 
+## Model:
+## weight.loss ~ diet.type
+##        Df Sum of Sq    RSS    AIC F value Pr(&gt;F)
+## &lt;none&gt;              410.40 134.17               
+## gender  1    0.1687 410.23 136.13  0.0296 0.8639</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#No evidence against the simpler null model with only diet</span>
+<span class="co">#We do not test for the interaction model without main effects included!</span></code></pre>
+<p>We can use information criterion to estimate the goodness-of-fit of the model.
+The Akaike’s information criterion (AIC) and Schwartz’ information criterion (BIC) can be obtained by use of the functions <code>AIC</code> and <code>BIC</code>, respectively.</p>
+<p>An alternative is Mallow’s <span class="math inline">\(C_p\)</span>, which requires an estimate of <span class="math inline">\(s^2\)</span>. It is customary to select <span class="math inline">\(s^2\)</span> as the mean residual sum of squares from the most complex model, to make the comparisons fair avoid bias to due model misspecification.
+The most complex model will by construction give <span class="math inline">\(C_p=p\)</span> (so we cannot assess the goodness-of-fit of this model using this technique). Good models are those for which the value of <span class="math inline">\(C_p\)</span> is close to <span class="math inline">\(p\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(<span class="kw">list</span>(M1, M2, M3, M4, M5), 
+                   <span class="dt">FUN =</span> <span class="cf">function</span>(mod){<span class="kw">length</span>(<span class="kw">coef</span>(mod))}))
+Mallow_Cp &lt;-<span class="st"> </span>RSS<span class="op">/</span>RSS[<span class="dv">5</span>]<span class="op">*</span>(<span class="kw">nrow</span>(diet)<span class="op">-</span>p[<span class="dv">5</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">nrow</span>(diet) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>p
+Mallow_Cp</code></pre>
+<pre><code>## [1] 13.596261 15.544461  6.337787  8.306409  6.000000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Step function for model selection using AIC/BIC</span>
+<span class="co">#step(M5, direction = &#39;backward&#39;,trace = FALSE, k = log(76))</span>
+
+<span class="co">#Alternatively, compute each AIC/BIC value</span>
+aic_val &lt;-<span class="st"> </span><span class="kw">AIC</span>(M1, M2, M3, M4, M5)
+bic_val &lt;-<span class="st"> </span><span class="kw">BIC</span>(M1, M2, M3, M4, M5)
+<span class="kw">which.min</span>(aic_val<span class="op">$</span>AIC)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which.min</span>(bic_val<span class="op">$</span>BIC)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Store values in table</span>
+ICvals &lt;-<span class="st"> </span><span class="kw">rbind</span>(aic_val<span class="op">$</span>AIC, bic_val<span class="op">$</span>BIC)
+<span class="kw">colnames</span>(ICvals) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))
+<span class="kw">rownames</span>(ICvals) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AIC&quot;</span>, <span class="st">&quot;BIC&quot;</span>)
+<span class="co">#Create table for Markdown</span>
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">round</span>(ICvals,<span class="dv">2</span>))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">M1</th>
+<th align="right">M2</th>
+<th align="right">M3</th>
+<th align="right">M4</th>
+<th align="right">M5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AIC</td>
+<td align="right">358.30</td>
+<td align="right">360.26</td>
+<td align="right">351.85</td>
+<td align="right">353.81</td>
+<td align="right">351.26</td>
+</tr>
+<tr class="even">
+<td>BIC</td>
+<td align="right">362.96</td>
+<td align="right">367.25</td>
+<td align="right">361.17</td>
+<td align="right">365.47</td>
+<td align="right">367.57</td>
+</tr>
+</tbody>
+</table>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create table to export in LaTeX</span>
+tab &lt;-<span class="st"> </span>xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="kw">round</span>(ICvals,<span class="dv">1</span>), <span class="dt">caption =</span> <span class="st">&quot;Two-way ANOVA, diet data&quot;</span>)
+<span class="co">#print(tab, booktabs = TRUE)</span></code></pre>
+
+</div>
+</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="calculation-of-least-square-estimates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="the-lm-function.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="one-way-anova.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="hypothesis-testing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

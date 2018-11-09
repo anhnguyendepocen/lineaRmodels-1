@@ -120,6 +120,26 @@ Useful functions to deal with factors include
 The function `lm` knows how to deal with `factor` objects and will automatically transform it to a matrix of binary indiactors. For identifiability constraints, one level of the factor must be dropped and the convention in **R** is that the categories whose `levels` is first in alphabetical order is used as baseline. See `?factor` for more details.
 
 
+Suppose your data set contains binary factors with only two levels and such that these are mutually exclusive. You may wish to merge these if they refer to the same variable, for example ethnicity. 
+The following brute-force solution shows how to merge the factor vectors into a single factor. This will not change the model you get (since the design matrix would span the same space), but can affect the result of ANOVA calls since you will drop all different levels at once rather than subgroup by subgroup.
+
+```{r mergefactors}
+#Create dummy factors with different names to illustrate
+a <- rbinom(500, size = 1, prob = 0.2)
+b <- rep(0, 500)
+b[a == 0] <- rbinom(sum(a == 0), size = 1, prob = 0.1)
+#This is the output you get if they are encoded using 0/1
+#Usually, they are columns of a data frame
+newfactor <- data.frame(a = factor(a, labels = c("Hispanic","Other")), 
+                        b = factor(b, labels = c("Black", "Not black")))
+#Make them have different levels (important that the Other class be encoded as zero
+newlev <- cbind(as.numeric(newfactor$a) - 1, as.numeric(newfactor$b) - 1) %*% c(1,2)
+mergfactor <- factor(newlev, levels = c("1","2","0"), labels = c("Hispanic", "Black", "Other"))
+```
+
+
+Ordered factors do not have the same parametrization as unordered ones, so be careful when interpreting them.
+
 ## Example: seasonal effects
 
 Suppose we are interested in estimating the seasonal model for quarterly data. Since each observation is recorded on one trimester, it could be postulated that the time of the year affect the response. This effect can be built in the design and tested for.

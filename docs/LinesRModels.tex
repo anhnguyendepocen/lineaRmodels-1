@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{version of 2018-11-06}
+    \date{version of 2018-11-09}
 
 \usepackage[mathscr]{eucal}
 \DeclareMathAlphabet{\mathcrl}{U}{rsfs}{m}{n}
@@ -1281,7 +1281,7 @@ observations lie.
 ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 \end{verbatim}
 
-\hypertarget{rgl36727}{}
+\hypertarget{rgl3677}{}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -1769,11 +1769,9 @@ reasonable.
 ## -2.15949 -0.59384  0.05034  0.50826  1.67751 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.50858    0.19419  -2.619   0.0103 *  
-## lpsa         0.74992    0.07109  10.548   <2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##             Estimate Std. Error t value Pr(>|t|)
+## (Intercept) -0.50858    0.19419  -2.619   0.0103
+## lpsa         0.74992    0.07109  10.548   <2e-16
 ## 
 ## Residual standard error: 0.8041 on 95 degrees of freedom
 ## Multiple R-squared:  0.5394, Adjusted R-squared:  0.5346 
@@ -2189,6 +2187,34 @@ For identifiability constraints, one level of the factor must be dropped
 and the convention in \textbf{R} is that the categories whose
 \texttt{levels} is first in alphabetical order is used as baseline. See
 \texttt{?factor} for more details.
+
+Suppose your data set contains binary factors with only two levels and
+such that these are mutually exclusive. You may wish to merge these if
+they refer to the same variable, for example ethnicity. The following
+brute-force solution shows how to merge the factor vectors into a single
+factor. This will not change the model you get (since the design matrix
+would span the same space), but can affect the result of ANOVA calls
+since you will drop all different levels at once rather than subgroup by
+subgroup.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Create dummy factors with different names to illustrate}
+\NormalTok{a <-}\StringTok{ }\KeywordTok{rbinom}\NormalTok{(}\DecValTok{500}\NormalTok{, }\DataTypeTok{size =} \DecValTok{1}\NormalTok{, }\DataTypeTok{prob =} \FloatTok{0.2}\NormalTok{)}
+\NormalTok{b <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{500}\NormalTok{)}
+\NormalTok{b[a }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{] <-}\StringTok{ }\KeywordTok{rbinom}\NormalTok{(}\KeywordTok{sum}\NormalTok{(a }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{), }\DataTypeTok{size =} \DecValTok{1}\NormalTok{, }\DataTypeTok{prob =} \FloatTok{0.1}\NormalTok{)}
+\CommentTok{#This is the output you get if they are encoded using 0/1}
+\CommentTok{#Usually, they are columns of a data frame}
+\NormalTok{newfactor <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{a =} \KeywordTok{factor}\NormalTok{(a, }\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Hispanic"}\NormalTok{,}\StringTok{"Other"}\NormalTok{)), }
+                        \DataTypeTok{b =} \KeywordTok{factor}\NormalTok{(b, }\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Black"}\NormalTok{, }\StringTok{"Not black"}\NormalTok{)))}
+\CommentTok{#Make them have different levels (important that the Other class be encoded as zero}
+\NormalTok{newlev <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\KeywordTok{as.numeric}\NormalTok{(newfactor}\OperatorTok{$}\NormalTok{a) }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{, }\KeywordTok{as.numeric}\NormalTok{(newfactor}\OperatorTok{$}\NormalTok{b) }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{) }\OperatorTok{%*%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+\NormalTok{mergfactor <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(newlev, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{,}\StringTok{"2"}\NormalTok{,}\StringTok{"0"}\NormalTok{), }\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Hispanic"}\NormalTok{, }\StringTok{"Black"}\NormalTok{, }\StringTok{"Other"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Ordered factors do not have the same parametrization as unordered ones,
+so be careful when interpreting them.
 
 \hypertarget{example-seasonal-effects}{%
 \section{Example: seasonal effects}\label{example-seasonal-effects}}
@@ -3253,7 +3279,7 @@ computationally costly for small datasets.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.5724572
+## [1] 0.5748575
 \end{verbatim}
 
 \begin{Shaded}
@@ -3560,10 +3586,8 @@ considerable narrower than the first one, given by {[}0.84, 1.84{]}.
 ## -0.51276 -0.17156  0.08675  0.20282  0.36832 
 ## 
 ## Coefficients:
-##          Estimate Std. Error t value Pr(>|t|)    
-## velocity  0.25949    0.00715   36.29   <2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##          Estimate Std. Error t value Pr(>|t|)
+## velocity  0.25949    0.00715   36.29   <2e-16
 ## 
 ## Residual standard error: 0.2364 on 24 degrees of freedom
 ## Multiple R-squared:  0.9821, Adjusted R-squared:  0.9814 
@@ -3906,13 +3930,11 @@ earnings}\label{exercise-7.4---determinants-of-earnings}}
 ## -2.10953 -0.25249  0.02989  0.28176  1.27908 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) 2.200103   0.055375  39.731  < 2e-16 ***
-## education   0.026589   0.004673   5.690 1.38e-08 ***
-## genderMale  0.256471   0.014771  17.363  < 2e-16 ***
-## pseduc      0.037459   0.007322   5.116 3.31e-07 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##             Estimate Std. Error t value Pr(>|t|)
+## (Intercept) 2.200103   0.055375  39.731  < 2e-16
+## education   0.026589   0.004673   5.690 1.38e-08
+## genderMale  0.256471   0.014771  17.363  < 2e-16
+## pseduc      0.037459   0.007322   5.116 3.31e-07
 ## 
 ## Residual standard error: 0.4154 on 3183 degrees of freedom
 ## Multiple R-squared:  0.1897, Adjusted R-squared:  0.1889 
@@ -4138,12 +4160,10 @@ The function \texttt{anova} outputs the following:
 ## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value    Pr(>F)    
-## commerce   1 50.066  50.066 35.0438 1.985e-06 ***
-## tradition  1  6.074   6.074  4.2514   0.04828 *  
-## Residuals 29 41.431   1.429                      
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##           Df Sum Sq Mean Sq F value    Pr(>F)
+## commerce   1 50.066  50.066 35.0438 1.985e-06
+## tradition  1  6.074   6.074  4.2514   0.04828
+## Residuals 29 41.431   1.429
 \end{verbatim}
 
 The function \texttt{anova} considers the \emph{sequential}
@@ -4188,12 +4208,10 @@ We thus obtain a different output if we specify instead
 ## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value    Pr(>F)    
-## tradition  1 19.673  19.673  13.770  0.000872 ***
-## commerce   1 36.467  36.467  25.525 2.194e-05 ***
-## Residuals 29 41.431   1.429                      
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##           Df Sum Sq Mean Sq F value    Pr(>F)
+## tradition  1 19.673  19.673  13.770  0.000872
+## commerce   1 36.467  36.467  25.525 2.194e-05
+## Residuals 29 41.431   1.429
 \end{verbatim}
 
 The \texttt{F} and \texttt{Pr(\textgreater{}F)} columns now correspond
@@ -4225,12 +4243,10 @@ with \(\beta_2=0\) or \(\beta_1=0\) is rejected at significance level
 ## 
 ## Model:
 ## intensity ~ commerce + tradition
-##           Df Sum of Sq    RSS    AIC F value    Pr(>F)    
-## <none>                 41.431 14.266                      
-## commerce   1    36.467 77.898 32.469 25.5252 2.194e-05 ***
-## tradition  1     6.074 47.505 16.643  4.2514   0.04828 *  
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##           Df Sum of Sq    RSS    AIC F value    Pr(>F)
+## <none>                 41.431 14.266                  
+## commerce   1    36.467 77.898 32.469 25.5252 2.194e-05
+## tradition  1     6.074 47.505 16.643  4.2514   0.04828
 \end{verbatim}
 
 These \(F\) values are the same as those obtained with the call on
@@ -4271,11 +4287,9 @@ lower.
 ## Fit: lm(formula = intensity ~ commerce + tradition, data = Chirot)
 ## 
 ## Linear Hypotheses:
-##        Estimate Std. Error t value Pr(>|t|)    
-## 1 == 0  0.09522    0.01885   5.052 4.37e-05 ***
-## 2 == 0  0.11992    0.05816   2.062   0.0911 .  
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##        Estimate Std. Error t value Pr(>|t|)
+## 1 == 0  0.09522    0.01885   5.052 4.37e-05
+## 2 == 0  0.11992    0.05816   2.062   0.0911
 ## (Adjusted p values reported -- single-step method)
 \end{verbatim}
 
@@ -4301,7 +4315,7 @@ lower.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Test hypothesis jointly using GLHT (see Exercise series 9)}
+\CommentTok{#Test hypothesis jointly using GLHT}
 \NormalTok{car}\OperatorTok{::}\KeywordTok{linearHypothesis}\NormalTok{(mod.a, }\DataTypeTok{hypothesis.matrix =} \KeywordTok{rbind}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{)), }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -4316,11 +4330,9 @@ lower.
 ## Model 1: restricted model
 ## Model 2: intensity ~ commerce + tradition
 ## 
-##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
-## 1     31 97.571                                  
-## 2     29 41.431  2     56.14 19.648 4.038e-06 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)
+## 1     31 97.571                              
+## 2     29 41.431  2     56.14 19.648 4.038e-06
 \end{verbatim}
 
 You can also use the function ANOVA to test with nested model. The
@@ -4338,11 +4350,9 @@ syntax is slightly different, but the output is exactly the same.
 ## 
 ## Model 1: intensity ~ 1
 ## Model 2: intensity ~ commerce + tradition
-##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
-## 1     31 97.571                                  
-## 2     29 41.431  2     56.14 19.648 4.038e-06 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)
+## 1     31 97.571                              
+## 2     29 41.431  2     56.14 19.648 4.038e-06
 \end{verbatim}
 
 At this point, it is important to note that we will get different test
@@ -4452,8 +4462,365 @@ regression with a matrix \(\mathbf{X}\) of indicators variables, viz.
 \mathbf{0}_{n_L} & \mathbf{0}_{n_L}&\cdots & \mathbf{1}_{n_L} 
 \end{pmatrix}\begin{pmatrix} \alpha_1 \\ \alpha_2 \\\vdots \\ \alpha_L\end{pmatrix} + \begin{pmatrix}\boldsymbol{\varepsilon}_1 \\\boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_L\end{pmatrix}. \]
 
+In a \textbf{balanced design}, the number of observations \(m\) is the
+same for each of the \(L\) levels of the factor. We can then write
+\(\mathbf{X}^\top\mathbf{X}= m\mathbf{I}_L\) and the standard errors are
+the same.
+
 To test \(\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L\), we can use the
-usual sum of squares decomposition and an \(F\) statistic.
+usual sum of squares decomposition. The \(F\)-statistic for this test is
+\[F = \frac{(\boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y} - \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y})/(L-1)}{
+\boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y}/(n-L)} \sim \mathcal{F}(L-1, n-L).\]
+and we reject the null hypothesis \(\mu_1 = \cdots = \mu_L\) against the
+alternative that at least one group mean is different.
+
+\hypertarget{solutions-4}{%
+\section{Solutions}\label{solutions-4}}
+
+\hypertarget{exercise-9.3---one-way-analysis-of-variance}{%
+\subsection{Exercise 9.3 - One-way analysis of
+variance}\label{exercise-9.3---one-way-analysis-of-variance}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{options}\NormalTok{(}\DataTypeTok{show.signif.stars =} \OtherTok{FALSE}\NormalTok{)}
+\CommentTok{#http://www.stat.ufl.edu/~winner/data/meniscus.txt}
+\NormalTok{meniscus <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"http://sma.epfl.ch/~lbelzile/math341/meniscus.dat"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{boxplot}\NormalTok{(displacement }\OperatorTok{~}\StringTok{ }\NormalTok{method, }\DataTypeTok{data =}\NormalTok{ meniscus, }\DataTypeTok{ylab =} \StringTok{"Displacement (in mm)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/unnamed-chunk-41-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lmod_men <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(displacement }\OperatorTok{~}\StringTok{ }\NormalTok{method, }\DataTypeTok{data =}\NormalTok{ meniscus)}
+\NormalTok{summ_men <-}\StringTok{ }\KeywordTok{summary}\NormalTok{(lmod_men)}
+\CommentTok{#ANOVA table}
+\NormalTok{anov_men <-}\StringTok{ }\KeywordTok{anova}\NormalTok{(lmod_men)}
+\CommentTok{#F statistic with dof}
+\NormalTok{summ_men}\OperatorTok{$}\NormalTok{fstatistic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     value     numdf     dendf 
+##  5.783689  2.000000 15.000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#P-value}
+\NormalTok{anov_men[}\DecValTok{1}\NormalTok{,}\StringTok{"Pr(>F)"}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01374261
+\end{verbatim}
+
+The \(F\) statistic for the null hypothesis \(\mu_1=\mu_2=\mu_3\) is
+5.78 against the alternative that at least one group mean differ. Under
+the assumption of the Gaussian linear model, \(F\) follows a Fisher
+distribution with 2 and 15 degrees of freedom. The \(P\)-value is thus
+0.01 and we therefore reject the null hypothesis that the treatment is
+equal at level \(\alpha = 0.05\).
+
+The \texttt{meniscus} dat set is a balanced design, which implies that
+the number of observations is the same for each level of the factor.
+Since the entries of \(\mathbf{X}^\top\mathbf{X}\) depend on the counts
+for each level, they will be the same here. This implies that the
+standard errors are also identical for each level (except for the
+baseline, symbolized by the intercept). Removing the latter changes the
+parametrization from baseline and constrast to individual group mean.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(lmod_men2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(displacement }\OperatorTok{~}\StringTok{ }\DecValTok{0} \OperatorTok{+}\StringTok{ }\NormalTok{method, }\DataTypeTok{data =}\NormalTok{ meniscus))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = displacement ~ 0 + method, data = meniscus)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.2667 -1.8500  0.2833  1.7708  5.3333 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(>|t|)
+## methodFasT-Fix          17.467      1.403  12.454 2.60e-09
+## methodMeniscus Arrow    11.383      1.403   8.116 7.21e-07
+## methodVertical Suture   16.950      1.403  12.085 3.92e-09
+## 
+## Residual standard error: 3.435 on 15 degrees of freedom
+## Multiple R-squared:  0.9607, Adjusted R-squared:  0.9529 
+## F-statistic: 122.3 on 3 and 15 DF,  p-value: 9.081e-11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{crossprod}\NormalTok{(}\KeywordTok{model.matrix}\NormalTok{(lmod_men2))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                       methodFasT-Fix methodMeniscus Arrow
+## methodFasT-Fix                     6                    0
+## methodMeniscus Arrow               0                    6
+## methodVertical Suture              0                    0
+##                       methodVertical Suture
+## methodFasT-Fix                            0
+## methodMeniscus Arrow                      0
+## methodVertical Suture                     6
+\end{verbatim}
+
+Note that the value of the multiple R-squared value is not the same, nor
+is the \(F\)-statistic. The residuals sum of square does not change
+because the adjustment is the same. However, without an intercept,
+\textbf{R} computes the decomposition
+\(\boldsymbol{y}^\top\boldsymbol{y} = \mathrm{RSS} + \boldsymbol{y}^\top\mathbf{H}_{\mathbf{X}}\boldsymbol{y}\)
+rather than
+\(\mathrm{TSS} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y}= \mathrm{ESS}+\mathrm{RSS}\).
+We have \(\mathrm{TSS} = \boldsymbol{y}^\top\boldsymbol{y}-n\bar{y}^2\).
+
+We can compute the mean using the information on the total number of
+cases, since \(\bar{y} = (\hat{\mu}_1+\hat{\mu}_2 + \hat{\mu}_3)/3\).
+
+\hypertarget{exercise-9.4---two-way-analysis-of-variance}{%
+\subsection{Exercise 9.4 - Two-way analysis of
+variance}\label{exercise-9.4---two-way-analysis-of-variance}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{diet <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"http://sma.epfl.ch/~lbelzile/math341/diet.dat"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{#Cast strings to factors}
+\NormalTok{diet}\OperatorTok{$}\NormalTok{diet.type <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(diet}\OperatorTok{$}\NormalTok{diet.type)}
+\NormalTok{diet}\OperatorTok{$}\NormalTok{gender <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(diet}\OperatorTok{$}\NormalTok{gender)}
+
+\CommentTok{#Check mean and variance by combination of factor}
+\CommentTok{#Warning: small sample sizes}
+\NormalTok{facs <-}\StringTok{ }\KeywordTok{list}\NormalTok{(diet}\OperatorTok{$}\NormalTok{diet.type, diet}\OperatorTok{$}\NormalTok{gender)}
+\KeywordTok{tapply}\NormalTok{(diet}\OperatorTok{$}\NormalTok{weight.loss, facs, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Female      Male
+## A -3.050000 -3.650000
+## B -2.607143 -4.109091
+## C -5.880000 -4.233333
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tapply}\NormalTok{(diet}\OperatorTok{$}\NormalTok{weight.loss, facs, var)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Female     Male
+## A 4.264231 6.431667
+## B 5.239176 6.376909
+## C 3.570286 7.376970
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Variance may not be homogeneous for men/women - }
+\CommentTok{# Could use weighted least squares}
+\CommentTok{#Fit model with interaction}
+\NormalTok{M5 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(weight.loss }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{*}\StringTok{ }\NormalTok{diet.type, }\DataTypeTok{data =}\NormalTok{ diet)}
+\NormalTok{M4 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(weight.loss }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{diet.type, }\DataTypeTok{data =}\NormalTok{ diet)}
+\NormalTok{M3 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(weight.loss }\OperatorTok{~}\StringTok{ }\NormalTok{diet.type, }\DataTypeTok{data =}\NormalTok{ diet)}
+\NormalTok{M2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(weight.loss }\OperatorTok{~}\StringTok{ }\NormalTok{gender, }\DataTypeTok{data =}\NormalTok{ diet)}
+\NormalTok{M1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(weight.loss }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ diet)}
+\CommentTok{#ANOVA Tables (recall sequential decomposition) - prefered option}
+\KeywordTok{anova}\NormalTok{(M5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: weight.loss
+##                  Df Sum Sq Mean Sq F value   Pr(>F)
+## gender            1   0.28  0.2785  0.0518 0.820623
+## diet.type         2  60.42 30.2086  5.6190 0.005456
+## gender:diet.type  2  33.90 16.9520  3.1532 0.048842
+## Residuals        70 376.33  5.3761
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#anova(M5) uses RSS from M5 in denominator, read table from bottom to top}
+\CommentTok{#RSS values}
+\NormalTok{RSS <-}\StringTok{ }\KeywordTok{anova}\NormalTok{(M1, M2, M3, M4, M5)[,}\StringTok{"RSS"}\NormalTok{]}
+\CommentTok{#Backward model selection (more complex to simpler)}
+\KeywordTok{drop1}\NormalTok{(M5, }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## weight.loss ~ gender * diet.type
+##                  Df Sum of Sq    RSS    AIC F value  Pr(>F)
+## <none>                        376.33 133.58                
+## gender:diet.type  2    33.904 410.23 136.13  3.1532 0.04884
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Manual calculation}
+\NormalTok{F45 <-}\StringTok{ }\NormalTok{((RSS[}\DecValTok{4}\NormalTok{]}\OperatorTok{-}\NormalTok{RSS[}\DecValTok{5}\NormalTok{])}\OperatorTok{/}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{(RSS[}\DecValTok{5}\NormalTok{]}\OperatorTok{/}\NormalTok{M5}\OperatorTok{$}\NormalTok{df.residual)}
+
+\CommentTok{#Forward model selection - ASSUMES weight~gender is CORRECT...}
+\KeywordTok{anova}\NormalTok{(}\KeywordTok{lm}\NormalTok{(weight.loss }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{*}\StringTok{ }\NormalTok{diet.type, }\DataTypeTok{data =}\NormalTok{ diet))[}\StringTok{"gender"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"F value"}\NormalTok{,}\StringTok{"Pr(>F)"}\NormalTok{)] }\CommentTok{#gender not significant}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        F value Pr(>F)
+## gender  0.0518 0.8206
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(}\KeywordTok{lm}\NormalTok{(weight.loss }\OperatorTok{~}\StringTok{ }\NormalTok{diet.type }\OperatorTok{*}\StringTok{ }\NormalTok{gender, }\DataTypeTok{data =}\NormalTok{ diet))[}\StringTok{"diet.type"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\StringTok{"F value"}\NormalTok{,}\StringTok{"Pr(>F)"}\NormalTok{)] }\CommentTok{#diet type significant}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           F value   Pr(>F)
+## diet.type  5.6292 0.005408
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Alternatively}
+\KeywordTok{add1}\NormalTok{(M1, }\DataTypeTok{scope =} \KeywordTok{c}\NormalTok{(}\StringTok{"diet.type"}\NormalTok{,}\StringTok{"gender"}\NormalTok{), }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term additions
+## 
+## Model:
+## weight.loss ~ 1
+##           Df Sum of Sq    RSS    AIC F value   Pr(>F)
+## <none>                 470.93 140.62                 
+## diet.type  2    60.527 410.40 134.17  5.3831 0.006596
+## gender     1     0.278 470.65 142.58  0.0438 0.834827
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Note that RSS is that of the more complext model, but not the full model}
+\KeywordTok{add1}\NormalTok{(M3, }\DataTypeTok{scope =} \StringTok{"gender"}\NormalTok{, }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term additions
+## 
+## Model:
+## weight.loss ~ diet.type
+##        Df Sum of Sq    RSS    AIC F value Pr(>F)
+## <none>              410.40 134.17               
+## gender  1    0.1687 410.23 136.13  0.0296 0.8639
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#No evidence against the simpler null model with only diet}
+\CommentTok{#We do not test for the interaction model without main effects included!}
+\end{Highlighting}
+\end{Shaded}
+
+We can use information criterion to estimate the goodness-of-fit of the
+model. The Akaike's information criterion (AIC) and Schwartz'
+information criterion (BIC) can be obtained by use of the functions
+\texttt{AIC} and \texttt{BIC}, respectively.
+
+An alternative is Mallow's \(C_p\), which requires an estimate of
+\(s^2\). It is customary to select \(s^2\) as the mean residual sum of
+squares from the most complex model, to make the comparisons fair avoid
+bias to due model misspecification. The most complex model will by
+construction give \(C_p=p\) (so we cannot assess the goodness-of-fit of
+this model using this technique). Good models are those for which the
+value of \(C_p\) is close to \(p\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p <-}\StringTok{ }\KeywordTok{unlist}\NormalTok{(}\KeywordTok{lapply}\NormalTok{(}\KeywordTok{list}\NormalTok{(M1, M2, M3, M4, M5), }
+                   \DataTypeTok{FUN =} \ControlFlowTok{function}\NormalTok{(mod)\{}\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(mod))\}))}
+\NormalTok{Mallow_Cp <-}\StringTok{ }\NormalTok{RSS}\OperatorTok{/}\NormalTok{RSS[}\DecValTok{5}\NormalTok{]}\OperatorTok{*}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(diet)}\OperatorTok{-}\NormalTok{p[}\DecValTok{5}\NormalTok{]) }\OperatorTok{-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(diet) }\OperatorTok{+}\StringTok{ }\DecValTok{2} \OperatorTok{*}\StringTok{ }\NormalTok{p}
+\NormalTok{Mallow_Cp}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 13.596261 15.544461  6.337787  8.306409  6.000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Step function for model selection using AIC/BIC}
+\CommentTok{#step(M5, direction = 'backward',trace = FALSE, k = log(76))}
+
+\CommentTok{#Alternatively, compute each AIC/BIC value}
+\NormalTok{aic_val <-}\StringTok{ }\KeywordTok{AIC}\NormalTok{(M1, M2, M3, M4, M5)}
+\NormalTok{bic_val <-}\StringTok{ }\KeywordTok{BIC}\NormalTok{(M1, M2, M3, M4, M5)}
+\KeywordTok{which.min}\NormalTok{(aic_val}\OperatorTok{$}\NormalTok{AIC)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{which.min}\NormalTok{(bic_val}\OperatorTok{$}\NormalTok{BIC)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Store values in table}
+\NormalTok{ICvals <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(aic_val}\OperatorTok{$}\NormalTok{AIC, bic_val}\OperatorTok{$}\NormalTok{BIC)}
+\KeywordTok{colnames}\NormalTok{(ICvals) <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"M"}\NormalTok{, }\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{))}
+\KeywordTok{rownames}\NormalTok{(ICvals) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"AIC"}\NormalTok{, }\StringTok{"BIC"}\NormalTok{)}
+\CommentTok{#Create table for Markdown}
+\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\KeywordTok{round}\NormalTok{(ICvals,}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l|r|r|r|r|r}
+\hline
+  & M1 & M2 & M3 & M4 & M5\\
+\hline
+AIC & 358.30 & 360.26 & 351.85 & 353.81 & 351.26\\
+\hline
+BIC & 362.96 & 367.25 & 361.17 & 365.47 & 367.57\\
+\hline
+\end{tabular}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Create table to export in LaTeX}
+\NormalTok{tab <-}\StringTok{ }\NormalTok{xtable}\OperatorTok{::}\KeywordTok{xtable}\NormalTok{(}\KeywordTok{round}\NormalTok{(ICvals,}\DecValTok{1}\NormalTok{), }\DataTypeTok{caption =} \StringTok{"Two-way ANOVA, diet data"}\NormalTok{)}
+\CommentTok{#print(tab, booktabs = TRUE)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{hypothesis-testing}{%
 \chapter{Hypothesis testing}\label{hypothesis-testing}}
@@ -4617,6 +4984,815 @@ alternative is true) and the lower the power.
 \end{Shaded}
 
 \begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/powermore-1} \end{center}
+
+\hypertarget{model-selection}{%
+\chapter{Model selection}\label{model-selection}}
+
+My (personal) general strategy for model selection, given the tools
+covered in MATH 341, is the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Start with a complex model (all additive terms, say). Look at the
+  individual Wald tests for the marginal significance of the
+  coefficients.
+\item
+  Try to simplify the full model using an ANOVA, potentially dropping
+  multiple terms at once. This preserves power (recall the potential
+  bias in the estimate of RSS in the denominator) and reduces the
+  multiple testing problem that inflates Type I errors (reject the null
+  more than \(\alpha\%\) of the time when you shouldn't).
+\item
+  Use \texttt{drop1} to further reduce the model.
+\item
+  Try adding interactions between variables, if any.
+\item
+  Select the best forward selection / backward elimination models and
+  some additional ones (that have a nice interpretation, have low
+  information criterion values). Compare them in terms of prediction and
+  goodness-of-fit.
+\end{enumerate}
+
+Once you have a final model, you can interpret coefficients. Model
+selection \textbf{invalides} classical inference, so report coefficients
+and standard errors as is without overinterpreting the \(P\)-values from
+\texttt{summary}.
+
+The best tool to assess your model is the use of cross-validation. If
+there is no temporal structure, you can use e.g.~five-fold cross
+validation to find the best fitting model. Criteria such as BIC (more
+stringent than AIC) can also be useful.
+
+\hypertarget{example-price-of-diamonds}{%
+\section{Example: Price of diamonds}\label{example-price-of-diamonds}}
+
+This very large dataset contains the price in USD (rounded to nearest
+dollar) of \(n=53940\) diamonds. The explanatory variables include three
+ordinal factors: the quality of the \texttt{cut}, \texttt{color} and
+\texttt{clarity}. These are ranked from worst to best outcome. Five
+other variables contain the mensurements of the dimension of the
+diamond, rounded to the 0.01 mm. They are length \texttt{x}, width
+\texttt{y}, depth \texttt{z}, total depth percentage \texttt{depth}
+where \texttt{depth}\(=2\times z/(x + y)\), and \texttt{table}, a
+measure of the width of the top of the diamond. The last variable is the
+weight of the diamond, \texttt{carat}, rounded to the nearest 0.01.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#install.packages("ggplot2")}
+\KeywordTok{library}\NormalTok{(ggplot2); }\KeywordTok{library}\NormalTok{(car)}
+\KeywordTok{data}\NormalTok{(diamonds, }\DataTypeTok{package =} \StringTok{"ggplot2"}\NormalTok{)}
+\KeywordTok{help}\NormalTok{(diamonds)}
+\CommentTok{#Subsample because the dataset is very large}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{) }\CommentTok{#Fix RNG seed so as to make output reproducible}
+\NormalTok{di <-}\StringTok{ }\NormalTok{diamonds[}\KeywordTok{sample.int}\NormalTok{(}\DataTypeTok{size =} \DecValTok{500}\NormalTok{, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{n =} \KeywordTok{nrow}\NormalTok{(diamonds)), ]}
+\KeywordTok{attach}\NormalTok{(di)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The following objects are masked from di (pos = 3):
+## 
+##     carat, clarity, color, cut, depth, price, table, x, y, z
+\end{verbatim}
+
+\hypertarget{exploratory-data-analysis}{%
+\subsection{Exploratory data analysis}\label{exploratory-data-analysis}}
+
+We can look at some graphs of the data, including pair plots and some
+summary statistics. These are useful to spot outliers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(di)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Classes 'tbl_df', 'tbl' and 'data.frame':    500 obs. of  10 variables:
+##  $ carat  : num  0.91 0.43 0.32 0.33 0.7 0.33 0.71 1.3 0.43 2.06 ...
+##  $ cut    : Ord.factor w/ 5 levels "Fair"<"Good"<..: 5 4 5 5 2 5 4 2 4 5 ...
+##  $ color  : Ord.factor w/ 7 levels "D"<"E"<"F"<"G"<..: 4 1 1 4 5 4 2 7 2 6 ...
+##  $ clarity: Ord.factor w/ 8 levels "I1"<"SI2"<"SI1"<..: 2 3 4 2 3 7 4 4 2 4 ...
+##  $ depth  : num  61.6 60.1 61.5 61.7 64.2 61.8 62.3 63.6 60.8 62.2 ...
+##  $ table  : num  56 58 55 55 58 55 58 59 58 55 ...
+##  $ price  : int  3985 830 808 463 1771 868 2823 5269 919 18779 ...
+##  $ x      : num  6.24 4.89 4.43 4.46 5.59 4.42 5.71 6.9 4.88 8.15 ...
+##  $ y      : num  6.22 4.93 4.45 4.48 5.62 4.45 5.66 6.87 4.86 8.19 ...
+##  $ z      : num  3.84 2.95 2.73 2.76 3.6 2.74 3.54 4.38 2.96 5.08 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{apply}\NormalTok{(di, }\DecValTok{2}\NormalTok{, range)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      carat  cut         color clarity depth  table  price   x      y     
+## [1,] "0.23" "Fair"      "D"   "I1"    "55.4" "53.0" "10076" "3.96" "3.99"
+## [2,] "2.61" "Very Good" "J"   "VVS2"  "69.8" "67.0" " 9970" "8.85" "8.79"
+##      z     
+## [1,] "1.53"
+## [2,] "5.60"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{print}\NormalTok{(GGally}\OperatorTok{::}\KeywordTok{ggpairs}\NormalTok{(di[,}\OperatorTok{-}\NormalTok{(}\DecValTok{2}\OperatorTok{:}\DecValTok{4}\NormalTok{)], }\DataTypeTok{progress =} \OtherTok{FALSE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/unnamed-chunk-46-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(cut)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## cut
+##      Fair      Good Very Good   Premium     Ideal 
+##        16        46       100       123       215
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(clarity)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## clarity
+##   I1  SI2  SI1  VS2  VS1 VVS2 VVS1   IF 
+##    7   89  110  118   76   44   36   20
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(color)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## color
+##   D   E   F   G   H   I   J 
+##  57 100  77  89  95  52  30
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{graphics.off}\NormalTok{()}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{density}\NormalTok{(carat, }\DataTypeTok{bw =} \FloatTok{0.02}\NormalTok{), }\DataTypeTok{main =} \StringTok{"Density estimate of carat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The most important variable is likely to be weight or width (which are
+strongly correlated). An explanatory data analysis reveals the
+relationship between \texttt{carat} and \texttt{price} to be non-linear.
+A logarithmic transformation of both the \texttt{price} and
+\texttt{carat} alleviates this and reveals the discretization of the
+measurements (most of the diamonds have a reported weight of 1 or 2
+carats). The linear correlation between the variables \texttt{x},
+\texttt{y} and \texttt{z} is close to unity (due to the regular cut of
+diamonds). This will potentially lead to collinearity, so the variables
+may not be jointly significative. There is (depending on the subset) a
+clearly visible outlier in \texttt{z} hat should be removed. There is no
+evidence of interactions between the categorical variables and the rest
+(not shown). Lastly, \texttt{depth} and \texttt{table} are apparently
+not linearly correlated with \texttt{price}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{), }\DataTypeTok{bty =} \StringTok{"l"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ carat, }\DataTypeTok{y =}\NormalTok{ price, }\DataTypeTok{ylab =} \StringTok{"price (in USD)"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"carat"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(carat, }\KeywordTok{log}\NormalTok{(price), }\DataTypeTok{ylab =} \StringTok{"log price (in USD)"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"carat"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(carat, price, }\DataTypeTok{log=}\StringTok{"xy"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"log price (in USD)"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"log carat"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/carat_plot-1} \end{center}
+
+A careful explanatory data analysis with the full model reveals that,
+despite the fact \texttt{depth} is a transformed variable supposedly
+created from \texttt{x}, \texttt{y} and \texttt{z}, there are some
+outliers
+(\texttt{summary(lm(depth\ \textasciitilde{}\ -1\ +\ I(z/(x+y)),\ data\ =\ diamonds))}).
+The model is likely to predict poorly 1 carat and 2 carats diamonds, for
+which there is a lot of heterogeneity.
+
+Sometimes, it helps to regroup the regressors to better identify
+patterns. This is most useful in situations where there is a lot of
+noise in the response (not the case here).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lcarat_cut <-}\StringTok{ }\KeywordTok{cut}\NormalTok{(}\KeywordTok{log}\NormalTok{(carat), }\DataTypeTok{breaks =} \KeywordTok{seq}\NormalTok{(}\OperatorTok{-}\FloatTok{1.5}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DataTypeTok{by =} \FloatTok{0.25}\NormalTok{))}
+\KeywordTok{boxplot}\NormalTok{(x }\OperatorTok{~}\StringTok{ }\NormalTok{lcarat_cut, }\DataTypeTok{col =} \StringTok{'grey'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/unnamed-chunk-47-1} \end{center}
+
+\hypertarget{model-selection-1}{%
+\subsection{Model selection}\label{model-selection-1}}
+
+We will start with a model with all regressors but \texttt{y} and
+\texttt{z} (which we eliminate on grounds of multicollinearity).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Small model}
+\NormalTok{redu_mod <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(}\KeywordTok{log}\NormalTok{(price) }\OperatorTok{~}\StringTok{ }\KeywordTok{log}\NormalTok{(carat))}
+\CommentTok{#Unordered factors (so they are interpretable)}
+\CommentTok{#Ordered factors use an orthogonal decomposition}
+\NormalTok{cut <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(cut, }\DataTypeTok{ordered =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{color <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(color, }\DataTypeTok{ordered =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{clarity <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(clarity, }\DataTypeTok{ordered =} \OtherTok{FALSE}\NormalTok{)}
+\CommentTok{#Full additive model}
+\NormalTok{full_mod <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(}\KeywordTok{log}\NormalTok{(price) }\OperatorTok{~}\StringTok{ }\KeywordTok{log}\NormalTok{(carat) }\OperatorTok{+}\StringTok{ }\NormalTok{cut }\OperatorTok{+}\StringTok{ }\NormalTok{color }\OperatorTok{+}\StringTok{ }\NormalTok{clarity }\OperatorTok{+}\StringTok{ }\NormalTok{depth }\OperatorTok{+}\StringTok{ }\NormalTok{table }\OperatorTok{+}\StringTok{ }\NormalTok{x)}
+\NormalTok{summ_full <-}\StringTok{ }\KeywordTok{summary}\NormalTok{(full_mod)}
+\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\KeywordTok{coef}\NormalTok{(summ_full), }\DataTypeTok{digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tabular}{l|r|r|r|r}
+\hline
+  & Estimate & Std. Error & t value & Pr(>|t|)\\
+\hline
+(Intercept) & 7.159 & 0.698 & 10.255 & 0.000\\
+\hline
+log(carat) & 1.651 & 0.101 & 16.283 & 0.000\\
+\hline
+cutGood & 0.118 & 0.040 & 2.964 & 0.003\\
+\hline
+cutVery Good & 0.114 & 0.040 & 2.878 & 0.004\\
+\hline
+cutPremium & 0.143 & 0.039 & 3.641 & 0.000\\
+\hline
+cutIdeal & 0.142 & 0.042 & 3.404 & 0.001\\
+\hline
+colorE & -0.056 & 0.021 & -2.604 & 0.009\\
+\hline
+colorF & -0.091 & 0.023 & -3.967 & 0.000\\
+\hline
+colorG & -0.161 & 0.022 & -7.233 & 0.000\\
+\hline
+colorH & -0.270 & 0.022 & -12.233 & 0.000\\
+\hline
+colorI & -0.400 & 0.026 & -15.568 & 0.000\\
+\hline
+colorJ & -0.547 & 0.030 & -18.422 & 0.000\\
+\hline
+claritySI2 & 0.659 & 0.053 & 12.388 & 0.000\\
+\hline
+claritySI1 & 0.807 & 0.053 & 15.180 & 0.000\\
+\hline
+clarityVS2 & 0.952 & 0.053 & 17.940 & 0.000\\
+\hline
+clarityVS1 & 1.035 & 0.054 & 19.192 & 0.000\\
+\hline
+clarityVVS2 & 1.144 & 0.056 & 20.457 & 0.000\\
+\hline
+clarityVVS1 & 1.224 & 0.057 & 21.461 & 0.000\\
+\hline
+clarityIF & 1.341 & 0.060 & 22.164 & 0.000\\
+\hline
+depth & 0.000 & 0.005 & 0.049 & 0.961\\
+\hline
+table & -0.007 & 0.004 & -1.634 & 0.103\\
+\hline
+x & 0.132 & 0.053 & 2.522 & 0.012\\
+\hline
+\end{tabular}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{RSS_full <-}\StringTok{ }\NormalTok{summ_full}\OperatorTok{$}\NormalTok{sigma}\OperatorTok{^}\DecValTok{2} \OperatorTok{*}\StringTok{ }\NormalTok{summ_full}\OperatorTok{$}\NormalTok{df[}\DecValTok{2}\NormalTok{]}
+\CommentTok{#RSS_full <- crossprod(resid(full_mod))[1]}
+\end{Highlighting}
+\end{Shaded}
+
+The model fit is excellent. Unsurprisingly, all of \texttt{x},
+\texttt{y} and \texttt{z} are not marginally significant if they are all
+included at once (output omitted), but \texttt{x} is if it is the only
+one included.
+
+Recall that the \texttt{t\ value} column gives the Wald statistic
+\(t = \hat{\beta}_i/\mathrm{se}(\hat{\beta}_i)\), for the null
+hypothesis \(\beta_{i}=0\) against the two-sided alternative
+\(\beta_{i} \neq 0\). Under \(\mathscr{H}_0\),
+\(t \sim \mathcal{T}(n-p)\) and the \(P\)-value is
+\(2\times (1-\)\texttt{pt}\((t, n-p))\). It appears that we could get
+rid of \texttt{depth} and \texttt{table}, which contribute little
+overall. This is confirmed graphically using added-variable plots, which
+plots \(\mathbf{M}_{\mathbf{X}_{-j}}\boldsymbol{y}\) against
+\(\mathbf{M}_{\mathbf{X}_{-j}}\mathbf{x}_j\). This is the residual
+effect of \(\mathbf{x}_j\) after taking into account the effect of the
+other variables \(\mathbf{X}_{-j}\) on what remains of the response. If
+the variable was important, there would be a strong correlation in the
+variables. The last plot illustrates what you could see if there was
+residual structure (strong positive or negative correlation, clear
+line).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\NormalTok{car}\OperatorTok{::}\KeywordTok{avPlot}\NormalTok{(full_mod, }\DataTypeTok{variable =} \StringTok{"table"}\NormalTok{, }\DataTypeTok{ellipse =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{col.lines =} \OtherTok{NULL}\NormalTok{) }\CommentTok{#spherical = no structure}
+\NormalTok{car}\OperatorTok{::}\KeywordTok{avPlot}\NormalTok{(full_mod, }\DataTypeTok{variable =} \StringTok{"depth"}\NormalTok{, }\DataTypeTok{ellipse =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{col.lines =} \OtherTok{NULL}\NormalTok{) }\CommentTok{#idem}
+\NormalTok{car}\OperatorTok{::}\KeywordTok{avPlot}\NormalTok{(full_mod, }\DataTypeTok{variable =} \StringTok{"log(carat)"}\NormalTok{, }\DataTypeTok{ellipse =} \OtherTok{TRUE}\NormalTok{) }\CommentTok{#correlation = important variable}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/unnamed-chunk-49-1} \end{center}
+
+Let us look at model simplifications. We can obtain the \(F\) statistic
+for the null hypothesis
+\(\mathscr{H}_0: \beta_{\texttt{depth}} = \beta_{\texttt{table}}=0\)
+against the alternative
+\(\mathscr{H}_a: \{(\beta_{\texttt{depth}}, \beta_{\texttt{table}}) \in \mathbb{R}^2\}\)
+by running the \texttt{anova} command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(}\KeywordTok{lm}\NormalTok{(}\KeywordTok{log}\NormalTok{(price) }\OperatorTok{~}\StringTok{ }\KeywordTok{log}\NormalTok{(carat) }\OperatorTok{+}\StringTok{ }\NormalTok{cut }\OperatorTok{+}\StringTok{ }\NormalTok{color }\OperatorTok{+}\StringTok{ }\NormalTok{clarity }\OperatorTok{+}\StringTok{ }\NormalTok{x), full_mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: log(price) ~ log(carat) + cut + color + clarity + x
+## Model 2: log(price) ~ log(carat) + cut + color + clarity + depth + table + 
+##     x
+##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+## 1    480 7.8077                           
+## 2    478 7.7503  2  0.057353 1.7686 0.1717
+\end{verbatim}
+
+The test statistic is of the form
+\[F = \frac{(\mathrm{RSS}_a-\mathrm{RSS}_0)/2}{\mathrm{RSS}_0/478}\sim \mathcal{F}(2, 478)\]
+and here \(F=\) 1.769; we fail to reject the null (\(P\)-value of
+0.172). We have no evidence against the adequacy of the simpler model.
+
+Since there is little to no difference between the reduced model RSS and
+that of the full additive model, we may employ either in subsequent
+ANOVA tests. Let us try to drop one of the remaining variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{lm}\NormalTok{(}\KeywordTok{log}\NormalTok{(price) }\OperatorTok{~}\StringTok{ }\KeywordTok{log}\NormalTok{(carat) }\OperatorTok{+}\StringTok{ }\NormalTok{cut }\OperatorTok{+}\StringTok{ }\NormalTok{color }\OperatorTok{+}\StringTok{ }\NormalTok{clarity }\OperatorTok{+}\StringTok{ }\NormalTok{x), }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## log(price) ~ log(carat) + cut + color + clarity + x
+##            Df Sum of Sq     RSS     AIC  F value    Pr(>F)
+## <none>                   7.8077 -2039.8                   
+## log(carat)  1    5.7660 13.5737 -1765.2 354.4787 < 2.2e-16
+## cut         4    0.4411  8.2488 -2020.3   6.7788  2.59e-05
+## color       6   10.1359 17.9436 -1635.7 103.8552 < 2.2e-16
+## clarity     7   18.5675 26.3752 -1445.1 163.0697 < 2.2e-16
+## x           1    0.0961  7.9038 -2035.6   5.9062   0.01545
+\end{verbatim}
+
+You could write the test statistics as before (with the difference in
+the degrees of freedom equal to the number of factor levels minus one if
+the variable is categorical). All the terms are statistically
+significant and we reject the null hypothesis of any of the tests at
+level \(\alpha = 5\%\). This step would mark the end of the backward
+elimination procedure. Note that you can (and may wish to) use the RSS
+from the full model \texttt{full\_mod} in the denominator of your
+\(F\)-tests to avoid biasing your results if retaining the null leads to
+a sharp decrease.
+
+If your test statistic is small, you cannot conclude anything. This may
+be because the null hypothesis that the simpler model is adequate is
+true. It can also be due to a lack of power (you should reject, but
+there are not enough evidences against the null). If you proceed with
+the RSS from the null model, your test statistic will then be biased
+downward (recall the discussion at the end of the ANOVA \textbf{R}
+tutorial).
+
+We could equally well have started with forward selection. All the
+variables lead to a decrease in RSS that is significant at level
+\(\alpha = 5\%\). We pick the most significant one and proceed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{add_step1 <-}\StringTok{ }\KeywordTok{add1}\NormalTok{(redu_mod, }\DataTypeTok{scope =} \KeywordTok{formula}\NormalTok{(full_mod), }\DataTypeTok{scale =}\NormalTok{ RSS_full, }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\NormalTok{form <-}\StringTok{ }\KeywordTok{deparse}\NormalTok{(}\KeywordTok{formula}\NormalTok{(redu_mod))}
+\ControlFlowTok{while}\NormalTok{(}\KeywordTok{length}\NormalTok{(}\KeywordTok{which}\NormalTok{(add_step1[,}\StringTok{"Pr(>F)"}\NormalTok{] }\OperatorTok{<}\StringTok{ }\FloatTok{0.05}\NormalTok{)) }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{)\{}
+\NormalTok{  new_var <-}\StringTok{ }\KeywordTok{rownames}\NormalTok{(add_step1)[}\KeywordTok{which.max}\NormalTok{(add_step1[,}\StringTok{"F value"}\NormalTok{])]}
+\NormalTok{  form <-}\StringTok{ }\KeywordTok{paste}\NormalTok{(form, new_var, }\DataTypeTok{sep =} \StringTok{" + "}\NormalTok{)}
+\NormalTok{  add_step1 <-}\StringTok{ }\KeywordTok{add1}\NormalTok{(}\KeywordTok{update}\NormalTok{(redu_mod, }\DataTypeTok{formula =}\NormalTok{ form), }\DataTypeTok{scope =} \KeywordTok{formula}\NormalTok{(full_mod), }\DataTypeTok{scale =}\NormalTok{ RSS_full, }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+The more we test using the ANOVA command, the more size distortion due
+to multiple testing (the type I error is inflated). A Bonferroni
+correction could alleviate this. Note that forward selection typically
+uses a biased estimate of the residual sum of square.
+
+The variable that is the most correlated with \texttt{log(price)} is
+\texttt{clarity} and leads to a significant increase, so we would go for
+the bigger model since there is strong evidence that the model fit is
+better. H
+
+The function \texttt{step} that allows you to do forward or backward
+model selection using one of the information criterion. I \textbf{do
+not} recommend this, as there is no theoretical ground for the method.
+Comparisons based on information criteria are only meaningful if the
+models are neste. You may wish to use BIC rather than AIC because the
+latter leads to more parsimonious (and consistent model selection in the
+large sample limit). It may be a good starting point for your model
+search.
+
+Both forward selection and backward elimination yielded the same model,
+with the three categorical variables and length. At this stage, we
+should try and include interactions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{add1}\NormalTok{(}\KeywordTok{lm}\NormalTok{(}\DataTypeTok{formula =}\NormalTok{ form, }\DataTypeTok{data =}\NormalTok{ di),}
+        \DataTypeTok{scope =}  \KeywordTok{as.formula}\NormalTok{(}\KeywordTok{paste}\NormalTok{(form, }\StringTok{"+ log(carat):color + log(carat):clarity + log(carat):cut"}\NormalTok{, }\DataTypeTok{collapse =} \StringTok{""}\NormalTok{)),}
+     \DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term additions
+## 
+## Model:
+## log(price) ~ log(carat) + clarity + color + x + table + cut
+##                    Df Sum of Sq    RSS     AIC F value   Pr(>F)
+## <none>                          7.7504 -2041.4                 
+## log(carat):color    6   0.12893 7.6215 -2037.8  1.3336   0.2404
+## log(carat):clarity  7   0.17840 7.5720 -2039.1  1.5886   0.1365
+## log(carat):cut      4   0.39334 7.3570 -2059.5  6.3489 5.54e-05
+\end{verbatim}
+
+The interaction between \texttt{log(carat)} and \texttt{cut} is
+significative at the 5\% level. Adding interactions leads to a large
+increase in the number of parameters.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BIC_search <-}\StringTok{ }\KeywordTok{formula}\NormalTok{(}\KeywordTok{step}\NormalTok{(full_mod, }\DataTypeTok{trace =} \DecValTok{0}\NormalTok{, }\DataTypeTok{k =} \KeywordTok{log}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(di)))) }\CommentTok{#BIC}
+\CommentTok{#Search within space of main effect-only models}
+\NormalTok{BIC_mod <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(BIC_search, }\DataTypeTok{data =}\NormalTok{ di) }
+\NormalTok{final_mod <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(}\KeywordTok{log}\NormalTok{(price) }\OperatorTok{~}\StringTok{ }\KeywordTok{log}\NormalTok{(carat) }\OperatorTok{+}\StringTok{ }\NormalTok{cut }\OperatorTok{+}\StringTok{ }\NormalTok{color }\OperatorTok{+}\StringTok{ }\NormalTok{clarity }\OperatorTok{+}\StringTok{ }\NormalTok{x }\OperatorTok{+}\NormalTok{table }\OperatorTok{+}\StringTok{ }\KeywordTok{log}\NormalTok{(carat)}\OperatorTok{:}\NormalTok{cut, }\DataTypeTok{data =}\NormalTok{ di)}
+\CommentTok{#summary(final_mod)}
+\end{Highlighting}
+\end{Shaded}
+
+A further simplification would consist in merging the factors levels,
+typically into low quality and high quality. This may not a good idea,
+because it will disproportionally affect the prediction of large
+diamonds worth a lot, and will negatively impact the predictive
+accuracy. To merge factors, use e.g.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{newcut <-}\StringTok{ }\NormalTok{cut}
+\KeywordTok{levels}\NormalTok{(newcut) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\StringTok{"Fair-Good"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Fair"}\NormalTok{, }\StringTok{"Good"}\NormalTok{), }\StringTok{"High"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Very Good"}\NormalTok{, }\StringTok{"Premium"}\NormalTok{, }\StringTok{"Ideal"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+To export your table to \LaTeX, I recommend you use dedicated packages
+such as \texttt{texreg}, \texttt{stargazer} or \texttt{xtable}. You can
+easily export, using e.g.~the command
+\texttt{texreg::texreg(final\_mod,\ stars\ =\ 0,\ digits\ =\ 2,\ single.row\ =\ TRUE,\ booktabs\ =\ TRUE)},
+to get what you want. The level of customization is important (so you
+could rename the columns). Please make sure the font size is adequate
+and you use the right amount of digits.
+
+\hypertarget{cross-validation}{%
+\subsection{Cross-validation}\label{cross-validation}}
+
+Let us now compare the predictive performance of the model using
+cross-validation. The idea underlying cross-validation is simple: split
+the data, use a fraction (called training set) for model fit and the
+remaining observations (termed validation set) to check predictions.
+
+The predicted residual error sum of squares (PRESS), denoted
+\(\mathrm{CV}\) in the course, is the result of leave-one-out cross
+validation. The \(i\)th observation is predicted using the \(n-1\) other
+observations for every \(i=1, \ldots, n\). That is, we do not use the
+observation both for estimation and prediction and thus the predicted
+residual error is a more accurate measure of prediction error. We can
+return the PRESS statistic using the residuals from \textbf{R}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Leave-one-out cross validation}
+\NormalTok{PRESS <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(model)\{}\KeywordTok{crossprod}\NormalTok{(}\KeywordTok{rstandard}\NormalTok{(model, }\DataTypeTok{type =} \StringTok{"pred"}\NormalTok{))[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]\}}
+\KeywordTok{round}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"reduced model"}\NormalTok{ =}\StringTok{ }\KeywordTok{PRESS}\NormalTok{(redu_mod), }\CommentTok{#underfit?}
+        \StringTok{"final model "}\NormalTok{ =}\StringTok{ }\KeywordTok{PRESS}\NormalTok{(final_mod),}
+        \StringTok{"full model"}\NormalTok{ =}\StringTok{ }\KeywordTok{PRESS}\NormalTok{(full_mod)),}
+  \DataTypeTok{digits =} \DecValTok{2}\NormalTok{) }\CommentTok{#overfitting}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## reduced model  final model     full model 
+##         38.58          8.29          8.61
+\end{verbatim}
+
+The cross-validated error estimate shows that we do significantly better
+with the final model than using simply the model with
+\texttt{log(carat)}, but that the addition of \texttt{x} does not
+increase predictive accuracy. The full model does not improve and least
+to larger prediction error, an indication that we may be overfitting.
+
+Rather than use only one observation for validation and \(n-1\) for
+training, we can split more evenly: \(K\)-fold cross validation uses
+\(n-n/K\) observations for fitting and \(n/K\) for validation, providing
+a more realistic depiction of prediction. Unfortunately, the number of
+possible subsets of size \(\lfloor n/K\rfloor\) is very large and so one
+typically split the data into classes of equal size at random. The
+following function, which performs \(K\)-fold cross validation, can be
+used in your project. Since the result is random, it may be necessary to
+average over many replicates of the \(K\)-fold statistic provided that
+the calculation is not too computationally demanding. For large \(n\),
+this has less impact.
+
+The smaller the prediction error, the better the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{K <-}\StringTok{ }\DecValTok{10}
+\CommentTok{#Manually perform cross fold validation}
+\NormalTok{KfoldCV <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(fitted.mod, K, ...)\{}
+\NormalTok{  data <-}\StringTok{ }\KeywordTok{model.matrix}\NormalTok{(fitted.mod) }\CommentTok{#design matrix}
+\NormalTok{  y <-}\StringTok{ }\NormalTok{fitted.mod}\OperatorTok{$}\NormalTok{model[,}\DecValTok{1}\NormalTok{] }\CommentTok{#response}
+\NormalTok{  n <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(data)}
+  \CommentTok{#Shuffle the indices}
+\NormalTok{  inds <-}\StringTok{ }\KeywordTok{sample.int}\NormalTok{(}\DataTypeTok{n =}\NormalTok{ n, }\DataTypeTok{size =}\NormalTok{ n, }\DataTypeTok{replace =} \OtherTok{FALSE}\NormalTok{)}
+  \CommentTok{#Split into K groups of ~ equal size (from https://stackoverflow.com/a/16275428)}
+\NormalTok{  form_group <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x, n)\{ }\KeywordTok{split}\NormalTok{(x, }\KeywordTok{cut}\NormalTok{(}\KeywordTok{seq_along}\NormalTok{(x), n, }\DataTypeTok{labels =} \OtherTok{FALSE}\NormalTok{)) \}}
+\NormalTok{  groups <-}\StringTok{ }\KeywordTok{form_group}\NormalTok{(inds, K)}
+  \CommentTok{#Obtain prediction from K-folds}
+\NormalTok{  preds <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{, n)}
+  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{K)\{}
+\NormalTok{   preds[groups[[j]]] <-}\StringTok{ }\NormalTok{data[groups[[j]],] }\OperatorTok{%*%}\StringTok{ }\KeywordTok{lm}\NormalTok{(y[}\OperatorTok{-}\NormalTok{groups[[j]]] }\OperatorTok{~}\StringTok{ }\DecValTok{-1} \OperatorTok{+}\StringTok{ }\NormalTok{data[}\OperatorTok{-}\NormalTok{groups[[j]],])}\OperatorTok{$}\NormalTok{coef}
+\NormalTok{  \} }
+  \CommentTok{#Compute prediction error}
+  \KeywordTok{crossprod}\NormalTok{(preds }\OperatorTok{-}\StringTok{ }\NormalTok{y)[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\NormalTok{\}}
+\CommentTok{## Because splitting is random, get different answer}
+\KeywordTok{round}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"reduced model"}\NormalTok{ =}\StringTok{ }\KeywordTok{median}\NormalTok{(}\KeywordTok{replicate}\NormalTok{(}\KeywordTok{KfoldCV}\NormalTok{(}\DataTypeTok{fitted.mod =}\NormalTok{ redu_mod, }\DataTypeTok{K =}\NormalTok{ K), }\DataTypeTok{n =} \DecValTok{100}\NormalTok{)),}
+        \StringTok{"final model "}\NormalTok{ =}\StringTok{ }\KeywordTok{median}\NormalTok{(}\KeywordTok{replicate}\NormalTok{(}\KeywordTok{KfoldCV}\NormalTok{(}\DataTypeTok{fitted.mod =}\NormalTok{ final_mod, }\DataTypeTok{K =}\NormalTok{ K), }\DataTypeTok{n =} \DecValTok{100}\NormalTok{)),}
+        \StringTok{"additive forward"}\NormalTok{ =}\StringTok{ }\KeywordTok{median}\NormalTok{(}\KeywordTok{replicate}\NormalTok{(}\KeywordTok{KfoldCV}\NormalTok{(}\DataTypeTok{fitted.mod =}\NormalTok{ BIC_mod, }\DataTypeTok{K =}\NormalTok{ K), }\DataTypeTok{n =} \DecValTok{100}\NormalTok{))),}
+        \DataTypeTok{digits =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    reduced model     final model  additive forward 
+##            38.60             8.34             8.74
+\end{verbatim}
+
+The conclusions are the same for \(10\)-fold cross validation as for
+leave-one-out cross validation, conforting our model choice.
+
+\hypertarget{presentation-of-results}{%
+\subsection{Presentation of results}\label{presentation-of-results}}
+
+Having selected a model (say \texttt{final\_mod}), you should now
+present a table with the coefficients and standard errors, some
+goodness-of-fit measures (\(\mathrm{R}^2_c\),
+\(\mathrm{AIC}/\mathrm{BIC}, \mathrm{CV}\), \(K\)-fold cross-validation
+error). Explain your model (interpret the parameters), look at
+diagnostic plots and answer the questions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{), }\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\FloatTok{0.5}\NormalTok{))}
+\NormalTok{bl <-}\StringTok{ }\NormalTok{scales}\OperatorTok{::}\KeywordTok{alpha}\NormalTok{(}\StringTok{"black"}\NormalTok{, }\FloatTok{0.5}\NormalTok{) }\CommentTok{#semi-transparent black}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(di)}
+\CommentTok{#plot(final_mod)}
+
+\CommentTok{#Student Q-Q plot}
+\KeywordTok{qqPlot}\NormalTok{(final_mod, }\DataTypeTok{simulate =} \DecValTok{1999}\NormalTok{, }\DataTypeTok{envelope =} \OtherTok{TRUE}\NormalTok{,}
+       \DataTypeTok{ylab =} \StringTok{"Externally studentized residuals"}\NormalTok{, }
+       \DataTypeTok{xlab =} \StringTok{"Theoretical student quantiles"}\NormalTok{, }
+       \DataTypeTok{pch =} \DecValTok{20}\NormalTok{, }\DataTypeTok{col =}\NormalTok{ bl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 243 350
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Residuals vs fitted values}
+\KeywordTok{residualPlot}\NormalTok{(final_mod, }\DataTypeTok{type =} \StringTok{"rstudent"}\NormalTok{, }\DataTypeTok{quadratic =} \OtherTok{FALSE}\NormalTok{, }
+             \DataTypeTok{pch =} \DecValTok{20}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Externally studentized residuals"}\NormalTok{)}
+\CommentTok{#Cook distance}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{cooks.distance}\NormalTok{(final_mod), }\DataTypeTok{col =}\NormalTok{ bl, }\DataTypeTok{pch =} \DecValTok{20}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Cook's distances"}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h =} \DecValTok{8}\OperatorTok{/}\NormalTok{(n}\DecValTok{-2}\OperatorTok{*}\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(final_mod))), }\DataTypeTok{col =} \DecValTok{2}\NormalTok{)}
+\KeywordTok{influencePlot}\NormalTok{(final_mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/diagnosticsdiamonds-1} \end{center}
+
+\begin{verbatim}
+##         StudRes        Hat        CookD
+## 243 -3.93155877 0.03281988 2.036095e-02
+## 340 -0.03069107 0.38041277 2.318201e-05
+## 346 -0.64996148 0.32541064 8.161235e-03
+## 350 -3.62756784 0.22541782 1.493601e-01
+## 384 -2.65776683 0.15938312 5.289675e-02
+\end{verbatim}
+
+Many points have high leverage and large Cook's values. This means the
+slope could in principle largely be driven by those points We get a very
+large residual (observation \texttt{350}, which is a very small diamond
+of high quality sold for almost double the value of a comparable one). A
+more careful analysis would be necessary to see the impact of these
+points on the coefficients and whether they matter (or not). For
+example, we could refit the model using the command
+\texttt{lm(final\_mod,\ subset\ =\ -350)}.
+
+Diagnostics of heteroscedasticity are mostly useful when you have
+suspicions that different subgroups could have different variances (if
+you include factor variables) or if the data are time series, in which
+case you may wish to look at plots of the correlogram
+(\texttt{acf(resid(final\_mod))} and partial correlogram
+\texttt{pacf(resid(final\_mod))}). These are only useful for time
+ordered observations, i.e.~when the errors at time \(t\) depend on
+previous time periods \(\{t-1, \ldots\}\). The impact of serial
+dependence of the residuals is that the standard errors from OLS are too
+small and need to be inflated.
+
+\hypertarget{model-selection-invalidates-p-values}{%
+\section{Model selection invalidates
+P-values}\label{model-selection-invalidates-p-values}}
+
+Variable selection invalidates the usual Student and Fisher tests. To
+see this, we can generate a dataset
+\(\boldsymbol{y} = \boldsymbol{\varepsilon}\) and create an
+\(n \times p\) design matrix \(\mathbf{X}\) with random uncorrelated
+elements. We can assess by means of simulation the size distortion (the
+difference between the nominal level and the type I error) of a \(t\)
+test for the hypothesis \(\beta_j=0\) after performing forward
+selection.
+
+We illustrate the computations using two models: one in which the
+variables in the design matrix, \(\mathbf{X}\), are strongly correlated
+and another with independent input using Mallow's \(C_p\) as selection
+criterion. The size distortion is comparable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(leaps)}
+\CommentTok{#Generate random noise}
+\NormalTok{simulation <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(}\DataTypeTok{n =} \DecValTok{25}\NormalTok{, }\DataTypeTok{p =} \DecValTok{10}\NormalTok{, }\DataTypeTok{method =} \KeywordTok{c}\NormalTok{(}\StringTok{"BIC"}\NormalTok{, }\StringTok{"Cp"}\NormalTok{), }\DataTypeTok{correlated =} \OtherTok{TRUE}\NormalTok{)\{}
+\NormalTok{  method <-}\StringTok{ }\KeywordTok{match.arg}\NormalTok{(method)}
+  \KeywordTok{require}\NormalTok{(leaps)}
+  \ControlFlowTok{if}\NormalTok{(correlated)\{}
+    \CommentTok{#Simulate a random covariance matrix}
+\NormalTok{    Sig<-}\StringTok{ }\KeywordTok{rWishart}\NormalTok{(}\DecValTok{1}\NormalTok{, p }\OperatorTok{+}\StringTok{ }\DecValTok{2}\NormalTok{, }\KeywordTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{, p) }\OperatorTok{/}\StringTok{ }\NormalTok{(p }\OperatorTok{+}\StringTok{ }\DecValTok{2}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\DataTypeTok{ncol =}\NormalTok{ p, }\DataTypeTok{nrow =}\NormalTok{ p))[,,}\DecValTok{1}\NormalTok{]}
+    \CommentTok{#Simulate homoskedastic multivariate Normal observations}
+\NormalTok{    X <-}\StringTok{ }\NormalTok{mvtnorm}\OperatorTok{::}\KeywordTok{rmvnorm}\NormalTok{(}\DataTypeTok{n =}\NormalTok{ n, }\DataTypeTok{sigma =} \KeywordTok{cov2cor}\NormalTok{(Sig))}
+    \CommentTok{#Create a vector with no intercept, but with some regressors}
+\NormalTok{    y <-}\StringTok{ }\KeywordTok{c}\NormalTok{(X[,}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{] }\OperatorTok{%*%}\StringTok{ }\KeywordTok{runif}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DataTypeTok{min =} \DecValTok{-1}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(n))}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{\{}
+    \CommentTok{#Random and uncorrelated regressors and design matrix entries}
+\NormalTok{    y <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(n)}
+\NormalTok{    X <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{rnorm}\NormalTok{(}\DecValTok{10} \OperatorTok{*}\StringTok{ }\NormalTok{n), }\DataTypeTok{ncol =}\NormalTok{ p)}
+\NormalTok{  \}}
+\NormalTok{  data <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{X =}\NormalTok{ X)}
+  \ControlFlowTok{if}\NormalTok{(method }\OperatorTok{==}\StringTok{ "BIC"}\NormalTok{)\{}
+    \CommentTok{# Find best model of each side using BIC}
+    \CommentTok{# Compute using forward - backward}
+\NormalTok{    modsef <-}\StringTok{ }\KeywordTok{step}\NormalTok{(}\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\DecValTok{1}\NormalTok{), }\DataTypeTok{direction =} \StringTok{"both"}\NormalTok{, }\DataTypeTok{k =} \KeywordTok{log}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(X)), }
+                   \DataTypeTok{scope =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{lower =} \OperatorTok{~}\DecValTok{1}\NormalTok{, }\DataTypeTok{upper =} \OperatorTok{~}\NormalTok{.), }\DataTypeTok{data =}\NormalTok{ data, }\DataTypeTok{trace =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{    modseb <-}\StringTok{ }\KeywordTok{step}\NormalTok{(}\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\NormalTok{., }\DataTypeTok{data =}\NormalTok{ data), }\DataTypeTok{direction =} \StringTok{"both"}\NormalTok{, }\DataTypeTok{k =} \KeywordTok{log}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(X)), }
+                   \DataTypeTok{scope =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{lower =} \OperatorTok{~}\DecValTok{1}\NormalTok{, }\DataTypeTok{upper =} \OperatorTok{~}\NormalTok{.), }\DataTypeTok{data =}\NormalTok{ data, }\DataTypeTok{trace =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{    ind <-}\StringTok{ }\KeywordTok{which.min}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{BIC}\NormalTok{(modsef), }\KeywordTok{BIC}\NormalTok{(modseb)))}
+\NormalTok{    lmod <-}\StringTok{ }\ControlFlowTok{switch}\NormalTok{(ind, modsef, modseb)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (method }\OperatorTok{==}\StringTok{ "Cp"}\NormalTok{)\{}
+    \CommentTok{# Same thing, with Mallow's CP}
+\NormalTok{    modse <-}\StringTok{ }\KeywordTok{leaps}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ X, }\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{method =} \StringTok{"Cp"}\NormalTok{)}
+    \CommentTok{#Pick the model with the lowest Cp value and verify this is not the intercept only model}
+\NormalTok{    which_cols <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(modse}\OperatorTok{$}\NormalTok{which[}\KeywordTok{which.min}\NormalTok{(modse}\OperatorTok{$}\NormalTok{Cp),])}
+    \ControlFlowTok{if}\NormalTok{(}\KeywordTok{sum}\NormalTok{(which_cols }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{))\{}
+\NormalTok{      lmod <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(y }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{)  }\CommentTok{#if intercept-only}
+\NormalTok{    \} }\ControlFlowTok{else}\NormalTok{\{}
+\NormalTok{      lmod <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(y }\OperatorTok{~}\StringTok{ }\NormalTok{X[,modse}\OperatorTok{$}\NormalTok{which[}\KeywordTok{which.min}\NormalTok{(modse}\OperatorTok{$}\NormalTok{Cp),]]) }
+      \CommentTok{#else keep only the columns from model with lowest Cp}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \CommentTok{#Return P-value from summary (also fit the correct model)}
+  \ControlFlowTok{if}\NormalTok{(correlated)\{}
+    \KeywordTok{c}\NormalTok{(}\KeywordTok{summary}\NormalTok{(lmod)[[}\DecValTok{4}\NormalTok{]][}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{], }\KeywordTok{summary}\NormalTok{(}\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\NormalTok{X[,}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{]))[[}\DecValTok{4}\NormalTok{]][}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{])}
+\NormalTok{    \} }\ControlFlowTok{else}\NormalTok{\{}
+    \KeywordTok{c}\NormalTok{(}\KeywordTok{summary}\NormalTok{(lmod)[[}\DecValTok{4}\NormalTok{]][}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{], }\KeywordTok{summary}\NormalTok{(}\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\DecValTok{1}\NormalTok{))[[}\DecValTok{4}\NormalTok{]][}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{])  }
+\NormalTok{    \}}
+\NormalTok{\}}
+
+\NormalTok{nrep <-}\StringTok{ }\NormalTok{5000L}
+\CommentTok{#Run simulation 5000 times with BIC as model selection, n = 25, p = 10}
+\NormalTok{simu1 <-}\StringTok{ }\KeywordTok{replicate}\NormalTok{(}\KeywordTok{simulation}\NormalTok{(}\DataTypeTok{n =} \DecValTok{25}\NormalTok{, }\DataTypeTok{correlated =} \OtherTok{FALSE}\NormalTok{), }\DataTypeTok{n =}\NormalTok{ nrep)}
+\KeywordTok{rownames}\NormalTok{(simu1) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"BIC"}\NormalTok{, }\StringTok{"Correct"}\NormalTok{)}
+\CommentTok{#Empirical coverage}
+\NormalTok{cov_uncor_BIC <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\KeywordTok{rowMeans}\NormalTok{(simu1 }\OperatorTok{<}\StringTok{ }\FloatTok{0.1}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu1 }\OperatorTok{<}\StringTok{ }\FloatTok{0.05}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu1 }\OperatorTok{<}\StringTok{ }\FloatTok{0.01}\NormalTok{))}
+\KeywordTok{dimnames}\NormalTok{(cov_uncor_BIC) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\StringTok{"model"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Lowest BIC model"}\NormalTok{, }\StringTok{"Correct model"}\NormalTok{), }
+                             \StringTok{"size"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"0.1"}\NormalTok{,}\StringTok{"0.05"}\NormalTok{,}\StringTok{"0.01"}\NormalTok{))}
+\KeywordTok{print}\NormalTok{(cov_uncor_BIC)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   size
+## model                 0.1   0.05   0.01
+##   Lowest BIC model 0.1738 0.1076 0.0324
+##   Correct model    0.1104 0.0562 0.0106
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{boxplot}\NormalTok{(}\KeywordTok{t}\NormalTok{(simu1))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/modelselectinvalid-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Same, this time with strongly correlated variables}
+\NormalTok{simu2 <-}\StringTok{ }\KeywordTok{replicate}\NormalTok{(}\KeywordTok{simulation}\NormalTok{(}\DataTypeTok{n =} \DecValTok{25}\NormalTok{, }\DataTypeTok{correlated =} \OtherTok{TRUE}\NormalTok{), }\DataTypeTok{n =}\NormalTok{ nrep)}
+\NormalTok{cov_cor_BIC <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\KeywordTok{rowMeans}\NormalTok{(simu2 }\OperatorTok{<}\StringTok{ }\FloatTok{0.1}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu2 }\OperatorTok{<}\StringTok{ }\FloatTok{0.05}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu2 }\OperatorTok{<}\StringTok{ }\FloatTok{0.01}\NormalTok{))}
+\KeywordTok{dimnames}\NormalTok{(cov_cor_BIC) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\StringTok{"model"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Lowest BIC model"}\NormalTok{, }\StringTok{"Correct model"}\NormalTok{), }\StringTok{"size"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"0.1"}\NormalTok{,}\StringTok{"0.05"}\NormalTok{,}\StringTok{"0.01"}\NormalTok{))}
+\KeywordTok{print}\NormalTok{(cov_cor_BIC)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   size
+## model                 0.1   0.05   0.01
+##   Lowest BIC model 0.1846 0.1150 0.0344
+##   Correct model    0.1018 0.0504 0.0110
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{simu3 <-}\StringTok{ }\KeywordTok{replicate}\NormalTok{(}\KeywordTok{simulation}\NormalTok{(}\DataTypeTok{n =} \DecValTok{25}\NormalTok{, }\DataTypeTok{correlated =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{method =} \StringTok{"Cp"}\NormalTok{), }\DataTypeTok{n =}\NormalTok{ nrep)}
+\KeywordTok{rownames}\NormalTok{(simu3) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Cp"}\NormalTok{, }\StringTok{"Correct"}\NormalTok{)}
+\CommentTok{#Empirical coverage}
+\NormalTok{cov_uncor_CP <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\KeywordTok{rowMeans}\NormalTok{(simu3 }\OperatorTok{<}\StringTok{ }\FloatTok{0.1}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu3 }\OperatorTok{<}\StringTok{ }\FloatTok{0.05}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu3 }\OperatorTok{<}\StringTok{ }\FloatTok{0.01}\NormalTok{))}
+\KeywordTok{dimnames}\NormalTok{(cov_uncor_CP) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\StringTok{"model"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Lowest Cp model"}\NormalTok{, }\StringTok{"Correct model"}\NormalTok{), }\StringTok{"size"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"0.1"}\NormalTok{,}\StringTok{"0.05"}\NormalTok{,}\StringTok{"0.01"}\NormalTok{))}
+\KeywordTok{print}\NormalTok{(cov_uncor_CP)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  size
+## model                0.1   0.05   0.01
+##   Lowest Cp model 0.1844 0.1096 0.0318
+##   Correct model   0.0978 0.0472 0.0088
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{boxplot}\NormalTok{(}\KeywordTok{t}\NormalTok{(simu3))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/modelselectinvalid-2} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{simu4 <-}\StringTok{ }\KeywordTok{replicate}\NormalTok{(}\KeywordTok{simulation}\NormalTok{(}\DataTypeTok{n =} \DecValTok{25}\NormalTok{, }\DataTypeTok{correlated =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{method =} \StringTok{"Cp"}\NormalTok{), }\DataTypeTok{n =}\NormalTok{ nrep)}
+\NormalTok{cov_cor_CP <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\KeywordTok{rowMeans}\NormalTok{(simu4 }\OperatorTok{<}\StringTok{ }\FloatTok{0.1}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu4 }\OperatorTok{<}\StringTok{ }\FloatTok{0.05}\NormalTok{), }\KeywordTok{rowMeans}\NormalTok{(simu4 }\OperatorTok{<}\StringTok{ }\FloatTok{0.01}\NormalTok{))}
+\KeywordTok{dimnames}\NormalTok{(cov_cor_CP) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\StringTok{"model"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Lowest Cp model"}\NormalTok{, }\StringTok{"Correct model"}\NormalTok{), }\StringTok{"size"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"0.1"}\NormalTok{,}\StringTok{"0.05"}\NormalTok{,}\StringTok{"0.01"}\NormalTok{))}
+\KeywordTok{print}\NormalTok{(cov_cor_CP)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  size
+## model                0.1   0.05   0.01
+##   Lowest Cp model 0.1864 0.1114 0.0352
+##   Correct model   0.1014 0.0514 0.0084
+\end{verbatim}
+
+Adding superfluous variables does not induce bias, but inflates the
+standard errors (leading to larger \(P\)-values). We observe on the
+contrary here smaller \(P\)-values. Recall that the \(P\)-values should
+be uniformly distributed under the null hypothesis (and they seemingly
+are when the true null model is fitted).
 
 \bibliography{book.bib,packages.bib}
 

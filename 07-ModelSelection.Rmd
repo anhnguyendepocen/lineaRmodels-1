@@ -1,0 +1,346 @@
+# Model selection
+
+My (personal) general strategy for model selection, given the tools covered in MATH 341, is the following:
+
+1. Start with a complex model (all additive terms, say). Look at the individual Wald tests for the marginal significance of the coefficients.
+2. Try to simplify the full model using an ANOVA, potentially dropping multiple terms at once. This preserves power (recall the potential bias in the estimate of RSS in the denominator) and reduces the multiple testing problem that inflates Type I errors (reject the null more than $\alpha\%$ of the time when you shouldn't).
+3. Use `drop1` to further reduce the model. 
+4. Try adding interactions between variables, if any.
+5. Select the best forward selection / backward elimination models and some additional ones (that have a nice interpretation, have low information criterion values). Compare them in terms of prediction and goodness-of-fit.
+
+Once you have a final model, you can interpret coefficients. Model selection **invalides** classical inference, so report coefficients and standard errors as is without overinterpreting the $P$-values from `summary`. 
+
+The best tool to assess your model is the use of cross-validation. If there is no temporal structure, you can use e.g. five-fold cross validation to find the best fitting model. Criteria such as BIC (more stringent than AIC) can also be useful.
+
+```{r setup7, include=FALSE}
+options(show.signif.stars=FALSE)
+bl <- scales::alpha("black", 0.5)
+par(pch = 20, col = bl, bty = "l")
+rm(list = ls())
+```
+
+
+
+## Example: Price of diamonds
+
+
+This very large dataset contains the price in USD (rounded to nearest dollar) of $n=53940$ diamonds. The explanatory variables include three ordinal factors: the quality of the `cut`, `color` and `clarity`. These are ranked from worst to best outcome. Five  other variables contain the mensurements of the dimension of the diamond, rounded to the 0.01 mm. They are length `x`, width `y`, depth `z`, total depth percentage `depth` where `depth`$=2\times z/(x + y)$, and `table`, a measure of the width of the top of the diamond. The last variable is the weight of the diamond, `carat`, rounded to the nearest 0.01.
+
+```{r}
+#install.packages("ggplot2")
+library(ggplot2); library(car)
+data(diamonds, package = "ggplot2")
+help(diamonds)
+#Subsample because the dataset is very large
+set.seed(1234) #Fix RNG seed so as to make output reproducible
+di <- diamonds[sample.int(size = 500, replace = FALSE, n = nrow(diamonds)), ]
+attach(di)
+```
+
+### Exploratory data analysis
+
+We can look at some graphs of the data, including pair plots and some summary statistics. These are useful to spot outliers.
+
+```{r, width = 10, height = 10}
+str(di)
+apply(di, 2, range)
+print(GGally::ggpairs(di[,-(2:4)], progress = FALSE))
+table(cut)
+table(clarity)
+table(color)
+graphics.off()
+plot(density(carat, bw = 0.02), main = "Density estimate of carat")
+```
+
+The most important variable is likely to be weight or width (which are strongly correlated). An explanatory data analysis reveals the relationship between `carat` and `price` to be non-linear. A logarithmic transformation of both the `price` and `carat` alleviates this and reveals the discretization of the measurements (most of the diamonds have a reported weight of 1 or 2 carats). The linear correlation between the variables `x`, `y` and `z` is close to unity (due to the regular cut of diamonds). This will potentially lead to collinearity, so the variables may not be jointly significative. There is (depending on the subset) a clearly visible outlier in `z` hat should be removed. There is no evidence of interactions between the categorical variables and the rest (not shown). Lastly, `depth` and `table` are apparently not linearly correlated with `price`. 
+
+
+````{r carat_plot, fig.width=10, fig.height=5}
+par(mfrow = c(1, 3), bty = "l")
+plot(x = carat, y = price, ylab = "price (in USD)", xlab = "carat")
+plot(carat, log(price), ylab = "log price (in USD)", xlab = "carat")
+plot(carat, price, log="xy", ylab = "log price (in USD)", xlab = "log carat")
+````
+
+A careful explanatory data analysis with the full model reveals that, despite the fact `depth` is a transformed variable supposedly created from `x`, `y` and `z`, there are some outliers (`summary(lm(depth ~ -1 + I(z/(x+y)), data = diamonds))`). The model is likely to predict poorly 1 carat and 2 carats diamonds, for which there is a lot of heterogeneity. 
+
+Sometimes, it helps to regroup the regressors to better identify patterns. This is most useful in situations where there is a lot of noise in the response (not the case here).
+
+```{r}
+lcarat_cut <- cut(log(carat), breaks = seq(-1.5, 1, by = 0.25))
+boxplot(x ~ lcarat_cut, col = 'grey')
+```
+
+
+### Model selection
+
+We will start with a model with all regressors but `y` and `z` (which we eliminate on grounds of multicollinearity).
+
+```{r}
+#Small model
+redu_mod <- lm(log(price) ~ log(carat))
+#Unordered factors (so they are interpretable)
+#Ordered factors use an orthogonal decomposition
+cut <- factor(cut, ordered = FALSE)
+color <- factor(color, ordered = FALSE)
+clarity <- factor(clarity, ordered = FALSE)
+#Full additive model
+full_mod <- lm(log(price) ~ log(carat) + cut + color + clarity + depth + table + x)
+summ_full <- summary(full_mod)
+knitr::kable(coef(summ_full), digits = 3)
+RSS_full <- summ_full$sigma^2 * summ_full$df[2]
+#RSS_full <- crossprod(resid(full_mod))[1]
+```
+
+The model fit is excellent. Unsurprisingly, all of `x`, `y` and `z` are not marginally significant if they are all included at once (output omitted), but `x` is if it is the only one included. 
+
+Recall that the `t value` column gives the Wald statistic $t = \hat{\beta}_i/\mathrm{se}(\hat{\beta}_i)$, for the null hypothesis $\beta_{i}=0$ against the two-sided alternative $\beta_{i} \neq 0$. Under $\mathscr{H}_0$, $t \sim \mathcal{T}(n-p)$ and the $P$-value  is $2\times (1-$`pt`$(t, n-p))$. It appears that we could get rid of `depth` and `table`, which contribute little overall. This is confirmed graphically using added-variable plots, which plots $\mathbf{M}_{\mathbf{X}_{-j}}\boldsymbol{y}$ against $\mathbf{M}_{\mathbf{X}_{-j}}\mathbf{x}_j$. This is the residual effect of $\mathbf{x}_j$ after taking into account the effect of the other variables $\mathbf{X}_{-j}$ on what remains of the response. If the variable was important, there would be a strong correlation in the variables. The last plot illustrates what you could see if there was residual structure (strong positive or negative correlation, clear line).
+
+```{r, fig.width = 10} 
+par(mfrow = c(1, 3))
+car::avPlot(full_mod, variable = "table", ellipse = TRUE, col.lines = NULL) #spherical = no structure
+car::avPlot(full_mod, variable = "depth", ellipse = TRUE, col.lines = NULL) #idem
+car::avPlot(full_mod, variable = "log(carat)", ellipse = TRUE) #correlation = important variable
+```
+
+Let us look at model simplifications. 
+We can obtain the $F$ statistic for the null hypothesis $\mathscr{H}_0: \beta_{\texttt{depth}} = \beta_{\texttt{table}}=0$ against the alternative $\mathscr{H}_a: \{(\beta_{\texttt{depth}}, \beta_{\texttt{table}}) \in \mathbb{R}^2\}$ by running the `anova` command:
+
+```{r}
+anova(lm(log(price) ~ log(carat) + cut + color + clarity + x), full_mod)
+```
+
+The test statistic is of the form
+\[F = \frac{(\mathrm{RSS}_a-\mathrm{RSS}_0)/2}{\mathrm{RSS}_0/478}\sim \mathcal{F}(2, 478)\]
+and here $F=$ `r round(anova(lm(log(price) ~ log(carat) + cut + color + clarity + x), full_mod)[2,"F"], 3)`;  we fail to reject the null ($P$-value of `r round(anova(lm(log(price) ~ log(carat) + cut + color + clarity + x), full_mod)[2,"Pr(>F)"], 3)`). We have no evidence against the adequacy of the simpler model.
+
+Since there is little to no difference between the reduced model RSS and that of the full additive model, we may employ either in subsequent ANOVA tests.
+Let us try to drop one of the remaining variables.
+
+```{r} 
+drop1(lm(log(price) ~ log(carat) + cut + color + clarity + x), test = "F")
+```
+
+You could write the test statistics as before (with the difference in the degrees of freedom equal to the number of factor levels minus one if the variable is categorical). All the terms are statistically significant and we reject the null hypothesis of any of the tests at level $\alpha = 5\%$. This step would mark the end of the backward elimination procedure. Note that you can (and may wish to) use the RSS from the full model `full_mod` in the denominator of your $F$-tests to avoid biasing your results if retaining the null leads to a sharp decrease. 
+
+If your test statistic is small, you cannot conclude anything. This may be because the null hypothesis that the simpler model is adequate is true. It can also be due to a lack of power (you should reject, but there are not enough evidences against the null). If you proceed with the RSS from the null model, your test statistic will then be biased downward (recall the discussion at the end of the ANOVA **R** tutorial).
+
+We could equally well have started with forward selection. All the variables lead to a decrease in RSS that is significant at level $\alpha = 5\%$. We pick the most significant one and proceed.
+
+```{r}
+add_step1 <- add1(redu_mod, scope = formula(full_mod), scale = RSS_full, test = "F")
+form <- deparse(formula(redu_mod))
+while(length(which(add_step1[,"Pr(>F)"] < 0.05)) > 0){
+  new_var <- rownames(add_step1)[which.max(add_step1[,"F value"])]
+  form <- paste(form, new_var, sep = " + ")
+  add_step1 <- add1(update(redu_mod, formula = form), scope = formula(full_mod), scale = RSS_full, test = "F")
+}
+```
+
+The more we test using the ANOVA command, the more size distortion due to multiple testing (the type I error is inflated). A Bonferroni correction could alleviate this. Note that forward selection typically uses a biased estimate of the residual sum of square.
+
+The variable that is the most correlated with `log(price)` is `clarity` and leads to a significant increase, so we would go for the bigger model since there is strong evidence that the model fit is better. H
+
+The function `step` that allows you to do forward or backward model selection using one of the information criterion. I **do not** recommend this, as there is no theoretical ground for the method. Comparisons based on information criteria are only meaningful if the models are neste. You may wish to use BIC rather than AIC because the latter leads to more parsimonious (and consistent model selection in the large sample limit). It may be a good starting point for your model search.
+
+Both forward selection and backward elimination yielded the same model, with the three categorical variables and length. At this stage, we should try and include interactions.
+
+```{r}
+add1(lm(formula = form, data = di),
+        scope =  as.formula(paste(form, "+ log(carat):color + log(carat):clarity + log(carat):cut", collapse = "")),
+     test = "F")
+```
+
+The interaction between `log(carat)` and `cut`  is significative at the 5% level. Adding interactions leads to a large increase in the number of parameters. 
+
+```{r}
+BIC_search <- formula(step(full_mod, trace = 0, k = log(nrow(di)))) #BIC
+#Search within space of main effect-only models
+BIC_mod <- lm(BIC_search, data = di) 
+final_mod <- lm(log(price) ~ log(carat) + cut + color + clarity + x +table + log(carat):cut, data = di)
+#summary(final_mod)
+```
+
+
+A further simplification would consist in merging the factors levels, typically into low quality and high quality. This may not a good idea, because it will disproportionally affect the prediction of large diamonds worth a lot, and will negatively impact the predictive accuracy. To merge factors, use e.g.
+
+```{r, eval = FALSE}
+newcut <- cut
+levels(newcut) <- list("Fair-Good" = c("Fair", "Good"), "High" = c("Very Good", "Premium", "Ideal"))
+```
+
+
+To export your table to \LaTeX, I recommend you use dedicated packages such as `texreg`, `stargazer` or `xtable`. You can easily export, using e.g. the command `texreg::texreg(final_mod, stars = 0, digits = 2, single.row = TRUE, booktabs = TRUE)`, to get what you want. The level of customization is important (so you could rename the columns). Please make sure the font size is adequate and you use the right amount of digits.
+
+
+### Cross-validation
+
+Let us now compare the predictive performance of the model using cross-validation. The idea underlying cross-validation is simple: split the data, use a fraction (called training set) for model fit and the remaining observations (termed validation set) to check predictions. 
+
+
+The predicted residual error sum of squares (PRESS), denoted $\mathrm{CV}$ in the course, is the result of leave-one-out cross validation. The $i$th observation is predicted using the $n-1$ other observations for every $i=1, \ldots, n$. That is, we do not use the observation both for estimation and prediction and thus the predicted residual error is a more accurate measure of prediction error. We can return the PRESS statistic using the residuals from **R**.
+
+```{r}
+#Leave-one-out cross validation
+PRESS <- function(model){crossprod(rstandard(model, type = "pred"))[1,1]}
+round(c("reduced model" = PRESS(redu_mod), #underfit?
+        "final model " = PRESS(final_mod),
+        "full model" = PRESS(full_mod)),
+  digits = 2) #overfitting
+```
+
+The cross-validated error estimate shows that we do significantly better with the final model than using simply the model with `log(carat)`, but that the addition of `x` does not increase predictive accuracy. The full model does not improve and least to larger prediction error, an indication that we may be overfitting.
+
+Rather than use only one observation for validation and $n-1$ for training, we can split more evenly: $K$-fold cross validation uses $n-n/K$ observations for fitting and $n/K$ for validation, providing a more realistic depiction of prediction. Unfortunately, the number of possible subsets of size $\lfloor n/K\rfloor$ is very large and so one typically split the data into classes of equal size at random. The following function, which performs $K$-fold cross validation, can be used in your project. Since the result is random, it may be necessary to average over many replicates of the $K$-fold statistic provided that the calculation is not too computationally demanding. For large $n$, this has less impact.
+
+The smaller the prediction error, the better the model.
+
+```{r}
+K <- 10
+#Manually perform cross fold validation
+KfoldCV <- function(fitted.mod, K, ...){
+  data <- model.matrix(fitted.mod) #design matrix
+  y <- fitted.mod$model[,1] #response
+  n <- nrow(data)
+  #Shuffle the indices
+  inds <- sample.int(n = n, size = n, replace = FALSE)
+  #Split into K groups of ~ equal size (from https://stackoverflow.com/a/16275428)
+  form_group <- function(x, n){ split(x, cut(seq_along(x), n, labels = FALSE)) }
+  groups <- form_group(inds, K)
+  #Obtain prediction from K-folds
+  preds <- rep(NA, n)
+  for(j in 1:K){
+   preds[groups[[j]]] <- data[groups[[j]],] %*% lm(y[-groups[[j]]] ~ -1 + data[-groups[[j]],])$coef
+  } 
+  #Compute prediction error
+  crossprod(preds - y)[1,1]
+}
+## Because splitting is random, get different answer
+round(c("reduced model" = median(replicate(KfoldCV(fitted.mod = redu_mod, K = K), n = 100)),
+        "final model " = median(replicate(KfoldCV(fitted.mod = final_mod, K = K), n = 100)),
+        "additive forward" = median(replicate(KfoldCV(fitted.mod = BIC_mod, K = K), n = 100))),
+        digits = 2)
+```
+
+The conclusions are the same for $10$-fold cross validation as for leave-one-out cross validation, conforting our model choice.
+
+### Presentation of results
+
+Having selected a model (say `final_mod`), you should now present a table with the coefficients and standard errors, some goodness-of-fit measures ($\mathrm{R}^2_c$, $\mathrm{AIC}/\mathrm{BIC}, \mathrm{CV}$, $K$-fold cross-validation error). Explain your model (interpret the parameters), look at diagnostic plots and answer the questions.
+
+```{r diagnosticsdiamonds, fig.width=10, fig.height = 10} 
+par(mfrow = c(2, 2), mar = c(5, 5, 1.5, 0.5))
+bl <- scales::alpha("black", 0.5) #semi-transparent black
+n <- nrow(di)
+#plot(final_mod)
+
+#Student Q-Q plot
+qqPlot(final_mod, simulate = 1999, envelope = TRUE,
+       ylab = "Externally studentized residuals", 
+       xlab = "Theoretical student quantiles", 
+       pch = 20, col = bl)
+#Residuals vs fitted values
+residualPlot(final_mod, type = "rstudent", quadratic = FALSE, 
+             pch = 20, ylab = "Externally studentized residuals")
+#Cook distance
+plot(cooks.distance(final_mod), col = bl, pch = 20, ylab = "Cook's distances")
+abline(h = 8/(n-2*length(coef(final_mod))), col = 2)
+influencePlot(final_mod)
+```
+
+Many points have high leverage and large Cook's values. This means the slope could in principle largely be driven by those points
+We get a very large residual (observation `350`, which is a very small diamond of high quality sold for almost double the value of a comparable one). A more careful analysis would be necessary to see the impact of these points on the coefficients and whether they matter (or not). For example, we could refit the model using the command `lm(final_mod, subset = -350)`.
+
+Diagnostics of heteroscedasticity are mostly useful when you have suspicions that different subgroups could have different variances (if you include factor variables) or if the data are time series, in which case you may wish to look at plots of the correlogram (`acf(resid(final_mod))` and partial correlogram `pacf(resid(final_mod))`). These are only useful for time ordered observations, i.e. when the errors at time $t$ depend on previous time periods $\{t-1, \ldots\}$. The impact of serial dependence of the residuals is that the standard errors from OLS are too small and need to be inflated.
+
+
+## Model selection invalidates P-values
+
+Variable selection invalidates the usual Student and Fisher tests. To see this,
+we can generate a dataset $\boldsymbol{y} = \boldsymbol{\varepsilon}$ and create an $n \times p$  design matrix $\mathbf{X}$ with random uncorrelated elements. We can assess
+by means of simulation the size distortion (the difference between the nominal level and the type I error) of a $t$ test for the hypothesis $\beta_j=0$ after performing forward selection.
+
+We illustrate the computations using two models: one in which the variables in the design matrix, $\mathbf{X}$, are strongly correlated and another with independent input using Mallow's $C_p$ as selection criterion. The size distortion is comparable.
+
+```{r modelselectinvalid, cache = TRUE}
+library(leaps)
+#Generate random noise
+simulation <- function(n = 25, p = 10, method = c("BIC", "Cp"), correlated = TRUE){
+  method <- match.arg(method)
+  require(leaps)
+  if(correlated){
+    #Simulate a random covariance matrix
+    Sig<- rWishart(1, p + 2, diag(1, p) / (p + 2) + matrix(0.2, ncol = p, nrow = p))[,,1]
+    #Simulate homoskedastic multivariate Normal observations
+    X <- mvtnorm::rmvnorm(n = n, sigma = cov2cor(Sig))
+    #Create a vector with no intercept, but with some regressors
+    y <- c(X[,1:5] %*% runif(5, min = -1, max = 1) + rnorm(n))
+  } else{
+    #Random and uncorrelated regressors and design matrix entries
+    y <- rnorm(n)
+    X <- matrix(rnorm(10 * n), ncol = p)
+  }
+  data <- data.frame(y = y, X = X)
+  if(method == "BIC"){
+    # Find best model of each side using BIC
+    # Compute using forward - backward
+    modsef <- step(lm(y~1), direction = "both", k = log(nrow(X)), 
+                   scope = list(lower = ~1, upper = ~.), data = data, trace = FALSE)
+    modseb <- step(lm(y~., data = data), direction = "both", k = log(nrow(X)), 
+                   scope = list(lower = ~1, upper = ~.), data = data, trace = FALSE)
+    ind <- which.min(c(BIC(modsef), BIC(modseb)))
+    lmod <- switch(ind, modsef, modseb)
+  } else if (method == "Cp"){
+    # Same thing, with Mallow's CP
+    modse <- leaps(x = X, y = y, method = "Cp")
+    #Pick the model with the lowest Cp value and verify this is not the intercept only model
+    which_cols <- sum(modse$which[which.min(modse$Cp),])
+    if(sum(which_cols == 0)){
+      lmod <- lm(y ~ 1)  #if intercept-only
+    } else{
+      lmod <- lm(y ~ X[,modse$which[which.min(modse$Cp),]]) 
+      #else keep only the columns from model with lowest Cp
+    }
+  }
+  #Return P-value from summary (also fit the correct model)
+  if(correlated){
+    c(summary(lmod)[[4]][1,4], summary(lm(y~X[,1:5]))[[4]][1,4])
+    } else{
+    c(summary(lmod)[[4]][1,4], summary(lm(y~1))[[4]][1,4])  
+    }
+}
+
+nrep <- 5000L
+#Run simulation 5000 times with BIC as model selection, n = 25, p = 10
+simu1 <- replicate(simulation(n = 25, correlated = FALSE), n = nrep)
+rownames(simu1) <- c("BIC", "Correct")
+#Empirical coverage
+cov_uncor_BIC <- cbind(rowMeans(simu1 < 0.1), rowMeans(simu1 < 0.05), rowMeans(simu1 < 0.01))
+dimnames(cov_uncor_BIC) <- list("model" = c("Lowest BIC model", "Correct model"), 
+                             "size" = c("0.1","0.05","0.01"))
+print(cov_uncor_BIC)
+boxplot(t(simu1))
+
+#Same, this time with strongly correlated variables
+simu2 <- replicate(simulation(n = 25, correlated = TRUE), n = nrep)
+cov_cor_BIC <- cbind(rowMeans(simu2 < 0.1), rowMeans(simu2 < 0.05), rowMeans(simu2 < 0.01))
+dimnames(cov_cor_BIC) <- list("model" = c("Lowest BIC model", "Correct model"), "size" = c("0.1","0.05","0.01"))
+print(cov_cor_BIC)
+
+
+simu3 <- replicate(simulation(n = 25, correlated = FALSE, method = "Cp"), n = nrep)
+rownames(simu3) <- c("Cp", "Correct")
+#Empirical coverage
+cov_uncor_CP <- cbind(rowMeans(simu3 < 0.1), rowMeans(simu3 < 0.05), rowMeans(simu3 < 0.01))
+dimnames(cov_uncor_CP) <- list("model" = c("Lowest Cp model", "Correct model"), "size" = c("0.1","0.05","0.01"))
+print(cov_uncor_CP)
+boxplot(t(simu3))
+
+simu4 <- replicate(simulation(n = 25, correlated = TRUE, method = "Cp"), n = nrep)
+cov_cor_CP <- cbind(rowMeans(simu4 < 0.1), rowMeans(simu4 < 0.05), rowMeans(simu4 < 0.01))
+dimnames(cov_cor_CP) <- list("model" = c("Lowest Cp model", "Correct model"), "size" = c("0.1","0.05","0.01"))
+print(cov_cor_CP)
+```
+
+Adding superfluous variables does not induce bias, but inflates the standard errors (leading to larger $P$-values). We observe on the contrary here smaller $P$-values. Recall that the $P$-values should be uniformly distributed under the null hypothesis (and they seemingly are when the true null model is fitted).
+

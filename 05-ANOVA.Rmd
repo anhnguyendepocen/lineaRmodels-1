@@ -119,7 +119,7 @@ Note that in general, multiple testing leads to inflated Type-I error for the se
 jt_test <- multcomp::glht(mod.a, linfct = rbind(c(0, 1, 0), c(0, 0, 1)), test = adjusted("bonf"))
 summary(jt_test)
 summary(jt_test, multcomp::Ftest())
-#Test hypothesis jointly using GLHT (see Exercise series 9)
+#Test hypothesis jointly using GLHT
 car::linearHypothesis(mod.a, hypothesis.matrix = rbind(c(0, 1, 0), c(0, 0, 1)), test = "F")
 ```
 
@@ -184,4 +184,124 @@ Let $\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})^\top$ denote the vector of
 \mathbf{0}_{n_L} & \mathbf{0}_{n_L}&\cdots & \mathbf{1}_{n_L} 
 \end{pmatrix}\begin{pmatrix} \alpha_1 \\ \alpha_2 \\\vdots \\ \alpha_L\end{pmatrix} + \begin{pmatrix}\boldsymbol{\varepsilon}_1 \\\boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_L\end{pmatrix}. \]
 
-To test $\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L$, we can use the usual sum of squares decomposition and an $F$ statistic. 
+In a **balanced design**, the number of observations $m$ is the same for each of the $L$ levels of the factor. We can then write $\mX^\top\mX = m\mathbf{I}_L$ and the standard errors are the same.
+
+To test $\mathrm{H}_0: \alpha_1 = \cdots = \alpha_L$, we can use the usual sum of squares decomposition. 
+The $F$-statistic for this test is 
+\[F = \frac{(\boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y} - \boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y})/(L-1)}{
+\boldsymbol{y}^\top\mathbf{M}_{\mathbf{X}}\boldsymbol{y}/(n-L)} \sim \mathcal{F}(L-1, n-L).\]
+and we reject the null hypothesis $\mu_1 = \cdots = \mu_L$ against the alternative that at least one group mean is different. 
+
+## Solutions
+
+### Exercise 9.3 - One-way analysis of variance
+
+
+```{r}
+options(show.signif.stars = FALSE)
+#http://www.stat.ufl.edu/~winner/data/meniscus.txt
+meniscus <- read.table("http://sma.epfl.ch/~lbelzile/math341/meniscus.dat", header = TRUE)
+boxplot(displacement ~ method, data = meniscus, ylab = "Displacement (in mm)")
+lmod_men <- lm(displacement ~ method, data = meniscus)
+summ_men <- summary(lmod_men)
+#ANOVA table
+anov_men <- anova(lmod_men)
+#F statistic with dof
+summ_men$fstatistic
+
+#P-value
+anov_men[1,"Pr(>F)"]
+```
+
+The $F$ statistic for the null hypothesis $\mu_1=\mu_2=\mu_3$ is `r round(as.vector(summ_men$fstatistic[1]), 2)` against the alternative that at least one group mean differ. Under the assumption of the Gaussian linear model, $F$ follows a Fisher distribution with `r as.integer(summ_men$fstatistic[2])` and `r as.integer(summ_men$fstatistic[3])` degrees of freedom. The $P$-value is thus `r round(anov_men[1,"Pr(>F)"], 2)` and we therefore reject the null hypothesis that the treatment is equal at level $\alpha = 0.05$.
+
+The `meniscus` dat set is a balanced design, which implies that the number of observations is the same for each level of the factor. Since the entries of $\mathbf{X}^\top\mathbf{X}$ depend on the counts for each level, they will be the same here. This implies that the standard errors are also identical for each level (except for the baseline, symbolized by the intercept). Removing the latter changes the parametrization from baseline and constrast to individual group mean.
+
+
+```{r}
+summary(lmod_men2 <- lm(displacement ~ 0 + method, data = meniscus))
+crossprod(model.matrix(lmod_men2))
+```
+
+
+Note that the value of the multiple R-squared value is not the same, nor is the $F$-statistic. The residuals sum of square does not change because the adjustment is the same. However, without an intercept, **R** computes the decomposition 
+$\boldsymbol{y}^\top\boldsymbol{y} = \mathrm{RSS} + \boldsymbol{y}^\top\mathbf{H}_{\mathbf{X}}\boldsymbol{y}$ rather than $\mathrm{TSS} = \boldsymbol{y}^\top\mathbf{M}_{\mathbf{1}_n}\boldsymbol{y}= \mathrm{ESS}+\mathrm{RSS}$.
+We have $\mathrm{TSS} = \bs{y}^\top\bs{y}-n\bar{y}^2$.
+
+We can compute the mean using the information on the total number of cases, since $\bar{y} = (\hat{\mu}_1+\hat{\mu}_2 + \hat{\mu}_3)/3$.
+
+
+### Exercise 9.4 - Two-way analysis of variance
+
+```{r}
+diet <- read.table("http://sma.epfl.ch/~lbelzile/math341/diet.dat", header = TRUE)
+#Cast strings to factors
+diet$diet.type <- as.factor(diet$diet.type)
+diet$gender <- as.factor(diet$gender)
+
+#Check mean and variance by combination of factor
+#Warning: small sample sizes
+facs <- list(diet$diet.type, diet$gender)
+tapply(diet$weight.loss, facs, mean)
+tapply(diet$weight.loss, facs, var)
+#Variance may not be homogeneous for men/women - 
+# Could use weighted least squares
+#Fit model with interaction
+M5 <- lm(weight.loss ~ gender * diet.type, data = diet)
+M4 <- lm(weight.loss ~ gender + diet.type, data = diet)
+M3 <- lm(weight.loss ~ diet.type, data = diet)
+M2 <- lm(weight.loss ~ gender, data = diet)
+M1 <- lm(weight.loss ~ 1, data = diet)
+#ANOVA Tables (recall sequential decomposition) - prefered option
+anova(M5)
+#anova(M5) uses RSS from M5 in denominator, read table from bottom to top
+#RSS values
+RSS <- anova(M1, M2, M3, M4, M5)[,"RSS"]
+#Backward model selection (more complex to simpler)
+drop1(M5, test = "F")
+#Manual calculation
+F45 <- ((RSS[4]-RSS[5])/2)/(RSS[5]/M5$df.residual)
+
+#Forward model selection - ASSUMES weight~gender is CORRECT...
+anova(lm(weight.loss ~ gender * diet.type, data = diet))["gender", c("F value","Pr(>F)")] #gender not significant
+anova(lm(weight.loss ~ diet.type * gender, data = diet))["diet.type", c("F value","Pr(>F)")] #diet type significant
+
+#Alternatively
+add1(M1, scope = c("diet.type","gender"), test = "F")
+#Note that RSS is that of the more complext model, but not the full model
+add1(M3, scope = "gender", test = "F")
+#No evidence against the simpler null model with only diet
+#We do not test for the interaction model without main effects included!
+```
+
+We can use information criterion to estimate the goodness-of-fit of the model.
+The Akaike's information criterion (AIC) and Schwartz' information criterion (BIC) can be obtained by use of the functions `AIC` and `BIC`, respectively.
+
+An alternative is Mallow's $C_p$, which requires an estimate of $s^2$. It is customary to select $s^2$ as the mean residual sum of squares from the most complex model, to make the comparisons fair avoid bias to due model misspecification.
+The most complex model will by construction give $C_p=p$ (so we cannot assess the goodness-of-fit of this model using this technique). Good models are those for which the value of $C_p$ is close to $p$.
+
+```{r}
+p <- unlist(lapply(list(M1, M2, M3, M4, M5), 
+                   FUN = function(mod){length(coef(mod))}))
+Mallow_Cp <- RSS/RSS[5]*(nrow(diet)-p[5]) - nrow(diet) + 2 * p
+Mallow_Cp
+
+#Step function for model selection using AIC/BIC
+#step(M5, direction = 'backward',trace = FALSE, k = log(76))
+
+#Alternatively, compute each AIC/BIC value
+aic_val <- AIC(M1, M2, M3, M4, M5)
+bic_val <- BIC(M1, M2, M3, M4, M5)
+which.min(aic_val$AIC)
+which.min(bic_val$BIC)
+
+#Store values in table
+ICvals <- rbind(aic_val$AIC, bic_val$BIC)
+colnames(ICvals) <- paste0("M", seq(1:5))
+rownames(ICvals) <- c("AIC", "BIC")
+#Create table for Markdown
+knitr::kable(round(ICvals,2))
+#Create table to export in LaTeX
+tab <- xtable::xtable(round(ICvals,1), caption = "Two-way ANOVA, diet data")
+#print(tab, booktabs = TRUE)
+```
