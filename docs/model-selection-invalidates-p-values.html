@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -205,9 +205,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.2" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.2</b> Dropping or adding variables</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="one-way-anova.html"><a href="one-way-anova.html"><i class="fa fa-check"></i><b>5.2</b> One-way ANOVA</a></li>
-<li class="chapter" data-level="5.3" data-path="solutions-4.html"><a href="solutions-4.html"><i class="fa fa-check"></i><b>5.3</b> Solutions</a><ul>
-<li class="chapter" data-level="5.3.1" data-path="solutions-4.html"><a href="solutions-4.html#exercise-9.3---one-way-analysis-of-variance"><i class="fa fa-check"></i><b>5.3.1</b> Exercise 9.3 - One-way analysis of variance</a></li>
-<li class="chapter" data-level="5.3.2" data-path="solutions-4.html"><a href="solutions-4.html#exercise-9.4---two-way-analysis-of-variance"><i class="fa fa-check"></i><b>5.3.2</b> Exercise 9.4 - Two-way analysis of variance</a></li>
+<li class="chapter" data-level="5.3" data-path="two-way-anova-and-irrelevant-hypotheses.html"><a href="two-way-anova-and-irrelevant-hypotheses.html"><i class="fa fa-check"></i><b>5.3</b> Two-way ANOVA and irrelevant hypotheses</a></li>
+<li class="chapter" data-level="5.4" data-path="solutions-4.html"><a href="solutions-4.html"><i class="fa fa-check"></i><b>5.4</b> Solutions</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="solutions-4.html"><a href="solutions-4.html#exercise-9.3---one-way-analysis-of-variance"><i class="fa fa-check"></i><b>5.4.1</b> Exercise 9.3 - One-way analysis of variance</a></li>
+<li class="chapter" data-level="5.4.2" data-path="solutions-4.html"><a href="solutions-4.html#exercise-9.4---two-way-analysis-of-variance"><i class="fa fa-check"></i><b>5.4.2</b> Exercise 9.4 - Two-way analysis of variance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>6</b> Hypothesis testing</a></li>
@@ -215,8 +216,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.1" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html"><i class="fa fa-check"></i><b>7.1</b> Example: Price of diamonds</a><ul>
 <li class="chapter" data-level="7.1.1" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>7.1.1</b> Exploratory data analysis</a></li>
 <li class="chapter" data-level="7.1.2" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html#model-selection-1"><i class="fa fa-check"></i><b>7.1.2</b> Model selection</a></li>
-<li class="chapter" data-level="7.1.3" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html#cross-validation"><i class="fa fa-check"></i><b>7.1.3</b> Cross-validation</a></li>
-<li class="chapter" data-level="7.1.4" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html#presentation-of-results"><i class="fa fa-check"></i><b>7.1.4</b> Presentation of results</a></li>
+<li class="chapter" data-level="7.1.3" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html#information-criterion"><i class="fa fa-check"></i><b>7.1.3</b> Information criterion</a></li>
+<li class="chapter" data-level="7.1.4" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html#cross-validation"><i class="fa fa-check"></i><b>7.1.4</b> Cross-validation</a></li>
+<li class="chapter" data-level="7.1.5" data-path="example-price-of-diamonds.html"><a href="example-price-of-diamonds.html#presentation-of-results"><i class="fa fa-check"></i><b>7.1.5</b> Presentation of results</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="model-selection-invalidates-p-values.html"><a href="model-selection-invalidates-p-values.html"><i class="fa fa-check"></i><b>7.2</b> Model selection invalidates P-values</a></li>
 </ul></li>
@@ -245,98 +247,29 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>Variable selection invalidates the usual Student and Fisher tests. To see this,
 we can generate a dataset <span class="math inline">\(\boldsymbol{y} = \boldsymbol{\varepsilon}\)</span> and create an <span class="math inline">\(n \times p\)</span> design matrix <span class="math inline">\(\mathbf{X}\)</span> with random uncorrelated elements. We can assess
 by means of simulation the size distortion (the difference between the nominal level and the type I error) of a <span class="math inline">\(t\)</span> test for the hypothesis <span class="math inline">\(\beta_j=0\)</span> after performing forward selection.</p>
-<p>We illustrate the computations using two models: one in which the variables in the design matrix, <span class="math inline">\(\mathbf{X}\)</span>, are strongly correlated and another with independent input using Mallow’s <span class="math inline">\(C_p\)</span> as selection criterion. The size distortion is comparable.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(leaps)
-<span class="co">#Generate random noise</span>
-simulation &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">n =</span> <span class="dv">25</span>, <span class="dt">p =</span> <span class="dv">10</span>, <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;BIC&quot;</span>, <span class="st">&quot;Cp&quot;</span>), <span class="dt">correlated =</span> <span class="ot">TRUE</span>){
-  method &lt;-<span class="st"> </span><span class="kw">match.arg</span>(method)
-  <span class="kw">require</span>(leaps)
-  <span class="cf">if</span>(correlated){
-    <span class="co">#Simulate a random covariance matrix</span>
-    Sig&lt;-<span class="st"> </span><span class="kw">rWishart</span>(<span class="dv">1</span>, p <span class="op">+</span><span class="st"> </span><span class="dv">2</span>, <span class="kw">diag</span>(<span class="dv">1</span>, p) <span class="op">/</span><span class="st"> </span>(p <span class="op">+</span><span class="st"> </span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">matrix</span>(<span class="fl">0.2</span>, <span class="dt">ncol =</span> p, <span class="dt">nrow =</span> p))[,,<span class="dv">1</span>]
-    <span class="co">#Simulate homoskedastic multivariate Normal observations</span>
-    X &lt;-<span class="st"> </span>mvtnorm<span class="op">::</span><span class="kw">rmvnorm</span>(<span class="dt">n =</span> n, <span class="dt">sigma =</span> <span class="kw">cov2cor</span>(Sig))
-    <span class="co">#Create a vector with no intercept, but with some regressors</span>
-    y &lt;-<span class="st"> </span><span class="kw">c</span>(X[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>] <span class="op">%*%</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">5</span>, <span class="dt">min =</span> <span class="dv">-1</span>, <span class="dt">max =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n))
-  } <span class="cf">else</span>{
-    <span class="co">#Random and uncorrelated regressors and design matrix entries</span>
-    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n)
-    X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span>n), <span class="dt">ncol =</span> p)
-  }
-  data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">y =</span> y, <span class="dt">X =</span> X)
-  <span class="cf">if</span>(method <span class="op">==</span><span class="st"> &quot;BIC&quot;</span>){
-    <span class="co"># Find best model of each side using BIC</span>
-    <span class="co"># Compute using forward - backward</span>
-    modsef &lt;-<span class="st"> </span><span class="kw">step</span>(<span class="kw">lm</span>(y<span class="op">~</span><span class="dv">1</span>), <span class="dt">direction =</span> <span class="st">&quot;both&quot;</span>, <span class="dt">k =</span> <span class="kw">log</span>(<span class="kw">nrow</span>(X)), 
-                   <span class="dt">scope =</span> <span class="kw">list</span>(<span class="dt">lower =</span> <span class="op">~</span><span class="dv">1</span>, <span class="dt">upper =</span> <span class="op">~</span>.), <span class="dt">data =</span> data, <span class="dt">trace =</span> <span class="ot">FALSE</span>)
-    modseb &lt;-<span class="st"> </span><span class="kw">step</span>(<span class="kw">lm</span>(y<span class="op">~</span>., <span class="dt">data =</span> data), <span class="dt">direction =</span> <span class="st">&quot;both&quot;</span>, <span class="dt">k =</span> <span class="kw">log</span>(<span class="kw">nrow</span>(X)), 
-                   <span class="dt">scope =</span> <span class="kw">list</span>(<span class="dt">lower =</span> <span class="op">~</span><span class="dv">1</span>, <span class="dt">upper =</span> <span class="op">~</span>.), <span class="dt">data =</span> data, <span class="dt">trace =</span> <span class="ot">FALSE</span>)
-    ind &lt;-<span class="st"> </span><span class="kw">which.min</span>(<span class="kw">c</span>(<span class="kw">BIC</span>(modsef), <span class="kw">BIC</span>(modseb)))
-    lmod &lt;-<span class="st"> </span><span class="cf">switch</span>(ind, modsef, modseb)
-  } <span class="cf">else</span> <span class="cf">if</span> (method <span class="op">==</span><span class="st"> &quot;Cp&quot;</span>){
-    <span class="co"># Same thing, with Mallow&#39;s CP</span>
-    modse &lt;-<span class="st"> </span><span class="kw">leaps</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> y, <span class="dt">method =</span> <span class="st">&quot;Cp&quot;</span>)
-    <span class="co">#Pick the model with the lowest Cp value and verify this is not the intercept only model</span>
-    which_cols &lt;-<span class="st"> </span><span class="kw">sum</span>(modse<span class="op">$</span>which[<span class="kw">which.min</span>(modse<span class="op">$</span>Cp),])
-    <span class="cf">if</span>(<span class="kw">sum</span>(which_cols <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)){
-      lmod &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="dv">1</span>)  <span class="co">#if intercept-only</span>
-    } <span class="cf">else</span>{
-      lmod &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X[,modse<span class="op">$</span>which[<span class="kw">which.min</span>(modse<span class="op">$</span>Cp),]]) 
-      <span class="co">#else keep only the columns from model with lowest Cp</span>
-    }
-  }
-  <span class="co">#Return P-value from summary (also fit the correct model)</span>
-  <span class="cf">if</span>(correlated){
-    <span class="kw">c</span>(<span class="kw">summary</span>(lmod)[[<span class="dv">4</span>]][<span class="dv">1</span>,<span class="dv">4</span>], <span class="kw">summary</span>(<span class="kw">lm</span>(y<span class="op">~</span>X[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]))[[<span class="dv">4</span>]][<span class="dv">1</span>,<span class="dv">4</span>])
-    } <span class="cf">else</span>{
-    <span class="kw">c</span>(<span class="kw">summary</span>(lmod)[[<span class="dv">4</span>]][<span class="dv">1</span>,<span class="dv">4</span>], <span class="kw">summary</span>(<span class="kw">lm</span>(y<span class="op">~</span><span class="dv">1</span>))[[<span class="dv">4</span>]][<span class="dv">1</span>,<span class="dv">4</span>])  
-    }
-}
-
-nrep &lt;-<span class="st"> </span>5000L
-<span class="co">#Run simulation 5000 times with BIC as model selection, n = 25, p = 10</span>
-simu1 &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="kw">simulation</span>(<span class="dt">n =</span> <span class="dv">25</span>, <span class="dt">correlated =</span> <span class="ot">FALSE</span>), <span class="dt">n =</span> nrep)
-<span class="kw">rownames</span>(simu1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BIC&quot;</span>, <span class="st">&quot;Correct&quot;</span>)
-<span class="co">#Empirical coverage</span>
-cov_uncor_BIC &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">rowMeans</span>(simu1 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>), <span class="kw">rowMeans</span>(simu1 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>), <span class="kw">rowMeans</span>(simu1 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.01</span>))
-<span class="kw">dimnames</span>(cov_uncor_BIC) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Lowest BIC model&quot;</span>, <span class="st">&quot;Correct model&quot;</span>), 
-                             <span class="st">&quot;size&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;0.1&quot;</span>,<span class="st">&quot;0.05&quot;</span>,<span class="st">&quot;0.01&quot;</span>))
-<span class="kw">print</span>(cov_uncor_BIC)</code></pre>
+<p>We illustrate the computations using two models: one in which the variables in the design matrix, <span class="math inline">\(\mathbf{X}\)</span>, are strongly correlated and another with independent input using BIC and Mallow’s <span class="math inline">\(C_p\)</span> as selection criterion. The size distortion is comparable.</p>
+<pre><code>## Uncorrelated variables, model selection using BIC</code></pre>
 <pre><code>##                   size
 ## model                 0.1   0.05   0.01
 ##   Lowest BIC model 0.1738 0.1076 0.0324
 ##   Correct model    0.1104 0.0562 0.0106</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(<span class="kw">t</span>(simu1))</code></pre>
 <p><img src="LinesRModels_files/figure-html/modelselectinvalid-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Same, this time with strongly correlated variables</span>
-simu2 &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="kw">simulation</span>(<span class="dt">n =</span> <span class="dv">25</span>, <span class="dt">correlated =</span> <span class="ot">TRUE</span>), <span class="dt">n =</span> nrep)
-cov_cor_BIC &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">rowMeans</span>(simu2 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>), <span class="kw">rowMeans</span>(simu2 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>), <span class="kw">rowMeans</span>(simu2 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.01</span>))
-<span class="kw">dimnames</span>(cov_cor_BIC) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Lowest BIC model&quot;</span>, <span class="st">&quot;Correct model&quot;</span>), <span class="st">&quot;size&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;0.1&quot;</span>,<span class="st">&quot;0.05&quot;</span>,<span class="st">&quot;0.01&quot;</span>))
-<span class="kw">print</span>(cov_cor_BIC)</code></pre>
+<pre><code>## Correlated variables, model selection using BIC</code></pre>
 <pre><code>##                   size
 ## model                 0.1   0.05   0.01
 ##   Lowest BIC model 0.1846 0.1150 0.0344
 ##   Correct model    0.1018 0.0504 0.0110</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">simu3 &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="kw">simulation</span>(<span class="dt">n =</span> <span class="dv">25</span>, <span class="dt">correlated =</span> <span class="ot">FALSE</span>, <span class="dt">method =</span> <span class="st">&quot;Cp&quot;</span>), <span class="dt">n =</span> nrep)
-<span class="kw">rownames</span>(simu3) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Cp&quot;</span>, <span class="st">&quot;Correct&quot;</span>)
-<span class="co">#Empirical coverage</span>
-cov_uncor_CP &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">rowMeans</span>(simu3 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>), <span class="kw">rowMeans</span>(simu3 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>), <span class="kw">rowMeans</span>(simu3 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.01</span>))
-<span class="kw">dimnames</span>(cov_uncor_CP) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Lowest Cp model&quot;</span>, <span class="st">&quot;Correct model&quot;</span>), <span class="st">&quot;size&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;0.1&quot;</span>,<span class="st">&quot;0.05&quot;</span>,<span class="st">&quot;0.01&quot;</span>))
-<span class="kw">print</span>(cov_uncor_CP)</code></pre>
+<pre><code>## Uncorrelated variables, model selection using Mallow&#39;s Cp</code></pre>
 <pre><code>##                  size
 ## model                0.1   0.05   0.01
 ##   Lowest Cp model 0.1844 0.1096 0.0318
 ##   Correct model   0.0978 0.0472 0.0088</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(<span class="kw">t</span>(simu3))</code></pre>
-<p><img src="LinesRModels_files/figure-html/modelselectinvalid-2.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r">simu4 &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="kw">simulation</span>(<span class="dt">n =</span> <span class="dv">25</span>, <span class="dt">correlated =</span> <span class="ot">TRUE</span>, <span class="dt">method =</span> <span class="st">&quot;Cp&quot;</span>), <span class="dt">n =</span> nrep)
-cov_cor_CP &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">rowMeans</span>(simu4 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>), <span class="kw">rowMeans</span>(simu4 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>), <span class="kw">rowMeans</span>(simu4 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.01</span>))
-<span class="kw">dimnames</span>(cov_cor_CP) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Lowest Cp model&quot;</span>, <span class="st">&quot;Correct model&quot;</span>), <span class="st">&quot;size&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;0.1&quot;</span>,<span class="st">&quot;0.05&quot;</span>,<span class="st">&quot;0.01&quot;</span>))
-<span class="kw">print</span>(cov_cor_CP)</code></pre>
+<pre><code>## Correlated variables, model selection using Mallow&#39;s Cp</code></pre>
 <pre><code>##                  size
 ## model                0.1   0.05   0.01
 ##   Lowest Cp model 0.1864 0.1114 0.0352
 ##   Correct model   0.1014 0.0514 0.0084</code></pre>
+<p><img src="LinesRModels_files/figure-html/modelselectinvalid-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Adding superfluous variables does not induce bias, but inflates the standard errors (leading to larger <span class="math inline">\(P\)</span>-values). We observe on the contrary here smaller <span class="math inline">\(P\)</span>-values. Recall that the <span class="math inline">\(P\)</span>-values should be uniformly distributed under the null hypothesis (and they seemingly are when the true null model is fitted).</p>
 
 </div>

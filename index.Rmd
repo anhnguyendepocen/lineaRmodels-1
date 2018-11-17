@@ -11,7 +11,7 @@ output:
       in_header: preamble.tex
 documentclass: book
 header-includes:
-  - \usepackage{amsmath,amssymb,mathtools}
+  - \usepackage{amsmath,amssymb,mathtools,enumerate,booktabs}
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike2
 link-citations: yes
@@ -47,3 +47,6 @@ Since **R** is not a conventional programming language, my teaching approach wil
 \newcommand{\hbb}{\hat{\boldsymbol{\beta}}}
 \newcommand{\limni}{\lim_{n \ra \infty}}
 \newcommand{\Sp}{\mathscr{S}}
+\newcommand{\E}[2][]{{\mathsf E}_{#1}\left(#2\right)}
+\newcommand{\Va}[2][]{{\mathsf{Var}_{#1}}\left(#2\right)}
+\newcommand{\I}[1]{{\mathbf 1}_{#1}}

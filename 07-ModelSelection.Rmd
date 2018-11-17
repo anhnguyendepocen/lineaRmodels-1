@@ -1,16 +1,22 @@
 # Model selection
 
+Why perform model selection? Practitionners tend to prefer the use of a single model to model aggregation or averaging, since having a single model is easier to interpret. One guiding principle for choosing a single model is parsimony and interpretability: we want a model that is not overly complex and that does not overfit the data. This is most important if the goal of the analysis is prediction. Whenever possible, we will make comparisons between nested models.
+
+
 My (personal) general strategy for model selection, given the tools covered in MATH 341, is the following:
 
 1. Start with a complex model (all additive terms, say). Look at the individual Wald tests for the marginal significance of the coefficients.
-2. Try to simplify the full model using an ANOVA, potentially dropping multiple terms at once. This preserves power (recall the potential bias in the estimate of RSS in the denominator) and reduces the multiple testing problem that inflates Type I errors (reject the null more than $\alpha\%$ of the time when you shouldn't).
-3. Use `drop1` to further reduce the model. 
+2. Try to simplify the full model using an $F$ test, potentially dropping multiple terms at once. This preserves power (recall the potential bias in the estimate of RSS in the denominator) and reduces the multiple testing problem that inflates Type I errors (reject the null more than $\alpha\%$ of the time when you shouldn't).
+3. Repeat; you can use `drop1` to further reduce the model. 
 4. Try adding interactions between variables, if any.
-5. Select the best forward selection / backward elimination models and some additional ones (that have a nice interpretation, have low information criterion values). Compare them in terms of prediction and goodness-of-fit.
+5. Compare the nested models using an information criterion such as AIC or BIC.
+6. Select the best forward selection / backward elimination models and some additional ones (that have a nice interpretation, have low information criterion values, etc.)  Compare them in terms of prediction and goodness-of-fit.
 
 Once you have a final model, you can interpret coefficients. Model selection **invalides** classical inference, so report coefficients and standard errors as is without overinterpreting the $P$-values from `summary`. 
 
-The best tool to assess your model is the use of cross-validation. If there is no temporal structure, you can use e.g. five-fold cross validation to find the best fitting model. Criteria such as BIC (more stringent than AIC) can also be useful.
+The best tool to assess the predictive power your model is the use of cross-validation. If there is no temporal structure, you can use e.g. five-fold cross validation to find the best fitting model. 
+
+
 
 ```{r setup7, include=FALSE}
 options(show.signif.stars=FALSE)
@@ -41,7 +47,7 @@ attach(di)
 
 We can look at some graphs of the data, including pair plots and some summary statistics. These are useful to spot outliers.
 
-```{r, width = 10, height = 10}
+```{r, width = 10, height = 10, cache = TRUE}
 str(di)
 apply(di, 2, range)
 print(GGally::ggpairs(di[,-(2:4)], progress = FALSE))
@@ -94,13 +100,14 @@ RSS_full <- summ_full$sigma^2 * summ_full$df[2]
 
 The model fit is excellent. Unsurprisingly, all of `x`, `y` and `z` are not marginally significant if they are all included at once (output omitted), but `x` is if it is the only one included. 
 
-Recall that the `t value` column gives the Wald statistic $t = \hat{\beta}_i/\mathrm{se}(\hat{\beta}_i)$, for the null hypothesis $\beta_{i}=0$ against the two-sided alternative $\beta_{i} \neq 0$. Under $\mathscr{H}_0$, $t \sim \mathcal{T}(n-p)$ and the $P$-value  is $2\times (1-$`pt`$(t, n-p))$. It appears that we could get rid of `depth` and `table`, which contribute little overall. This is confirmed graphically using added-variable plots, which plots $\mathbf{M}_{\mathbf{X}_{-j}}\boldsymbol{y}$ against $\mathbf{M}_{\mathbf{X}_{-j}}\mathbf{x}_j$. This is the residual effect of $\mathbf{x}_j$ after taking into account the effect of the other variables $\mathbf{X}_{-j}$ on what remains of the response. If the variable was important, there would be a strong correlation in the variables. The last plot illustrates what you could see if there was residual structure (strong positive or negative correlation, clear line).
+Recall that the `t value` column gives the Wald statistic $t = \hat{\beta}_i/\mathrm{se}(\hat{\beta}_i)$, for the null hypothesis $\beta_{i}=0$ against the two-sided alternative $\beta_{i} \neq 0$. Under $\mathscr{H}_0$, $t \sim \mathcal{T}(n-p)$ and the $P$-value  is $2\times (1-$`pt`$(t, n-p))$. It appears that we could get rid of `depth` and `table`, which contribute little overall. This is confirmed graphically using added-variable plots, which plots $\mathbf{M}_{\mathbf{X}_{-j}}\boldsymbol{y}$ against $\mathbf{M}_{\mathbf{X}_{-j}}\mathbf{x}_j$. This is the residual effect of $\mathbf{x}_j$ after taking into account the effect of the other variables $\mathbf{X}_{-j}$ on what remains of the response. If the variable was important, there would be a strong correlation in the variables and the slope would be non-zero. The last plot illustrates what you could see if there was residual structure (strong positive or negative correlation).
 
 ```{r, fig.width = 10} 
 par(mfrow = c(1, 3))
-car::avPlot(full_mod, variable = "table", ellipse = TRUE, col.lines = NULL) #spherical = no structure
-car::avPlot(full_mod, variable = "depth", ellipse = TRUE, col.lines = NULL) #idem
-car::avPlot(full_mod, variable = "log(carat)", ellipse = TRUE) #correlation = important variable
+car::avPlot(full_mod, variable = "table", ellipse = TRUE, col.lines = NULL)
+#spherical implies no correlation
+car::avPlot(full_mod, variable = "depth", ellipse = TRUE, col.lines = NULL) 
+car::avPlot(full_mod, variable = "log(carat)", ellipse = TRUE)
 ```
 
 Let us look at model simplifications. 
@@ -114,7 +121,7 @@ The test statistic is of the form
 \[F = \frac{(\mathrm{RSS}_a-\mathrm{RSS}_0)/2}{\mathrm{RSS}_0/478}\sim \mathcal{F}(2, 478)\]
 and here $F=$ `r round(anova(lm(log(price) ~ log(carat) + cut + color + clarity + x), full_mod)[2,"F"], 3)`;  we fail to reject the null ($P$-value of `r round(anova(lm(log(price) ~ log(carat) + cut + color + clarity + x), full_mod)[2,"Pr(>F)"], 3)`). We have no evidence against the adequacy of the simpler model.
 
-Since there is little to no difference between the reduced model RSS and that of the full additive model, we may employ either in subsequent ANOVA tests.
+Since there is little difference between the reduced model RSS and that of the full additive model, we may employ either in subsequent ANOVA tests.
 Let us try to drop one of the remaining variables.
 
 ```{r} 
@@ -133,7 +140,8 @@ form <- deparse(formula(redu_mod))
 while(length(which(add_step1[,"Pr(>F)"] < 0.05)) > 0){
   new_var <- rownames(add_step1)[which.max(add_step1[,"F value"])]
   form <- paste(form, new_var, sep = " + ")
-  add_step1 <- add1(update(redu_mod, formula = form), scope = formula(full_mod), scale = RSS_full, test = "F")
+  add_step1 <- add1(update(redu_mod, formula = form), 
+                    scope = formula(full_mod), scale = RSS_full, test = "F")
 }
 ```
 
@@ -141,13 +149,30 @@ The more we test using the ANOVA command, the more size distortion due to multip
 
 The variable that is the most correlated with `log(price)` is `clarity` and leads to a significant increase, so we would go for the bigger model since there is strong evidence that the model fit is better. H
 
-The function `step` that allows you to do forward or backward model selection using one of the information criterion. I **do not** recommend this, as there is no theoretical ground for the method. Comparisons based on information criteria are only meaningful if the models are neste. You may wish to use BIC rather than AIC because the latter leads to more parsimonious (and consistent model selection in the large sample limit). It may be a good starting point for your model search.
+### Information criterion
+
+We have covered (old school) partial $F$-tests in the ANOVA section. Other widely (mis)used goodness-of-fit diagnostics are AIC and BIC. These information criterion are goodness-of-fit measures coupled with model complexity penalty. They are (under many hypothesis) estimates of the Kullback--Leibler divergence.
+
+Akaike's An Information Criterion (AIC) is $\mathrm{AIC}=-2\ell(\hat{\boldsymbol{\theta}}) + 2p$, while Schwartz's information criterion is $\mathrm{BIC}=-2\ell(\hat{\boldsymbol{\theta}}) + p \log(n)$. The latter is more stringent and penalizes more heavily the complex models as more data becomes available. 
+
+Some general remarks if you use information criteria 
+
+
+1. AIC and BIC *must be* computed using maximum likelihood estimators. In a linear model, this means that the estimator of the variance is  $\hat{\sigma}^2=\mathrm{RSS}/n$ and not $s^2$.  Similarly, the ordinary least square estimator is equivalent to the MLE for $\hbb$ if $\mathrm{Va}({\boldsymbol{\varepsilon}}) = \sigma^2 \mathbf{I}_n$. In **R**, you can use `BIC` and `AIC` commands on models obtained from `lm` to get those values.
+2. The models should include the *same data* to be comparable.
+3. If you are comparing different distributions, you need to include all the constants to make AIC values comparable.
+4. The models need not be nested, but there are consequences if they are not. The $\mathrm{AIC}= \mathrm{O}_p(n)$ (so information accumulates over time at a linear rate), but its variability is $\mathrm{O}_p(n^{1/2}$ --- this difference is only $\mathrm{O}_p(1)$ when models are nested.
+5. If the *TRUE* model exists and one of the models under consideration, it will be selected as $n \to \infty$ with probability one by BIC and with high probability by AIC. 
+
+
+The function `step` allows you to do forward or backward model selection using one of the information criterion. I **do not** recommend this, as there is no theoretical ground for the method. Comparisons based on information criteria are mostly meaningful if the models are nested. You may wish to use BIC rather than AIC because the latter leads to more parsimonious (and consistent model selection in the large sample limit). It may be a good starting point for your model search.
 
 Both forward selection and backward elimination yielded the same model, with the three categorical variables and length. At this stage, we should try and include interactions.
 
 ```{r}
 add1(lm(formula = form, data = di),
-        scope =  as.formula(paste(form, "+ log(carat):color + log(carat):clarity + log(carat):cut", collapse = "")),
+        scope =  as.formula(paste(form, "+ log(carat):color + log(carat):clarity + 
+                                  log(carat):cut", collapse = "")),
      test = "F")
 ```
 
@@ -157,7 +182,8 @@ The interaction between `log(carat)` and `cut`  is significative at the 5% level
 BIC_search <- formula(step(full_mod, trace = 0, k = log(nrow(di)))) #BIC
 #Search within space of main effect-only models
 BIC_mod <- lm(BIC_search, data = di) 
-final_mod <- lm(log(price) ~ log(carat) + cut + color + clarity + x +table + log(carat):cut, data = di)
+final_mod <- lm(log(price) ~ log(carat) + cut + color + clarity + 
+                  x + table + log(carat):cut, data = di)
 #summary(final_mod)
 ```
 
@@ -189,7 +215,7 @@ round(c("reduced model" = PRESS(redu_mod), #underfit?
   digits = 2) #overfitting
 ```
 
-The cross-validated error estimate shows that we do significantly better with the final model than using simply the model with `log(carat)`, but that the addition of `x` does not increase predictive accuracy. The full model does not improve and least to larger prediction error, an indication that we may be overfitting.
+The cross-validated error estimate shows that we do significantly better with the final model than using simply the model with `log(carat)` and that the addition of `x` does not increase predictive accuracy. The full model has a larger prediction error, an indication that we may be overfitting.
 
 Rather than use only one observation for validation and $n-1$ for training, we can split more evenly: $K$-fold cross validation uses $n-n/K$ observations for fitting and $n/K$ for validation, providing a more realistic depiction of prediction. Unfortunately, the number of possible subsets of size $\lfloor n/K\rfloor$ is very large and so one typically split the data into classes of equal size at random. The following function, which performs $K$-fold cross validation, can be used in your project. Since the result is random, it may be necessary to average over many replicates of the $K$-fold statistic provided that the calculation is not too computationally demanding. For large $n$, this has less impact.
 
@@ -210,7 +236,8 @@ KfoldCV <- function(fitted.mod, K, ...){
   #Obtain prediction from K-folds
   preds <- rep(NA, n)
   for(j in 1:K){
-   preds[groups[[j]]] <- data[groups[[j]],] %*% lm(y[-groups[[j]]] ~ -1 + data[-groups[[j]],])$coef
+   preds[groups[[j]]] <- data[groups[[j]],] %*% 
+                            lm(y[-groups[[j]]] ~ -1 + data[-groups[[j]],])$coef
   } 
   #Compute prediction error
   crossprod(preds - y)[1,1]
@@ -222,7 +249,7 @@ round(c("reduced model" = median(replicate(KfoldCV(fitted.mod = redu_mod, K = K)
         digits = 2)
 ```
 
-The conclusions are the same for $10$-fold cross validation as for leave-one-out cross validation, conforting our model choice.
+The conclusions are the same for $10$-fold cross validation as for leave-one-out cross validation, conforting our model choice. In general, we prefer the former.
 
 ### Presentation of results
 
@@ -260,9 +287,9 @@ Variable selection invalidates the usual Student and Fisher tests. To see this,
 we can generate a dataset $\boldsymbol{y} = \boldsymbol{\varepsilon}$ and create an $n \times p$  design matrix $\mathbf{X}$ with random uncorrelated elements. We can assess
 by means of simulation the size distortion (the difference between the nominal level and the type I error) of a $t$ test for the hypothesis $\beta_j=0$ after performing forward selection.
 
-We illustrate the computations using two models: one in which the variables in the design matrix, $\mathbf{X}$, are strongly correlated and another with independent input using Mallow's $C_p$ as selection criterion. The size distortion is comparable.
+We illustrate the computations using two models: one in which the variables in the design matrix, $\mathbf{X}$, are strongly correlated and another with independent input using BIC and Mallow's $C_p$ as selection criterion. The size distortion is comparable.
 
-```{r modelselectinvalid, cache = TRUE}
+```{r modelselectinvalid, echo = FALSE, cache = TRUE}
 library(leaps)
 #Generate random noise
 simulation <- function(n = 25, p = 10, method = c("BIC", "Cp"), correlated = TRUE){
@@ -293,7 +320,8 @@ simulation <- function(n = 25, p = 10, method = c("BIC", "Cp"), correlated = TRU
   } else if (method == "Cp"){
     # Same thing, with Mallow's CP
     modse <- leaps(x = X, y = y, method = "Cp")
-    #Pick the model with the lowest Cp value and verify this is not the intercept only model
+    #Pick the model with the lowest Cp value
+    # verify this is not the intercept-only model
     which_cols <- sum(modse$which[which.min(modse$Cp),])
     if(sum(which_cols == 0)){
       lmod <- lm(y ~ 1)  #if intercept-only
@@ -317,14 +345,22 @@ rownames(simu1) <- c("BIC", "Correct")
 #Empirical coverage
 cov_uncor_BIC <- cbind(rowMeans(simu1 < 0.1), rowMeans(simu1 < 0.05), rowMeans(simu1 < 0.01))
 dimnames(cov_uncor_BIC) <- list("model" = c("Lowest BIC model", "Correct model"), 
-                             "size" = c("0.1","0.05","0.01"))
+                                             "size" = c("0.1","0.05","0.01"))
+cat("Uncorrelated variables, model selection using BIC")
 print(cov_uncor_BIC)
-boxplot(t(simu1))
+datf <- data.frame(x = as.vector(t(simu1)), selected = 
+                     as.factor(rep(c("Lowest BIC model", "Correct model"), each = nrep)))
+ggplot2::ggplot(dat = datf, aes(x=x, fill=selected)) +
+    geom_histogram(alpha=.4, bins = 20, boundary = 0, position="identity") +
+ theme(legend.position="top")
+
 
 #Same, this time with strongly correlated variables
 simu2 <- replicate(simulation(n = 25, correlated = TRUE), n = nrep)
 cov_cor_BIC <- cbind(rowMeans(simu2 < 0.1), rowMeans(simu2 < 0.05), rowMeans(simu2 < 0.01))
-dimnames(cov_cor_BIC) <- list("model" = c("Lowest BIC model", "Correct model"), "size" = c("0.1","0.05","0.01"))
+dimnames(cov_cor_BIC) <- list("model" = c("Lowest BIC model", "Correct model"), 
+                              "size" = c("0.1","0.05","0.01"))
+cat("Correlated variables, model selection using BIC")
 print(cov_cor_BIC)
 
 
@@ -332,14 +368,21 @@ simu3 <- replicate(simulation(n = 25, correlated = FALSE, method = "Cp"), n = nr
 rownames(simu3) <- c("Cp", "Correct")
 #Empirical coverage
 cov_uncor_CP <- cbind(rowMeans(simu3 < 0.1), rowMeans(simu3 < 0.05), rowMeans(simu3 < 0.01))
-dimnames(cov_uncor_CP) <- list("model" = c("Lowest Cp model", "Correct model"), "size" = c("0.1","0.05","0.01"))
+dimnames(cov_uncor_CP) <- list("model" = c("Lowest Cp model", "Correct model"), 
+                               "size" = c("0.1","0.05","0.01"))
+cat("Uncorrelated variables, model selection using Mallow's Cp")
 print(cov_uncor_CP)
-boxplot(t(simu3))
 
 simu4 <- replicate(simulation(n = 25, correlated = TRUE, method = "Cp"), n = nrep)
 cov_cor_CP <- cbind(rowMeans(simu4 < 0.1), rowMeans(simu4 < 0.05), rowMeans(simu4 < 0.01))
 dimnames(cov_cor_CP) <- list("model" = c("Lowest Cp model", "Correct model"), "size" = c("0.1","0.05","0.01"))
+cat("Correlated variables, model selection using Mallow's Cp")
 print(cov_cor_CP)
+datf <- data.frame(x = as.vector(t(simu4)), selected = 
+                     as.factor(rep(c("Lowest Cp model", "Correct model"), each = nrep)))
+ggplot2::ggplot(dat = datf, aes(x=x, fill=selected)) +
+    geom_histogram(alpha=.4, bins = 20, boundary = 0, position="identity") +
+ theme(legend.position="top")
 ```
 
 Adding superfluous variables does not induce bias, but inflates the standard errors (leading to larger $P$-values). We observe on the contrary here smaller $P$-values. Recall that the $P$-values should be uniformly distributed under the null hypothesis (and they seemingly are when the true null model is fitted).

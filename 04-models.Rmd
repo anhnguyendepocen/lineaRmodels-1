@@ -124,6 +124,9 @@ Because the $i$th residual is used in both the numerator and in the denominator 
 
 The externally studentized residuals $t_i$ are obtained by excluding the $i$th observation from the calculation of the variance. The advantage of doing this is that $\{t_i\}_{i=1}^n$ are marginally Student distributed with $n-p-1$ degrees of freedom (but they are again not independent). These are typically the residuals that are displayed in Q-Q plots. The externally studentized residuals can be obtained with the function `rstudent`. 
 
+We will derive formulas for $\hbb_{-i}$, $s^2_{-i}$, Cook distance and $t_i$ later in the exercises. Two of these are used below, namely
+\[t_i =  \frac{e_i}{[s^2_{-i}(1-h_{ii})]^{1/2}}, \qquad s^2_{-i} = \frac{(n-p)s^2 -e_i^2/(1-h_{ii})}{n-p-1}. \]
+
 ```{r esr}
 #Externally studentized residuals
 smi <- influence(ols)$sigma
@@ -599,7 +602,9 @@ infl_ad <- influence.measures(fit_ad)
 cookval_ad <- infl_ad$infmat[,"cook.d"] #cooks.distance
 #Diagonal values of the "hat" projection matrix
 h_ad <- infl_ad$infmat[, "hat"] #hatvalues
-plot(time, rstudent(fit_ad), ylab = "Externally studentized residuals", xlab = "Time (in years)")
+plot(time, rstudent(fit_ad), 
+     ylab = "Externally studentized residuals", 
+     xlab = "Time (in years)")
 ```
 
 Let us consider the log counts. The fit is much better and the quadratic relationship with the residuals vs fitted values is attenuated. While some points still have high leverage value, they are not considered outliers.
