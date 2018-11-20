@@ -78,7 +78,7 @@ ggg <- ggplot(Auto, aes(x = horsepower, y = mpg)) +
 print(ggg)
 ```
 
-## Interpretation of the coefficients
+### Interpretation of the coefficients
 
 If the regression model is 
 $$y_i = \beta_0 + \mathrm{x}_{i1}\beta_1 + \mathrm{x}_{i2}\beta_2 + \varepsilon_i,$$ the interpretation of $\beta_1$ in the linear model is as follows: a unit increase in $x$ leads to $\beta_1$ units increase in $y$, everything else (i.e., $\mathrm{x}_{i2}$) being held constant. 
@@ -165,10 +165,6 @@ all.equal(qryhat, c(X %*% beta_hat), check.attributes = FALSE)
 qrHx <- tcrossprod(Q1)
 all.equal(qrHx, Hx)
 ```
-
-
-## Parameter estimation
-
 
 ## The hyperplane of fitted values
 

@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="interpretation-of-the-coefficients.html">
-<link rel="next" href="parameter-estimation.html">
+<link rel="prev" href="calculation-of-least-square-estimates.html">
+<link rel="next" href="the-hyperplane-of-fitted-values.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -156,18 +156,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.5" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.5</b> Summary of week 1</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
-<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a></li>
-<li class="chapter" data-level="2.2" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.2</b> Interpretation of the coefficients</a></li>
-<li class="chapter" data-level="2.3" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.3</b> The <code>lm</code> function</a><ul>
-<li class="chapter" data-level="2.3.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.3.1</b> Singular value decomposition</a></li>
-<li class="chapter" data-level="2.3.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.3.2</b> QR decomposition</a></li>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#interpretation-of-the-coefficients"><i class="fa fa-check"></i><b>2.1.1</b> Interpretation of the coefficients</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.4</b> Parameter estimation</a></li>
-<li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
-<li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
-<li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
-<li class="chapter" data-level="2.8" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>2.8</b> Solutions</a><ul>
-<li class="chapter" data-level="2.8.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.8.1</b> Exercise 3.5 - Prostate cancer</a></li>
+<li class="chapter" data-level="2.2" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.2</b> The <code>lm</code> function</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.2.1</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.2.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.2.2</b> QR decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.3</b> The hyperplane of fitted values</a></li>
+<li class="chapter" data-level="2.4" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.4</b> (Centered) coefficient of determination</a></li>
+<li class="chapter" data-level="2.5" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.5</b> Summary of week 2</a></li>
+<li class="chapter" data-level="2.6" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>2.6</b> Solutions</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.6.1</b> Exercise 3.5 - Prostate cancer</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
@@ -203,6 +203,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html"><i class="fa fa-check"></i><b>5.1</b> Sum of squares decomposition</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.1</b> The decomposition of squares in <strong>R</strong></a></li>
 <li class="chapter" data-level="5.1.2" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.2</b> Dropping or adding variables</a></li>
+<li class="chapter" data-level="5.1.3" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#biased-rss"><i class="fa fa-check"></i><b>5.1.3</b> Biased estimators of the residual sum of square</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="one-way-anova.html"><a href="one-way-anova.html"><i class="fa fa-check"></i><b>5.2</b> One-way ANOVA</a></li>
 <li class="chapter" data-level="5.3" data-path="two-way-anova-and-irrelevant-hypotheses.html"><a href="two-way-anova-and-irrelevant-hypotheses.html"><i class="fa fa-check"></i><b>5.3</b> Two-way ANOVA and irrelevant hypotheses</a></li>
@@ -243,78 +244,78 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="the-lm-function" class="section level2">
-<h2><span class="header-section-number">2.3</span> The <code>lm</code> function</h2>
+<h2><span class="header-section-number">2.2</span> The <code>lm</code> function</h2>
 <p>The function <code>lm</code> is the workshorse for fitting linear models. It takes as input a formula: suppose you have a data frame containing columns <code>x</code> (a regressor) and <code>y</code> (the regressand); you can then call <code>lm(y ~ x)</code> to fit the linear model <span class="math inline">\(y = \beta_0 + \beta_1x + \varepsilon\)</span>. The explanatory variable <code>y</code> is on the left hand side,
 while the right hand side should contain the predictors, separated by a <code>+</code> sign if there are more than one.
 If you provide the data frame name using <code>data</code>, then the shorthand <code>y ~ .</code> fits all the columns of the data frame (but <code>y</code>) as regressors.</p>
 <p>To fit higher order polynomials or transformations, use the <code>I</code> function to tell <strong>R</strong> to interpret the input “as is”.
 Thus, <code>lm(y~x+I(x^2))</code>, would fit a linear model with design matrix <span class="math inline">\((\boldsymbol{1}_n, \mathbf{x}^\top, \mathbf{x}^2)^\top\)</span>. A constant is automatically included in the regression, but can be removed by writing <code>-1</code> or <code>+0</code> on the right hand side of the formula.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># The function lm and its output</span></a>
-<a class="sourceLine" id="cb29-2" title="2">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(horsepower<span class="op">^</span><span class="dv">2</span>), <span class="dt">data =</span> Auto)</a>
-<a class="sourceLine" id="cb29-3" title="3">fit_summary &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The function lm and its output</span>
+fit &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(horsepower<span class="op">^</span><span class="dv">2</span>), <span class="dt">data =</span> Auto)
+fit_summary &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)</code></pre>
 <p>The <code>lm</code> output will display OLS estimates along with standard errors, <span class="math inline">\(t\)</span> values for the Wald test of the hypothesis <span class="math inline">\(\mathrm{H}_0: \beta_i=0\)</span> and the associated <span class="math inline">\(P\)</span>-values. Other statistics and information about the sample size, the degrees of freedom, etc., are given at the bottom of the table.</p>
 <p>Many methods allow you to extract specific objects. For example, the functions <code>coef</code>, <code>resid</code>, <code>fitted</code>, <code>model.matrix</code> will return <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, <span class="math inline">\(\boldsymbol{e}\)</span>, <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and <span class="math inline">\(\mathbf{X}\)</span>, respectively.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">names</span>(fit)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(fit)</code></pre>
 <pre><code>##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
 ##  [5] &quot;fitted.values&quot; &quot;assign&quot;        &quot;qr&quot;            &quot;df.residual&quot;  
 ##  [9] &quot;xlevels&quot;       &quot;call&quot;          &quot;terms&quot;         &quot;model&quot;</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">names</span>(fit_summary)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(fit_summary)</code></pre>
 <pre><code>##  [1] &quot;call&quot;          &quot;terms&quot;         &quot;residuals&quot;     &quot;coefficients&quot; 
 ##  [5] &quot;aliased&quot;       &quot;sigma&quot;         &quot;df&quot;            &quot;r.squared&quot;    
 ##  [9] &quot;adj.r.squared&quot; &quot;fstatistic&quot;    &quot;cov.unscaled&quot;</code></pre>
 <p>The following simply illustrates what has been derived in Exercise series 2. <strong>R</strong> has devoted functions that are coded more efficiently.</p>
 <div id="singular-value-decomposition" class="section level3">
-<h3><span class="header-section-number">2.3.1</span> Singular value decomposition</h3>
+<h3><span class="header-section-number">2.2.1</span> Singular value decomposition</h3>
 <p>The SVD decomposition in <strong>R</strong> returns a list with elements <code>u</code>, <code>d</code> and <code>v</code>. <code>u</code> is the orthonormal <span class="math inline">\(n \times p\)</span> matrix, <code>d</code> is a vector containing the diagonal elements of <span class="math inline">\(\mathbf{D}\)</span> and <code>v</code> is the <span class="math inline">\(p \times p\)</span> orthogonal matrix. Recall that the decomposition is
 <span class="math display">\[\mathbf{X} = \mathbf{UDV}^\top\]</span>
 and that <span class="math inline">\(\mathbf{VV}^\top= \mathbf{V}^\top\mathbf{V}=\mathbf{U}^\top\mathbf{U}=\mathbf{I}_p\)</span>. The matrix <span class="math inline">\(\mathbf{D}\)</span> contains the singular values of <span class="math inline">\(\mathbf{X}\)</span>, and the diagonal elements <span class="math inline">\(\mathrm{d}_{ii}^2\)</span> corresponds to the (ordered) eigenvalues of <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span>.</p>
 <p>The following shows how to use the SVD decomposition in <strong>R</strong>. This material is <strong>optional</strong> and provided for reference only.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)</a>
-<a class="sourceLine" id="cb34-2" title="2"><span class="co"># Projection matrix</span></a>
-<a class="sourceLine" id="cb34-3" title="3">Hx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)</a>
-<a class="sourceLine" id="cb34-4" title="4"><span class="co"># t(U) %*% U gives p by p identity matrix</span></a>
-<a class="sourceLine" id="cb34-5" title="5"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>u), <span class="kw">diag</span>(p))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)
+<span class="co"># Projection matrix</span>
+Hx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)
+<span class="co"># t(U) %*% U gives p by p identity matrix</span>
+<span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>u), <span class="kw">diag</span>(p))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="co"># V is an orthogonal matrix</span></a>
-<a class="sourceLine" id="cb36-2" title="2"><span class="kw">all.equal</span>(<span class="kw">tcrossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># V is an orthogonal matrix</span>
+<span class="kw">all.equal</span>(<span class="kw">tcrossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(<span class="kw">crossprod</span>(svdX<span class="op">$</span>v), <span class="kw">diag</span>(p))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="co"># D contains singular values</span></a>
-<a class="sourceLine" id="cb40-2" title="2"><span class="kw">all.equal</span>(svdX<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>, <span class="kw">eigen</span>(XtX, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># D contains singular values</span>
+<span class="kw">all.equal</span>(svdX<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span>, <span class="kw">eigen</span>(XtX, <span class="dt">only.values =</span> <span class="ot">TRUE</span>)<span class="op">$</span>values)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="co"># OLS coefficient from SVD</span></a>
-<a class="sourceLine" id="cb42-2" title="2">beta_hat_svd &lt;-<span class="st"> </span><span class="kw">c</span>(svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st">  </span><span class="kw">diag</span>(<span class="dv">1</span><span class="op">/</span>svdX<span class="op">$</span>d) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>y)</a>
-<a class="sourceLine" id="cb42-3" title="3"><span class="kw">all.equal</span>(beta_hat_svd, beta_hat)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># OLS coefficient from SVD</span>
+beta_hat_svd &lt;-<span class="st"> </span><span class="kw">c</span>(svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st">  </span><span class="kw">diag</span>(<span class="dv">1</span><span class="op">/</span>svdX<span class="op">$</span>d) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>y)
+<span class="kw">all.equal</span>(beta_hat_svd, beta_hat)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="qr-decomposition" class="section level3">
-<h3><span class="header-section-number">2.3.2</span> QR decomposition</h3>
+<h3><span class="header-section-number">2.2.2</span> QR decomposition</h3>
 <p><strong>R</strong> uses a QR-decomposition to calculate the OLS estimates in the function <code>lm</code>. There are specific functions to return coefficients, fitted values and residuals. One can also obtain the <span class="math inline">\(n \times p\)</span> matrix <span class="math inline">\(\mathbf{Q}_1\)</span> and the upper triangular <span class="math inline">\(p \times p\)</span> matrix <span class="math inline">\(\mathbf{R}\)</span> from the thinned QR decomposition,
 <span class="math display">\[\mathbf{X} = \mathbf{Q}_1\mathbf{R}.\]</span></p>
 <p>The following shows how to use the QR decomposition in <strong>R</strong>. This material is <strong>optional</strong> and provided for reference only.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1">Hx &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
-<a class="sourceLine" id="cb44-2" title="2">qrX &lt;-<span class="st"> </span><span class="kw">qr</span>(X)</a>
-<a class="sourceLine" id="cb44-3" title="3">Q1 &lt;-<span class="st"> </span><span class="kw">qr.Q</span>(qrX)</a>
-<a class="sourceLine" id="cb44-4" title="4">R &lt;-<span class="st"> </span><span class="kw">qr.R</span>(qrX)</a>
-<a class="sourceLine" id="cb44-5" title="5"><span class="co"># Compute beta_hat from QR</span></a>
-<a class="sourceLine" id="cb44-6" title="6">beta_hat_qr1 &lt;-<span class="st"> </span><span class="kw">qr.coef</span>(qrX, y) <span class="co">#using built-in function</span></a>
-<a class="sourceLine" id="cb44-7" title="7">beta_hat_qr2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">backsolve</span>(R, <span class="kw">t</span>(Q1) <span class="op">%*%</span><span class="st"> </span>y)) <span class="co">#manually</span></a>
-<a class="sourceLine" id="cb44-8" title="8"><span class="kw">all.equal</span>(beta_hat, beta_hat_qr1, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">Hx &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)
+qrX &lt;-<span class="st"> </span><span class="kw">qr</span>(X)
+Q1 &lt;-<span class="st"> </span><span class="kw">qr.Q</span>(qrX)
+R &lt;-<span class="st"> </span><span class="kw">qr.R</span>(qrX)
+<span class="co"># Compute beta_hat from QR</span>
+beta_hat_qr1 &lt;-<span class="st"> </span><span class="kw">qr.coef</span>(qrX, y) <span class="co">#using built-in function</span>
+beta_hat_qr2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">backsolve</span>(R, <span class="kw">t</span>(Q1) <span class="op">%*%</span><span class="st"> </span>y)) <span class="co">#manually</span>
+<span class="kw">all.equal</span>(beta_hat, beta_hat_qr1, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="kw">all.equal</span>(beta_hat, beta_hat_qr2, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(beta_hat, beta_hat_qr2, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="co"># Compute residuals</span></a>
-<a class="sourceLine" id="cb48-2" title="2">qre &lt;-<span class="st"> </span><span class="kw">qr.resid</span>(qrX, y)</a>
-<a class="sourceLine" id="cb48-3" title="3"><span class="kw">all.equal</span>(qre, <span class="kw">c</span>(y <span class="op">-</span><span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute residuals</span>
+qre &lt;-<span class="st"> </span><span class="kw">qr.resid</span>(qrX, y)
+<span class="kw">all.equal</span>(qre, <span class="kw">c</span>(y <span class="op">-</span><span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="co"># Compute fitted values</span></a>
-<a class="sourceLine" id="cb50-2" title="2">qryhat &lt;-<span class="st"> </span><span class="kw">qr.fitted</span>(qrX, y)</a>
-<a class="sourceLine" id="cb50-3" title="3"><span class="kw">all.equal</span>(qryhat, <span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>beta_hat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute fitted values</span>
+qryhat &lt;-<span class="st"> </span><span class="kw">qr.fitted</span>(qrX, y)
+<span class="kw">all.equal</span>(qryhat, <span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>beta_hat), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="co"># Compute orthogonal projection matrix</span></a>
-<a class="sourceLine" id="cb52-2" title="2">qrHx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(Q1)</a>
-<a class="sourceLine" id="cb52-3" title="3"><span class="kw">all.equal</span>(qrHx, Hx)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute orthogonal projection matrix</span>
+qrHx &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(Q1)
+<span class="kw">all.equal</span>(qrHx, Hx)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 </div>
@@ -323,8 +324,8 @@ and that <span class="math inline">\(\mathbf{VV}^\top= \mathbf{V}^\top\mathbf{V}
           </div>
         </div>
       </div>
-<a href="interpretation-of-the-coefficients.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="parameter-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="calculation-of-least-square-estimates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-hyperplane-of-fitted-values.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

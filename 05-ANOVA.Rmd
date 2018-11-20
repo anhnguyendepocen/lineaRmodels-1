@@ -136,6 +136,7 @@ anova(mod.d, mod.a)
 
 At this point, it is important to note that we will get different test statistics (due to different denominator) if we consider the residuals sum of squares (RSS) from the full model or the simplified model in the $F$-test. The test is sensitive to model misspecification and we must make sure the residual sum of squares in the denominator is at least consistent.
 
+### Biased estimators of the residual sum of square {#biased-rss}
 
 There are two possible scenarios:
 

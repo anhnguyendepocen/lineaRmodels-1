@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -156,18 +156,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.5" data-path="summary-of-week-1.html"><a href="summary-of-week-1.html"><i class="fa fa-check"></i><b>1.5</b> Summary of week 1</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="computational-considerations.html"><a href="computational-considerations.html"><i class="fa fa-check"></i><b>2</b> Computational considerations</a><ul>
-<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a></li>
-<li class="chapter" data-level="2.2" data-path="interpretation-of-the-coefficients.html"><a href="interpretation-of-the-coefficients.html"><i class="fa fa-check"></i><b>2.2</b> Interpretation of the coefficients</a></li>
-<li class="chapter" data-level="2.3" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.3</b> The <code>lm</code> function</a><ul>
-<li class="chapter" data-level="2.3.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.3.1</b> Singular value decomposition</a></li>
-<li class="chapter" data-level="2.3.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.3.2</b> QR decomposition</a></li>
+<li class="chapter" data-level="2.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html"><i class="fa fa-check"></i><b>2.1</b> Calculation of least square estimates</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="calculation-of-least-square-estimates.html"><a href="calculation-of-least-square-estimates.html#interpretation-of-the-coefficients"><i class="fa fa-check"></i><b>2.1.1</b> Interpretation of the coefficients</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2.4</b> Parameter estimation</a></li>
-<li class="chapter" data-level="2.5" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.5</b> The hyperplane of fitted values</a></li>
-<li class="chapter" data-level="2.6" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.6</b> (Centered) coefficient of determination</a></li>
-<li class="chapter" data-level="2.7" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.7</b> Summary of week 2</a></li>
-<li class="chapter" data-level="2.8" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>2.8</b> Solutions</a><ul>
-<li class="chapter" data-level="2.8.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.8.1</b> Exercise 3.5 - Prostate cancer</a></li>
+<li class="chapter" data-level="2.2" data-path="the-lm-function.html"><a href="the-lm-function.html"><i class="fa fa-check"></i><b>2.2</b> The <code>lm</code> function</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="the-lm-function.html"><a href="the-lm-function.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.2.1</b> Singular value decomposition</a></li>
+<li class="chapter" data-level="2.2.2" data-path="the-lm-function.html"><a href="the-lm-function.html#qr-decomposition"><i class="fa fa-check"></i><b>2.2.2</b> QR decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="the-hyperplane-of-fitted-values.html"><a href="the-hyperplane-of-fitted-values.html"><i class="fa fa-check"></i><b>2.3</b> The hyperplane of fitted values</a></li>
+<li class="chapter" data-level="2.4" data-path="centered-coefficient-of-determination.html"><a href="centered-coefficient-of-determination.html"><i class="fa fa-check"></i><b>2.4</b> (Centered) coefficient of determination</a></li>
+<li class="chapter" data-level="2.5" data-path="summary-of-week-2.html"><a href="summary-of-week-2.html"><i class="fa fa-check"></i><b>2.5</b> Summary of week 2</a></li>
+<li class="chapter" data-level="2.6" data-path="solutions-1.html"><a href="solutions-1.html"><i class="fa fa-check"></i><b>2.6</b> Solutions</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="solutions-1.html"><a href="solutions-1.html#exercise-3.5---prostate-cancer"><i class="fa fa-check"></i><b>2.6.1</b> Exercise 3.5 - Prostate cancer</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="frischwaughlovell-theorem.html"><a href="frischwaughlovell-theorem.html"><i class="fa fa-check"></i><b>3</b> Frisch–Waugh–Lovell theorem</a><ul>
@@ -203,6 +203,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html"><i class="fa fa-check"></i><b>5.1</b> Sum of squares decomposition</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#the-decomposition-of-squares-in-r"><i class="fa fa-check"></i><b>5.1.1</b> The decomposition of squares in <strong>R</strong></a></li>
 <li class="chapter" data-level="5.1.2" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#dropping-or-adding-variables"><i class="fa fa-check"></i><b>5.1.2</b> Dropping or adding variables</a></li>
+<li class="chapter" data-level="5.1.3" data-path="sum-of-squares-decomposition.html"><a href="sum-of-squares-decomposition.html#biased-rss"><i class="fa fa-check"></i><b>5.1.3</b> Biased estimators of the residual sum of square</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="one-way-anova.html"><a href="one-way-anova.html"><i class="fa fa-check"></i><b>5.2</b> One-way ANOVA</a></li>
 <li class="chapter" data-level="5.3" data-path="two-way-anova-and-irrelevant-hypotheses.html"><a href="two-way-anova-and-irrelevant-hypotheses.html"><i class="fa fa-check"></i><b>5.3</b> Two-way ANOVA and irrelevant hypotheses</a></li>
@@ -247,25 +248,25 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-9.3---one-way-analysis-of-variance" class="section level3">
 <h3><span class="header-section-number">5.4.1</span> Exercise 9.3 - One-way analysis of variance</h3>
 <p>In this example, the three groups have very different variances! We carry out the testing procedure simply to show you how it is done (this does not imply we should use it in practice).</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" title="1"><span class="kw">options</span>(<span class="dt">show.signif.stars =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb217-2" title="2"><span class="co">#http://www.stat.ufl.edu/~winner/data/meniscus.txt</span></a>
-<a class="sourceLine" id="cb217-3" title="3">meniscus &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/meniscus.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb217-4" title="4"><span class="kw">boxplot</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus, <span class="dt">ylab =</span> <span class="st">&quot;Displacement (in mm)&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">show.signif.stars =</span> <span class="ot">FALSE</span>)
+<span class="co">#http://www.stat.ufl.edu/~winner/data/meniscus.txt</span>
+meniscus &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/meniscus.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="kw">boxplot</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus, <span class="dt">ylab =</span> <span class="st">&quot;Displacement (in mm)&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-42-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" title="1">lmod_men &lt;-<span class="st"> </span><span class="kw">lm</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus)</a>
-<a class="sourceLine" id="cb218-2" title="2">summ_men &lt;-<span class="st"> </span><span class="kw">summary</span>(lmod_men)</a>
-<a class="sourceLine" id="cb218-3" title="3"><span class="co">#ANOVA table</span></a>
-<a class="sourceLine" id="cb218-4" title="4">anov_men &lt;-<span class="st"> </span><span class="kw">anova</span>(lmod_men)</a>
-<a class="sourceLine" id="cb218-5" title="5"><span class="co">#F statistic with dof</span></a>
-<a class="sourceLine" id="cb218-6" title="6">summ_men<span class="op">$</span>fstatistic</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">lmod_men &lt;-<span class="st"> </span><span class="kw">lm</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus)
+summ_men &lt;-<span class="st"> </span><span class="kw">summary</span>(lmod_men)
+<span class="co">#ANOVA table</span>
+anov_men &lt;-<span class="st"> </span><span class="kw">anova</span>(lmod_men)
+<span class="co">#F statistic with dof</span>
+summ_men<span class="op">$</span>fstatistic</code></pre>
 <pre><code>##     value     numdf     dendf 
 ##  5.783689  2.000000 15.000000</code></pre>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" title="1"><span class="co">#P-value</span></a>
-<a class="sourceLine" id="cb220-2" title="2">anov_men[<span class="dv">1</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>]</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#P-value</span>
+anov_men[<span class="dv">1</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>]</code></pre>
 <pre><code>## [1] 0.01374261</code></pre>
 <p>The <span class="math inline">\(F\)</span> statistic for the null hypothesis <span class="math inline">\(\mu_1=\mu_2=\mu_3\)</span> is 5.78 against the alternative that at least one group mean differ. Under the assumption of the Gaussian linear model, <span class="math inline">\(F\)</span> follows a Fisher distribution with 2 and 15 degrees of freedom. The <span class="math inline">\(P\)</span>-value is thus 0.01 and we therefore reject the null hypothesis that the treatment is equal at level <span class="math inline">\(\alpha = 0.05\)</span>.</p>
 <p>The <code>meniscus</code> dat set is a balanced design, which implies that the number of observations is the same for each level of the factor. Since the entries of <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> depend on the counts for each level, they will be the same here. This implies that the standard errors are also identical for each level (except for the baseline, symbolized by the intercept). Removing the latter changes the parametrization from baseline and constrast to individual group mean.</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" title="1"><span class="kw">summary</span>(lmod_men2 &lt;-<span class="st"> </span><span class="kw">lm</span>(displacement <span class="op">~</span><span class="st"> </span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lmod_men2 &lt;-<span class="st"> </span><span class="kw">lm</span>(displacement <span class="op">~</span><span class="st"> </span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus))</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = displacement ~ 0 + method, data = meniscus)
@@ -275,15 +276,15 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ## -8.2667 -1.8500  0.2833  1.7708  5.3333 
 ## 
 ## Coefficients:
-##                       Estimate Std. Error t value      Pr(&gt;|t|)
-## methodFasT-Fix          17.467      1.403  12.454 0.00000000260
-## methodMeniscus Arrow    11.383      1.403   8.116 0.00000072052
-## methodVertical Suture   16.950      1.403  12.085 0.00000000392
+##                       Estimate Std. Error t value Pr(&gt;|t|)
+## methodFasT-Fix          17.467      1.403  12.454 2.60e-09
+## methodMeniscus Arrow    11.383      1.403   8.116 7.21e-07
+## methodVertical Suture   16.950      1.403  12.085 3.92e-09
 ## 
 ## Residual standard error: 3.435 on 15 degrees of freedom
 ## Multiple R-squared:  0.9607, Adjusted R-squared:  0.9529 
-## F-statistic: 122.3 on 3 and 15 DF,  p-value: 0.00000000009081</code></pre>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" title="1"><span class="kw">crossprod</span>(<span class="kw">model.matrix</span>(lmod_men2))</a></code></pre></div>
+## F-statistic: 122.3 on 3 and 15 DF,  p-value: 9.081e-11</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crossprod</span>(<span class="kw">model.matrix</span>(lmod_men2))</code></pre>
 <pre><code>##                       methodFasT-Fix methodMeniscus Arrow
 ## methodFasT-Fix                     6                    0
 ## methodMeniscus Arrow               0                    6
@@ -299,33 +300,33 @@ We have <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\boldsymbo
 </div>
 <div id="exercise-9.4---two-way-analysis-of-variance" class="section level3">
 <h3><span class="header-section-number">5.4.2</span> Exercise 9.4 - Two-way analysis of variance</h3>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" title="1">diet &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/diet.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb226-2" title="2"><span class="co">#Cast strings to factors</span></a>
-<a class="sourceLine" id="cb226-3" title="3">diet<span class="op">$</span>diet.type &lt;-<span class="st"> </span><span class="kw">as.factor</span>(diet<span class="op">$</span>diet.type)</a>
-<a class="sourceLine" id="cb226-4" title="4">diet<span class="op">$</span>gender &lt;-<span class="st"> </span><span class="kw">as.factor</span>(diet<span class="op">$</span>gender)</a>
-<a class="sourceLine" id="cb226-5" title="5"></a>
-<a class="sourceLine" id="cb226-6" title="6"><span class="co">#Check mean and variance by combination of factor</span></a>
-<a class="sourceLine" id="cb226-7" title="7"><span class="co">#Warning: small sample sizes</span></a>
-<a class="sourceLine" id="cb226-8" title="8">facs &lt;-<span class="st"> </span><span class="kw">list</span>(diet<span class="op">$</span>diet.type, diet<span class="op">$</span>gender)</a>
-<a class="sourceLine" id="cb226-9" title="9"><span class="kw">tapply</span>(diet<span class="op">$</span>weight.loss, facs, mean)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">diet &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/diet.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="co">#Cast strings to factors</span>
+diet<span class="op">$</span>diet.type &lt;-<span class="st"> </span><span class="kw">as.factor</span>(diet<span class="op">$</span>diet.type)
+diet<span class="op">$</span>gender &lt;-<span class="st"> </span><span class="kw">as.factor</span>(diet<span class="op">$</span>gender)
+
+<span class="co">#Check mean and variance by combination of factor</span>
+<span class="co">#Warning: small sample sizes</span>
+facs &lt;-<span class="st"> </span><span class="kw">list</span>(diet<span class="op">$</span>diet.type, diet<span class="op">$</span>gender)
+<span class="kw">tapply</span>(diet<span class="op">$</span>weight.loss, facs, mean)</code></pre>
 <pre><code>##      Female      Male
 ## A -3.050000 -3.650000
 ## B -2.607143 -4.109091
 ## C -5.880000 -4.233333</code></pre>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb228-1" title="1"><span class="kw">tapply</span>(diet<span class="op">$</span>weight.loss, facs, var)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tapply</span>(diet<span class="op">$</span>weight.loss, facs, var)</code></pre>
 <pre><code>##     Female     Male
 ## A 4.264231 6.431667
 ## B 5.239176 6.376909
 ## C 3.570286 7.376970</code></pre>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb230-1" title="1"><span class="co">#Variance may not be homogeneous for men/women </span></a>
-<a class="sourceLine" id="cb230-2" title="2"><span class="co">#Fit model with interaction</span></a>
-<a class="sourceLine" id="cb230-3" title="3">M5 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">*</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)</a>
-<a class="sourceLine" id="cb230-4" title="4">M4 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)</a>
-<a class="sourceLine" id="cb230-5" title="5">M3 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)</a>
-<a class="sourceLine" id="cb230-6" title="6">M2 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data =</span> diet)</a>
-<a class="sourceLine" id="cb230-7" title="7">M1 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> diet)</a>
-<a class="sourceLine" id="cb230-8" title="8"><span class="co">#ANOVA Tables (recall sequential decomposition) - prefered option</span></a>
-<a class="sourceLine" id="cb230-9" title="9"><span class="kw">anova</span>(M5)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Variance may not be homogeneous for men/women </span>
+<span class="co">#Fit model with interaction</span>
+M5 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">*</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)
+M4 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)
+M3 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet)
+M2 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data =</span> diet)
+M1 &lt;-<span class="st"> </span><span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> diet)
+<span class="co">#ANOVA Tables (recall sequential decomposition) - prefered option</span>
+<span class="kw">anova</span>(M5)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: weight.loss
@@ -334,11 +335,11 @@ We have <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\boldsymbo
 ## diet.type         2  60.42 30.2086  5.6190 0.005456
 ## gender:diet.type  2  33.90 16.9520  3.1532 0.048842
 ## Residuals        70 376.33  5.3761</code></pre>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" title="1"><span class="co">#anova(M5) uses RSS from M5 in denominator, read table from bottom to top</span></a>
-<a class="sourceLine" id="cb232-2" title="2"><span class="co">#RSS values</span></a>
-<a class="sourceLine" id="cb232-3" title="3">RSS &lt;-<span class="st"> </span><span class="kw">anova</span>(M1, M2, M3, M4, M5)[,<span class="st">&quot;RSS&quot;</span>]</a>
-<a class="sourceLine" id="cb232-4" title="4"><span class="co">#Backward model selection (more complex to simpler)</span></a>
-<a class="sourceLine" id="cb232-5" title="5"><span class="kw">drop1</span>(M5, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#anova(M5) uses RSS from M5 in denominator, read table from bottom to top</span>
+<span class="co">#RSS values</span>
+RSS &lt;-<span class="st"> </span><span class="kw">anova</span>(M1, M2, M3, M4, M5)[,<span class="st">&quot;RSS&quot;</span>]
+<span class="co">#Backward model selection (more complex to simpler)</span>
+<span class="kw">drop1</span>(M5, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
 <pre><code>## Single term deletions
 ## 
 ## Model:
@@ -346,21 +347,21 @@ We have <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\boldsymbo
 ##                  Df Sum of Sq    RSS    AIC F value  Pr(&gt;F)
 ## &lt;none&gt;                        376.33 133.58                
 ## gender:diet.type  2    33.904 410.23 136.13  3.1532 0.04884</code></pre>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb234-1" title="1"><span class="co">#Manual calculation</span></a>
-<a class="sourceLine" id="cb234-2" title="2">F45 &lt;-<span class="st"> </span>((RSS[<span class="dv">4</span>]<span class="op">-</span>RSS[<span class="dv">5</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(RSS[<span class="dv">5</span>]<span class="op">/</span>M5<span class="op">$</span>df.residual)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Manual calculation</span>
+F45 &lt;-<span class="st"> </span>((RSS[<span class="dv">4</span>]<span class="op">-</span>RSS[<span class="dv">5</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(RSS[<span class="dv">5</span>]<span class="op">/</span>M5<span class="op">$</span>df.residual)</code></pre>
 <p>For forward model selection, we select the covariate that is the most correlated with the response first. The residual sum of square of the denominator must be correct, so we could use that of the most complex model here.</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" title="1"><span class="kw">anova</span>(<span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">*</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet))[<span class="st">&quot;gender&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;F value&quot;</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>)] </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(<span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>gender <span class="op">*</span><span class="st"> </span>diet.type, <span class="dt">data =</span> diet))[<span class="st">&quot;gender&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;F value&quot;</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>)] </code></pre>
 <pre><code>##        F value Pr(&gt;F)
 ## gender  0.0518 0.8206</code></pre>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb237-1" title="1"><span class="co">#gender is not significant</span></a>
-<a class="sourceLine" id="cb237-2" title="2"><span class="kw">anova</span>(<span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>diet.type <span class="op">*</span><span class="st"> </span>gender, <span class="dt">data =</span> diet))[<span class="st">&quot;diet.type&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;F value&quot;</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>)] </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#gender is not significant</span>
+<span class="kw">anova</span>(<span class="kw">lm</span>(weight.loss <span class="op">~</span><span class="st"> </span>diet.type <span class="op">*</span><span class="st"> </span>gender, <span class="dt">data =</span> diet))[<span class="st">&quot;diet.type&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;F value&quot;</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>)] </code></pre>
 <pre><code>##           F value   Pr(&gt;F)
 ## diet.type  5.6292 0.005408</code></pre>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" title="1"><span class="co">#diet type is significant</span></a>
-<a class="sourceLine" id="cb239-2" title="2"></a>
-<a class="sourceLine" id="cb239-3" title="3"><span class="co">#Alternatively - assume that the model is CORRECT</span></a>
-<a class="sourceLine" id="cb239-4" title="4"><span class="co">## Clearly not the case</span></a>
-<a class="sourceLine" id="cb239-5" title="5"><span class="kw">add1</span>(M1, <span class="dt">scope =</span> <span class="kw">c</span>(<span class="st">&quot;diet.type&quot;</span>,<span class="st">&quot;gender&quot;</span>), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#diet type is significant</span>
+
+<span class="co">#Alternatively - assume that the model is CORRECT</span>
+<span class="co">## Clearly not the case</span>
+<span class="kw">add1</span>(M1, <span class="dt">scope =</span> <span class="kw">c</span>(<span class="st">&quot;diet.type&quot;</span>,<span class="st">&quot;gender&quot;</span>), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -369,13 +370,13 @@ We have <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\boldsymbo
 ## &lt;none&gt;                 470.93 140.62                 
 ## diet.type  2    60.527 410.40 134.17  5.3831 0.006596
 ## gender     1     0.278 470.65 142.58  0.0438 0.834827</code></pre>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb241-1" title="1"><span class="co">#manually computing F-test between diet.type + intercept and intercept only</span></a>
-<a class="sourceLine" id="cb241-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>( </a>
-<a class="sourceLine" id="cb241-3" title="3">  ((RSS[<span class="dv">1</span>]<span class="op">-</span>RSS[<span class="dv">3</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(RSS[<span class="dv">3</span>]<span class="op">/</span>(<span class="dv">73</span>)), </a>
-<a class="sourceLine" id="cb241-4" title="4">  <span class="kw">add1</span>(M1, <span class="dt">scope =</span> <span class="kw">c</span>(<span class="st">&quot;diet.type&quot;</span>,<span class="st">&quot;gender&quot;</span>), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)[<span class="st">&quot;diet.type&quot;</span>, <span class="st">&quot;F value&quot;</span>]))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#manually computing F-test between diet.type + intercept and intercept only</span>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>( 
+  ((RSS[<span class="dv">1</span>]<span class="op">-</span>RSS[<span class="dv">3</span>])<span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(RSS[<span class="dv">3</span>]<span class="op">/</span>(<span class="dv">73</span>)), 
+  <span class="kw">add1</span>(M1, <span class="dt">scope =</span> <span class="kw">c</span>(<span class="st">&quot;diet.type&quot;</span>,<span class="st">&quot;gender&quot;</span>), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)[<span class="st">&quot;diet.type&quot;</span>, <span class="st">&quot;F value&quot;</span>]))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb243-1" title="1"><span class="co">#Note that in the above, the RSS is that of the more complex model, but not the full model</span></a>
-<a class="sourceLine" id="cb243-2" title="2"><span class="kw">add1</span>(M3, <span class="dt">scope =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Note that in the above, the RSS is that of the more complex model, but not the full model</span>
+<span class="kw">add1</span>(M3, <span class="dt">scope =</span> <span class="st">&quot;gender&quot;</span>, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -383,33 +384,33 @@ We have <span class="math inline">\(\mathrm{TSS} = \boldsymbol{y}^\top\boldsymbo
 ##        Df Sum of Sq    RSS    AIC F value Pr(&gt;F)
 ## &lt;none&gt;              410.40 134.17               
 ## gender  1    0.1687 410.23 136.13  0.0296 0.8639</code></pre>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" title="1"><span class="co">#No evidence against the simpler null model with only diet</span></a>
-<a class="sourceLine" id="cb245-2" title="2"><span class="co">#We do not test for the interaction model without main effects included!</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#No evidence against the simpler null model with only diet</span>
+<span class="co">#We do not test for the interaction model without main effects included!</span></code></pre>
 <p>We can use information criterion to estimate the goodness-of-fit of the model.
 The Akaike’s information criterion (AIC) and Schwartz’ information criterion (BIC) can be obtained by use of the functions <code>AIC</code> and <code>BIC</code>, respectively.</p>
 <p>An alternative is Mallow’s <span class="math inline">\(C_p\)</span>, which requires an estimate of <span class="math inline">\(s^2\)</span>. It is customary to select <span class="math inline">\(s^2\)</span> as the mean residual sum of squares from the most complex model, to make the comparisons fair avoid bias to due model misspecification.
 The most complex model will by construction give <span class="math inline">\(C_p=p\)</span> (so we cannot assess the goodness-of-fit of this model using this technique). Good models are those for which the value of <span class="math inline">\(C_p\)</span> is close to <span class="math inline">\(p\)</span>.</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb246-1" title="1">p &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(<span class="kw">list</span>(M1, M2, M3, M4, M5), </a>
-<a class="sourceLine" id="cb246-2" title="2">                   <span class="dt">FUN =</span> <span class="cf">function</span>(mod){<span class="kw">length</span>(<span class="kw">coef</span>(mod))}))</a>
-<a class="sourceLine" id="cb246-3" title="3">Mallow_Cp &lt;-<span class="st"> </span>RSS<span class="op">/</span>RSS[<span class="dv">5</span>]<span class="op">*</span>(<span class="kw">nrow</span>(diet)<span class="op">-</span>p[<span class="dv">5</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">nrow</span>(diet) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>p</a>
-<a class="sourceLine" id="cb246-4" title="4">Mallow_Cp</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">lapply</span>(<span class="kw">list</span>(M1, M2, M3, M4, M5), 
+                   <span class="dt">FUN =</span> <span class="cf">function</span>(mod){<span class="kw">length</span>(<span class="kw">coef</span>(mod))}))
+Mallow_Cp &lt;-<span class="st"> </span>RSS<span class="op">/</span>RSS[<span class="dv">5</span>]<span class="op">*</span>(<span class="kw">nrow</span>(diet)<span class="op">-</span>p[<span class="dv">5</span>]) <span class="op">-</span><span class="st"> </span><span class="kw">nrow</span>(diet) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>p
+Mallow_Cp</code></pre>
 <pre><code>## [1] 13.596261 15.544461  6.337787  8.306409  6.000000</code></pre>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" title="1"><span class="co">#Step function for model selection using AIC/BIC</span></a>
-<a class="sourceLine" id="cb248-2" title="2"><span class="co">#step(M5, direction = &#39;backward&#39;,trace = FALSE, k = log(76))</span></a>
-<a class="sourceLine" id="cb248-3" title="3"></a>
-<a class="sourceLine" id="cb248-4" title="4"><span class="co">#Alternatively, compute each AIC/BIC value</span></a>
-<a class="sourceLine" id="cb248-5" title="5">aic_val &lt;-<span class="st"> </span><span class="kw">AIC</span>(M1, M2, M3, M4, M5)</a>
-<a class="sourceLine" id="cb248-6" title="6">bic_val &lt;-<span class="st"> </span><span class="kw">BIC</span>(M1, M2, M3, M4, M5)</a>
-<a class="sourceLine" id="cb248-7" title="7"><span class="kw">which.min</span>(aic_val<span class="op">$</span>AIC)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Step function for model selection using AIC/BIC</span>
+<span class="co">#step(M5, direction = &#39;backward&#39;,trace = FALSE, k = log(76))</span>
+
+<span class="co">#Alternatively, compute each AIC/BIC value</span>
+aic_val &lt;-<span class="st"> </span><span class="kw">AIC</span>(M1, M2, M3, M4, M5)
+bic_val &lt;-<span class="st"> </span><span class="kw">BIC</span>(M1, M2, M3, M4, M5)
+<span class="kw">which.min</span>(aic_val<span class="op">$</span>AIC)</code></pre>
 <pre><code>## [1] 5</code></pre>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" title="1"><span class="kw">which.min</span>(bic_val<span class="op">$</span>BIC)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">which.min</span>(bic_val<span class="op">$</span>BIC)</code></pre>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" title="1"><span class="co">#Store values in table</span></a>
-<a class="sourceLine" id="cb252-2" title="2">ICvals &lt;-<span class="st"> </span><span class="kw">rbind</span>(aic_val<span class="op">$</span>AIC, bic_val<span class="op">$</span>BIC)</a>
-<a class="sourceLine" id="cb252-3" title="3"><span class="kw">colnames</span>(ICvals) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))</a>
-<a class="sourceLine" id="cb252-4" title="4"><span class="kw">rownames</span>(ICvals) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AIC&quot;</span>, <span class="st">&quot;BIC&quot;</span>)</a>
-<a class="sourceLine" id="cb252-5" title="5"><span class="co">#Create table for Markdown</span></a>
-<a class="sourceLine" id="cb252-6" title="6">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">round</span>(ICvals,<span class="dv">2</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Store values in table</span>
+ICvals &lt;-<span class="st"> </span><span class="kw">rbind</span>(aic_val<span class="op">$</span>AIC, bic_val<span class="op">$</span>BIC)
+<span class="kw">colnames</span>(ICvals) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;M&quot;</span>, <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))
+<span class="kw">rownames</span>(ICvals) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AIC&quot;</span>, <span class="st">&quot;BIC&quot;</span>)
+<span class="co">#Create table for Markdown</span>
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">round</span>(ICvals,<span class="dv">2</span>))</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -440,9 +441,9 @@ The most complex model will by construction give <span class="math inline">\(C_p
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" title="1"><span class="co">#Create table to export in LaTeX</span></a>
-<a class="sourceLine" id="cb253-2" title="2">tab &lt;-<span class="st"> </span>xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="kw">round</span>(ICvals,<span class="dv">1</span>), <span class="dt">caption =</span> <span class="st">&quot;Two-way ANOVA, diet data&quot;</span>)</a>
-<a class="sourceLine" id="cb253-3" title="3"><span class="co">#print(tab, booktabs = TRUE)</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create table to export in LaTeX</span>
+tab &lt;-<span class="st"> </span>xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="kw">round</span>(ICvals,<span class="dv">1</span>), <span class="dt">caption =</span> <span class="st">&quot;Two-way ANOVA, diet data&quot;</span>)
+<span class="co">#print(tab, booktabs = TRUE)</span></code></pre>
 
 </div>
 </div>
