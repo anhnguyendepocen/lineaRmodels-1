@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="summary-of-week-1.html">
-<link rel="next" href="calculation-of-least-square-estimates.html">
+<link rel="prev" href="model-selection-invalidates-p-values.html">
+<link rel="next" href="bias-and-variance-tradeoff.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -247,17 +247,23 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="computational-considerations" class="section level1">
-<h1><span class="header-section-number">2</span> Computational considerations</h1>
-<p>In this tutorial, we will explore some basic <strong>R</strong> commands and illustrate their use on the Auto dataset (<code>Auto</code>) from the <code>ISLR</code> package.</p> 
+<div id="penalized-regression-methods" class="section level1">
+<h1><span class="header-section-number">8</span> Penalized regression methods</h1>
+<p>There are two reasons one may go down the route of penalized regression models: one is to trade-off bias for reduced variance in the hope that doing so will improve the predictive accuracy of the model. The other is in cases where the number of covariates <span class="math inline">\(p\)</span> is large and the matrix <span class="math inline">\(\mathbf{X}\)</span> is close to being non-invertible.</p>
+<p>Throughout, we will work with centered and standardized inputs. One reason for doing so is to make our inference invariant to affine transformations, much like for <span class="math inline">\(R^2_c\)</span>. We can consider a design matrix <span class="math inline">\([ \mathbf{1}_n \; \mathbf{X}]\)</span> with rescaled columns so that <span class="math inline">\(\mathrm{Var}(\mathbf{X}_j)=1\)</span> for <span class="math inline">\(j=1, \ldots, p\)</span> and take <span class="math inline">\(\mathbf{Z} \equiv \mathbf{X} - \mathbf{1}_n \bar{\mathbf{X}}\)</span>, where <span class="math inline">\(\bar{\mathbf{X}}\)</span> is the row vector of column means of <span class="math inline">\(\mathbf{X}\)</span>. This is the orthogonal decomposition <span class="math inline">\(\mathbf{H}_{\mathbf{1}_n} + \mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}}\)</span> and since the variables are orthogonal, the coefficient <span class="math inline">\(\beta_0\)</span> corresponding to the intercept is <span class="math inline">\(\bar{\boldsymbol{y}}\)</span>.
+Having scaled inputs <span class="math inline">\(\mathbf{Z}\)</span> ensures that we penalize equally every covariate and that the model is invariant to change of units for the regressors.</p>
+<p>The two methods briefly covered in the course are ridge regression and LASSO. The first one consists of imposing a <span class="math inline">\(l_2\)</span> penalty on the coefficients, the second a <span class="math inline">\(l_1\)</span> penalty. The advantage of the former is that the optimization problem is convex and differentiable and the solution can be found using an augmented linear regression. For the LASSO penalty, the implementation is more complex, but LASSO also performs variable selection, meaning the solution <span class="math inline">\(\widehat{\boldsymbol{\gamma}}_{\mathrm{LASSO}}\)</span> will have zero components.</p>
+<p>Our penalized regression model takes the form
+<span class="math display">\[Q(\beta_0, \boldsymbol{\gamma}) = (\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma})^\top(\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma}) + \lambda p(\boldsymbol{\gamma})  \]</span>
+where <span class="math inline">\(p(\boldsymbol{\gamma}) = \|\boldsymbol{\gamma}\|^2_2\)</span> for ridge regression and <span class="math inline">\(p(\boldsymbol{\gamma}) =\|\boldsymbol{\gamma}\|_1\)</span> for the LASSO.</p> 
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="summary-of-week-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="calculation-of-least-square-estimates.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="model-selection-invalidates-p-values.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bias-and-variance-tradeoff.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

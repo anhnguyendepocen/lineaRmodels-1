@@ -1,0 +1,152 @@
+# Penalized regression methods
+
+There are two reasons one may go down the route of penalized regression models: one is to trade-off bias for reduced variance in the hope that doing so will improve the predictive accuracy of the model. The other is in cases where the number of covariates $p$ is large and the matrix $\mathbf{X}$ is close to being non-invertible.
+
+Throughout, we will work with centered and standardized inputs. One reason for doing so is to make our inference invariant to affine transformations, much like for $R^2_c$. We can consider a design matrix $[ \mathbf{1}_n \; \mathbf{X}]$ with rescaled columns so that $\mathrm{Var}(\mathbf{X}_j)=1$ for $j=1, \ldots, p$ and take $\mathbf{Z} \equiv \mathbf{X} - \mathbf{1}_n \bar{\mathbf{X}}$, where $\bar{\mathbf{X}}$ is the row vector of column means of $\mathbf{X}$. This is the orthogonal decomposition $\mathbf{H}_{\mathbf{1}_n} + \mathbf{H}_{\mathbf{M}_{\mathbf{1}_n}\mathbf{X}}$ and since the variables are orthogonal, the coefficient $\beta_0$ corresponding to the intercept is $\bar{\boldsymbol{y}}$.
+Having scaled inputs $\mathbf{Z}$ ensures that we penalize equally every covariate and that the model is invariant to change of units for the regressors. 
+
+
+The two methods briefly covered in the course are ridge regression and LASSO. The first one consists of imposing a $l_2$ penalty on the coefficients, the second a $l_1$ penalty. The advantage of the former is that the optimization problem is convex and differentiable and the solution can be found using an augmented linear regression. For the LASSO penalty, the implementation is more complex, but LASSO also performs variable selection, meaning the solution $\widehat{\boldsymbol{\gamma}}_{\mathrm{LASSO}}$ will have zero components.
+
+Our penalized regression model takes the form 
+\[Q(\beta_0, \boldsymbol{\gamma}) = (\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma})^\top(\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma}) + \lambda p(\boldsymbol{\gamma})  \]
+where $p(\boldsymbol{\gamma}) = \|\boldsymbol{\gamma}\|^2_2$ for ridge regression and $p(\boldsymbol{\gamma}) =\|\boldsymbol{\gamma}\|_1$ for the LASSO.
+
+## Bias and variance tradeoff
+
+Consider the ridge regression: as we increase the penalty $\lambda$, coefficients values are shrunk towards zero. The case $\lambda \to \infty$ gives $\hbb_{\mathrm{ridge}}=\bs{0}_p$, whereas we retrieve the OLS estimator $\hbb$ when $\lambda=0$. Note that increase in the penalty, with $\lambda_1 < \lambda_2$ **does not** necessarily mean that individual coefficients decrease monotonically, so $|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|$. 
+
+The mean squared error of the ridge estimator is 
+\[\mathrm{MSE}(\hbb_{\mathrm{ridge}}^{\lambda}) = \sigma^2 \mathrm{tr}\left\{(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\right\} + \boldsymbol{\gamma}^\top \left\{ \mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1} + \mathbf{I}_p \right\} \left\{ (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z} + \mathbf{I}_p \right\}\boldsymbol{\gamma}
+\]
+
+If we knew the true data generating mechanism (i.e. the $\bs{\gamma}$ vector and $\sigma^2$), we could compute exactly the mean squared error (MSE) of the model and find the optimal bias-variance tradeoff that minimizes MSE.
+
+```{r biasridge, cache = TRUE}
+# Function to compute MSE of ridge estimator
+mse_ridge <- function(gamma, lambda, Z, sigmasq = 1){
+  ZtZ <- crossprod(Z)
+  p <- ncol(Z)
+  W <- solve(ZtZ + lambda*diag(p))
+  bias <- c((W %*% ZtZ - diag(p)) %*% gamma)
+  varia <- sigmasq * diag( crossprod(Z %*% W))
+  list(bias = bias, variance = varia, mse = sum(bias^2 + varia))
+}
+set.seed(9876)
+# Create fake data
+Z <- matrix(rnorm(n = 20L*50L, mean = 0, sd = 1), ncol = 20L)
+# Center and renormalize Z
+Z <- apply(Z, 2, scale)
+# Create coefficient vector
+gamma <- c(rep(0, 10L), runif(10L))
+
+# Create sequence of lambda and matrix to store results
+nlam <- 401L
+lambda_seq <- seq(0, 100, length = nlam)
+mse <- matrix(0, nrow = nlam, ncol = 3)
+gammahat <- matrix(0, nrow = nlam, ncol = ncol(Z))
+for(i in 1:nlam){
+  # evaluate bias + variance for each lambda
+  mse_i <- mse_ridge(gamma = gamma, lambda = lambda_seq[i], Z = Z)
+  gammahat[i,] <- gamma + mse_i$bias
+  mse[i,1] <-  sum(mse_i$bias^2)
+  mse[i,2] <-  sum(mse_i$variance)
+  mse[i,3] <- mse_i$mse
+}
+# Plot the results as a function of lambda
+matplot(lambda_seq, mse, type = "l", lty = 1, 
+        bty = "l", xlab = expression(lambda), col = 3:1, 
+        ylab = "Mean squared error decomposition")
+abline(h = mse[1,3], lty = 2)
+legend(x = "topleft", legend = c("sq. bias", "variance", "mse"), 
+       col = 3:1, lty = 1, bty = "n")
+
+# Compute the value of lambda that minimizes MSE
+lambdaopt <- optimize(f = function(x){
+  mse_ridge(gamma = gamma, lambda = x, Z = Z)$mse
+  }, interval = c(0, 30))$minimum
+lambdaopt
+```
+
+We can also look at the path of coefficient values $\hat{\boldsymbol{\gamma}}_{\mathrm{ridge}}^{\lambda}$ as a function of $\lambda$:
+
+```{r plotgammaridge, echo = FALSE, cache = TRUE}
+par(mar = c(5,5,4,1))
+matplot(lambda_seq, gammahat, type = "l", lty = 1, col = c(rep(1, 10), rainbow(n = 10)),
+        bty = "l", xlab = expression(lambda), 
+        ylab = expression(hat(gamma)),
+        main = "Shrinkage of ridge coefficients")
+```
+
+While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients $\boldsymbol{\gamma}$, which are exactly zero, stabilize around another value. 
+
+
+The coefficients $\hat{\boldsymbol{\gamma}}^\lambda$ can be computed using an augmented linear regression, with response $(\boldsymbol{y}, \mathbf{0}_p)$ and regressor $[\mathbf{Z}^\top,\; \lambda^{1/2} \mathbf{I}_p]$. Alternatively,
+\[\hat{\boldsymbol{\gamma}}^\lambda = (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\boldsymbol{y}.\]
+
+We can also use the singular value decomposition of $\mathbf{Z} = \mathbf{UDV}^\top$ to compute the coefficients\[\hat{\boldsymbol{\gamma}} = \sum_{j=1}^p \frac{d_j}{d_j^2+\lambda} \mathbf{u}_j^\top\boldsymbol{y} \mathbf{v}_j,\]
+where $\mathbf{u}_j$ and $\mathbf{v}_j$ are the $j$th column of $\mathbf{U}$ and $\mathbf{V}$, respectively. This is most useful for cross-validation where we want to change the value of $\lambda$ repeatedly, as the SVD of $\mathbf{Z}$ won't change. 
+
+```{r computeridge, , cache = TRUE}
+# Create response vector from model
+y <- Z %*% gamma + rnorm(nrow(Z))
+# Compute ridge coefficients
+ridge_lm_coef <- function(y, Z, lambda){
+ Z <- scale(Z) 
+ c(solve(crossprod(Z) + lambda*diag(ncol(Z))) %*% crossprod(Z, y - mean(y)))
+}
+lambda0 <- 2
+#Compare coefficients obtained from fitting using augmented regression
+augmy <- c(y - mean(y), rep(0, ncol(Z)))
+augmZ <- rbind(Z, sqrt(lambda0)*diag(ncol(Z)))
+augmlm <- lm(augmy ~ -1 + augmZ)
+isTRUE(all.equal(as.vector(augmlm$coef),
+      ridge_lm_coef(y = y, Z = Z, lambda = lambda0)))
+```
+
+## Cross-validation
+
+Denote the ridge estimator $\hbb^\lambda$ for a given penalty parameter $\lambda$.
+The smoothing matrix is $\mathbf{S}_{\lambda} = \mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top$; the trace of the smoothing matrix is $\mathrm{tr}({\mathbf{S}_{\lambda}}) = \sum_{j=1}^p d_j^2/(d_j^2+\lambda)$, where $d_{j}$ is the $j$th singular value of $\mathbf{Z}$. The smoothing matrix $\mathbf{S}_{\lambda}$ is not a projection matrix; its eigenvalues lie in $(0,1)$.
+
+
+Similar calculations than those used to derive the leave-one-out cross validation residual errors of the PRESS statistic lead to the formula
+\[\mathrm{CV}_\lambda = \sum_{i=1}^n e_{-i}^2(\lambda) =  \sum_{i=1}^n (y_i - \bar{y}- \mathbf{z}_i \hat{\boldsymbol{\gamma}}_{-i}^{\lambda})^2 = \sum_{i=1}^n \frac{(y_i - \bar{y} -\mathbf{z}_i\hat{\boldsymbol{\gamma}}^\lambda)^2}{1-{\mathbf{S}_{\lambda}}_{ii}},\]
+where $\mathbf{z}_i$ is the $i$th row of $\mathbf{Z}$. 
+Rather than compute $\mathbf{S}_{\lambda}$ and its diagonal elements, one can resort to the convenient generalized cross-validation approximation 
+\[\mathrm{GCV}_\lambda = \sum_{i=1}^n \frac{(y_i - \bar{y} -\mathbf{z}_i\hat{\boldsymbol{\gamma}}^\lambda)^2}{1-\mathrm{tr}(\mathbf{S}_{\lambda})/n}\]
+and the latter is readily computed.
+
+```{r gcv_ridge, cache = TRUE}
+nlam <- 201L
+lambda_seq <- seq(0, 20, length = nlam)
+svdZ <- svd(Z)
+n <- nrow(Z); p <- ncol(Z)
+#Each column is u_j^Tyv_j
+uyv <- sapply(1:p, function(j){t(svdZ$u[,j]) %*% y %*% svdZ$v[,j]})
+gcv <- rep(0, nlam)
+yc <- y - mean(y)
+for(i in 1:nlam){
+  # Compute GCV - trace of smoother + RSS
+  traceS <- sum(svdZ$d^2/(svdZ$d^2+lambda_seq[i]))
+  gcv[i] <- sum((yc - Z %*% colSums(c(svdZ$d/(svdZ$d^2 + lambda_seq[i]))  *
+                                      t(uyv)))^2)/(1-traceS/n)^2
+}
+# Plot GCV curve against lambda
+plot(lambda_seq, gcv, type = "l", bty = "l",
+     main = "Generalized leave-one-out\ncross validation for ridge regression",
+     ylab = expression(GCV[lambda]), xlab = expression(lambda))
+abline(v = lambda_seq[which.min(gcv)], col = 2)
+lambda_seq[which.min(gcv)]
+# Compare results with MASS
+library(MASS)
+fit_ridge <- lm.ridge(y ~ Z, lambda = lambda_seq)
+# GCV returned by lm.ridge is divided by n^2
+lines(lambda_seq, fit_ridge$GCV*n^2, lty = 2, col = "blue")
+select(fit_ridge)
+```
+
+Note that in this case, the optimal value of $\lambda$ found is higher than the theoretical optimum. In practice, we may prefer $K$-fold cross-validation to leave-one-out cross validation. 
+
+
+

@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -223,6 +223,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="model-selection-invalidates-p-values.html"><a href="model-selection-invalidates-p-values.html"><i class="fa fa-check"></i><b>7.2</b> Model selection invalidates P-values</a></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="penalized-regression-methods.html"><a href="penalized-regression-methods.html"><i class="fa fa-check"></i><b>8</b> Penalized regression methods</a><ul>
+<li class="chapter" data-level="8.1" data-path="bias-and-variance-tradeoff.html"><a href="bias-and-variance-tradeoff.html"><i class="fa fa-check"></i><b>8.1</b> Bias and variance tradeoff</a></li>
+<li class="chapter" data-level="8.2" data-path="cross-validation-1.html"><a href="cross-validation-1.html"><i class="fa fa-check"></i><b>8.2</b> Cross-validation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -252,29 +256,29 @@ where <span class="math inline">\(\boldsymbol{e} \equiv \mathbf{M}_{\mathbf{X}}\
 <span class="math display">\[ R^2_c = \frac{\|\hat{\boldsymbol{y}}-\bar{y}\mathbf{1}_n\|^2}{\|\boldsymbol{y}-\bar{y}\mathbf{1}_n\|^2}=\frac{\|\hat{\boldsymbol{y}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}{\|\boldsymbol{y}\|^2-\|\bar{y}\mathbf{1}_n\|^2}.\]</span>
 since the vectors <span class="math inline">\(\bar{y}\mathbf{1}_n \perp \hat{\boldsymbol{y}}-\bar{y}\mathbf{1}_n\)</span>.</p>
 <p>Provided that <span class="math inline">\(\mathbf{1}_n \in \mathscr{S}(\mathbf{X})\)</span>, it is obvious that the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> are invariant to linear transformations of the covariates <span class="math inline">\(\mathbf{X}\)</span> (by which I mean you can transform the design matrix column by column, with <span class="math inline">\(\mathbf{x}_i \mapsto \alpha_i+\mathbf{x}_i\gamma_i\)</span> for <span class="math inline">\(i=1, \ldots, p\)</span>). Multiplicative changes in <span class="math inline">\(\boldsymbol{y}\)</span> lead to an equivalent change in <span class="math inline">\(\boldsymbol{e}\)</span> and <span class="math inline">\(\hat{\boldsymbol{y}}\)</span>. However, location-changes in <span class="math inline">\(\boldsymbol{y}\)</span> are only reflected in <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> (they are absorbed by the intercept). This is why <span class="math inline">\(R^2\)</span> is not invariant to location-changes in the response, since the ratio <span class="math inline">\(\|\hat{\boldsymbol{y}}\|^2/\|\boldsymbol{y}\|^2\)</span> increases to 1 if <span class="math inline">\({\boldsymbol{y}}\mapsto {\boldsymbol{y}}+ a \mathbf{1}_n\)</span>.</p>
-<p>This invariance is precisely the reason we dismissed <span class="math inline">\(R^2\)</span>. For example, a change of units from Farenheit to Celcius, viz. <span class="math inline">\(T_c = 5 (T_F - 32)/9\)</span>, leads to different values of <span class="math inline">\(R^2\)</span>:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(aatemp, <span class="dt">package =</span> <span class="st">&quot;faraway&quot;</span>)
-<span class="kw">plot</span>(temp <span class="op">~</span><span class="st"> </span>year, <span class="dt">data =</span> aatemp, <span class="dt">ylab =</span> <span class="st">&quot;Temperature (in F)&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)
-<span class="co">#Form design matrix and two response vectors</span>
-yF &lt;-<span class="st"> </span>aatemp<span class="op">$</span>temp
-n &lt;-<span class="st"> </span><span class="kw">length</span>(yF)
-yC &lt;-<span class="st"> </span><span class="dv">5</span><span class="op">/</span><span class="dv">9</span><span class="op">*</span>(aatemp<span class="op">$</span>temp <span class="op">-</span><span class="st"> </span><span class="dv">32</span>)
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, aatemp<span class="op">$</span>year)
-<span class="co"># Obtain OLS coefficients and fitted values</span>
-XtX &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))
-beta_hat_F &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yF)
-<span class="kw">abline</span>(<span class="dt">a =</span> beta_hat_F[<span class="dv">1</span>], <span class="dt">b =</span> beta_hat_F[<span class="dv">2</span>])</code></pre>
+<p>This invariance is precisely the reason we dismissed <span class="math inline">\(R^2\)</span>. For example, a change of units from Farenheit to Celcius, viz. <span class="math inline">\(T_c = 5 (T_F - 32)/9\)</span>, leads to different values of <span class="math inline">\(R^2\)</span>:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1"><span class="kw">data</span>(aatemp, <span class="dt">package =</span> <span class="st">&quot;faraway&quot;</span>)</a>
+<a class="sourceLine" id="cb54-2" title="2"><span class="kw">plot</span>(temp <span class="op">~</span><span class="st"> </span>year, <span class="dt">data =</span> aatemp, <span class="dt">ylab =</span> <span class="st">&quot;Temperature (in F)&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a>
+<a class="sourceLine" id="cb54-3" title="3"><span class="co">#Form design matrix and two response vectors</span></a>
+<a class="sourceLine" id="cb54-4" title="4">yF &lt;-<span class="st"> </span>aatemp<span class="op">$</span>temp</a>
+<a class="sourceLine" id="cb54-5" title="5">n &lt;-<span class="st"> </span><span class="kw">length</span>(yF)</a>
+<a class="sourceLine" id="cb54-6" title="6">yC &lt;-<span class="st"> </span><span class="dv">5</span><span class="op">/</span><span class="dv">9</span><span class="op">*</span>(aatemp<span class="op">$</span>temp <span class="op">-</span><span class="st"> </span><span class="dv">32</span>)</a>
+<a class="sourceLine" id="cb54-7" title="7">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, aatemp<span class="op">$</span>year)</a>
+<a class="sourceLine" id="cb54-8" title="8"><span class="co"># Obtain OLS coefficients and fitted values</span></a>
+<a class="sourceLine" id="cb54-9" title="9">XtX &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))</a>
+<a class="sourceLine" id="cb54-10" title="10">beta_hat_F &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yF)</a>
+<a class="sourceLine" id="cb54-11" title="11"><span class="kw">abline</span>(<span class="dt">a =</span> beta_hat_F[<span class="dv">1</span>], <span class="dt">b =</span> beta_hat_F[<span class="dv">2</span>])</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/faraway-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r">beta_hat_C &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yC)
-fitted_F &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_F
-fitted_C &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_C
-<span class="co"># Compute coefficient of determination</span>
-R2_F &lt;-<span class="st"> </span><span class="kw">sum</span>(fitted_F<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yF<span class="op">^</span><span class="dv">2</span>)
-R2_C &lt;-<span class="st">  </span><span class="kw">sum</span>(fitted_C<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yC<span class="op">^</span><span class="dv">2</span>)
-<span class="co">#Centered R^2</span>
-R2c_F &lt;-<span class="st"> </span><span class="kw">sum</span>((fitted_F<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yF<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)
-R2c_C &lt;-<span class="st">  </span><span class="kw">sum</span>((fitted_C<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yC<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(R2c_F, R2c_C))</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1">beta_hat_C &lt;-<span class="st"> </span>XtX <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, yC)</a>
+<a class="sourceLine" id="cb55-2" title="2">fitted_F &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_F</a>
+<a class="sourceLine" id="cb55-3" title="3">fitted_C &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta_hat_C</a>
+<a class="sourceLine" id="cb55-4" title="4"><span class="co"># Compute coefficient of determination</span></a>
+<a class="sourceLine" id="cb55-5" title="5">R2_F &lt;-<span class="st"> </span><span class="kw">sum</span>(fitted_F<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yF<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb55-6" title="6">R2_C &lt;-<span class="st">  </span><span class="kw">sum</span>(fitted_C<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(yC<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb55-7" title="7"><span class="co">#Centered R^2</span></a>
+<a class="sourceLine" id="cb55-8" title="8">R2c_F &lt;-<span class="st"> </span><span class="kw">sum</span>((fitted_F<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yF<span class="op">-</span><span class="kw">mean</span>(yF))<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb55-9" title="9">R2c_C &lt;-<span class="st">  </span><span class="kw">sum</span>((fitted_C<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>((yC<span class="op">-</span><span class="kw">mean</span>(yC))<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb55-10" title="10"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(R2c_F, R2c_C))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>The difference <span class="math inline">\(R^2(F)-R^2(C)=\)</span> 0.00752 is small because the <span class="math inline">\(R^2\)</span> value is very high, but the coefficient itself is also meaningless. In this example, <span class="math inline">\(R^2(F)=\)</span> 0.9991, which seems to indicate excellent fit but in fact only 8.54% of the variability is explained by year and we do an equally good job by simply taking <span class="math inline">\(\hat{y}_i=\bar{y}\)</span>.</p>
 <p><span class="math inline">\(R^2_c\)</span> makes the comparison between the adjusted linear model and the null model with only a constant, which predicts each <span class="math inline">\(y_i (i=1, \ldots, n)\)</span> by the average <span class="math inline">\(\bar{y}\)</span>.</p>
@@ -286,19 +290,19 @@ In <strong>R</strong>, the function <code>lm</code> returns <span class="math in
 Contrast
 </div>
 
-<pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower, <span class="dt">data =</span> Auto)
-rsqc_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(mod)<span class="op">$</span>r.squared
-<span class="co">#same model, now X = [1 horsepower] and y = mpg</span>
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)
-y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg
-rsq_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))<span class="op">$</span>r.squared 
-
-<span class="co">#Compute quantities manually</span>
-rsqc_man &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(<span class="kw">fitted</span>(mod) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)) <span class="op">/</span><span class="st"> </span><span class="kw">crossprod</span>(y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)))
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(rsqc_man, rsqc_lm))</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1">mod &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>horsepower, <span class="dt">data =</span> Auto)</a>
+<a class="sourceLine" id="cb57-2" title="2">rsqc_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(mod)<span class="op">$</span>r.squared</a>
+<a class="sourceLine" id="cb57-3" title="3"><span class="co">#same model, now X = [1 horsepower] and y = mpg</span></a>
+<a class="sourceLine" id="cb57-4" title="4">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
+<a class="sourceLine" id="cb57-5" title="5">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb57-6" title="6">rsq_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))<span class="op">$</span>r.squared </a>
+<a class="sourceLine" id="cb57-7" title="7"></a>
+<a class="sourceLine" id="cb57-8" title="8"><span class="co">#Compute quantities manually</span></a>
+<a class="sourceLine" id="cb57-9" title="9">rsqc_man &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(<span class="kw">fitted</span>(mod) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)) <span class="op">/</span><span class="st"> </span><span class="kw">crossprod</span>(y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)))</a>
+<a class="sourceLine" id="cb57-10" title="10"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(rsqc_man, rsqc_lm))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">rsq_man &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(<span class="kw">fitted</span>(mod))<span class="op">/</span><span class="kw">crossprod</span>(y))
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(rsq_man, rsq_lm))</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">rsq_man &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(<span class="kw">fitted</span>(mod))<span class="op">/</span><span class="kw">crossprod</span>(y))</a>
+<a class="sourceLine" id="cb59-2" title="2"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(rsq_man, rsq_lm))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
             </section>

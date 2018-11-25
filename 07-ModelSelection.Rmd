@@ -157,7 +157,7 @@ add1(lm(formula = form, data = di),
      test = "F")
 ```
 
-The interaction between `log(carat)` and `cut`  is significant at the 5% level, idem for `clarity:color`. Keep in mind that adding interactions leads to a large increase in the number of parameters; `clarity:color` would lead to an additional 37 parameters! 
+The interaction between `log(carat)` and `cut`  is significant at the 5% level, idem for `clarity:color` and `clarity:cut`. Keep in mind that adding interactions leads to a large increase in the number of parameters; `clarity:color` would lead to an additional 37 parameters! 
 
 ### Information criterion
 

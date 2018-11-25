@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -223,6 +223,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="model-selection-invalidates-p-values.html"><a href="model-selection-invalidates-p-values.html"><i class="fa fa-check"></i><b>7.2</b> Model selection invalidates P-values</a></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="penalized-regression-methods.html"><a href="penalized-regression-methods.html"><i class="fa fa-check"></i><b>8</b> Penalized regression methods</a><ul>
+<li class="chapter" data-level="8.1" data-path="bias-and-variance-tradeoff.html"><a href="bias-and-variance-tradeoff.html"><i class="fa fa-check"></i><b>8.1</b> Bias and variance tradeoff</a></li>
+<li class="chapter" data-level="8.2" data-path="cross-validation-1.html"><a href="cross-validation-1.html"><i class="fa fa-check"></i><b>8.2</b> Cross-validation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -253,19 +257,19 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>We illustrate various concepts with the simple model <span class="math display">\[Y_i = \beta_0 + \varepsilon_i, \qquad\varepsilon_i \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(0, \sigma^2) \qquad (i=1, \ldots, n)\]</span></p>
 <p>The Wald test statistic for the null hypothesis <span class="math inline">\(\mathrm{H}_0: \beta_0=0\)</span> against the alternative <span class="math inline">\(\mathrm{H}_a: \beta_0 \neq 0\)</span> is <span class="math inline">\(t = \hat{\beta}_0/\mathrm{se}(\hat{\beta}_0) \sim \mathcal{T}(n-p)\)</span>.
 We can compare the Student distribution with the empirical distribution of <span class="math inline">\(t\)</span>-test obtained by simulating a large number of test statistics from the model; these should match.</p>
-<pre class="sourceCode r"><code class="sourceCode r">test &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, 10000L)
-n &lt;-<span class="st"> </span>10L
-<span class="co">#Simulate Normal samples, compute t-test stat</span>
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(test)){
-  y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n)
-  test[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(y) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(y)<span class="op">/</span><span class="kw">sqrt</span>(n))
-}
-<span class="co">#Create histogram, superimpose density of T(n-1)</span>
-<span class="kw">hist</span>(test, <span class="dt">breaks =</span> <span class="dv">50</span>, <span class="dt">probability =</span> <span class="ot">TRUE</span>, 
-     <span class="dt">main =</span> <span class="st">&quot;Distribution of Wald test&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;T&quot;</span>,
-     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>))
-<span class="kw">curve</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, 
-      <span class="dt">from =</span> <span class="dv">-5</span>, <span class="dt">to =</span> <span class="dv">5</span>)</code></pre>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb254-1" title="1">test &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, 10000L)</a>
+<a class="sourceLine" id="cb254-2" title="2">n &lt;-<span class="st"> </span>10L</a>
+<a class="sourceLine" id="cb254-3" title="3"><span class="co">#Simulate Normal samples, compute t-test stat</span></a>
+<a class="sourceLine" id="cb254-4" title="4"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(test)){</a>
+<a class="sourceLine" id="cb254-5" title="5">  y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n)</a>
+<a class="sourceLine" id="cb254-6" title="6">  test[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(y) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(y)<span class="op">/</span><span class="kw">sqrt</span>(n))</a>
+<a class="sourceLine" id="cb254-7" title="7">}</a>
+<a class="sourceLine" id="cb254-8" title="8"><span class="co">#Create histogram, superimpose density of T(n-1)</span></a>
+<a class="sourceLine" id="cb254-9" title="9"><span class="kw">hist</span>(test, <span class="dt">breaks =</span> <span class="dv">50</span>, <span class="dt">probability =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb254-10" title="10">     <span class="dt">main =</span> <span class="st">&quot;Distribution of Wald test&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;T&quot;</span>,</a>
+<a class="sourceLine" id="cb254-11" title="11">     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb254-12" title="12"><span class="kw">curve</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb254-13" title="13">      <span class="dt">from =</span> <span class="dv">-5</span>, <span class="dt">to =</span> <span class="dv">5</span>)</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/distrtest-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>If the value <span class="math inline">\(|t|\)</span> is very large, then there are evidences that <span class="math inline">\(\beta_0 \neq 0\)</span>. In this case, the probability of observing something larger than <span class="math inline">\(|t|\)</span> under <span class="math inline">\(T \sim \mathcal{T}(n-p)\)</span> is <span class="math inline">\(P = 1-\Pr(-t &lt; T &lt; t) = 1-2 \Pr(|T| &lt; t)\)</span>, by virtue of the symmetry of the Student distribution. This probability <span class="math inline">\(P\)</span> is called <strong><span class="math inline">\(P\)</span>-value</strong>, the probability of observing something as extreme under the null distribution.</p>
 <p>The <strong>power</strong> of a test is
@@ -273,32 +277,32 @@ n &lt;-<span class="st"> </span>10L
 Consider the alternative <span class="math inline">\(\mathrm{H}_a: \beta = \mu \neq 0\)</span>.
 For the <span class="math inline">\(t\)</span>-test, the power is a function of <span class="math inline">\(\mu, \sigma^2\)</span> and <span class="math inline">\(n\)</span>. Intuitively, the further <span class="math inline">\(\mu\)</span> is from zero, the larger the chance of correctly detecting that <span class="math inline">\(\mu \neq 0\)</span>. Similarly, the more precise our mean estimate is (when <span class="math inline">\(\sigma^2\)</span> is small), the more we have. Lastly, evidence accumulates with the sample size - here through the degrees of freedom parameter.</p>
 <p>Even if we don’t know the distribution of the test statistic under the alternative, we can simulate the power curve as a function of <span class="math inline">\(\mu, \sigma\)</span> and <span class="math inline">\(n\)</span>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span>10L
-nrep &lt;-<span class="st"> </span>10000L
-mu &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dt">length =</span> <span class="dv">101</span>)
-store &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw">length</span>(mu), <span class="dt">ncol =</span> nrep)
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mu)){
-  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nrep){
-    <span class="co"># Simulate y = mu + eps, eps ~ N(0,1)</span>
-    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> mu[i])
-    tstat &lt;-<span class="st"> </span><span class="kw">mean</span>(y) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(y)<span class="op">/</span><span class="kw">sqrt</span>(n))
-    <span class="co"># Compute P-value, i.e., probability Pr(|T| &gt; t)</span>
-    pval &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(tstat), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))
-    store[i, j] &lt;-<span class="st"> </span>pval
-  }
-}
-<span class="co"># Compute the proportion of time where p-value is below zero.</span>
-<span class="kw">plot</span>(mu, <span class="kw">rowSums</span>(store <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)<span class="op">/</span>nrep,
-     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(mu), 
-     <span class="dt">ylab =</span> <span class="st">&quot;Empirical power&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,
-     <span class="dt">main =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">&quot;Power curve, &quot;</span>, alpha, <span class="st">&quot;=0.05&quot;</span>)))
-<span class="co">#size of test</span>
-<span class="kw">abline</span>(<span class="dt">h =</span> <span class="fl">0.05</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
-<span class="co">#theoretical power - derivation follows </span>
-tquant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="fl">0.975</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
-pow &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>(<span class="kw">pt</span>(tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span>
-<span class="st">                 </span><span class="kw">pt</span>(<span class="op">-</span>tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))
-<span class="kw">lines</span>(mu, pow, <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" title="1">n &lt;-<span class="st"> </span>10L</a>
+<a class="sourceLine" id="cb255-2" title="2">nrep &lt;-<span class="st"> </span>10000L</a>
+<a class="sourceLine" id="cb255-3" title="3">mu &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dt">length =</span> <span class="dv">101</span>)</a>
+<a class="sourceLine" id="cb255-4" title="4">store &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw">length</span>(mu), <span class="dt">ncol =</span> nrep)</a>
+<a class="sourceLine" id="cb255-5" title="5"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mu)){</a>
+<a class="sourceLine" id="cb255-6" title="6">  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nrep){</a>
+<a class="sourceLine" id="cb255-7" title="7">    <span class="co"># Simulate y = mu + eps, eps ~ N(0,1)</span></a>
+<a class="sourceLine" id="cb255-8" title="8">    y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> mu[i])</a>
+<a class="sourceLine" id="cb255-9" title="9">    tstat &lt;-<span class="st"> </span><span class="kw">mean</span>(y) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(y)<span class="op">/</span><span class="kw">sqrt</span>(n))</a>
+<a class="sourceLine" id="cb255-10" title="10">    <span class="co"># Compute P-value, i.e., probability Pr(|T| &gt; t)</span></a>
+<a class="sourceLine" id="cb255-11" title="11">    pval &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pt</span>(<span class="kw">abs</span>(tstat), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb255-12" title="12">    store[i, j] &lt;-<span class="st"> </span>pval</a>
+<a class="sourceLine" id="cb255-13" title="13">  }</a>
+<a class="sourceLine" id="cb255-14" title="14">}</a>
+<a class="sourceLine" id="cb255-15" title="15"><span class="co"># Compute the proportion of time where p-value is below zero.</span></a>
+<a class="sourceLine" id="cb255-16" title="16"><span class="kw">plot</span>(mu, <span class="kw">rowSums</span>(store <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)<span class="op">/</span>nrep,</a>
+<a class="sourceLine" id="cb255-17" title="17">     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(mu), </a>
+<a class="sourceLine" id="cb255-18" title="18">     <span class="dt">ylab =</span> <span class="st">&quot;Empirical power&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,</a>
+<a class="sourceLine" id="cb255-19" title="19">     <span class="dt">main =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">&quot;Power curve, &quot;</span>, alpha, <span class="st">&quot;=0.05&quot;</span>)))</a>
+<a class="sourceLine" id="cb255-20" title="20"><span class="co">#size of test</span></a>
+<a class="sourceLine" id="cb255-21" title="21"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="fl">0.05</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb255-22" title="22"><span class="co">#theoretical power - derivation follows </span></a>
+<a class="sourceLine" id="cb255-23" title="23">tquant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="fl">0.975</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb255-24" title="24">pow &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>(<span class="kw">pt</span>(tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb255-25" title="25"><span class="st">                 </span><span class="kw">pt</span>(<span class="op">-</span>tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb255-26" title="26"><span class="kw">lines</span>(mu, pow, <span class="dt">col =</span> <span class="dv">2</span>)</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/power-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Under <span class="math inline">\(\mathrm{H}_0\)</span>, our test statistic <span class="math inline">\(T=\hat{\beta}_0/\mathrm{se}(\hat{\beta}_0)\)</span> followed a <span class="math inline">\(\mathcal{T}(n-1)\)</span> distribution and the cutoff value was <span class="math inline">\(\mathfrak{t}_{1-\alpha/2}\)</span>, so that under <span class="math inline">\(\mathrm{H}_0\)</span>, <span class="math inline">\(\Pr(|T| &gt; \mathfrak{t}_{1-\alpha/2}) = \alpha\)</span>.</p>
 <p>We can compute the power exactly as a function of <span class="math inline">\(\mu\)</span> in this example: it is
@@ -310,20 +314,20 @@ pow &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</
 <p>since now <span class="math inline">\(T^*=(\hat{\beta}_0-\mu)/\mathrm{se}(\hat{\beta}_0) \sim \mathcal{T}(n-1)\)</span> under <span class="math inline">\(\mathrm{H}_a\)</span>. If we superimpose this curve as a function of <span class="math inline">\(\mu\)</span>, we see it matches the empirical power.</p>
 <p>The power curve at <span class="math inline">\(\mu=0\)</span> is 0.05, since the size of the test is <span class="math inline">\(\alpha= 0.05\)</span> in this experiment. If we increase the size of the test, then power increases:</p>
 <p>The probability of Type I error (falsely rejecting the null) is the size of the test, so increases with <span class="math inline">\(\alpha\)</span>. The lower the <span class="math inline">\(\alpha\)</span>, the higher the probability of Type 2 errors (not rejecting the null when the alternative is true) and the lower the power.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mu, pow,
-     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(mu), 
-     <span class="dt">ylab =</span> <span class="st">&quot;Power&quot;</span>, 
-     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,
-     <span class="dt">main =</span> <span class="st">&quot;Power curve&quot;</span>)
- alphav &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>)
-<span class="cf">for</span>(alpha_ind <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>){
-  alpha &lt;-<span class="st"> </span>alphav[alpha_ind]
-  tquant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="dv">1</span><span class="op">-</span>alpha<span class="op">/</span><span class="dv">2</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
-  pow &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>(<span class="kw">pt</span>(tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span>
-<span class="st">                   </span><span class="kw">pt</span>(<span class="op">-</span>tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))
-<span class="kw">lines</span>(mu, pow, <span class="dt">col =</span> alpha_ind)
-}
-<span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> alphav ,<span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">lty =</span> <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>))</code></pre>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb256-1" title="1"><span class="kw">plot</span>(mu, pow,</a>
+<a class="sourceLine" id="cb256-2" title="2">     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(mu), </a>
+<a class="sourceLine" id="cb256-3" title="3">     <span class="dt">ylab =</span> <span class="st">&quot;Power&quot;</span>, </a>
+<a class="sourceLine" id="cb256-4" title="4">     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,</a>
+<a class="sourceLine" id="cb256-5" title="5">     <span class="dt">main =</span> <span class="st">&quot;Power curve&quot;</span>)</a>
+<a class="sourceLine" id="cb256-6" title="6"> alphav &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb256-7" title="7"><span class="cf">for</span>(alpha_ind <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>){</a>
+<a class="sourceLine" id="cb256-8" title="8">  alpha &lt;-<span class="st"> </span>alphav[alpha_ind]</a>
+<a class="sourceLine" id="cb256-9" title="9">  tquant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="dv">1</span><span class="op">-</span>alpha<span class="op">/</span><span class="dv">2</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb256-10" title="10">  pow &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>(<span class="kw">pt</span>(tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb256-11" title="11"><span class="st">                   </span><span class="kw">pt</span>(<span class="op">-</span>tquant <span class="op">+</span><span class="st"> </span>mu<span class="op">*</span><span class="kw">sqrt</span>(n), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb256-12" title="12"><span class="kw">lines</span>(mu, pow, <span class="dt">col =</span> alpha_ind)</a>
+<a class="sourceLine" id="cb256-13" title="13">}</a>
+<a class="sourceLine" id="cb256-14" title="14"><span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> alphav ,<span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">lty =</span> <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>))</a></code></pre></div>
 <p><img src="LinesRModels_files/figure-html/powermore-1.png" width="70%" style="display: block; margin: auto;" /></p>
 
 </div>
