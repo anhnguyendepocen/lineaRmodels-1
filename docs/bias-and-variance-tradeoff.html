@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -249,76 +249,77 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="bias-and-variance-tradeoff" class="section level2">
 <h2><span class="header-section-number">8.1</span> Bias and variance tradeoff</h2>
-<p>Consider the ridge regression: as we increase the penalty <span class="math inline">\(\lambda\)</span>, coefficients values are shrunk towards zero. The case <span class="math inline">\(\lambda \to \infty\)</span> gives <span class="math inline">\(\hat{\boldsymbol{\beta}}_{\mathrm{ridge}}=\boldsymbol{0}_p\)</span>, whereas we retrieve the OLS estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> when <span class="math inline">\(\lambda=0\)</span>. Note that increase in the penalty, with <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span> <strong>does not</strong> necessarily mean that individual coefficients decrease monotonically, so <span class="math inline">\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\)</span>.</p>
+<p>As we increase the penalty <span class="math inline">\(\lambda\)</span>, the values of the ridge coefficients are shrunk towards zero. The case <span class="math inline">\(\lambda \to \infty\)</span> gives <span class="math inline">\(\hat{\boldsymbol{\beta}}_{\mathrm{ridge}}=\boldsymbol{0}_p\)</span>, whereas we retrieve the OLS estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> when <span class="math inline">\(\lambda=0\)</span>.</p>
 <p>The mean squared error of the ridge estimator is
-<span class="math display">\[\mathrm{MSE}(\hat{\boldsymbol{\beta}}_{\mathrm{ridge}}^{\lambda}) = \sigma^2 \mathrm{tr}\left\{(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\right\} + \boldsymbol{\gamma}^\top \left\{ \mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1} + \mathbf{I}_p \right\} \left\{ (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z} + \mathbf{I}_p \right\}\boldsymbol{\gamma}
-\]</span></p>
-<p>If we knew the true data generating mechanism (i.e. the <span class="math inline">\(\boldsymbol{\gamma}\)</span> vector and <span class="math inline">\(\sigma^2\)</span>), we could compute exactly the mean squared error (MSE) of the model and find the optimal bias-variance tradeoff that minimizes MSE.</p>
-<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb300-1" title="1"><span class="co"># Function to compute MSE of ridge estimator</span></a>
-<a class="sourceLine" id="cb300-2" title="2">mse_ridge &lt;-<span class="st"> </span><span class="cf">function</span>(gamma, lambda, Z, <span class="dt">sigmasq =</span> <span class="dv">1</span>){</a>
-<a class="sourceLine" id="cb300-3" title="3">  ZtZ &lt;-<span class="st"> </span><span class="kw">crossprod</span>(Z)</a>
-<a class="sourceLine" id="cb300-4" title="4">  p &lt;-<span class="st"> </span><span class="kw">ncol</span>(Z)</a>
-<a class="sourceLine" id="cb300-5" title="5">  W &lt;-<span class="st"> </span><span class="kw">solve</span>(ZtZ <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span><span class="kw">diag</span>(p))</a>
-<a class="sourceLine" id="cb300-6" title="6">  bias &lt;-<span class="st"> </span><span class="kw">c</span>((W <span class="op">%*%</span><span class="st"> </span>ZtZ <span class="op">-</span><span class="st"> </span><span class="kw">diag</span>(p)) <span class="op">%*%</span><span class="st"> </span>gamma)</a>
-<a class="sourceLine" id="cb300-7" title="7">  varia &lt;-<span class="st"> </span>sigmasq <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>( <span class="kw">crossprod</span>(Z <span class="op">%*%</span><span class="st"> </span>W))</a>
-<a class="sourceLine" id="cb300-8" title="8">  <span class="kw">list</span>(<span class="dt">bias =</span> bias, <span class="dt">variance =</span> varia, <span class="dt">mse =</span> <span class="kw">sum</span>(bias<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>varia))</a>
-<a class="sourceLine" id="cb300-9" title="9">}</a>
-<a class="sourceLine" id="cb300-10" title="10"><span class="kw">set.seed</span>(<span class="dv">9876</span>)</a>
-<a class="sourceLine" id="cb300-11" title="11"><span class="co"># Create fake data</span></a>
-<a class="sourceLine" id="cb300-12" title="12">Z &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dt">n =</span> 20L<span class="op">*</span>50L, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>), <span class="dt">ncol =</span> 20L)</a>
-<a class="sourceLine" id="cb300-13" title="13"><span class="co"># Center and renormalize Z</span></a>
-<a class="sourceLine" id="cb300-14" title="14">Z &lt;-<span class="st"> </span><span class="kw">apply</span>(Z, <span class="dv">2</span>, scale)</a>
-<a class="sourceLine" id="cb300-15" title="15"><span class="co"># Create coefficient vector</span></a>
-<a class="sourceLine" id="cb300-16" title="16">gamma &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>, 10L), <span class="kw">runif</span>(10L))</a>
-<a class="sourceLine" id="cb300-17" title="17"></a>
-<a class="sourceLine" id="cb300-18" title="18"><span class="co"># Create sequence of lambda and matrix to store results</span></a>
-<a class="sourceLine" id="cb300-19" title="19">nlam &lt;-<span class="st"> </span>401L</a>
-<a class="sourceLine" id="cb300-20" title="20">lambda_seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dt">length =</span> nlam)</a>
-<a class="sourceLine" id="cb300-21" title="21">mse &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> nlam, <span class="dt">ncol =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb300-22" title="22">gammahat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> nlam, <span class="dt">ncol =</span> <span class="kw">ncol</span>(Z))</a>
-<a class="sourceLine" id="cb300-23" title="23"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nlam){</a>
-<a class="sourceLine" id="cb300-24" title="24">  <span class="co"># evaluate bias + variance for each lambda</span></a>
-<a class="sourceLine" id="cb300-25" title="25">  mse_i &lt;-<span class="st"> </span><span class="kw">mse_ridge</span>(<span class="dt">gamma =</span> gamma, <span class="dt">lambda =</span> lambda_seq[i], <span class="dt">Z =</span> Z)</a>
-<a class="sourceLine" id="cb300-26" title="26">  gammahat[i,] &lt;-<span class="st"> </span>gamma <span class="op">+</span><span class="st"> </span>mse_i<span class="op">$</span>bias</a>
-<a class="sourceLine" id="cb300-27" title="27">  mse[i,<span class="dv">1</span>] &lt;-<span class="st">  </span><span class="kw">sum</span>(mse_i<span class="op">$</span>bias<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb300-28" title="28">  mse[i,<span class="dv">2</span>] &lt;-<span class="st">  </span><span class="kw">sum</span>(mse_i<span class="op">$</span>variance)</a>
-<a class="sourceLine" id="cb300-29" title="29">  mse[i,<span class="dv">3</span>] &lt;-<span class="st"> </span>mse_i<span class="op">$</span>mse</a>
-<a class="sourceLine" id="cb300-30" title="30">}</a>
-<a class="sourceLine" id="cb300-31" title="31"><span class="co"># Plot the results as a function of lambda</span></a>
-<a class="sourceLine" id="cb300-32" title="32"><span class="kw">matplot</span>(lambda_seq, mse, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb300-33" title="33">        <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(lambda), <span class="dt">col =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb300-34" title="34">        <span class="dt">ylab =</span> <span class="st">&quot;Mean squared error decomposition&quot;</span>)</a>
-<a class="sourceLine" id="cb300-35" title="35"><span class="kw">abline</span>(<span class="dt">h =</span> mse[<span class="dv">1</span>,<span class="dv">3</span>], <span class="dt">lty =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb300-36" title="36"><span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;sq. bias&quot;</span>, <span class="st">&quot;variance&quot;</span>, <span class="st">&quot;mse&quot;</span>), </a>
-<a class="sourceLine" id="cb300-37" title="37">       <span class="dt">col =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">lty =</span> <span class="dv">1</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</a></code></pre></div>
+<span class="math display">\[\begin{align*}
+\mathrm{MSE}(\hat{\boldsymbol{\beta}}_{\mathrm{ridge}}^{\lambda}) &amp;= \sigma^2 \mathrm{tr}\left\{(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\right\} \\&amp;\quad + \boldsymbol{\gamma}^\top \left\{ \mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1} + \mathbf{I}_p \right\} \left\{ (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z} + \mathbf{I}_p \right\}\boldsymbol{\gamma}
+\end{align*}\]</span></p>
+<p>If we knew the true data generating mechanism (i.e. the <span class="math inline">\(\boldsymbol{\gamma}\)</span> vector and <span class="math inline">\(\sigma^2\)</span>), we could compute exactly the mean squared error (MSE) of the model and find the optimal bias-variance tradeoff that minimizes MSE. This is illustrated below in an artificial example. As <span class="math inline">\(\lambda \to \infty\)</span>, the bias grows and dominates MSE.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Function to compute MSE of ridge estimator</span>
+mse_ridge &lt;-<span class="st"> </span><span class="cf">function</span>(gamma, lambda, Z, <span class="dt">sigmasq =</span> <span class="dv">1</span>){
+  ZtZ &lt;-<span class="st"> </span><span class="kw">crossprod</span>(Z)
+  p &lt;-<span class="st"> </span><span class="kw">ncol</span>(Z)
+  W &lt;-<span class="st"> </span><span class="kw">solve</span>(ZtZ <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span><span class="kw">diag</span>(p))
+  bias &lt;-<span class="st"> </span><span class="kw">c</span>((W <span class="op">%*%</span><span class="st"> </span>ZtZ <span class="op">-</span><span class="st"> </span><span class="kw">diag</span>(p)) <span class="op">%*%</span><span class="st"> </span>gamma)
+  varia &lt;-<span class="st"> </span>sigmasq <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>( <span class="kw">crossprod</span>(Z <span class="op">%*%</span><span class="st"> </span>W))
+  <span class="kw">list</span>(<span class="dt">bias =</span> bias, <span class="dt">variance =</span> varia, <span class="dt">mse =</span> <span class="kw">sum</span>(bias<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>varia))
+}
+<span class="kw">set.seed</span>(<span class="dv">9876</span>)
+<span class="co"># Create fake data</span>
+Z &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dt">n =</span> 20L<span class="op">*</span>50L, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>), <span class="dt">ncol =</span> 20L)
+<span class="co"># Center and renormalize Z</span>
+Z &lt;-<span class="st"> </span><span class="kw">apply</span>(Z, <span class="dv">2</span>, scale)
+<span class="co"># Create coefficient vector</span>
+gamma &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>, 10L), <span class="kw">runif</span>(10L))
+
+<span class="co"># Create sequence of lambda and matrix to store results</span>
+nlam &lt;-<span class="st"> </span>401L
+lambda_seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dt">length =</span> nlam)
+mse &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> nlam, <span class="dt">ncol =</span> <span class="dv">3</span>)
+gammahat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> nlam, <span class="dt">ncol =</span> <span class="kw">ncol</span>(Z))
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nlam){
+  <span class="co"># evaluate bias + variance for each lambda</span>
+  mse_i &lt;-<span class="st"> </span><span class="kw">mse_ridge</span>(<span class="dt">gamma =</span> gamma, <span class="dt">lambda =</span> lambda_seq[i], <span class="dt">Z =</span> Z)
+  gammahat[i,] &lt;-<span class="st"> </span>gamma <span class="op">+</span><span class="st"> </span>mse_i<span class="op">$</span>bias
+  mse[i,<span class="dv">1</span>] &lt;-<span class="st">  </span><span class="kw">sum</span>(mse_i<span class="op">$</span>bias<span class="op">^</span><span class="dv">2</span>)
+  mse[i,<span class="dv">2</span>] &lt;-<span class="st">  </span><span class="kw">sum</span>(mse_i<span class="op">$</span>variance)
+  mse[i,<span class="dv">3</span>] &lt;-<span class="st"> </span>mse_i<span class="op">$</span>mse
+}
+<span class="co"># Plot the results as a function of lambda</span>
+<span class="kw">matplot</span>(lambda_seq, mse, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">1</span>, 
+        <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(lambda), <span class="dt">col =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>, 
+        <span class="dt">ylab =</span> <span class="st">&quot;Mean squared error decomposition&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> mse[<span class="dv">1</span>,<span class="dv">3</span>], <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;sq. bias&quot;</span>, <span class="st">&quot;variance&quot;</span>, <span class="st">&quot;mse&quot;</span>), 
+       <span class="dt">col =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">lty =</span> <span class="dv">1</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/biasridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb301-1" title="1"><span class="co"># Compute the value of lambda that minimizes MSE</span></a>
-<a class="sourceLine" id="cb301-2" title="2">lambdaopt &lt;-<span class="st"> </span><span class="kw">optimize</span>(<span class="dt">f =</span> <span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb301-3" title="3">  <span class="kw">mse_ridge</span>(<span class="dt">gamma =</span> gamma, <span class="dt">lambda =</span> x, <span class="dt">Z =</span> Z)<span class="op">$</span>mse</a>
-<a class="sourceLine" id="cb301-4" title="4">  }, <span class="dt">interval =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">30</span>))<span class="op">$</span>minimum</a>
-<a class="sourceLine" id="cb301-5" title="5">lambdaopt</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute the value of lambda that minimizes MSE</span>
+lambdaopt &lt;-<span class="st"> </span><span class="kw">optimize</span>(<span class="dt">f =</span> <span class="cf">function</span>(x){
+  <span class="kw">mse_ridge</span>(<span class="dt">gamma =</span> gamma, <span class="dt">lambda =</span> x, <span class="dt">Z =</span> Z)<span class="op">$</span>mse
+  }, <span class="dt">interval =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">30</span>))<span class="op">$</span>minimum
+lambdaopt</code></pre>
 <pre><code>## [1] 7.227898</code></pre>
 <p>We can also look at the path of coefficient values <span class="math inline">\(\hat{\boldsymbol{\gamma}}_{\mathrm{ridge}}^{\lambda}\)</span> as a function of <span class="math inline">\(\lambda\)</span>:</p>
 <p><img src="LinesRModels_files/figure-html/plotgammaridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<p>While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients <span class="math inline">\(\boldsymbol{\gamma}\)</span>, which are exactly zero, stabilize around another value.</p>
+<p>While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients <span class="math inline">\(\boldsymbol{\gamma}\)</span>, which are exactly zero, stabilize around another value. Note that if we increase the penalty, from <span class="math inline">\(\lambda_1\)</span> to <span class="math inline">\(\lambda_2\)</span> with <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>, this <strong>does not</strong> necessarily imply that individual coefficient estimates decrease, i.e. <span class="math inline">\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\)</span> even if <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>.</p>
 <p>The coefficients <span class="math inline">\(\hat{\boldsymbol{\gamma}}^\lambda\)</span> can be computed using an augmented linear regression, with response <span class="math inline">\((\boldsymbol{y}, \mathbf{0}_p)\)</span> and regressor <span class="math inline">\([\mathbf{Z}^\top,\; \lambda^{1/2} \mathbf{I}_p]\)</span>. Alternatively,
 <span class="math display">\[\hat{\boldsymbol{\gamma}}^\lambda = (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\boldsymbol{y}.\]</span></p>
 <p>We can also use the singular value decomposition of <span class="math inline">\(\mathbf{Z} = \mathbf{UDV}^\top\)</span> to compute the coefficients<span class="math display">\[\hat{\boldsymbol{\gamma}} = \sum_{j=1}^p \frac{d_j}{d_j^2+\lambda} \mathbf{u}_j^\top\boldsymbol{y} \mathbf{v}_j,\]</span>
 where <span class="math inline">\(\mathbf{u}_j\)</span> and <span class="math inline">\(\mathbf{v}_j\)</span> are the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf{U}\)</span> and <span class="math inline">\(\mathbf{V}\)</span>, respectively. This is most useful for cross-validation where we want to change the value of <span class="math inline">\(\lambda\)</span> repeatedly, as the SVD of <span class="math inline">\(\mathbf{Z}\)</span> won’t change.</p>
-<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb303-1" title="1"><span class="co"># Create response vector from model</span></a>
-<a class="sourceLine" id="cb303-2" title="2">y &lt;-<span class="st"> </span>Z <span class="op">%*%</span><span class="st"> </span>gamma <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(Z))</a>
-<a class="sourceLine" id="cb303-3" title="3"><span class="co"># Compute ridge coefficients</span></a>
-<a class="sourceLine" id="cb303-4" title="4">ridge_lm_coef &lt;-<span class="st"> </span><span class="cf">function</span>(y, Z, lambda){</a>
-<a class="sourceLine" id="cb303-5" title="5"> Z &lt;-<span class="st"> </span><span class="kw">scale</span>(Z) </a>
-<a class="sourceLine" id="cb303-6" title="6"> <span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(Z) <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span><span class="kw">diag</span>(<span class="kw">ncol</span>(Z))) <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(Z, y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)))</a>
-<a class="sourceLine" id="cb303-7" title="7">}</a>
-<a class="sourceLine" id="cb303-8" title="8">lambda0 &lt;-<span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb303-9" title="9"><span class="co">#Compare coefficients obtained from fitting using augmented regression</span></a>
-<a class="sourceLine" id="cb303-10" title="10">augmy &lt;-<span class="st"> </span><span class="kw">c</span>(y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">ncol</span>(Z)))</a>
-<a class="sourceLine" id="cb303-11" title="11">augmZ &lt;-<span class="st"> </span><span class="kw">rbind</span>(Z, <span class="kw">sqrt</span>(lambda0)<span class="op">*</span><span class="kw">diag</span>(<span class="kw">ncol</span>(Z)))</a>
-<a class="sourceLine" id="cb303-12" title="12">augmlm &lt;-<span class="st"> </span><span class="kw">lm</span>(augmy <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>augmZ)</a>
-<a class="sourceLine" id="cb303-13" title="13"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">as.vector</span>(augmlm<span class="op">$</span>coef),</a>
-<a class="sourceLine" id="cb303-14" title="14">      <span class="kw">ridge_lm_coef</span>(<span class="dt">y =</span> y, <span class="dt">Z =</span> Z, <span class="dt">lambda =</span> lambda0)))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create response vector from model</span>
+y &lt;-<span class="st"> </span>Z <span class="op">%*%</span><span class="st"> </span>gamma <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(Z))
+<span class="co"># Compute ridge coefficients</span>
+ridge_lm_coef &lt;-<span class="st"> </span><span class="cf">function</span>(y, Z, lambda){
+ Z &lt;-<span class="st"> </span><span class="kw">scale</span>(Z) 
+ <span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(Z) <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span><span class="kw">diag</span>(<span class="kw">ncol</span>(Z))) <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(Z, y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)))
+}
+lambda0 &lt;-<span class="st"> </span><span class="dv">2</span>
+<span class="co">#Compare coefficients obtained from fitting using augmented regression</span>
+augmy &lt;-<span class="st"> </span><span class="kw">c</span>(y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">ncol</span>(Z)))
+augmZ &lt;-<span class="st"> </span><span class="kw">rbind</span>(Z, <span class="kw">sqrt</span>(lambda0)<span class="op">*</span><span class="kw">diag</span>(<span class="kw">ncol</span>(Z)))
+augmlm &lt;-<span class="st"> </span><span class="kw">lm</span>(augmy <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>augmZ)
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">as.vector</span>(augmlm<span class="op">$</span>coef),
+      <span class="kw">ridge_lm_coef</span>(<span class="dt">y =</span> y, <span class="dt">Z =</span> Z, <span class="dt">lambda =</span> lambda0)))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
             </section>

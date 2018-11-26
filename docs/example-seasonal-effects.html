@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -275,30 +275,30 @@ clear. For the matrix <span class="math inline">\(\mathbf{X}&#39;\)</span>, reca
 <span class="math inline">\(\mathbf{M}_{\mathbf{X}_2}\boldsymbol{y}\)</span> does not affect the last <span class="math inline">\(n_2\)</span> entries of <span class="math inline">\(\boldsymbol{y}\)</span>, while <span class="math inline">\(\mathbf{M}_{\mathbf{X}_2}\mathbf{1}_n = \mathbf{1}_n - \mathbf{X}_2\)</span>. This
 reasoning generalizes to more complex settings with a slope and other regressors.</p>
 <p>The discussion is illustrated on a dataset consisting of quarterly measurements of the gas consumption in the United Kingdom, from 1960 to 1986.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" title="1"><span class="kw">data</span>(UKgas)</a>
-<a class="sourceLine" id="cb95-2" title="2">quarter &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">length =</span> <span class="kw">length</span>(UKgas)) <span class="co">#create vector 1, 2, 3, 4, 1, ...</span></a>
-<a class="sourceLine" id="cb95-3" title="3"><span class="kw">is.factor</span>(quarter)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(UKgas)
+quarter &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">length =</span> <span class="kw">length</span>(UKgas)) <span class="co">#create vector 1, 2, 3, 4, 1, ...</span>
+<span class="kw">is.factor</span>(quarter)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1">quarter &lt;-<span class="st"> </span><span class="kw">as.factor</span>(quarter) <span class="co">#cast the vector to a factor</span></a>
-<a class="sourceLine" id="cb97-2" title="2"><span class="kw">is.factor</span>(quarter)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">quarter &lt;-<span class="st"> </span><span class="kw">as.factor</span>(quarter) <span class="co">#cast the vector to a factor</span>
+<span class="kw">is.factor</span>(quarter)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" title="1"><span class="kw">class</span>(quarter)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(quarter)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" title="1"><span class="co">#What is name of the dummies</span></a>
-<a class="sourceLine" id="cb101-2" title="2"><span class="kw">head</span>(quarter)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#What is name of the dummies</span>
+<span class="kw">head</span>(quarter)</code></pre>
 <pre><code>## [1] 1 2 3 4 1 2
 ## Levels: 1 2 3 4</code></pre>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" title="1"><span class="kw">levels</span>(quarter)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(quarter)</code></pre>
 <pre><code>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot;</code></pre>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" title="1"><span class="kw">levels</span>(quarter) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q3&quot;</span>, <span class="st">&quot;Q4&quot;</span>) <span class="co">#change names</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(quarter) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q3&quot;</span>, <span class="st">&quot;Q4&quot;</span>) <span class="co">#change names</span></code></pre>
 <p>The first model is of the form
 <span class="math display">\[ \boldsymbol{y} = \mathbf{Q}_1 \alpha_1 + \mathbf{Q}_2 \alpha_2 + \mathbf{Q}_3 \alpha_3 + \mathbf{Q}_4 \alpha_4 + \boldsymbol{\varepsilon}.
 \]</span></p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" title="1">gas_lm1 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb106-2" title="2"><span class="kw">coef</span>(gas_lm1)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">gas_lm1 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+<span class="kw">coef</span>(gas_lm1)</code></pre>
 <pre><code>## quarterQ1 quarterQ2 quarterQ3 quarterQ4 
 ##  5.989307  5.586806  5.039595  5.700242</code></pre>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" title="1"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm1), <span class="dv">10</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm1), <span class="dv">10</span>)</code></pre>
 <pre><code>##    quarterQ1 quarterQ2 quarterQ3 quarterQ4
 ## 1          1         0         0         0
 ## 2          0         1         0         0
@@ -315,12 +315,12 @@ If we include an intercept, the first factor is selected as baseline and the coe
 For this model, say
 <span class="math display">\[ \boldsymbol{y} = \mathbf{1}_n \gamma_1 + \mathbf{Q}_2 \gamma_2 + \mathbf{Q}_3 \gamma_3 + \mathbf{Q}_4 \gamma_4 + \boldsymbol{\varepsilon},
 \]</span></p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" title="1"><span class="co">#New parameterization, with a constant</span></a>
-<a class="sourceLine" id="cb110-2" title="2">gas_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter) <span class="co">#R drops collinear by default and fits with Q2-Q4</span></a>
-<a class="sourceLine" id="cb110-3" title="3"><span class="kw">coef</span>(gas_lm2)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#New parameterization, with a constant</span>
+gas_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(UKgas) <span class="op">~</span><span class="st"> </span>quarter) <span class="co">#R drops collinear by default and fits with Q2-Q4</span>
+<span class="kw">coef</span>(gas_lm2)</code></pre>
 <pre><code>## (Intercept)   quarterQ2   quarterQ3   quarterQ4 
 ##   5.9893074  -0.4025014  -0.9497127  -0.2890659</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm2), <span class="dv">10</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">model.matrix</span>(gas_lm2), <span class="dv">10</span>)</code></pre>
 <pre><code>##    (Intercept) quarterQ2 quarterQ3 quarterQ4
 ## 1            1         0         0         0
 ## 2            1         1         0         0
@@ -334,8 +334,8 @@ For this model, say
 ## 10           1         1         0         0</code></pre>
 <p>The estimated average gas consumption in millions of therms is <span class="math inline">\(\exp(\widehat{\gamma}_1)=\exp(\widehat{\alpha}_1)\)</span> for the first quarter, <span class="math inline">\(\exp(\widehat{\alpha}_2)=\exp(\widehat{\gamma}_1+\widehat{\gamma}_2)\)</span> for the second quarter, etc.</p>
 <p>We can check that the interpretation is correct.</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" title="1"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((<span class="kw">coef</span>(gas_lm2)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(gas_lm2)[<span class="op">-</span><span class="dv">1</span>]), </a>
-<a class="sourceLine" id="cb114-2" title="2">                 <span class="kw">coef</span>(gas_lm1)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((<span class="kw">coef</span>(gas_lm2)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="kw">coef</span>(gas_lm2)[<span class="op">-</span><span class="dv">1</span>]), 
+                 <span class="kw">coef</span>(gas_lm1)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
             </section>

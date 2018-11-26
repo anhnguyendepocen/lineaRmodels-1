@@ -6,21 +6,21 @@ Throughout, we will work with centered and standardized inputs. One reason for d
 Having scaled inputs $\mathbf{Z}$ ensures that we penalize equally every covariate and that the model is invariant to change of units for the regressors. 
 
 
-The two methods briefly covered in the course are ridge regression and LASSO. The first one consists of imposing a $l_2$ penalty on the coefficients, the second a $l_1$ penalty. The advantage of the former is that the optimization problem is convex and differentiable and the solution can be found using an augmented linear regression. For the LASSO penalty, the implementation is more complex, but LASSO also performs variable selection, meaning the solution $\widehat{\boldsymbol{\gamma}}_{\mathrm{LASSO}}$ will have zero components.
+The two methods briefly covered in the course are ridge regression and LASSO. The first one consists of imposing a $l_2$ penalty on the coefficients, the second a $l_1$ penalty. The advantage of the former is that the optimization problem is convex and differentiable and the solution can be found using an augmented linear regression. We will solely focus on ridge regression in the sequel.
 
-Our penalized regression model takes the form 
-\[Q(\beta_0, \boldsymbol{\gamma}) = (\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma})^\top(\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma}) + \lambda p(\boldsymbol{\gamma})  \]
-where $p(\boldsymbol{\gamma}) = \|\boldsymbol{\gamma}\|^2_2$ for ridge regression and $p(\boldsymbol{\gamma}) =\|\boldsymbol{\gamma}\|_1$ for the LASSO.
+Our objective function for ridge regression takes the form 
+\[Q(\beta_0, \boldsymbol{\gamma}) = (\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma})^\top(\boldsymbol{y} - \beta_0 \mathbf{1}_n -\mathbf{Z}\boldsymbol{\gamma}) + \lambda \|\boldsymbol{\gamma}\|^2_2. \]
 
 ## Bias and variance tradeoff
 
-Consider the ridge regression: as we increase the penalty $\lambda$, coefficients values are shrunk towards zero. The case $\lambda \to \infty$ gives $\hbb_{\mathrm{ridge}}=\bs{0}_p$, whereas we retrieve the OLS estimator $\hbb$ when $\lambda=0$. Note that increase in the penalty, with $\lambda_1 < \lambda_2$ **does not** necessarily mean that individual coefficients decrease monotonically, so $|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|$. 
+As we increase the penalty $\lambda$, the values of the ridge coefficients are shrunk towards zero. The case $\lambda \to \infty$ gives $\hbb_{\mathrm{ridge}}=\bs{0}_p$, whereas we retrieve the OLS estimator $\hbb$ when $\lambda=0$. 
 
 The mean squared error of the ridge estimator is 
-\[\mathrm{MSE}(\hbb_{\mathrm{ridge}}^{\lambda}) = \sigma^2 \mathrm{tr}\left\{(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\right\} + \boldsymbol{\gamma}^\top \left\{ \mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1} + \mathbf{I}_p \right\} \left\{ (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z} + \mathbf{I}_p \right\}\boldsymbol{\gamma}
-\]
+\begin{align*}
+\mathrm{MSE}(\hbb_{\mathrm{ridge}}^{\lambda}) &= \sigma^2 \mathrm{tr}\left\{(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\right\} \\&\quad + \boldsymbol{\gamma}^\top \left\{ \mathbf{Z}^\top\mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1} + \mathbf{I}_p \right\} \left\{ (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\mathbf{Z} + \mathbf{I}_p \right\}\boldsymbol{\gamma}
+\end{align*}
 
-If we knew the true data generating mechanism (i.e. the $\bs{\gamma}$ vector and $\sigma^2$), we could compute exactly the mean squared error (MSE) of the model and find the optimal bias-variance tradeoff that minimizes MSE.
+If we knew the true data generating mechanism (i.e. the $\bs{\gamma}$ vector and $\sigma^2$), we could compute exactly the mean squared error (MSE) of the model and find the optimal bias-variance tradeoff that minimizes MSE. This is illustrated below in an artificial example. As $\lambda \to \infty$, the bias grows and dominates MSE.
 
 ```{r biasridge, cache = TRUE}
 # Function to compute MSE of ridge estimator
@@ -78,7 +78,7 @@ matplot(lambda_seq, gammahat, type = "l", lty = 1, col = c(rep(1, 10), rainbow(n
         main = "Shrinkage of ridge coefficients")
 ```
 
-While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients $\boldsymbol{\gamma}$, which are exactly zero, stabilize around another value. 
+While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients $\boldsymbol{\gamma}$, which are exactly zero, stabilize around another value. Note that if we increase the penalty, from $\lambda_1$ to $\lambda_2$ with $\lambda_1 < \lambda_2$, this **does not** necessarily imply that individual coefficient estimates decrease, i.e. $|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|$ even if $\lambda_1 < \lambda_2$. 
 
 
 The coefficients $\hat{\boldsymbol{\gamma}}^\lambda$ can be computed using an augmented linear regression, with response $(\boldsymbol{y}, \mathbf{0}_p)$ and regressor $[\mathbf{Z}^\top,\; \lambda^{1/2} \mathbf{I}_p]$. Alternatively,
@@ -107,7 +107,7 @@ isTRUE(all.equal(as.vector(augmlm$coef),
 ## Cross-validation
 
 Denote the ridge estimator $\hbb^\lambda$ for a given penalty parameter $\lambda$.
-The smoothing matrix is $\mathbf{S}_{\lambda} = \mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top$; the trace of the smoothing matrix is $\mathrm{tr}({\mathbf{S}_{\lambda}}) = \sum_{j=1}^p d_j^2/(d_j^2+\lambda)$, where $d_{j}$ is the $j$th singular value of $\mathbf{Z}$. The smoothing matrix $\mathbf{S}_{\lambda}$ is not a projection matrix; its eigenvalues lie in $(0,1)$.
+The smoothing matrix, as given in the course notes, is \[\mathbf{S}_{\lambda} = \mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top;\]  its trace is $\mathrm{tr}({\mathbf{S}_{\lambda}}) = \sum_{j=1}^p d_j^2/(d_j^2+\lambda)$, where $d_{j}$ is the $j$th singular value of $\mathbf{Z}$. The smoothing matrix $\mathbf{S}_{\lambda}$ is not a projection matrix; its eigenvalues lie in $(0,1)$.
 
 
 Similar calculations than those used to derive the leave-one-out cross validation residual errors of the PRESS statistic lead to the formula

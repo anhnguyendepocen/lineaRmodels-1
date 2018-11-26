@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
   <meta property="og:title" content="lineaRmodels" />
   <meta property="og:type" content="book" />
@@ -46,11 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +73,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -250,41 +250,41 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="cross-validation-1" class="section level2">
 <h2><span class="header-section-number">8.2</span> Cross-validation</h2>
 <p>Denote the ridge estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}^\lambda\)</span> for a given penalty parameter <span class="math inline">\(\lambda\)</span>.
-The smoothing matrix is <span class="math inline">\(\mathbf{S}_{\lambda} = \mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\)</span>; the trace of the smoothing matrix is <span class="math inline">\(\mathrm{tr}({\mathbf{S}_{\lambda}}) = \sum_{j=1}^p d_j^2/(d_j^2+\lambda)\)</span>, where <span class="math inline">\(d_{j}\)</span> is the <span class="math inline">\(j\)</span>th singular value of <span class="math inline">\(\mathbf{Z}\)</span>. The smoothing matrix <span class="math inline">\(\mathbf{S}_{\lambda}\)</span> is not a projection matrix; its eigenvalues lie in <span class="math inline">\((0,1)\)</span>.</p>
+The smoothing matrix, as given in the course notes, is <span class="math display">\[\mathbf{S}_{\lambda} = \mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top;\]</span> its trace is <span class="math inline">\(\mathrm{tr}({\mathbf{S}_{\lambda}}) = \sum_{j=1}^p d_j^2/(d_j^2+\lambda)\)</span>, where <span class="math inline">\(d_{j}\)</span> is the <span class="math inline">\(j\)</span>th singular value of <span class="math inline">\(\mathbf{Z}\)</span>. The smoothing matrix <span class="math inline">\(\mathbf{S}_{\lambda}\)</span> is not a projection matrix; its eigenvalues lie in <span class="math inline">\((0,1)\)</span>.</p>
 <p>Similar calculations than those used to derive the leave-one-out cross validation residual errors of the PRESS statistic lead to the formula
 <span class="math display">\[\mathrm{CV}_\lambda = \sum_{i=1}^n e_{-i}^2(\lambda) =  \sum_{i=1}^n (y_i - \bar{y}- \mathbf{z}_i \hat{\boldsymbol{\gamma}}_{-i}^{\lambda})^2 = \sum_{i=1}^n \frac{(y_i - \bar{y} -\mathbf{z}_i\hat{\boldsymbol{\gamma}}^\lambda)^2}{1-{\mathbf{S}_{\lambda}}_{ii}},\]</span>
 where <span class="math inline">\(\mathbf{z}_i\)</span> is the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\mathbf{Z}\)</span>.
 Rather than compute <span class="math inline">\(\mathbf{S}_{\lambda}\)</span> and its diagonal elements, one can resort to the convenient generalized cross-validation approximation
 <span class="math display">\[\mathrm{GCV}_\lambda = \sum_{i=1}^n \frac{(y_i - \bar{y} -\mathbf{z}_i\hat{\boldsymbol{\gamma}}^\lambda)^2}{1-\mathrm{tr}(\mathbf{S}_{\lambda})/n}\]</span>
 and the latter is readily computed.</p>
-<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb305-1" title="1">nlam &lt;-<span class="st"> </span>201L</a>
-<a class="sourceLine" id="cb305-2" title="2">lambda_seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dt">length =</span> nlam)</a>
-<a class="sourceLine" id="cb305-3" title="3">svdZ &lt;-<span class="st"> </span><span class="kw">svd</span>(Z)</a>
-<a class="sourceLine" id="cb305-4" title="4">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(Z); p &lt;-<span class="st"> </span><span class="kw">ncol</span>(Z)</a>
-<a class="sourceLine" id="cb305-5" title="5"><span class="co">#Each column is u_j^Tyv_j</span></a>
-<a class="sourceLine" id="cb305-6" title="6">uyv &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>p, <span class="cf">function</span>(j){<span class="kw">t</span>(svdZ<span class="op">$</span>u[,j]) <span class="op">%*%</span><span class="st"> </span>y <span class="op">%*%</span><span class="st"> </span>svdZ<span class="op">$</span>v[,j]})</a>
-<a class="sourceLine" id="cb305-7" title="7">gcv &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nlam)</a>
-<a class="sourceLine" id="cb305-8" title="8">yc &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)</a>
-<a class="sourceLine" id="cb305-9" title="9"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nlam){</a>
-<a class="sourceLine" id="cb305-10" title="10">  <span class="co"># Compute GCV - trace of smoother + RSS</span></a>
-<a class="sourceLine" id="cb305-11" title="11">  traceS &lt;-<span class="st"> </span><span class="kw">sum</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">/</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">+</span>lambda_seq[i]))</a>
-<a class="sourceLine" id="cb305-12" title="12">  gcv[i] &lt;-<span class="st"> </span><span class="kw">sum</span>((yc <span class="op">-</span><span class="st"> </span>Z <span class="op">%*%</span><span class="st"> </span><span class="kw">colSums</span>(<span class="kw">c</span>(svdZ<span class="op">$</span>d<span class="op">/</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>lambda_seq[i]))  <span class="op">*</span></a>
-<a class="sourceLine" id="cb305-13" title="13"><span class="st">                                      </span><span class="kw">t</span>(uyv)))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>traceS<span class="op">/</span>n)<span class="op">^</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb305-14" title="14">}</a>
-<a class="sourceLine" id="cb305-15" title="15"><span class="co"># Plot GCV curve against lambda</span></a>
-<a class="sourceLine" id="cb305-16" title="16"><span class="kw">plot</span>(lambda_seq, gcv, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,</a>
-<a class="sourceLine" id="cb305-17" title="17">     <span class="dt">main =</span> <span class="st">&quot;Generalized leave-one-out</span><span class="ch">\n</span><span class="st">cross validation for ridge regression&quot;</span>,</a>
-<a class="sourceLine" id="cb305-18" title="18">     <span class="dt">ylab =</span> <span class="kw">expression</span>(GCV[lambda]), <span class="dt">xlab =</span> <span class="kw">expression</span>(lambda))</a>
-<a class="sourceLine" id="cb305-19" title="19"><span class="kw">abline</span>(<span class="dt">v =</span> lambda_seq[<span class="kw">which.min</span>(gcv)], <span class="dt">col =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb305-20" title="20">lambda_seq[<span class="kw">which.min</span>(gcv)]</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">nlam &lt;-<span class="st"> </span>201L
+lambda_seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dt">length =</span> nlam)
+svdZ &lt;-<span class="st"> </span><span class="kw">svd</span>(Z)
+n &lt;-<span class="st"> </span><span class="kw">nrow</span>(Z); p &lt;-<span class="st"> </span><span class="kw">ncol</span>(Z)
+<span class="co">#Each column is u_j^Tyv_j</span>
+uyv &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>p, <span class="cf">function</span>(j){<span class="kw">t</span>(svdZ<span class="op">$</span>u[,j]) <span class="op">%*%</span><span class="st"> </span>y <span class="op">%*%</span><span class="st"> </span>svdZ<span class="op">$</span>v[,j]})
+gcv &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nlam)
+yc &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nlam){
+  <span class="co"># Compute GCV - trace of smoother + RSS</span>
+  traceS &lt;-<span class="st"> </span><span class="kw">sum</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">/</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">+</span>lambda_seq[i]))
+  gcv[i] &lt;-<span class="st"> </span><span class="kw">sum</span>((yc <span class="op">-</span><span class="st"> </span>Z <span class="op">%*%</span><span class="st"> </span><span class="kw">colSums</span>(<span class="kw">c</span>(svdZ<span class="op">$</span>d<span class="op">/</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>lambda_seq[i]))  <span class="op">*</span>
+<span class="st">                                      </span><span class="kw">t</span>(uyv)))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>traceS<span class="op">/</span>n)<span class="op">^</span><span class="dv">2</span>
+}
+<span class="co"># Plot GCV curve against lambda</span>
+<span class="kw">plot</span>(lambda_seq, gcv, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,
+     <span class="dt">main =</span> <span class="st">&quot;Generalized leave-one-out</span><span class="ch">\n</span><span class="st">cross validation for ridge regression&quot;</span>,
+     <span class="dt">ylab =</span> <span class="kw">expression</span>(GCV[lambda]), <span class="dt">xlab =</span> <span class="kw">expression</span>(lambda))
+<span class="kw">abline</span>(<span class="dt">v =</span> lambda_seq[<span class="kw">which.min</span>(gcv)], <span class="dt">col =</span> <span class="dv">2</span>)
+lambda_seq[<span class="kw">which.min</span>(gcv)]</code></pre>
 <pre><code>## [1] 13.5</code></pre>
-<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb307-1" title="1"><span class="co"># Compare results with MASS</span></a>
-<a class="sourceLine" id="cb307-2" title="2"><span class="kw">library</span>(MASS)</a>
-<a class="sourceLine" id="cb307-3" title="3">fit_ridge &lt;-<span class="st"> </span><span class="kw">lm.ridge</span>(y <span class="op">~</span><span class="st"> </span>Z, <span class="dt">lambda =</span> lambda_seq)</a>
-<a class="sourceLine" id="cb307-4" title="4"><span class="co"># GCV returned by lm.ridge is divided by n^2</span></a>
-<a class="sourceLine" id="cb307-5" title="5"><span class="kw">lines</span>(lambda_seq, fit_ridge<span class="op">$</span>GCV<span class="op">*</span>n<span class="op">^</span><span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compare results with MASS</span>
+<span class="kw">library</span>(MASS)
+fit_ridge &lt;-<span class="st"> </span><span class="kw">lm.ridge</span>(y <span class="op">~</span><span class="st"> </span>Z, <span class="dt">lambda =</span> lambda_seq)
+<span class="co"># GCV returned by lm.ridge is divided by n^2</span>
+<span class="kw">lines</span>(lambda_seq, fit_ridge<span class="op">$</span>GCV<span class="op">*</span>n<span class="op">^</span><span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/gcv_ridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb308-1" title="1"><span class="kw">select</span>(fit_ridge)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">select</span>(fit_ridge)</code></pre>
 <pre><code>## modified HKB estimator is 8.577316 
 ## modified L-W estimator is 7.881568 
 ## smallest value of GCV  at 13.7</code></pre>
