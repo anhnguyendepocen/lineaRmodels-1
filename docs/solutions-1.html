@@ -331,15 +331,15 @@ aggressive; the two grades are then added together to produce the Gleason score.
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="co">#graphical parameters: two graphs per window</span>
 <span class="co">#Function plot is plot(x = , y = ) or plot(y ~ x)</span>
 <span class="co">#this works for vectors! (error message otherwise)</span>
-<span class="kw">plot</span>(<span class="kw">exp</span>(lcavol) <span class="op">~</span><span class="st"> </span><span class="kw">exp</span>(lpsa),
-<span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc)&quot;</span>, <span class="co">#y-axis label</span>
-<span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="co">#x-axis label</span>
+<span class="kw">plot</span>(<span class="kw">exp</span>(lpsa) <span class="op">~</span><span class="st"> </span><span class="kw">exp</span>(lcavol),
+<span class="dt">xlab =</span> <span class="st">&quot;Cancer volume (milliliters per cc)&quot;</span>, <span class="co">#y-axis label</span>
+<span class="dt">ylab =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>, <span class="co">#x-axis label</span>
 <span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>, <span class="co">#title</span>
 <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>) <span class="co">#bty: remove box, only x-y axis</span>
 <span class="co">#pch: type of plotting symbol (small filled circle)</span>
-<span class="kw">plot</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa,
-<span class="dt">ylab =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
-<span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, 
+<span class="kw">plot</span>(<span class="dt">x =</span> lcavol, <span class="dt">y =</span> lpsa,
+<span class="dt">xlab =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
+<span class="dt">ylab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, 
 <span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,
 <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)
 
@@ -350,16 +350,16 @@ aggressive; the two grades are then added together to produce the Gleason score.
 <p>With <code>ggplot2</code>, the same graphs</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 
-<span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span>
+<span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> lcavol, <span class="dt">y =</span> lpsa)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,
-       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,
+       <span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
        <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> <span class="kw">exp</span>(lcavol), <span class="dt">x =</span> <span class="kw">exp</span>(lpsa))) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">exp</span>(lcavol), <span class="dt">y =</span> <span class="kw">exp</span>(lpsa))) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>,
-       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>,
+       <span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,
        <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">exp</span>(lcavol))) <span class="op">+</span><span class="st"> </span>
@@ -369,37 +369,37 @@ aggressive; the two grades are then added together to produce the Gleason score.
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-3.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>We can see that both variables are positive and positively skewed, so a log transform may lead to a more linear relationship, as indicated by the pairs plot. A multiplicative model on the original scale is thus reasonable.</p>
 <ol start="4" style="list-style-type: lower-alpha">
-<li>Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> of the parameters, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span> using the formulae given in class.</li>
+<li>Fit a linear model using the log prostate specific antigen as response variable, including a constant and the log cancer volume as covariates. Obtain numerically the OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> of the parameters, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span> using the formulae given in class.</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate)
+<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(lpsa <span class="op">~</span><span class="st"> </span>lcavol, <span class="dt">data =</span> prostate)
 <span class="kw">summary</span>(fit)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = lcavol ~ lpsa, data = prostate)
+## lm(formula = lpsa ~ lcavol, data = prostate)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.15949 -0.59384  0.05034  0.50826  1.67751 
+## -1.67624 -0.41648  0.09859  0.50709  1.89672 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -0.50858    0.19419  -2.619   0.0103 *  
-## lpsa         0.74992    0.07109  10.548   &lt;2e-16 ***
+## (Intercept)  1.50730    0.12194   12.36   &lt;2e-16 ***
+## lcavol       0.71932    0.06819   10.55   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.8041 on 95 degrees of freedom
+## Residual standard error: 0.7875 on 95 degrees of freedom
 ## Multiple R-squared:  0.5394, Adjusted R-squared:  0.5346 
 ## F-statistic: 111.3 on 1 and 95 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create response vector and design matrix</span>
-y &lt;-<span class="st"> </span>lcavol
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, lpsa)
+y &lt;-<span class="st"> </span>lpsa
+X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, lcavol)
 <span class="co">#Create function to compute coefs &quot;by hand&quot;</span>
 coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){
   <span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(x), <span class="kw">crossprod</span>(x, y)))
 }
 <span class="co"># Compute coefficients, fitted values and residuals</span>
-beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> lcavol)
+beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> lpsa)
 yhat &lt;-<span class="st"> </span><span class="kw">c</span>(X <span class="op">%*%</span><span class="st"> </span>beta_hat)
 e &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span>yhat</code></pre>
 <p>The function <code>lm</code> fits a linear model by least squares to a dataset. The function <code>summary</code> will return coefficient estimates, standard errors and various other statistics and print them in the console.</p>
@@ -407,42 +407,37 @@ e &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </s
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Compare the quantities you obtained in the last question with the output of the function <code>lm</code>.</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">beta_hat <span class="co"># equivalent to print(beta_hat)</span></code></pre>
-<pre><code>## [1] -0.5085796  0.7499189</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(fit) <span class="co"># coefficients from object of class `lm`</span></code></pre>
-<pre><code>## (Intercept)        lpsa 
-##  -0.5085796   0.7499189</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(beta_hat, <span class="kw">coef</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
+<pre><code>## [1] 1.5072975 0.7193204</code></pre>
+<pre><code>## (Intercept)      lcavol 
+##   1.5072975   0.7193204</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(yhat), <span class="kw">fitted</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(e, <span class="kw">resid</span>(fit), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>Add the fitted regression line to the scatterplot of lcavol against lpsa .</li>
 </ol>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))
-<span class="kw">plot</span>(lcavol <span class="op">~</span><span class="st"> </span>lpsa, <span class="dt">data =</span> prostate,
-  <span class="dt">ylab =</span> <span class="st">&quot;Cancer volume (milliliters per cc), log scale&quot;</span>,
-  <span class="dt">xlab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, 
+<span class="kw">plot</span>(lpsa <span class="op">~</span><span class="st"> </span>lcavol, <span class="dt">data =</span> prostate,
+  <span class="dt">xlab =</span> <span class="st">&quot;Cancer volume (milliliters per cc), log scale&quot;</span>,
+  <span class="dt">ylab =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>, 
   <span class="dt">main =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>,
   <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)
 <span class="kw">abline</span>(fit, <span class="dt">lwd =</span> <span class="dv">2</span>) <span class="co">#simply add regression line, lwd is line width</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">y =</span> lcavol, <span class="dt">x =</span> lpsa)) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> lcavol, <span class="dt">y =</span> lpsa)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,
-       <span class="dt">y =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,
+       <span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
        <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/question_eggplot2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <ol start="7" style="list-style-type: lower-alpha">
-<li>Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.</li>
+<li>Interpret the changes in prostate specific antigen (not the log prostate specific antigen), including any units in your interpretations.</li>
 </ol>
 <p>The interpretation is as follows. We fit
-<span class="math display">\[\log(\texttt{cavol}_i) = \beta_0 + \beta_1 \log(\texttt{psa}_i) + \varepsilon_i.\]</span></p>
-<p>On the original scale, this translates into the multiplicative model <span class="math inline">\(\texttt{cavol}_i= \exp^{\beta_0}\texttt{psa}_i^{\beta_1}\exp(\varepsilon_i)\)</span>.
-The effect of an increase of one ng/mll of prostate specific antigen depends on the specific level of <span class="math inline">\(\texttt{psa}\)</span>, <span class="math inline">\((\texttt{psa}_1/\texttt{psa}_2)^{\beta_1}\)</span> for levels <span class="math inline">\(\texttt{psa}_1\)</span> and <span class="math inline">\(\texttt{psa}_2\)</span>.
-For example, an increase of the PSA level from 5.25 ng/mll to 6.15 ng/mll leads an increase of the volume of cancer of prostate cancer of 1.13 milliliters per cubic centimeter.</p>
+<span class="math display">\[\log(\texttt{psa}_i) = \beta_0 + \beta_1 \log(\texttt{cavol}_i) + \varepsilon_i.\]</span></p>
+<p>On the original scale, this translates into the multiplicative model <span class="math inline">\(\texttt{psa}_i= \exp^{\beta_0}\texttt{cavol}_i^{\beta_1}\exp(\varepsilon_i)\)</span>.
+The effect of an increase of the volume of cancer of prostate cancer by one milliliter per cubic centimeter depends on the size of the latter of <span class="math inline">\(\texttt{cavol}\)</span>, <span class="math inline">\((\texttt{cavol}_1/\texttt{cavol}_2)^{\beta_1}\)</span> for levels <span class="math inline">\(\texttt{cavol}_1\)</span> and <span class="math inline">\(\texttt{cavol}_2\)</span>.
+For example, an increase of the cancer volume from 2 ml per cc to 3 ml per cc leads to an increase of the concentration of PSA of 1.34 ng/ml.</p>
 <ol start="8" style="list-style-type: lower-alpha">
 <li>Using the results of Exercise 4.2, obtain the orthogonal projection matrix <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> using a SVD decomposition (<code>svd</code>). Check your output.</li>
 </ol>
@@ -451,7 +446,7 @@ Hmat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"
 <span class="co">#SVD decomposition of X</span>
 svdX &lt;-<span class="st"> </span><span class="kw">svd</span>(X)
 <span class="co">#OLS coefficients</span>
-beta_hat_svd &lt;-<span class="st"> </span>svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st"> </span>(<span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>lcavol <span class="op">/</span><span class="st"> </span>svdX<span class="op">$</span>d)
+beta_hat_svd &lt;-<span class="st"> </span>svdX<span class="op">$</span>v <span class="op">%*%</span><span class="st"> </span>(<span class="kw">t</span>(svdX<span class="op">$</span>u) <span class="op">%*%</span><span class="st"> </span>lpsa <span class="op">/</span><span class="st"> </span>svdX<span class="op">$</span>d)
 Hmat_svd &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(svdX<span class="op">$</span>u)
 <span class="co">#Check that both quantities are equal</span>
 <span class="kw">all.equal</span>(Hmat, Hmat_svd, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>) </code></pre>
@@ -472,6 +467,24 @@ R2c_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)<span c
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Detach prostate from environment</span>
 <span class="kw">detach</span>(prostate)</code></pre>
 <p>The value of <span class="math inline">\(R^2_c\)</span> is about 0.54, so about half the variability can be explained by the model. There is reasonable explanatory power. Note that presence of cancer causes the prostate specific antigens to increase (not the other way around!). A linear model could nevertheless be sensible here if we wished to obtain a non-invasive detector for predicting presence/absence of cancer, assuming the antigen is present in blood samples, but that detection of cancer would require otherwise a biopsy.</p>
+<ol start="10" style="list-style-type: lower-alpha">
+<li>Perform an explanatory data analysis. Comment on the most relevant features</li>
+</ol>
+<p>Here are some of the most important points we could detect by looking at the description, plots and summaries of the data set.</p>
+<ul>
+<li>Goal of the study: “PSA was proposed as a preoperative marker to predict the clinical stage of cancer”;</li>
+<li>Individuals in the data set form a subset of the population of the study and consists of men about to undergo radical prostatectomy. This implies they are in late stages of prostate cancer, as illustrated by the Gleason score;</li>
+<li>No missing values, no obvious outlier;</li>
+<li>Many variables are given on the log scale, potentially to remove the skewness (<code>lcavol</code>, <code>lweight</code>, <code>lcp</code>, <code>lbph</code>). This makes sense for volume (why?), less for other variables;</li>
+<li>Cannot say anything about the distribution of the response <code>exp(lpsa)</code>, because the Gaussian linear model assumes the mean is <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>;</li>
+<li>The most relevant variables are cancer volume (<code>lcavol</code>), weight (<code>lweight</code>) and SVI (<code>svi</code>);</li>
+<li>It is not clear why and how <code>pgg45</code> was constructed;</li>
+<li>0.25 was added to benign prostatic hyperplasia and capsular penetration before taking the log-transform (to get <code>lbph</code> and <code>lcp</code>);</li>
+<li>It would be better to transform the capsular penetration back to the original scale (because zero means revert back to mean);</li>
+<li>The weight of the tumor (<code>lweight</code>) is correlated with benign prostatic hyperplasia (consider an interaction term);</li>
+<li>Obs. 37 is the only one with a Gleason score of 8 — keeping it leads to perfect fit for this data point and will lead to problems with cross-validation if Gleason is included as a covariate;</li>
+<li>Gleason is categorical, so we should cast it to factor, with categories 6,7 and (8,9). The seminal vesicle invasion (<code>svi</code>) is already binary;</li>
+</ul>
 
 </div>
 </div>

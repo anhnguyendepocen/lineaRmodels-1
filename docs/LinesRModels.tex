@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{version of 2018-11-26}
+    \date{version of 2018-11-28}
 
 \usepackage[mathscr]{eucal}
 \DeclareMathAlphabet{\mathcrl}{U}{rsfs}{m}{n}
@@ -1281,7 +1281,7 @@ observations lie.
 ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 \end{verbatim}
 
-\hypertarget{rgl60608}{}
+\hypertarget{rgl43642}{}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -1676,15 +1676,15 @@ coefficient if we include \texttt{bph} in the regression.
 \KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)) }\CommentTok{#graphical parameters: two graphs per window}
 \CommentTok{#Function plot is plot(x = , y = ) or plot(y ~ x)}
 \CommentTok{#this works for vectors! (error message otherwise)}
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{exp}\NormalTok{(lcavol) }\OperatorTok{~}\StringTok{ }\KeywordTok{exp}\NormalTok{(lpsa),}
-\DataTypeTok{ylab =} \StringTok{"Cancer volume (milliliters per cc)"}\NormalTok{, }\CommentTok{#y-axis label}
-\DataTypeTok{xlab =} \StringTok{"prostate specific antigen (ng/ml)"}\NormalTok{, }\CommentTok{#x-axis label}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{exp}\NormalTok{(lpsa) }\OperatorTok{~}\StringTok{ }\KeywordTok{exp}\NormalTok{(lcavol),}
+\DataTypeTok{xlab =} \StringTok{"Cancer volume (milliliters per cc)"}\NormalTok{, }\CommentTok{#y-axis label}
+\DataTypeTok{ylab =} \StringTok{"prostate specific antigen (ng/ml)"}\NormalTok{, }\CommentTok{#x-axis label}
 \DataTypeTok{main =} \StringTok{"Prostate cancer dataset"}\NormalTok{, }\CommentTok{#title}
 \DataTypeTok{bty =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{20}\NormalTok{) }\CommentTok{#bty: remove box, only x-y axis}
 \CommentTok{#pch: type of plotting symbol (small filled circle)}
-\KeywordTok{plot}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ lcavol, }\DataTypeTok{x =}\NormalTok{ lpsa,}
-\DataTypeTok{ylab =} \StringTok{"cancer volume (milliliters per cc), log scale"}\NormalTok{,}
-\DataTypeTok{xlab =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{, }
+\KeywordTok{plot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ lcavol, }\DataTypeTok{y =}\NormalTok{ lpsa,}
+\DataTypeTok{xlab =} \StringTok{"cancer volume (milliliters per cc), log scale"}\NormalTok{,}
+\DataTypeTok{ylab =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{, }
 \DataTypeTok{main =} \StringTok{"Prostate cancer dataset"}\NormalTok{,}
 \DataTypeTok{bty =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{20}\NormalTok{)}
 
@@ -1701,10 +1701,10 @@ With \texttt{ggplot2}, the same graphs
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(ggplot2)}
 
-\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ prostate, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ lcavol, }\DataTypeTok{x =}\NormalTok{ lpsa)) }\OperatorTok{+}\StringTok{ }
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ prostate, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ lcavol, }\DataTypeTok{y =}\NormalTok{ lpsa)) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{,}
-       \DataTypeTok{y =} \StringTok{"cancer volume (milliliters per cc), log scale"}\NormalTok{,}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{,}
+       \DataTypeTok{x =} \StringTok{"cancer volume (milliliters per cc), log scale"}\NormalTok{,}
        \DataTypeTok{title =} \StringTok{"Prostate cancer dataset"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1713,10 +1713,10 @@ With \texttt{ggplot2}, the same graphs
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ prostate, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =} \KeywordTok{exp}\NormalTok{(lcavol), }\DataTypeTok{x =} \KeywordTok{exp}\NormalTok{(lpsa))) }\OperatorTok{+}\StringTok{ }
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ prostate, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{exp}\NormalTok{(lcavol), }\DataTypeTok{y =} \KeywordTok{exp}\NormalTok{(lpsa))) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"prostate specific antigen (ng/ml)"}\NormalTok{,}
-       \DataTypeTok{y =} \StringTok{"cancer volume (milliliters per cc)"}\NormalTok{,}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"prostate specific antigen (ng/ml)"}\NormalTok{,}
+       \DataTypeTok{x =} \StringTok{"cancer volume (milliliters per cc)"}\NormalTok{,}
        \DataTypeTok{title =} \StringTok{"Prostate cancer dataset"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1744,8 +1744,8 @@ reasonable.
 \setcounter{enumi}{3}
 \tightlist
 \item
-  Fit a linear model using the log cancer volume as response variable,
-  including a constant and the log prostate specific antigen as
+  Fit a linear model using the log prostate specific antigen as response
+  variable, including a constant and the log cancer volume as
   covariates. Obtain numerically the OLS estimates
   \(\hat{\boldsymbol{\beta}}\) of the parameters, the fitted values
   \(\hat{\boldsymbol{y}}\) and the residuals \(\boldsymbol{e}\) using
@@ -1754,7 +1754,7 @@ reasonable.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fit <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(lcavol }\OperatorTok{~}\StringTok{ }\NormalTok{lpsa, }\DataTypeTok{data =}\NormalTok{ prostate)}
+\NormalTok{fit <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(lpsa }\OperatorTok{~}\StringTok{ }\NormalTok{lcavol, }\DataTypeTok{data =}\NormalTok{ prostate)}
 \KeywordTok{summary}\NormalTok{(fit)}
 \end{Highlighting}
 \end{Shaded}
@@ -1762,18 +1762,18 @@ reasonable.
 \begin{verbatim}
 ## 
 ## Call:
-## lm(formula = lcavol ~ lpsa, data = prostate)
+## lm(formula = lpsa ~ lcavol, data = prostate)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.15949 -0.59384  0.05034  0.50826  1.67751 
+## -1.67624 -0.41648  0.09859  0.50709  1.89672 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept) -0.50858    0.19419  -2.619   0.0103
-## lpsa         0.74992    0.07109  10.548   <2e-16
+## (Intercept)  1.50730    0.12194   12.36   <2e-16
+## lcavol       0.71932    0.06819   10.55   <2e-16
 ## 
-## Residual standard error: 0.8041 on 95 degrees of freedom
+## Residual standard error: 0.7875 on 95 degrees of freedom
 ## Multiple R-squared:  0.5394, Adjusted R-squared:  0.5346 
 ## F-statistic: 111.3 on 1 and 95 DF,  p-value: < 2.2e-16
 \end{verbatim}
@@ -1781,14 +1781,14 @@ reasonable.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#Create response vector and design matrix}
-\NormalTok{y <-}\StringTok{ }\NormalTok{lcavol}
-\NormalTok{X <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{, lpsa)}
+\NormalTok{y <-}\StringTok{ }\NormalTok{lpsa}
+\NormalTok{X <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{, lcavol)}
 \CommentTok{#Create function to compute coefs "by hand"}
 \NormalTok{coefs_vals <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x, y)\{}
   \KeywordTok{c}\NormalTok{(}\KeywordTok{solve}\NormalTok{(}\KeywordTok{crossprod}\NormalTok{(x), }\KeywordTok{crossprod}\NormalTok{(x, y)))}
 \NormalTok{\}}
 \CommentTok{# Compute coefficients, fitted values and residuals}
-\NormalTok{beta_hat <-}\StringTok{ }\KeywordTok{coefs_vals}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ X, }\DataTypeTok{y =}\NormalTok{ lcavol)}
+\NormalTok{beta_hat <-}\StringTok{ }\KeywordTok{coefs_vals}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ X, }\DataTypeTok{y =}\NormalTok{ lpsa)}
 \NormalTok{yhat <-}\StringTok{ }\KeywordTok{c}\NormalTok{(X }\OperatorTok{%*%}\StringTok{ }\NormalTok{beta_hat)}
 \NormalTok{e <-}\StringTok{ }\NormalTok{y }\OperatorTok{-}\StringTok{ }\NormalTok{yhat}
 \end{Highlighting}
@@ -1822,52 +1822,22 @@ output.
   output of the function \texttt{lm}.
 \end{enumerate}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{beta_hat }\CommentTok{# equivalent to print(beta_hat)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
-## [1] -0.5085796  0.7499189
+## [1] 1.5072975 0.7193204
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{coef}\NormalTok{(fit) }\CommentTok{# coefficients from object of class `lm`}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
-## (Intercept)        lpsa 
-##  -0.5085796   0.7499189
+## (Intercept)      lcavol 
+##   1.5072975   0.7193204
 \end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{isTRUE}\NormalTok{(}\KeywordTok{all.equal}\NormalTok{(beta_hat, }\KeywordTok{coef}\NormalTok{(fit), }\DataTypeTok{check.attributes =} \OtherTok{FALSE}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{verbatim}
 ## [1] TRUE
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{isTRUE}\NormalTok{(}\KeywordTok{all.equal}\NormalTok{(}\KeywordTok{c}\NormalTok{(yhat), }\KeywordTok{fitted}\NormalTok{(fit), }\DataTypeTok{check.attributes =} \OtherTok{FALSE}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
 ## [1] TRUE
 \end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{isTRUE}\NormalTok{(}\KeywordTok{all.equal}\NormalTok{(e, }\KeywordTok{resid}\NormalTok{(fit), }\DataTypeTok{check.attributes =} \OtherTok{FALSE}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{verbatim}
 ## [1] TRUE
@@ -1885,9 +1855,9 @@ output.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(lcavol }\OperatorTok{~}\StringTok{ }\NormalTok{lpsa, }\DataTypeTok{data =}\NormalTok{ prostate,}
-  \DataTypeTok{ylab =} \StringTok{"Cancer volume (milliliters per cc), log scale"}\NormalTok{,}
-  \DataTypeTok{xlab =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{, }
+\KeywordTok{plot}\NormalTok{(lpsa }\OperatorTok{~}\StringTok{ }\NormalTok{lcavol, }\DataTypeTok{data =}\NormalTok{ prostate,}
+  \DataTypeTok{xlab =} \StringTok{"Cancer volume (milliliters per cc), log scale"}\NormalTok{,}
+  \DataTypeTok{ylab =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{, }
   \DataTypeTok{main =} \StringTok{"Prostate cancer dataset"}\NormalTok{,}
   \DataTypeTok{bty =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{20}\NormalTok{)}
 \KeywordTok{abline}\NormalTok{(fit, }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{) }\CommentTok{#simply add regression line, lwd is line width}
@@ -1896,10 +1866,10 @@ output.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ prostate, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ lcavol, }\DataTypeTok{x =}\NormalTok{ lpsa)) }\OperatorTok{+}\StringTok{ }
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ prostate, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ lcavol, }\DataTypeTok{y =}\NormalTok{ lpsa)) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{,}
-       \DataTypeTok{y =} \StringTok{"cancer volume (milliliters per cc), log scale"}\NormalTok{,}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"prostate specific antigen (ng/ml), log scale"}\NormalTok{,}
+       \DataTypeTok{x =} \StringTok{"cancer volume (milliliters per cc), log scale"}\NormalTok{,}
        \DataTypeTok{title =} \StringTok{"Prostate cancer dataset"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{)}
 \end{Highlighting}
@@ -1912,22 +1882,22 @@ output.
 \setcounter{enumi}{6}
 \tightlist
 \item
-  Interpret the changes in cancer volume (not the log cancer volume),
-  including any units in your interpretations.
+  Interpret the changes in prostate specific antigen (not the log
+  prostate specific antigen), including any units in your
+  interpretations.
 \end{enumerate}
 
 The interpretation is as follows. We fit
-\[\log(\texttt{cavol}_i) = \beta_0 + \beta_1 \log(\texttt{psa}_i) + \varepsilon_i.\]
+\[\log(\texttt{psa}_i) = \beta_0 + \beta_1 \log(\texttt{cavol}_i) + \varepsilon_i.\]
 
 On the original scale, this translates into the multiplicative model
-\(\texttt{cavol}_i= \exp^{\beta_0}\texttt{psa}_i^{\beta_1}\exp(\varepsilon_i)\).
-The effect of an increase of one ng/mll of prostate specific antigen
-depends on the specific level of \(\texttt{psa}\),
-\((\texttt{psa}_1/\texttt{psa}_2)^{\beta_1}\) for levels
-\(\texttt{psa}_1\) and \(\texttt{psa}_2\). For example, an increase of
-the PSA level from 5.25 ng/mll to 6.15 ng/mll leads an increase of the
-volume of cancer of prostate cancer of 1.13 milliliters per cubic
-centimeter.
+\(\texttt{psa}_i= \exp^{\beta_0}\texttt{cavol}_i^{\beta_1}\exp(\varepsilon_i)\).
+The effect of an increase of the volume of cancer of prostate cancer by
+one milliliter per cubic centimeter depends on the size of the latter of
+\(\texttt{cavol}\), \((\texttt{cavol}_1/\texttt{cavol}_2)^{\beta_1}\)
+for levels \(\texttt{cavol}_1\) and \(\texttt{cavol}_2\). For example,
+an increase of the cancer volume from 2 ml per cc to 3 ml per cc leads
+to an increase of the concentration of PSA of 1.34 ng/ml.
 
 \begin{enumerate}
 \def\labelenumi{\alph{enumi}.}
@@ -1946,7 +1916,7 @@ centimeter.
 \CommentTok{#SVD decomposition of X}
 \NormalTok{svdX <-}\StringTok{ }\KeywordTok{svd}\NormalTok{(X)}
 \CommentTok{#OLS coefficients}
-\NormalTok{beta_hat_svd <-}\StringTok{ }\NormalTok{svdX}\OperatorTok{$}\NormalTok{v }\OperatorTok{%*%}\StringTok{ }\NormalTok{(}\KeywordTok{t}\NormalTok{(svdX}\OperatorTok{$}\NormalTok{u) }\OperatorTok{%*%}\StringTok{ }\NormalTok{lcavol }\OperatorTok{/}\StringTok{ }\NormalTok{svdX}\OperatorTok{$}\NormalTok{d)}
+\NormalTok{beta_hat_svd <-}\StringTok{ }\NormalTok{svdX}\OperatorTok{$}\NormalTok{v }\OperatorTok{%*%}\StringTok{ }\NormalTok{(}\KeywordTok{t}\NormalTok{(svdX}\OperatorTok{$}\NormalTok{u) }\OperatorTok{%*%}\StringTok{ }\NormalTok{lpsa }\OperatorTok{/}\StringTok{ }\NormalTok{svdX}\OperatorTok{$}\NormalTok{d)}
 \NormalTok{Hmat_svd <-}\StringTok{ }\KeywordTok{tcrossprod}\NormalTok{(svdX}\OperatorTok{$}\NormalTok{u)}
 \CommentTok{#Check that both quantities are equal}
 \KeywordTok{all.equal}\NormalTok{(Hmat, Hmat_svd, }\DataTypeTok{check.attributes =} \OtherTok{FALSE}\NormalTok{) }
@@ -2006,6 +1976,64 @@ be sensible here if we wished to obtain a non-invasive detector for
 predicting presence/absence of cancer, assuming the antigen is present
 in blood samples, but that detection of cancer would require otherwise a
 biopsy.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{9}
+\tightlist
+\item
+  Perform an explanatory data analysis. Comment on the most relevant
+  features
+\end{enumerate}
+
+Here are some of the most important points we could detect by looking at
+the description, plots and summaries of the data set.
+
+\begin{itemize}
+\tightlist
+\item
+  Goal of the study: ``PSA was proposed as a preoperative marker to
+  predict the clinical stage of cancer'';
+\item
+  Individuals in the data set form a subset of the population of the
+  study and consists of men about to undergo radical prostatectomy. This
+  implies they are in late stages of prostate cancer, as illustrated by
+  the Gleason score;
+\item
+  No missing values, no obvious outlier;
+\item
+  Many variables are given on the log scale, potentially to remove the
+  skewness (\texttt{lcavol}, \texttt{lweight}, \texttt{lcp},
+  \texttt{lbph}). This makes sense for volume (why?), less for other
+  variables;
+\item
+  Cannot say anything about the distribution of the response
+  \texttt{exp(lpsa)}, because the Gaussian linear model assumes the mean
+  is \(\mathbf{X}\boldsymbol{\beta}\);
+\item
+  The most relevant variables are cancer volume (\texttt{lcavol}),
+  weight (\texttt{lweight}) and SVI (\texttt{svi});
+\item
+  It is not clear why and how \texttt{pgg45} was constructed;
+\item
+  0.25 was added to benign prostatic hyperplasia and capsular
+  penetration before taking the log-transform (to get \texttt{lbph} and
+  \texttt{lcp});
+\item
+  It would be better to transform the capsular penetration back to the
+  original scale (because zero means revert back to mean);
+\item
+  The weight of the tumor (\texttt{lweight}) is correlated with benign
+  prostatic hyperplasia (consider an interaction term);
+\item
+  Obs. 37 is the only one with a Gleason score of 8 --- keeping it leads
+  to perfect fit for this data point and will lead to problems with
+  cross-validation if Gleason is included as a covariate;
+\item
+  Gleason is categorical, so we should cast it to factor, with
+  categories 6,7 and (8,9). The seminal vesicle invasion (\texttt{svi})
+  is already binary;
+\end{itemize}
 
 \hypertarget{frischwaughlovell-theorem}{%
 \chapter{Frisch--Waugh--Lovell
@@ -3284,7 +3312,7 @@ computationally costly for small datasets.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.580158
+## [1] 0.5756576
 \end{verbatim}
 
 \begin{Shaded}

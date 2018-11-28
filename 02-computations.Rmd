@@ -399,15 +399,15 @@ b. Produce a plot of the pair of variables `lcavol` and `lpsa` on the log and on
 par(mfrow = c(1, 2)) #graphical parameters: two graphs per window
 #Function plot is plot(x = , y = ) or plot(y ~ x)
 #this works for vectors! (error message otherwise)
-plot(exp(lcavol) ~ exp(lpsa),
-ylab = "Cancer volume (milliliters per cc)", #y-axis label
-xlab = "prostate specific antigen (ng/ml)", #x-axis label
+plot(exp(lpsa) ~ exp(lcavol),
+xlab = "Cancer volume (milliliters per cc)", #y-axis label
+ylab = "prostate specific antigen (ng/ml)", #x-axis label
 main = "Prostate cancer dataset", #title
 bty = "l", pch = 20) #bty: remove box, only x-y axis
 #pch: type of plotting symbol (small filled circle)
-plot(y = lcavol, x = lpsa,
-ylab = "cancer volume (milliliters per cc), log scale",
-xlab = "prostate specific antigen (ng/ml), log scale", 
+plot(x = lcavol, y = lpsa,
+xlab = "cancer volume (milliliters per cc), log scale",
+ylab = "prostate specific antigen (ng/ml), log scale", 
 main = "Prostate cancer dataset",
 bty = "l", pch = 20)
 
@@ -423,16 +423,16 @@ With `ggplot2`, the same graphs
 ```{r}
 library(ggplot2)
 
-ggplot(data = prostate, aes(y = lcavol, x = lpsa)) + 
+ggplot(data = prostate, aes(x = lcavol, y = lpsa)) + 
   geom_point() +
-  labs(x = "prostate specific antigen (ng/ml), log scale",
-       y = "cancer volume (milliliters per cc), log scale",
+  labs(y = "prostate specific antigen (ng/ml), log scale",
+       x = "cancer volume (milliliters per cc), log scale",
        title = "Prostate cancer dataset")
 
-ggplot(data = prostate, aes(y = exp(lcavol), x = exp(lpsa))) + 
+ggplot(data = prostate, aes(x = exp(lcavol), y = exp(lpsa))) + 
   geom_point() +
-  labs(x = "prostate specific antigen (ng/ml)",
-       y = "cancer volume (milliliters per cc)",
+  labs(y = "prostate specific antigen (ng/ml)",
+       x = "cancer volume (milliliters per cc)",
        title = "Prostate cancer dataset")
 
 ggplot(data = prostate, aes(x = exp(lcavol))) + 
@@ -445,21 +445,21 @@ ggplot(data = prostate, aes(x = exp(lcavol))) +
 
 We can see that both variables are positive and positively skewed, so a log transform may lead to a more linear relationship, as indicated by the pairs plot. A multiplicative model on the original scale is thus reasonable.
 
-d. Fit a linear model using the log cancer volume as response variable, including a constant and the log prostate specific antigen as covariates. Obtain numerically the OLS estimates $\hat{\boldsymbol{\beta}}$ of the parameters, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$ using the formulae given in class.
+d. Fit a linear model using the log prostate specific antigen as response variable, including a constant and the log cancer volume as covariates. Obtain numerically the OLS estimates $\hat{\boldsymbol{\beta}}$ of the parameters, the fitted values $\hat{\boldsymbol{y}}$ and the residuals $\boldsymbol{e}$ using the formulae given in class.
 
 ```{r question_c}
-fit <- lm(lcavol ~ lpsa, data = prostate)
+fit <- lm(lpsa ~ lcavol, data = prostate)
 summary(fit)
 
 #Create response vector and design matrix
-y <- lcavol
-X <- cbind(1, lpsa)
+y <- lpsa
+X <- cbind(1, lcavol)
 #Create function to compute coefs "by hand"
 coefs_vals <- function(x, y){
   c(solve(crossprod(x), crossprod(x, y)))
 }
 # Compute coefficients, fitted values and residuals
-beta_hat <- coefs_vals(x = X, y = lcavol)
+beta_hat <- coefs_vals(x = X, y = lpsa)
 yhat <- c(X %*% beta_hat)
 e <- y - yhat
 ```
@@ -470,7 +470,7 @@ The formula for `lm` must be of the form `y ~ `, and any combination of the vari
 
 e. Compare the quantities you obtained in the last question with the output of the function `lm`.
 
-```{r}
+```{r, echo = FALSE}
 beta_hat # equivalent to print(beta_hat)
 coef(fit) # coefficients from object of class `lm`
 isTRUE(all.equal(beta_hat, coef(fit), check.attributes = FALSE))
@@ -482,33 +482,33 @@ f. Add the fitted regression line to the scatterplot of lcavol against lpsa .
 
 ```{r question_e, eval = FALSE}
 par(mfrow = c(1, 1))
-plot(lcavol ~ lpsa, data = prostate,
-  ylab = "Cancer volume (milliliters per cc), log scale",
-  xlab = "prostate specific antigen (ng/ml), log scale", 
+plot(lpsa ~ lcavol, data = prostate,
+  xlab = "Cancer volume (milliliters per cc), log scale",
+  ylab = "prostate specific antigen (ng/ml), log scale", 
   main = "Prostate cancer dataset",
   bty = "l", pch = 20)
 abline(fit, lwd = 2) #simply add regression line, lwd is line width
 ```
 
 ```{r question_eggplot2}
-ggplot(data = prostate, aes(y = lcavol, x = lpsa)) + 
+ggplot(data = prostate, aes(x = lcavol, y = lpsa)) + 
   geom_point() +
-  labs(x = "prostate specific antigen (ng/ml), log scale",
-       y = "cancer volume (milliliters per cc), log scale",
+  labs(y = "prostate specific antigen (ng/ml), log scale",
+       x = "cancer volume (milliliters per cc), log scale",
        title = "Prostate cancer dataset") + 
   geom_smooth(method = "lm", se = FALSE)
 
 
 ```
 
-g. Interpret the changes in cancer volume (not the log cancer volume), including any units in your interpretations.
+g. Interpret the changes in prostate specific antigen (not the log prostate specific antigen), including any units in your interpretations.
 
 The interpretation is as follows. We fit
-\[\log(\texttt{cavol}_i) = \beta_0 + \beta_1 \log(\texttt{psa}_i) + \varepsilon_i.\]
+\[\log(\texttt{psa}_i) = \beta_0 + \beta_1 \log(\texttt{cavol}_i) + \varepsilon_i.\]
 
-On the original scale, this translates into the multiplicative model $\texttt{cavol}_i= \exp^{\beta_0}\texttt{psa}_i^{\beta_1}\exp(\varepsilon_i)$.
-The effect of an increase of one ng/mll of prostate specific antigen depends on the specific level of $\texttt{psa}$, $(\texttt{psa}_1/\texttt{psa}_2)^{\beta_1}$ for levels $\texttt{psa}_1$ and $\texttt{psa}_2$.
-For example, an increase of the PSA level from 5.25 ng/mll to 6.15 ng/mll leads an increase of the volume of cancer of prostate cancer of `r round(6.15^beta_hat[2]/5.25^beta_hat[2], 2)` milliliters per cubic centimeter.
+On the original scale, this translates into the multiplicative model $\texttt{psa}_i= \exp^{\beta_0}\texttt{cavol}_i^{\beta_1}\exp(\varepsilon_i)$.
+The effect of an increase of  the volume of cancer of prostate cancer by one milliliter per cubic centimeter depends on the size of the latter of $\texttt{cavol}$, $(\texttt{cavol}_1/\texttt{cavol}_2)^{\beta_1}$ for levels $\texttt{cavol}_1$ and $\texttt{cavol}_2$.
+For example, an increase of the cancer volume from 2 ml per cc to 3 ml per cc leads to an increase of the concentration of PSA of `r round(3^beta_hat[2]/2^beta_hat[2], 2)` ng/ml.
 
 
 h. Using the results of Exercise 4.2, obtain the orthogonal projection matrix $\mathbf{H}_{\mathbf{X}}$ and $\hat{\boldsymbol{\beta}}$ using a SVD decomposition (`svd`). Check your output.
@@ -519,7 +519,7 @@ Hmat <- X %*% solve(crossprod(X)) %*% t(X)
 #SVD decomposition of X
 svdX <- svd(X)
 #OLS coefficients
-beta_hat_svd <- svdX$v %*% (t(svdX$u) %*% lcavol / svdX$d)
+beta_hat_svd <- svdX$v %*% (t(svdX$u) %*% lpsa / svdX$d)
 Hmat_svd <- tcrossprod(svdX$u)
 #Check that both quantities are equal
 all.equal(Hmat, Hmat_svd, check.attributes = FALSE) 
@@ -543,3 +543,20 @@ detach(prostate)
 ```
 
 The value of $R^2_c$ is about `r round(R2c, 2)`, so about half the variability can be explained by the model. There is reasonable explanatory power. Note that presence of cancer causes the prostate specific antigens to increase (not the other way around!). A linear model could nevertheless be sensible here if we wished to obtain a non-invasive detector for predicting presence/absence of cancer, assuming the antigen is present in blood samples, but that detection of cancer would require otherwise a biopsy.
+
+j. Perform an explanatory data analysis. Comment on the most relevant features
+
+Here are some of the most important points we could detect by looking at the description, plots and summaries of the data set.
+
+- Goal of the study: "PSA was proposed as a preoperative marker to predict the clinical stage of cancer"; 
+- Individuals in the data set form a subset of the population of the study and consists of men about to undergo radical prostatectomy. This implies they are in late stages of prostate cancer, as illustrated by the Gleason score;
+- No missing values, no obvious outlier;
+- Many variables are given on the log scale, potentially to remove the skewness (`lcavol`, `lweight`, `lcp`, `lbph`). This makes sense for volume (why?), less for other variables;
+- Cannot say anything about the distribution of the response `exp(lpsa)`, because the Gaussian linear model assumes the mean is $\mathbf{X}\boldsymbol{\beta}$;
+- The most relevant variables are cancer volume (`lcavol`), weight (`lweight`) and SVI (`svi`);
+- It is not clear why and how `pgg45` was constructed;
+- 0.25 was added to benign prostatic hyperplasia and capsular penetration before taking the log-transform (to get `lbph` and `lcp`);
+- It would be better to transform the capsular penetration back to the original scale (because zero means revert back to mean);
+- The weight of the tumor (`lweight`) is correlated with benign prostatic hyperplasia (consider an interaction term);
+- Obs. 37 is the only one with a Gleason score of 8 --- keeping it leads to perfect fit for this data point and will lead to problems with cross-validation if Gleason is included as a covariate;
+- Gleason is categorical, so we should cast it to factor, with categories 6,7 and (8,9). The seminal vesicle invasion (`svi`) is already binary;
