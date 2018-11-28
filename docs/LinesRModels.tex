@@ -1281,7 +1281,7 @@ observations lie.
 ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 \end{verbatim}
 
-\hypertarget{rgl77766}{}
+\hypertarget{rgl2225}{}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -1983,11 +1983,11 @@ biopsy.
 \tightlist
 \item
   Perform an explanatory data analysis of the \texttt{prostate} data
-  set. Comment on the most relevant features
+  set. Summarize your findings.
 \end{enumerate}
 
-Here are some of the most important points we could detect by looking at
-the description, plots and summaries of the data set.
+Here are some of the most important features we could detect by looking
+at the description, plots and summaries of the data set.
 
 \begin{itemize}
 \tightlist
@@ -1997,42 +1997,45 @@ the description, plots and summaries of the data set.
 \item
   Individuals in the data set form a subset of the population of the
   study; the subset consists of men about to undergo radical
-  prostatectomy. This implies they are in late stages of prostate
-  cancer, as illustrated by the Gleason score;
+  prostatectomy. This implies they are in late stages of prostate cancer
+  (see \texttt{gleason});
 \item
   No missing values, no obvious outlier;
 \item
   Many variables are given on the log scale, potentially to remove the
   skewness (\texttt{lcavol}, \texttt{lweight}, \texttt{lcp},
-  \texttt{lbph}). This makes sense for volume (why?), less for other
+  \texttt{lbph}). This makes sense for volume (why?), less so for other
   variables;
 \item
-  Cannot say anything about the distribution of the response
-  \texttt{exp(lpsa)}, because the Gaussian linear model assumes the mean
-  is \(\mathbf{X}\boldsymbol{\beta}\);
-\item
-  The most relevant variables are cancer volume (\texttt{lcavol}),
-  weight (\texttt{lweight}) and SVI (\texttt{svi});
+  The most relevant explanatory variables are cancer volume
+  (\texttt{lcavol}), weight (\texttt{lweight}) and SVI (\texttt{svi});
 \item
   It is not clear why and how \texttt{pgg45} was constructed;
 \item
   0.25 was added to benign prostatic hyperplasia and capsular
   penetration before taking the log-transform (to get \texttt{lbph} and
-  \texttt{lcp}). It would be better to transform the capsular
-  penetration back to the original scale (because zero means revert back
-  to mean);
+  \texttt{lcp}). It would perhaps be more adequate for interpretability
+  to transform the capsular penetration back to the original scale;
 \item
   The weight of the tumor (\texttt{lweight}) is correlated with benign
   prostatic hyperplasia (consider an interaction term);
 \item
+  Gleason is an ordered categorical, so it makes sense to cast it to a
+  factor, with categories 6, 7 and (8,9). The seminal vesicle invasion
+  (\texttt{svi}) is already binary;
+\item
   Obs. 37 is the only one with a Gleason score of 8 --- keeping it leads
   to perfect fit for this data point and will lead to problems with
-  cross-validation if Gleason is included as a covariate;
-\item
-  Gleason is categorical, so we should cast it to factor, with
-  categories 6, 7 and (8,9). The seminal vesicle invasion (\texttt{svi})
-  is already binary;
+  cross-validation if \texttt{gleason} is included as a factor in the
+  mean model;
 \end{itemize}
+
+Note that we cannot say anything about the distribution of the response
+\texttt{exp(lpsa)}, because the Gaussian linear model assumes the mean
+is \(\mathbf{X}\boldsymbol{\beta}\) (so the skewness could be removed
+through the inclusion of covariates). Rather, one could fit both models
+on \texttt{exp(lpsa)} and \texttt{lpsa} scale and compare the
+diagnostics for the residuals.
 
 \hypertarget{frischwaughlovell-theorem}{%
 \chapter{Frisch--Waugh--Lovell
@@ -3311,7 +3314,7 @@ computationally costly for small datasets.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.5820582
+## [1] 0.5824582
 \end{verbatim}
 
 \begin{Shaded}

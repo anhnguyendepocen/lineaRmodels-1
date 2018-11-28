@@ -544,18 +544,20 @@ detach(prostate)
 
 The value of $R^2_c$ is about `r round(R2c, 2)`, so about half the variability can be explained by the model. There is reasonable explanatory power. Note that presence of cancer causes the prostate specific antigens to increase (not the other way around!). A linear model could nevertheless be sensible here if we wished to obtain a non-invasive detector for predicting presence/absence of cancer, assuming the antigen is present in blood samples, but that detection of cancer would require otherwise a biopsy.
 
-j. Perform an explanatory data analysis of the `prostate` data set. Comment on the most relevant features
+j. Perform an explanatory data analysis of the `prostate` data set. Summarize your findings.
 
-Here are some of the most important points we could detect by looking at the description, plots and summaries of the data set.
+Here are some of the most important features we could detect by looking at the description, plots and summaries of the data set.
 
 - Goal of the study: "PSA was proposed as a preoperative marker to predict the clinical stage of cancer"; 
-- Individuals in the data set form a subset of the population of the study; the subset consists of men about to undergo radical prostatectomy. This implies they are in late stages of prostate cancer, as illustrated by the Gleason score;
+- Individuals in the data set form a subset of the population of the study; the subset consists of men about to undergo radical prostatectomy. This implies they are in late stages of prostate cancer (see `gleason`);
 - No missing values, no obvious outlier;
-- Many variables are given on the log scale, potentially to remove the skewness (`lcavol`, `lweight`, `lcp`, `lbph`). This makes sense for volume (why?), less for other variables;
-- Cannot say anything about the distribution of the response `exp(lpsa)`, because the Gaussian linear model assumes the mean is $\mathbf{X}\boldsymbol{\beta}$;
-- The most relevant variables are cancer volume (`lcavol`), weight (`lweight`) and SVI (`svi`);
+- Many variables are given on the log scale, potentially to remove the skewness (`lcavol`, `lweight`, `lcp`, `lbph`). This makes sense for volume (why?), less so for other variables;
+- The most relevant explanatory variables are cancer volume (`lcavol`), weight (`lweight`) and SVI (`svi`);
 - It is not clear why and how `pgg45` was constructed;
-- 0.25 was added to benign prostatic hyperplasia and capsular penetration before taking the log-transform (to get `lbph` and `lcp`). It would be better to transform the capsular penetration back to the original scale (because zero means revert back to mean);
+- 0.25 was added to benign prostatic hyperplasia and capsular penetration before taking the log-transform (to get `lbph` and `lcp`). It would perhaps be more adequate for interpretability to transform the capsular penetration back to the original scale;
 - The weight of the tumor (`lweight`) is correlated with benign prostatic hyperplasia (consider an interaction term);
-- Obs. 37 is the only one with a Gleason score of 8 --- keeping it leads to perfect fit for this data point and will lead to problems with cross-validation if Gleason is included as a covariate;
-- Gleason is categorical, so we should cast it to factor, with categories 6, 7 and (8,9). The seminal vesicle invasion (`svi`) is already binary;
+- Gleason is an ordered categorical, so it makes sense to cast it to a factor, with categories 6, 7 and (8,9). The seminal vesicle invasion (`svi`) is already binary;
+- Obs. 37 is the only one with a Gleason score of 8 --- keeping it leads to perfect fit for this data point and will lead to problems with cross-validation if `gleason` is included as a factor in the mean model;
+
+
+Note that we cannot say anything about the distribution of the response `exp(lpsa)`, because the Gaussian linear model assumes the mean is $\mathbf{X}\boldsymbol{\beta}$ (so the skewness could be removed through the inclusion of covariates). Rather, one could fit both models on `exp(lpsa)` and `lpsa` scale and compare the diagnostics for the residuals.

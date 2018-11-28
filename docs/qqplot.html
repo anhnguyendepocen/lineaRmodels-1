@@ -364,7 +364,7 @@ emp_boot_cov &lt;-<span class="st"> </span><span class="cf">function</span>(k){
 <span class="co">#In how many of the replicates datasets do </span>
 <span class="co">#we have observations outside of the bounds?</span>
 <span class="kw">emp_boot_cov</span>(k)</code></pre>
-<pre><code>## [1] 0.580358</code></pre>
+<pre><code>## [1] 0.5844584</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Ouch! decrease k until we hit alpha percentage of exceedances (0.05)</span>
 boot_cov_k &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>k, emp_boot_cov)
 klev &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="ot">TRUE</span>, boot_cov_k <span class="op">&gt;</span><span class="st"> </span>alpha) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
