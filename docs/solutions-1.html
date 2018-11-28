@@ -468,22 +468,21 @@ R2c_lm &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)<span c
 <span class="kw">detach</span>(prostate)</code></pre>
 <p>The value of <span class="math inline">\(R^2_c\)</span> is about 0.54, so about half the variability can be explained by the model. There is reasonable explanatory power. Note that presence of cancer causes the prostate specific antigens to increase (not the other way around!). A linear model could nevertheless be sensible here if we wished to obtain a non-invasive detector for predicting presence/absence of cancer, assuming the antigen is present in blood samples, but that detection of cancer would require otherwise a biopsy.</p>
 <ol start="10" style="list-style-type: lower-alpha">
-<li>Perform an explanatory data analysis. Comment on the most relevant features</li>
+<li>Perform an explanatory data analysis of the <code>prostate</code> data set. Comment on the most relevant features</li>
 </ol>
 <p>Here are some of the most important points we could detect by looking at the description, plots and summaries of the data set.</p>
 <ul>
 <li>Goal of the study: “PSA was proposed as a preoperative marker to predict the clinical stage of cancer”;</li>
-<li>Individuals in the data set form a subset of the population of the study and consists of men about to undergo radical prostatectomy. This implies they are in late stages of prostate cancer, as illustrated by the Gleason score;</li>
+<li>Individuals in the data set form a subset of the population of the study; the subset consists of men about to undergo radical prostatectomy. This implies they are in late stages of prostate cancer, as illustrated by the Gleason score;</li>
 <li>No missing values, no obvious outlier;</li>
 <li>Many variables are given on the log scale, potentially to remove the skewness (<code>lcavol</code>, <code>lweight</code>, <code>lcp</code>, <code>lbph</code>). This makes sense for volume (why?), less for other variables;</li>
 <li>Cannot say anything about the distribution of the response <code>exp(lpsa)</code>, because the Gaussian linear model assumes the mean is <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>;</li>
 <li>The most relevant variables are cancer volume (<code>lcavol</code>), weight (<code>lweight</code>) and SVI (<code>svi</code>);</li>
 <li>It is not clear why and how <code>pgg45</code> was constructed;</li>
-<li>0.25 was added to benign prostatic hyperplasia and capsular penetration before taking the log-transform (to get <code>lbph</code> and <code>lcp</code>);</li>
-<li>It would be better to transform the capsular penetration back to the original scale (because zero means revert back to mean);</li>
+<li>0.25 was added to benign prostatic hyperplasia and capsular penetration before taking the log-transform (to get <code>lbph</code> and <code>lcp</code>). It would be better to transform the capsular penetration back to the original scale (because zero means revert back to mean);</li>
 <li>The weight of the tumor (<code>lweight</code>) is correlated with benign prostatic hyperplasia (consider an interaction term);</li>
 <li>Obs. 37 is the only one with a Gleason score of 8 — keeping it leads to perfect fit for this data point and will lead to problems with cross-validation if Gleason is included as a covariate;</li>
-<li>Gleason is categorical, so we should cast it to factor, with categories 6,7 and (8,9). The seminal vesicle invasion (<code>svi</code>) is already binary;</li>
+<li>Gleason is categorical, so we should cast it to factor, with categories 6, 7 and (8,9). The seminal vesicle invasion (<code>svi</code>) is already binary;</li>
 </ul>
 
 </div>

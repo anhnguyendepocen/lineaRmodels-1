@@ -1281,7 +1281,7 @@ observations lie.
 ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
 \end{verbatim}
 
-\hypertarget{rgl43642}{}
+\hypertarget{rgl77766}{}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -1982,8 +1982,8 @@ biopsy.
 \setcounter{enumi}{9}
 \tightlist
 \item
-  Perform an explanatory data analysis. Comment on the most relevant
-  features
+  Perform an explanatory data analysis of the \texttt{prostate} data
+  set. Comment on the most relevant features
 \end{enumerate}
 
 Here are some of the most important points we could detect by looking at
@@ -1996,9 +1996,9 @@ the description, plots and summaries of the data set.
   predict the clinical stage of cancer'';
 \item
   Individuals in the data set form a subset of the population of the
-  study and consists of men about to undergo radical prostatectomy. This
-  implies they are in late stages of prostate cancer, as illustrated by
-  the Gleason score;
+  study; the subset consists of men about to undergo radical
+  prostatectomy. This implies they are in late stages of prostate
+  cancer, as illustrated by the Gleason score;
 \item
   No missing values, no obvious outlier;
 \item
@@ -2018,10 +2018,9 @@ the description, plots and summaries of the data set.
 \item
   0.25 was added to benign prostatic hyperplasia and capsular
   penetration before taking the log-transform (to get \texttt{lbph} and
-  \texttt{lcp});
-\item
-  It would be better to transform the capsular penetration back to the
-  original scale (because zero means revert back to mean);
+  \texttt{lcp}). It would be better to transform the capsular
+  penetration back to the original scale (because zero means revert back
+  to mean);
 \item
   The weight of the tumor (\texttt{lweight}) is correlated with benign
   prostatic hyperplasia (consider an interaction term);
@@ -2031,7 +2030,7 @@ the description, plots and summaries of the data set.
   cross-validation if Gleason is included as a covariate;
 \item
   Gleason is categorical, so we should cast it to factor, with
-  categories 6,7 and (8,9). The seminal vesicle invasion (\texttt{svi})
+  categories 6, 7 and (8,9). The seminal vesicle invasion (\texttt{svi})
   is already binary;
 \end{itemize}
 
@@ -3312,7 +3311,7 @@ computationally costly for small datasets.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.5756576
+## [1] 0.5820582
 \end{verbatim}
 
 \begin{Shaded}
