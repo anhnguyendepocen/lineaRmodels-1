@@ -54,7 +54,7 @@ lmridge <- function(y, X, O = diag(length(y)), lambda){
 
 For the `mcycle` data, the following lines of code return those matrices.
 
-```{r mcycle_smooth}
+```{r mcycle_smooth, echo = TRUE, results = FALSE, message = FALSE, warning = FALSE}
 smoothspline_mcycle <- smoothsplineb(x = x)
 B <- smoothspline_mcycle$basis
 O <- smoothspline_mcycle$penmat
