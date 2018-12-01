@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{version of 2018-11-28}
+    \date{version of 2018-12-01}
 
 \usepackage[mathscr]{eucal}
 \DeclareMathAlphabet{\mathcrl}{U}{rsfs}{m}{n}
@@ -225,11 +225,10 @@
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{corollary}{Corollary}[chapter]
-\newtheorem{proposition}{Proposition}[chapter]
-\newtheorem{conjecture}{Conjecture}[chapter]
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
 \theoremstyle{definition}
 \newtheorem{example}{Example}[chapter]
 \theoremstyle{definition}
@@ -1277,11 +1276,7 @@ The following 3D depiction hopefully captures this better and shows the
 fitted hyperplane along with the line on which all the (\(x_i, z_i\))
 observations lie.
 
-\begin{verbatim}
-## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-\end{verbatim}
-
-\hypertarget{rgl2225}{}
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/hyperplane-1} \end{center}
 
 \hypertarget{centered-coefficient-of-determination}{%
 \section{(Centered) coefficient of
@@ -1315,8 +1310,8 @@ location-changes in the response, since the ratio
 \({\boldsymbol{y}}\mapsto {\boldsymbol{y}}+ a \mathbf{1}_n\).
 
 This invariance is precisely the reason we dismissed \(R^2\). For
-example, a change of units from Farenheit to Celcius, viz.
-\(T_c = 5 (T_F - 32)/9\), leads to different values of \(R^2\):
+example, a change of units from Farenheit to Celcius,
+viz.~\(T_c = 5 (T_F - 32)/9\), leads to different values of \(R^2\):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1542,7 +1537,7 @@ with some surrounding tissue.
 \end{quote}
 
 \begin{quote}
-In Stamey et al. (1989), prostate specific antigen (PSA) was proposed as
+In Stamey et al.~(1989), prostate specific antigen (PSA) was proposed as
 a preoperative marker to predict the clinical stage of cancer. As well
 as modeling the stage of cancer as a function of PSA, the authors also
 examined PSA as a function of age and seven other histological and
@@ -3198,7 +3193,7 @@ specified under the null hypothesis. One can simulate samples from the
 null distribution \(B\) times and compare the resulting data points with
 the test statistic calculated from the observed sample. This method,
 which is termed bootstrap test, is particularly powerful when we want to
-obtain critical values for test statistics, like e.g. \(\max(|t_i|)\),
+obtain critical values for test statistics, like e.g.~\(\max(|t_i|)\),
 whose distribution is untractable.
 
 Under the null hypothesis of the Gaussian linear model,
@@ -3314,7 +3309,7 @@ computationally costly for small datasets.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.5824582
+## [1] 0.5743574
 \end{verbatim}
 
 \begin{Shaded}
@@ -3398,12 +3393,12 @@ order) is dropped and the intercept becomes the mean of this level.
 \end{Shaded}
 
 \begin{verbatim}
-##        y               x                 group   
-##  Min.   :107.0   Min.   : 78.00   control   :10  
-##  1st Qu.:122.0   1st Qu.: 93.75   thiouracil:10  
-##  Median :140.0   Median :100.50                  
-##  Mean   :142.4   Mean   :100.90                  
-##  3rd Qu.:156.5   3rd Qu.:109.25                  
+##        y               x             group          
+##  Min.   :107.0   Min.   : 78.00   Length:20         
+##  1st Qu.:122.0   1st Qu.: 93.75   Class :character  
+##  Median :140.0   Median :100.50   Mode  :character  
+##  Mean   :142.4   Mean   :100.90                     
+##  3rd Qu.:156.5   3rd Qu.:109.25                     
 ##  Max.   :185.0   Max.   :123.00
 \end{verbatim}
 
@@ -3967,11 +3962,11 @@ earnings}\label{exercise-7.4---determinants-of-earnings}}
 ## -2.10953 -0.25249  0.02989  0.28176  1.27908 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept) 2.200103   0.055375  39.731  < 2e-16
-## education   0.026589   0.004673   5.690 1.38e-08
-## genderMale  0.256471   0.014771  17.363  < 2e-16
-## pseduc      0.037459   0.007322   5.116 3.31e-07
+##             Estimate Std. Error t value     Pr(>|t|)
+## (Intercept) 2.200103   0.055375  39.731      < 2e-16
+## education   0.026589   0.004673   5.690 0.0000000138
+## genderMale  0.256471   0.014771  17.363      < 2e-16
+## pseduc      0.037459   0.007322   5.116 0.0000003308
 ## 
 ## Residual standard error: 0.4154 on 3183 degrees of freedom
 ## Multiple R-squared:  0.1897, Adjusted R-squared:  0.1889 
@@ -4164,9 +4159,9 @@ The function \texttt{anova} outputs the following:
 ## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value    Pr(>F)
-## commerce   1 50.066  50.066 35.0438 1.985e-06
-## tradition  1  6.074   6.074  4.2514   0.04828
+##           Df Sum Sq Mean Sq F value      Pr(>F)
+## commerce   1 50.066  50.066 35.0438 0.000001985
+## tradition  1  6.074   6.074  4.2514     0.04828
 ## Residuals 29 41.431   1.429
 \end{verbatim}
 
@@ -4212,9 +4207,9 @@ We thus obtain a different output if we specify instead
 ## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value    Pr(>F)
-## tradition  1 19.673  19.673  13.770  0.000872
-## commerce   1 36.467  36.467  25.525 2.194e-05
+##           Df Sum Sq Mean Sq F value     Pr(>F)
+## tradition  1 19.673  19.673  13.770   0.000872
+## commerce   1 36.467  36.467  25.525 0.00002194
 ## Residuals 29 41.431   1.429
 \end{verbatim}
 
@@ -4248,10 +4243,10 @@ rejected at significance level \(\alpha = 5\%\).
 ## 
 ## Model:
 ## intensity ~ commerce + tradition
-##           Df Sum of Sq    RSS    AIC F value    Pr(>F)
-## <none>                 41.431 14.266                  
-## commerce   1    36.467 77.898 32.469 25.5252 2.194e-05
-## tradition  1     6.074 47.505 16.643  4.2514   0.04828
+##           Df Sum of Sq    RSS    AIC F value     Pr(>F)
+## <none>                 41.431 14.266                   
+## commerce   1    36.467 77.898 32.469 25.5252 0.00002194
+## tradition  1     6.074 47.505 16.643  4.2514    0.04828
 \end{verbatim}
 
 These \(F\) values are the same as those obtained with the call on
@@ -4293,9 +4288,9 @@ lower.
 ## Fit: lm(formula = intensity ~ commerce + tradition, data = Chirot)
 ## 
 ## Linear Hypotheses:
-##        Estimate Std. Error t value Pr(>|t|)
-## 1 == 0  0.09522    0.01885   5.052 4.37e-05
-## 2 == 0  0.11992    0.05816   2.062   0.0911
+##        Estimate Std. Error t value  Pr(>|t|)
+## 1 == 0  0.09522    0.01885   5.052 0.0000437
+## 2 == 0  0.11992    0.05816   2.062    0.0911
 ## (Adjusted p values reported -- single-step method)
 \end{verbatim}
 
@@ -4315,8 +4310,8 @@ lower.
 ## 2 == 0  0.11992
 ## 
 ## Global Test:
-##       F DF1 DF2    Pr(>F)
-## 1 19.65   2  29 4.038e-06
+##       F DF1 DF2      Pr(>F)
+## 1 19.65   2  29 0.000004038
 \end{verbatim}
 
 \begin{Shaded}
@@ -4336,9 +4331,9 @@ lower.
 ## Model 1: restricted model
 ## Model 2: intensity ~ commerce + tradition
 ## 
-##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)
-## 1     31 97.571                              
-## 2     29 41.431  2     56.14 19.648 4.038e-06
+##   Res.Df    RSS Df Sum of Sq      F      Pr(>F)
+## 1     31 97.571                                
+## 2     29 41.431  2     56.14 19.648 0.000004038
 \end{verbatim}
 
 You can also use the function ANOVA to test with nested model. The
@@ -4356,9 +4351,9 @@ syntax is slightly different, but the output is exactly the same.
 ## 
 ## Model 1: intensity ~ 1
 ## Model 2: intensity ~ commerce + tradition
-##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)
-## 1     31 97.571                              
-## 2     29 41.431  2     56.14 19.648 4.038e-06
+##   Res.Df    RSS Df Sum of Sq      F      Pr(>F)
+## 1     31 97.571                                
+## 2     29 41.431  2     56.14 19.648 0.000004038
 \end{verbatim}
 
 At this point, it is important to note that we will get different test
@@ -4469,8 +4464,8 @@ The one-way ANOVA model can be written as
 Let \(\boldsymbol{y}_j = (y_{1,j}, \ldots, y_{n_j, j})^\top\) denote the
 vector of observations for the first group and similarly for
 \(\boldsymbol{\varepsilon_j}\); we can stack observations into a single
-regression with a matrix \(\mathbf{X}\) of indicators variables, viz.
-\[\begin{pmatrix}\boldsymbol{y}_1 \\\boldsymbol{y}_2 \\ \vdots \\ \boldsymbol{y}_L\end{pmatrix} = \begin{pmatrix} \mathbf{1}_{n_1} & \mathbf{0}_{n_1}&\cdots & \mathbf{0}_{n_1} \\
+regression with a matrix \(\mathbf{X}\) of indicators variables,
+viz.~\[\begin{pmatrix}\boldsymbol{y}_1 \\\boldsymbol{y}_2 \\ \vdots \\ \boldsymbol{y}_L\end{pmatrix} = \begin{pmatrix} \mathbf{1}_{n_1} & \mathbf{0}_{n_1}&\cdots & \mathbf{0}_{n_1} \\
 \mathbf{0}_{n_2} & \mathbf{1}_{n_2}&\ddots & \mathbf{0}_{n_2} \\
 \vdots & \ddots & \ddots & \vdots\\
 \mathbf{0}_{n_L} & \mathbf{0}_{n_L}&\cdots & \mathbf{1}_{n_L} 
@@ -4637,14 +4632,14 @@ parametrization from baseline and constrast to individual group mean.
 ## -8.2667 -1.8500  0.2833  1.7708  5.3333 
 ## 
 ## Coefficients:
-##                       Estimate Std. Error t value Pr(>|t|)
-## methodFasT-Fix          17.467      1.403  12.454 2.60e-09
-## methodMeniscus Arrow    11.383      1.403   8.116 7.21e-07
-## methodVertical Suture   16.950      1.403  12.085 3.92e-09
+##                       Estimate Std. Error t value      Pr(>|t|)
+## methodFasT-Fix          17.467      1.403  12.454 0.00000000260
+## methodMeniscus Arrow    11.383      1.403   8.116 0.00000072052
+## methodVertical Suture   16.950      1.403  12.085 0.00000000392
 ## 
 ## Residual standard error: 3.435 on 15 degrees of freedom
 ## Multiple R-squared:  0.9607, Adjusted R-squared:  0.9529 
-## F-statistic: 122.3 on 3 and 15 DF,  p-value: 9.081e-11
+## F-statistic: 122.3 on 3 and 15 DF,  p-value: 0.00000000009081
 \end{verbatim}
 
 \begin{Shaded}
@@ -5120,8 +5115,8 @@ covered in MATH 341, is the following:
 \item
   Try to simplify the full model using an \(F\) test, potentially
   dropping multiple terms at once. This preserves power (avoids the
-  potential bias in the estimate of RSS in the denominator; cf.
-  \ref{biased-rss} and reduces the multiple testing problem that
+  potential bias in the estimate of RSS in the denominator;
+  cf.~\ref{biased-rss} and reduces the multiple testing problem that
   inflates Type I errors (reject the null more than \(\alpha\%\) of the
   time when you shouldn't).
 \item
@@ -5175,7 +5170,7 @@ weight of the diamond, \texttt{carat}, rounded to the nearest 0.01.
 \end{Shaded}
 
 \begin{verbatim}
-## The following objects are masked from di (pos = 3):
+## The following objects are masked from di (pos = 6):
 ## 
 ##     carat, clarity, color, cut, depth, price, table, x, y, z
 \end{verbatim}
@@ -5478,7 +5473,7 @@ tests. Let us try to drop one of the remaining variables.
 ##            Df Sum of Sq     RSS     AIC  F value    Pr(>F)
 ## <none>                   7.8077 -2039.8                   
 ## log(carat)  1    5.7660 13.5737 -1765.2 354.4787 < 2.2e-16
-## cut         4    0.4411  8.2488 -2020.3   6.7788  2.59e-05
+## cut         4    0.4411  8.2488 -2020.3   6.7788 0.0000259
 ## color       6   10.1359 17.9436 -1635.7 103.8552 < 2.2e-16
 ## clarity     7   18.5675 26.3752 -1445.1 163.0697 < 2.2e-16
 ## x           1    0.0961  7.9038 -2035.6   5.9062   0.01545
@@ -5546,14 +5541,14 @@ should try and include interactions.
 ## 
 ## Model:
 ## log(price) ~ log(carat) + clarity + color + x + table + cut
-##                    Df Sum of Sq    RSS     AIC F value    Pr(>F)
-## <none>                          7.7504 -2041.4                  
-## log(carat):color    6   0.12893 7.6215 -2037.8  1.3336  0.240428
-## log(carat):clarity  7   0.17840 7.5720 -2039.1  1.5886  0.136476
-## log(carat):cut      4   0.39334 7.3570 -2059.5  6.3489 5.540e-05
-## color:cut          23   0.44771 7.3027 -2025.2  1.2155  0.225315
-## clarity:color      37   1.22732 6.5231 -2053.6  2.2476 6.789e-05
-## clarity:cut        21   0.65138 7.0990 -2043.3  2.0012  0.005557
+##                    Df Sum of Sq    RSS     AIC F value     Pr(>F)
+## <none>                          7.7504 -2041.4                   
+## log(carat):color    6   0.12893 7.6215 -2037.8  1.3336   0.240428
+## log(carat):clarity  7   0.17840 7.5720 -2039.1  1.5886   0.136476
+## log(carat):cut      4   0.39334 7.3570 -2059.5  6.3489 0.00005540
+## color:cut          23   0.44771 7.3027 -2025.2  1.2155   0.225315
+## clarity:color      37   1.22732 6.5231 -2053.6  2.2476 0.00006789
+## clarity:cut        21   0.65138 7.0990 -2043.3  2.0012   0.005557
 \end{verbatim}
 
 The interaction between \texttt{log(carat)} and \texttt{cut} is
@@ -5785,12 +5780,12 @@ diagnostic plots and answer the questions.
 \begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/diagnosticsdiamonds-1} \end{center}
 
 \begin{verbatim}
-##         StudRes        Hat        CookD
-## 243 -3.93155877 0.03281988 2.036095e-02
-## 340 -0.03069107 0.38041277 2.318201e-05
-## 346 -0.64996148 0.32541064 8.161235e-03
-## 350 -3.62756784 0.22541782 1.493601e-01
-## 384 -2.65776683 0.15938312 5.289675e-02
+##         StudRes        Hat         CookD
+## 243 -3.93155877 0.03281988 0.02036095303
+## 340 -0.03069107 0.38041277 0.00002318201
+## 346 -0.64996148 0.32541064 0.00816123471
+## 350 -3.62756784 0.22541782 0.14936005917
+## 384 -2.65776683 0.15938312 0.05289674514
 \end{verbatim}
 
 Many points have high leverage and large Cook's values. This means the
@@ -6009,9 +6004,9 @@ set of 10 first coefficients \(\boldsymbol{\gamma}\), which are exactly
 zero, stabilize around another value. Note that if we increase the
 penalty, from \(\lambda_1\) to \(\lambda_2\) with
 \(\lambda_1 < \lambda_2\), this \textbf{does not} necessarily imply that
-individual coefficient estimates decrease, i.e.
-\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\) even if
-\(\lambda_1 < \lambda_2\).
+individual coefficient estimates decrease,
+i.e.~\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\)
+even if \(\lambda_1 < \lambda_2\).
 
 The coefficients \(\hat{\boldsymbol{\gamma}}^\lambda\) can be computed
 using an augmented linear regression, with response
@@ -6128,6 +6123,137 @@ and the latter is readily computed.
 Note that in this case, the optimal value of \(\lambda\) found is higher
 than the theoretical optimum. In practice, we may prefer \(K\)-fold
 cross-validation to leave-one-out cross validation.
+
+\hypertarget{splines}{%
+\chapter{Splines}\label{splines}}
+
+The following code provides functions to compute manually a cubic spline
+and returns the penalty function. In \textbf{R}, one would rather use
+functions that compute efficiently the generalized cross-validation
+criterion and return the best smoothing or regression spline.
+
+The package \texttt{splines} contains \texttt{bs} for cubic regression
+splines and \texttt{ns} for natural regression splines. Smoothing
+splines can be obtained by a call to \texttt{smooth.spline}. The
+following illustrates a regression spline in which a number of knots
+(here roughly \(n/10\)) are chosen equispaced on the distribution scale,
+based on the quantiles of the covariate vector.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(splines)}
+\KeywordTok{data}\NormalTok{(mcycle, }\DataTypeTok{package =} \StringTok{"MASS"}\NormalTok{)}
+\CommentTok{# Center observations}
+\NormalTok{x <-}\StringTok{ }\NormalTok{mcycle}\OperatorTok{$}\NormalTok{times}
+\NormalTok{y <-}\StringTok{ }\NormalTok{mcycle}\OperatorTok{$}\NormalTok{accel }\OperatorTok{-}\StringTok{ }\KeywordTok{mean}\NormalTok{(mcycle}\OperatorTok{$}\NormalTok{accel)}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{length}\NormalTok{(x)}
+\NormalTok{df <-}\StringTok{ }\KeywordTok{floor}\NormalTok{(n}\OperatorTok{/}\DecValTok{10}\NormalTok{)}
+\CommentTok{# Compute number of knots}
+\NormalTok{m <-}\StringTok{ }\NormalTok{df }\OperatorTok{+}\StringTok{ }\DecValTok{4}
+\NormalTok{knots <-}\StringTok{  }\KeywordTok{quantile}\NormalTok{(x, }\DataTypeTok{prob =}\NormalTok{ (}\DecValTok{1}\OperatorTok{:}\NormalTok{m)}\OperatorTok{/}\NormalTok{(m}\OperatorTok{+}\DecValTok{1}\NormalTok{))}
+
+\CommentTok{#With regression natural cubic spline, equispaced knots on quantile scale}
+\KeywordTok{plot}\NormalTok{(y}\OperatorTok{~}\NormalTok{x, }\DataTypeTok{xlab =} \StringTok{"time after impact (in milliseconds)"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"acceleration"}\NormalTok{,}
+     \DataTypeTok{main =} \StringTok{"Simulated motorcycle accident"}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"l"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(x, }\KeywordTok{fitted}\NormalTok{(}\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\KeywordTok{ns}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{knots =}\NormalTok{ knots))), }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{)}
+\CommentTok{#Smoothing spline, using GCV}
+\NormalTok{spl <-}\StringTok{ }\KeywordTok{smooth.spline}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{cv =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{all.knots =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(x, }\KeywordTok{fitted}\NormalTok{(spl), }\DataTypeTok{col =} \StringTok{"green"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/spline example-1} \end{center}
+
+The fit from the regression spline differs from that of the smoothing
+spline. The former uses only 18 basis functions and therefore can be
+fitted using \texttt{lm}, whereas the smoothing spline uses 94 basis
+functions (this is lower than \(n\) because there are ties in the
+\texttt{x} vector).
+
+Below is sample code to obtain the \(\mathbf{B}\) and
+\(\boldsymbol{\Omega}\) matrices, corresponding to the basis functions
+and the associated penalty.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# You need the fda package installed}
+\CommentTok{# install.packages("fda")}
+\CommentTok{# Function returns B and Omega matrices}
+\NormalTok{smoothsplineb <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}
+  \KeywordTok{require}\NormalTok{(fda)}
+\NormalTok{  breaks <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(}\KeywordTok{unique}\NormalTok{(x))}
+\NormalTok{  basisfd <-}\StringTok{ }\KeywordTok{create.bspline.basis}\NormalTok{(}\DataTypeTok{norder =} \DecValTok{4}\NormalTok{, }\DataTypeTok{breaks =}\NormalTok{ breaks)}
+\NormalTok{  B <-}\StringTok{ }\KeywordTok{bsplineS}\NormalTok{(x, }\DataTypeTok{breaks =}\NormalTok{ breaks, }\DataTypeTok{norder =} \DecValTok{4}\NormalTok{, }\DataTypeTok{nderiv =} \DecValTok{0}\NormalTok{)}
+\NormalTok{  penmat <-}\StringTok{ }\KeywordTok{bsplinepen}\NormalTok{(basisfd, }\DataTypeTok{Lfd =} \DecValTok{2}\NormalTok{)}
+  \KeywordTok{list}\NormalTok{(}\DataTypeTok{basis =}\NormalTok{ B, }\DataTypeTok{penmat =}\NormalTok{ penmat)}
+\NormalTok{\}}
+
+\CommentTok{# Compute ridge regression coefficients manually}
+\NormalTok{lmridge <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(y, X, }\DataTypeTok{O =} \KeywordTok{diag}\NormalTok{(}\KeywordTok{length}\NormalTok{(y)), lambda)\{ }
+  \KeywordTok{as.vector}\NormalTok{(}\KeywordTok{solve}\NormalTok{(}\KeywordTok{crossprod}\NormalTok{(X) }\OperatorTok{+}\StringTok{ }\NormalTok{lambda}\OperatorTok{*}\NormalTok{O, }\KeywordTok{crossprod}\NormalTok{(X, y)))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+For the \texttt{mcycle} data, the following lines of code return those
+matrices.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{smoothspline_mcycle <-}\StringTok{ }\KeywordTok{smoothsplineb}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x)}
+\NormalTok{B <-}\StringTok{ }\NormalTok{smoothspline_mcycle}\OperatorTok{$}\NormalTok{basis}
+\NormalTok{O <-}\StringTok{ }\NormalTok{smoothspline_mcycle}\OperatorTok{$}\NormalTok{penmat}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{solutions-5}{%
+\section{Solutions}\label{solutions-5}}
+
+\hypertarget{exercise-12.4-smoothing-splines}{%
+\subsection{Exercise 12.4 Smoothing
+splines}\label{exercise-12.4-smoothing-splines}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Evaluate GCV at a grid of lambda}
+\NormalTok{lambdas <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DataTypeTok{length =}\NormalTok{ 250L)}
+\CommentTok{# Container for GCV criterion}
+\NormalTok{gcv <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\KeywordTok{length}\NormalTok{(lambdas))  }
+\CommentTok{# Loop over cases}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(lambdas))\{}
+  \CommentTok{# Compute smoothing matrix}
+\NormalTok{  Sm <-}\StringTok{ }\NormalTok{B }\OperatorTok{%*%}\StringTok{ }\KeywordTok{solve}\NormalTok{(}\KeywordTok{crossprod}\NormalTok{(B) }\OperatorTok{+}\StringTok{ }\NormalTok{lambdas[i]}\OperatorTok{*}\NormalTok{O) }\OperatorTok{%*%}\StringTok{ }\KeywordTok{t}\NormalTok{(B)}
+  \CommentTok{# Compute ridge regression coefficients}
+\NormalTok{  coefs <-}\StringTok{ }\KeywordTok{lmridge}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{X =}\NormalTok{ B, }\DataTypeTok{O =}\NormalTok{ O, }\DataTypeTok{lambda =}\NormalTok{ lambdas[i])}
+  \CommentTok{# Compute GCV criterion}
+\NormalTok{  gcv[i] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{crossprod}\NormalTok{(y }\OperatorTok{-}\StringTok{ }\NormalTok{B }\OperatorTok{%*%}\StringTok{ }\NormalTok{coefs)}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\KeywordTok{mean}\NormalTok{(}\KeywordTok{diag}\NormalTok{(Sm))))}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(B)}
+\NormalTok{\}}
+\CommentTok{# Plot GCV}
+\KeywordTok{plot}\NormalTok{(lambdas, gcv, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{xlab =} \KeywordTok{expression}\NormalTok{(lambda), }
+     \DataTypeTok{ylab =} \StringTok{"GCV criterion value"}\NormalTok{, }\DataTypeTok{main =} \StringTok{"Cross validation"}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v =}\NormalTok{ lambdas[}\KeywordTok{which.min}\NormalTok{(gcv)])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/soln12_4-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot data}
+\KeywordTok{plot}\NormalTok{(y }\OperatorTok{~}\StringTok{ }\NormalTok{x, }\DataTypeTok{xlab =} \StringTok{"time after impact (in milliseconds)"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"centered acceleration"}\NormalTok{,}
+     \DataTypeTok{main =} \StringTok{"Simulated motorcycle accident"}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"l"}\NormalTok{)}
+\CommentTok{# Undersmoothing}
+\CommentTok{#lines(x, B %*% lmridge(y = y, X = B, O = O, lambda = 0.01), col = "green")}
+\CommentTok{# Oversmoothing}
+\CommentTok{#lines(x, B %*% lmridge(y = y, X = B, O = O, lambda = 500), col = "blue")}
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{predict}\NormalTok{(}\KeywordTok{smooth.spline}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{all.knots =} \OtherTok{TRUE}\NormalTok{)))}
+\NormalTok{fitted_opt <-}\StringTok{ }\NormalTok{B }\OperatorTok{%*%}\StringTok{ }\KeywordTok{lmridge}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ y, }\DataTypeTok{X =}\NormalTok{ B, }\DataTypeTok{O =}\NormalTok{ O,}
+                    \DataTypeTok{lambda =}\NormalTok{ lambdas[}\KeywordTok{which.min}\NormalTok{(gcv)])}
+\KeywordTok{lines}\NormalTok{(x, fitted_opt , }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/soln12_4-2} \end{center}
 
 \bibliography{book.bib,packages.bib}
 
