@@ -168,14 +168,13 @@ Akaike's An Information Criterion (AIC) is $\mathrm{AIC}=-2\ell(\hat{\boldsymbol
 Some general remarks if you use information criteria 
 
 
-1. AIC and BIC *must be* computed using maximum likelihood estimators. In a linear model, this means that the estimator of the variance is  $\hat{\sigma}^2=\mathrm{RSS}/n$ and not $s^2$.  Similarly, the ordinary least square estimator is equivalent to the MLE for $\hbb$ if $\mathrm{Va}({\boldsymbol{\varepsilon}}) = \sigma^2 \mathbf{I}_n$. In **R**, you can use `BIC` and `AIC` commands on models obtained from `lm` to get those values.
-2. The models should include the *same data* to be comparable.
-3. If you are comparing different distributions, you need to include all the constants to make AIC values comparable.
-4. The models need not be nested, but there are consequences if they are not. The $\mathrm{AIC}= \mathrm{O}_p(n)$ (so information accumulates over time at a linear rate), but its variability is $\mathrm{O}_p(n^{1/2})$ --- this difference is only $\mathrm{O}_p(1)$ when models are nested.
-5. If the *TRUE* model exists and one of the models under consideration, it will be selected as $n \to \infty$ with probability one by BIC and with high probability by AIC. 
+1. AIC and BIC *must be* computed using maximum likelihood estimators. In a linear model, this means that the estimator of the variance is  $\hat{\sigma}^2=\mathrm{RSS}/n$ and not $s^2$.  Similarly, the ordinary least square estimator is equivalent to the MLE for $\hbb$ if $\mathrm{Var}({\boldsymbol{\varepsilon}}) = \sigma^2 \mathbf{I}_n$. In **R**, you can use `BIC` and `AIC` commands on models obtained from `lm` to get those values.
+2. Information criteria can be used to compare nested and non-nested models.
+3. The models should include the *same data* to be comparable.
+4. If you are comparing different distributions, you need to include all the constants to make AIC values comparable.
 
 
-The function `step` allows you to do forward or backward model selection using one of the information criterion. I **do not** recommend this, as there is no theoretical ground for the method. Comparisons based on information criteria are mostly meaningful if the models are nested. You may wish to use BIC rather than AIC because the latter leads to more parsimonious (and consistent model selection in the large sample limit). It may be a good starting point for your model search.
+The function `step` allows you to do forward or backward model selection using one of the information criterion. If you use this procedure, make sure that the model returned makes sense (e.g., no interactions without main effects). You may wish to use BIC rather than AIC because the latter leads to more parsimonious models. It may be a good starting point for your model search.
 
 
 ```{r}

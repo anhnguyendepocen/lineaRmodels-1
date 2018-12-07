@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>lineaRmodels</title>
+  <title>7.1 Example: Price of diamonds | lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="lineaRmodels" />
+  <meta property="og:title" content="7.1 Example: Price of diamonds | lineaRmodels />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="lineaRmodels" />
+  <meta name="twitter:title" content="7.1 Example: Price of diamonds | lineaRmodels />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
@@ -35,6 +35,7 @@
 <link rel="next" href="model-selection-invalidates-p-values.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,11 +47,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -255,18 +256,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="example-price-of-diamonds" class="section level2">
 <h2><span class="header-section-number">7.1</span> Example: Price of diamonds</h2>
 <p>This very large dataset contains the price in USD (rounded to nearest dollar) of <span class="math inline">\(n=53940\)</span> diamonds. The explanatory variables include three ordinal factors: the quality of the <code>cut</code>, <code>color</code> and <code>clarity</code>. These are ranked from worst to best outcome. Five other variables contain the mensurements of the dimension of the diamond, rounded to the 0.01 mm. They are length <code>x</code>, width <code>y</code>, depth <code>z</code>, total depth percentage <code>depth</code> where <code>depth</code><span class="math inline">\(=2\times z/(x + y)\)</span>, and <code>table</code>, a measure of the width of the top of the diamond. The last variable is the weight of the diamond, <code>carat</code>, rounded to the nearest 0.01.</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" title="1"><span class="co">#install.packages(&quot;ggplot2&quot;)</span></a>
-<a class="sourceLine" id="cb250-2" title="2"><span class="kw">library</span>(ggplot2); <span class="kw">library</span>(car)</a>
-<a class="sourceLine" id="cb250-3" title="3"><span class="kw">data</span>(diamonds, <span class="dt">package =</span> <span class="st">&quot;ggplot2&quot;</span>)</a>
-<a class="sourceLine" id="cb250-4" title="4"><span class="kw">help</span>(diamonds)</a>
-<a class="sourceLine" id="cb250-5" title="5"><span class="co">#Subsample because the dataset is very large</span></a>
-<a class="sourceLine" id="cb250-6" title="6"><span class="kw">set.seed</span>(<span class="dv">1234</span>) <span class="co">#Fix RNG seed so as to make output reproducible</span></a>
-<a class="sourceLine" id="cb250-7" title="7">di &lt;-<span class="st"> </span>diamonds[<span class="kw">sample.int</span>(<span class="dt">size =</span> <span class="dv">500</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="kw">nrow</span>(diamonds)), ]</a>
-<a class="sourceLine" id="cb250-8" title="8"><span class="kw">attach</span>(di)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;ggplot2&quot;)</span>
+<span class="kw">library</span>(ggplot2); <span class="kw">library</span>(car)
+<span class="kw">data</span>(diamonds, <span class="dt">package =</span> <span class="st">&quot;ggplot2&quot;</span>)
+<span class="kw">help</span>(diamonds)
+<span class="co">#Subsample because the dataset is very large</span>
+<span class="kw">set.seed</span>(<span class="dv">1234</span>) <span class="co">#Fix RNG seed so as to make output reproducible</span>
+di &lt;-<span class="st"> </span>diamonds[<span class="kw">sample.int</span>(<span class="dt">size =</span> <span class="dv">500</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="kw">nrow</span>(diamonds)), ]
+<span class="kw">attach</span>(di)</code></pre>
 <div id="exploratory-data-analysis" class="section level3">
 <h3><span class="header-section-number">7.1.1</span> Exploratory data analysis</h3>
 <p>We can look at some graphs of the data, including pair plots and some summary statistics. These are useful to spot outliers.</p>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb251-1" title="1"><span class="kw">str</span>(di)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(di)</code></pre>
 <pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    500 obs. of  10 variables:
 ##  $ carat  : num  0.91 0.43 0.32 0.33 0.7 0.33 0.71 1.3 0.43 2.06 ...
 ##  $ cut    : Ord.factor w/ 5 levels &quot;Fair&quot;&lt;&quot;Good&quot;&lt;..: 5 4 5 5 2 5 4 2 4 5 ...
@@ -278,55 +279,55 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 ##  $ x      : num  6.24 4.89 4.43 4.46 5.59 4.42 5.71 6.9 4.88 8.15 ...
 ##  $ y      : num  6.22 4.93 4.45 4.48 5.62 4.45 5.66 6.87 4.86 8.19 ...
 ##  $ z      : num  3.84 2.95 2.73 2.76 3.6 2.74 3.54 4.38 2.96 5.08 ...</code></pre>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" title="1"><span class="kw">apply</span>(di, <span class="dv">2</span>, range)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(di, <span class="dv">2</span>, range)</code></pre>
 <pre><code>##      carat  cut         color clarity depth  table  price   x      y     
 ## [1,] &quot;0.23&quot; &quot;Fair&quot;      &quot;D&quot;   &quot;I1&quot;    &quot;55.4&quot; &quot;53.0&quot; &quot;  364&quot; &quot;3.96&quot; &quot;3.99&quot;
 ## [2,] &quot;2.61&quot; &quot;Very Good&quot; &quot;J&quot;   &quot;VVS2&quot;  &quot;69.8&quot; &quot;67.0&quot; &quot;18779&quot; &quot;8.85&quot; &quot;8.79&quot;
 ##      z     
 ## [1,] &quot;1.53&quot;
 ## [2,] &quot;5.60&quot;</code></pre>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" title="1"><span class="kw">print</span>(GGally<span class="op">::</span><span class="kw">ggpairs</span>(di[,<span class="op">-</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>)], <span class="dt">progress =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(GGally<span class="op">::</span><span class="kw">ggpairs</span>(di[,<span class="op">-</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>)], <span class="dt">progress =</span> <span class="ot">FALSE</span>))</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-47-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb256-1" title="1"><span class="kw">table</span>(cut)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(cut)</code></pre>
 <pre><code>## cut
 ##      Fair      Good Very Good   Premium     Ideal 
 ##        16        46       100       123       215</code></pre>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb258-1" title="1"><span class="kw">table</span>(clarity)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(clarity)</code></pre>
 <pre><code>## clarity
 ##   I1  SI2  SI1  VS2  VS1 VVS2 VVS1   IF 
 ##    7   89  110  118   76   44   36   20</code></pre>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" title="1"><span class="kw">table</span>(color)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(color)</code></pre>
 <pre><code>## color
 ##   D   E   F   G   H   I   J 
 ##  57 100  77  89  95  52  30</code></pre>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb262-1" title="1"><span class="kw">graphics.off</span>()</a>
-<a class="sourceLine" id="cb262-2" title="2"><span class="kw">plot</span>(<span class="kw">density</span>(carat, <span class="dt">bw =</span> <span class="fl">0.02</span>), <span class="dt">main =</span> <span class="st">&quot;Density estimate of carat&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">graphics.off</span>()
+<span class="kw">plot</span>(<span class="kw">density</span>(carat, <span class="dt">bw =</span> <span class="fl">0.02</span>), <span class="dt">main =</span> <span class="st">&quot;Density estimate of carat&quot;</span>)</code></pre>
 <p>The most important variable is likely to be weight or width (which are strongly correlated). An explanatory data analysis reveals the relationship between <code>carat</code> and <code>price</code> to be non-linear. A logarithmic transformation of both the <code>price</code> and <code>carat</code> alleviates this and reveals the discretization of the measurements (most of the diamonds have a reported weight of 1 or 2 carats). The linear correlation between the variables <code>x</code>, <code>y</code> and <code>z</code> is close to unity (due to the regular cut of diamonds). This will potentially lead to collinearity, so the variables may not be jointly significative. There is (depending on the subset) a clearly visible outlier in <code>z</code> hat should be removed. There is no evidence of interactions between the categorical variables and the rest (not shown). Lastly, <code>depth</code> and <code>table</code> are apparently not linearly correlated with <code>price</code>.</p>
-<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a>
-<a class="sourceLine" id="cb263-2" title="2"><span class="kw">plot</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">ylab =</span> <span class="st">&quot;price (in USD)&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;carat&quot;</span>)</a>
-<a class="sourceLine" id="cb263-3" title="3"><span class="kw">plot</span>(carat, <span class="kw">log</span>(price), <span class="dt">ylab =</span> <span class="st">&quot;log price (in USD)&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;carat&quot;</span>)</a>
-<a class="sourceLine" id="cb263-4" title="4"><span class="kw">plot</span>(carat, price, <span class="dt">log=</span><span class="st">&quot;xy&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;log price (in USD)&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;log carat&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)
+<span class="kw">plot</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">ylab =</span> <span class="st">&quot;price (in USD)&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;carat&quot;</span>)
+<span class="kw">plot</span>(carat, <span class="kw">log</span>(price), <span class="dt">ylab =</span> <span class="st">&quot;log price (in USD)&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;carat&quot;</span>)
+<span class="kw">plot</span>(carat, price, <span class="dt">log=</span><span class="st">&quot;xy&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;log price (in USD)&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;log carat&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/carat_plot-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>A careful explanatory data analysis with the full model reveals that, despite the fact <code>depth</code> is a transformed variable supposedly created from <code>x</code>, <code>y</code> and <code>z</code>, there are some outliers (<code>summary(lm(depth ~ -1 + I(z/(x+y)), data = diamonds))</code>). The model is likely to predict poorly 1 carat and 2 carats diamonds, for which there is a lot of heterogeneity.</p>
 <p>Sometimes, it helps to regroup the regressors to better identify patterns. This is most useful in situations where there is a lot of noise in the response (not the case here).</p>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb264-1" title="1">lcarat_cut &lt;-<span class="st"> </span><span class="kw">cut</span>(<span class="kw">log</span>(carat), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="fl">1.5</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.25</span>))</a>
-<a class="sourceLine" id="cb264-2" title="2"><span class="kw">boxplot</span>(x <span class="op">~</span><span class="st"> </span>lcarat_cut, <span class="dt">col =</span> <span class="st">&#39;grey&#39;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">lcarat_cut &lt;-<span class="st"> </span><span class="kw">cut</span>(<span class="kw">log</span>(carat), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="fl">1.5</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.25</span>))
+<span class="kw">boxplot</span>(x <span class="op">~</span><span class="st"> </span>lcarat_cut, <span class="dt">col =</span> <span class="st">&#39;grey&#39;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-48-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="model-selection-1" class="section level3">
 <h3><span class="header-section-number">7.1.2</span> Model selection</h3>
 <p>We will start with a model with all regressors but <code>y</code> and <code>z</code> (which we eliminate on grounds of multicollinearity).</p>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb265-1" title="1"><span class="co">#Small model</span></a>
-<a class="sourceLine" id="cb265-2" title="2">redu_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat))</a>
-<a class="sourceLine" id="cb265-3" title="3"><span class="co">#Unordered factors (so they are interpretable)</span></a>
-<a class="sourceLine" id="cb265-4" title="4"><span class="co">#Ordered factors use an orthogonal decomposition</span></a>
-<a class="sourceLine" id="cb265-5" title="5">cut &lt;-<span class="st"> </span><span class="kw">factor</span>(cut, <span class="dt">ordered =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb265-6" title="6">color &lt;-<span class="st"> </span><span class="kw">factor</span>(color, <span class="dt">ordered =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb265-7" title="7">clarity &lt;-<span class="st"> </span><span class="kw">factor</span>(clarity, <span class="dt">ordered =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb265-8" title="8"><span class="co">#Full additive model</span></a>
-<a class="sourceLine" id="cb265-9" title="9">full_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span>depth <span class="op">+</span><span class="st"> </span>table <span class="op">+</span><span class="st"> </span>x)</a>
-<a class="sourceLine" id="cb265-10" title="10">summ_full &lt;-<span class="st"> </span><span class="kw">summary</span>(full_mod)</a>
-<a class="sourceLine" id="cb265-11" title="11">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">coef</span>(summ_full), <span class="dt">digits =</span> <span class="dv">3</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Small model</span>
+redu_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat))
+<span class="co">#Unordered factors (so they are interpretable)</span>
+<span class="co">#Ordered factors use an orthogonal decomposition</span>
+cut &lt;-<span class="st"> </span><span class="kw">factor</span>(cut, <span class="dt">ordered =</span> <span class="ot">FALSE</span>)
+color &lt;-<span class="st"> </span><span class="kw">factor</span>(color, <span class="dt">ordered =</span> <span class="ot">FALSE</span>)
+clarity &lt;-<span class="st"> </span><span class="kw">factor</span>(clarity, <span class="dt">ordered =</span> <span class="ot">FALSE</span>)
+<span class="co">#Full additive model</span>
+full_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span>depth <span class="op">+</span><span class="st"> </span>table <span class="op">+</span><span class="st"> </span>x)
+summ_full &lt;-<span class="st"> </span><span class="kw">summary</span>(full_mod)
+knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">coef</span>(summ_full), <span class="dt">digits =</span> <span class="dv">3</span>)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -494,18 +495,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb266-1" title="1">RSS_full &lt;-<span class="st"> </span>summ_full<span class="op">$</span>sigma<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>summ_full<span class="op">$</span>df[<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb266-2" title="2"><span class="co">#RSS_full &lt;- crossprod(resid(full_mod))[1]</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">RSS_full &lt;-<span class="st"> </span>summ_full<span class="op">$</span>sigma<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>summ_full<span class="op">$</span>df[<span class="dv">2</span>]
+<span class="co">#RSS_full &lt;- crossprod(resid(full_mod))[1]</span></code></pre>
 <p>The model fit is excellent. Unsurprisingly, all of <code>x</code>, <code>y</code> and <code>z</code> are not marginally significant if they are all included at once (output omitted), but <code>x</code> is if it is the only one included.</p>
 <p>Recall that the <code>t value</code> column gives the Wald statistic <span class="math inline">\(t = \hat{\beta}_i/\mathrm{se}(\hat{\beta}_i)\)</span>, for the null hypothesis <span class="math inline">\(\beta_{i}=0\)</span> against the two-sided alternative <span class="math inline">\(\beta_{i} \neq 0\)</span>. Under <span class="math inline">\(\mathscr{H}_0\)</span>, <span class="math inline">\(t \sim \mathcal{T}(n-p)\)</span> and the <span class="math inline">\(P\)</span>-value is <span class="math inline">\(2\times (1-\)</span><code>pt</code><span class="math inline">\((t, n-p))\)</span>. It appears that we could get rid of <code>depth</code> and <code>table</code>, which contribute little overall. This is confirmed graphically using added-variable plots, which plots <span class="math inline">\(\mathbf{M}_{\mathbf{X}_{-j}}\boldsymbol{y}\)</span> against <span class="math inline">\(\mathbf{M}_{\mathbf{X}_{-j}}\mathbf{x}_j\)</span>. This is the residual effect of <span class="math inline">\(\mathbf{x}_j\)</span> after taking into account the effect of the other variables <span class="math inline">\(\mathbf{X}_{-j}\)</span> on what remains of the response. If the variable was important, there would be a strong correlation in the variables and the slope would be non-zero. The last plots illustrates what you could see if there was residual structure (strong positive or negative correlation) or lack thereof.</p>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb267-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb267-2" title="2">car<span class="op">::</span><span class="kw">avPlot</span>(full_mod, <span class="dt">variable =</span> <span class="st">&quot;depth&quot;</span>, <span class="dt">ellipse =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb267-3" title="3"><span class="co">#slope close to zero indicates lack of relationship</span></a>
-<a class="sourceLine" id="cb267-4" title="4">car<span class="op">::</span><span class="kw">avPlot</span>(full_mod, <span class="dt">variable =</span> <span class="st">&quot;log(carat)&quot;</span>, <span class="dt">ellipse =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+car<span class="op">::</span><span class="kw">avPlot</span>(full_mod, <span class="dt">variable =</span> <span class="st">&quot;depth&quot;</span>, <span class="dt">ellipse =</span> <span class="ot">TRUE</span>)
+<span class="co">#slope close to zero indicates lack of relationship</span>
+car<span class="op">::</span><span class="kw">avPlot</span>(full_mod, <span class="dt">variable =</span> <span class="st">&quot;log(carat)&quot;</span>, <span class="dt">ellipse =</span> <span class="ot">TRUE</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-49-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Let us look at model simplifications.
 We can obtain the <span class="math inline">\(F\)</span> statistic for the null hypothesis <span class="math inline">\(\mathscr{H}_0: \beta_{\texttt{depth}} = \beta_{\texttt{table}}=0\)</span> against the alternative <span class="math inline">\(\mathscr{H}_a: \{(\beta_{\texttt{depth}}, \beta_{\texttt{table}}) \in \mathbb{R}^2\}\)</span> by running the <code>anova</code> command:</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb268-1" title="1"><span class="kw">anova</span>(<span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span>x), full_mod)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(<span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span>x), full_mod)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: log(price) ~ log(carat) + cut + color + clarity + x
@@ -519,7 +520,7 @@ We can obtain the <span class="math inline">\(F\)</span> statistic for the null 
 and here <span class="math inline">\(F=\)</span> 1.769; we fail to reject the null (<span class="math inline">\(P\)</span>-value of 0.172). We have no evidence against the adequacy of the simpler model.</p>
 <p>Since there is little difference between the reduced model RSS and that of the full additive model, we may employ either in subsequent ANOVA tests.
 Let us try to drop one of the remaining variables.</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb270-1" title="1"><span class="kw">drop1</span>(<span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span>x), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">drop1</span>(<span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span>x), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
 <pre><code>## Single term deletions
 ## 
 ## Model:
@@ -527,40 +528,40 @@ Let us try to drop one of the remaining variables.</p>
 ##            Df Sum of Sq     RSS     AIC  F value    Pr(&gt;F)
 ## &lt;none&gt;                   7.8077 -2039.8                   
 ## log(carat)  1    5.7660 13.5737 -1765.2 354.4787 &lt; 2.2e-16
-## cut         4    0.4411  8.2488 -2020.3   6.7788 0.0000259
+## cut         4    0.4411  8.2488 -2020.3   6.7788  2.59e-05
 ## color       6   10.1359 17.9436 -1635.7 103.8552 &lt; 2.2e-16
 ## clarity     7   18.5675 26.3752 -1445.1 163.0697 &lt; 2.2e-16
 ## x           1    0.0961  7.9038 -2035.6   5.9062   0.01545</code></pre>
 <p>You could write the test statistics as before (with the difference in the degrees of freedom equal to the number of factor levels minus one if the variable is categorical). All the terms are statistically significant and we reject the null hypothesis of any of the tests at level <span class="math inline">\(\alpha = 5\%\)</span>. This step would mark the end of the backward elimination procedure. Note that you can (and may wish to) use the RSS from the full model <code>full_mod</code> in the denominator of your <span class="math inline">\(F\)</span>-tests to avoid biasing your results if retaining the null leads to a sharp decrease.</p>
 <p>If your test statistic is small, you cannot conclude anything. This may be because the null hypothesis that the simpler model is adequate is true. It can also be due to a lack of power (you should reject, but there are not enough evidences against the null). If you proceed with the RSS from the null model, your test statistic will then be biased downward; recall section <a href="sum-of-squares-decomposition.html#biased-rss">5.1.3</a>.</p>
 <p>We could equally well have started with forward selection. All the variables lead to a decrease in RSS that is significant at level <span class="math inline">\(\alpha = 5\%\)</span>. We pick the most significant one and proceed.</p>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb272-1" title="1">add_step1 &lt;-<span class="st"> </span><span class="kw">add1</span>(redu_mod, <span class="dt">scope =</span> <span class="kw">formula</span>(full_mod), <span class="dt">scale =</span> RSS_full, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a>
-<a class="sourceLine" id="cb272-2" title="2">form &lt;-<span class="st"> </span><span class="kw">deparse</span>(<span class="kw">formula</span>(redu_mod))</a>
-<a class="sourceLine" id="cb272-3" title="3"><span class="cf">while</span>(<span class="kw">length</span>(<span class="kw">which</span>(add_step1[,<span class="st">&quot;Pr(&gt;F)&quot;</span>] <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>){</a>
-<a class="sourceLine" id="cb272-4" title="4">  new_var &lt;-<span class="st"> </span><span class="kw">rownames</span>(add_step1)[<span class="kw">which.max</span>(add_step1[,<span class="st">&quot;F value&quot;</span>])]</a>
-<a class="sourceLine" id="cb272-5" title="5">  form &lt;-<span class="st"> </span><span class="kw">paste</span>(form, new_var, <span class="dt">sep =</span> <span class="st">&quot; + &quot;</span>)</a>
-<a class="sourceLine" id="cb272-6" title="6">  add_step1 &lt;-<span class="st"> </span><span class="kw">add1</span>(<span class="kw">update</span>(redu_mod, <span class="dt">formula =</span> form), </a>
-<a class="sourceLine" id="cb272-7" title="7">                    <span class="dt">scope =</span> <span class="kw">formula</span>(full_mod), <span class="dt">scale =</span> RSS_full, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a>
-<a class="sourceLine" id="cb272-8" title="8">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">add_step1 &lt;-<span class="st"> </span><span class="kw">add1</span>(redu_mod, <span class="dt">scope =</span> <span class="kw">formula</span>(full_mod), <span class="dt">scale =</span> RSS_full, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)
+form &lt;-<span class="st"> </span><span class="kw">deparse</span>(<span class="kw">formula</span>(redu_mod))
+<span class="cf">while</span>(<span class="kw">length</span>(<span class="kw">which</span>(add_step1[,<span class="st">&quot;Pr(&gt;F)&quot;</span>] <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>){
+  new_var &lt;-<span class="st"> </span><span class="kw">rownames</span>(add_step1)[<span class="kw">which.max</span>(add_step1[,<span class="st">&quot;F value&quot;</span>])]
+  form &lt;-<span class="st"> </span><span class="kw">paste</span>(form, new_var, <span class="dt">sep =</span> <span class="st">&quot; + &quot;</span>)
+  add_step1 &lt;-<span class="st"> </span><span class="kw">add1</span>(<span class="kw">update</span>(redu_mod, <span class="dt">formula =</span> form), 
+                    <span class="dt">scope =</span> <span class="kw">formula</span>(full_mod), <span class="dt">scale =</span> RSS_full, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)
+}</code></pre>
 <p>The more we test using the ANOVA command, the more size distortion due to multiple testing (the type I error is inflated). A Bonferroni correction could alleviate this. Note that forward selection typically uses a biased estimate of the residual sum of square.</p>
 <p>The variable that is the most correlated with <code>log(price)</code> is <code>clarity</code> and leads to a significant increase, so we would go for the bigger model since there is strong evidence that the model fit is better.</p>
 <p>Both forward selection and backward elimination yielded the same model, with the three categorical variables and length. At this stage, we should try and include interactions.</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" title="1"><span class="kw">add1</span>(<span class="kw">lm</span>(<span class="dt">formula =</span> form, <span class="dt">data =</span> di),</a>
-<a class="sourceLine" id="cb273-2" title="2">        <span class="dt">scope =</span>  <span class="kw">as.formula</span>(<span class="kw">paste</span>(form, <span class="st">&quot;+ log(carat):color + log(carat):clarity + </span></a>
-<a class="sourceLine" id="cb273-3" title="3"><span class="st">                                  log(carat):cut + color:cut + color:clarity + cut:clarity&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)),</a>
-<a class="sourceLine" id="cb273-4" title="4">     <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(<span class="kw">lm</span>(<span class="dt">formula =</span> form, <span class="dt">data =</span> di),
+        <span class="dt">scope =</span>  <span class="kw">as.formula</span>(<span class="kw">paste</span>(form, <span class="st">&quot;+ log(carat):color + log(carat):clarity + </span>
+<span class="st">                                  log(carat):cut + color:cut + color:clarity + cut:clarity&quot;</span>, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)),
+     <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
 <pre><code>## Single term additions
 ## 
 ## Model:
 ## log(price) ~ log(carat) + clarity + color + x + table + cut
-##                    Df Sum of Sq    RSS     AIC F value     Pr(&gt;F)
-## &lt;none&gt;                          7.7504 -2041.4                   
-## log(carat):color    6   0.12893 7.6215 -2037.8  1.3336   0.240428
-## log(carat):clarity  7   0.17840 7.5720 -2039.1  1.5886   0.136476
-## log(carat):cut      4   0.39334 7.3570 -2059.5  6.3489 0.00005540
-## color:cut          23   0.44771 7.3027 -2025.2  1.2155   0.225315
-## clarity:color      37   1.22732 6.5231 -2053.6  2.2476 0.00006789
-## clarity:cut        21   0.65138 7.0990 -2043.3  2.0012   0.005557</code></pre>
+##                    Df Sum of Sq    RSS     AIC F value    Pr(&gt;F)
+## &lt;none&gt;                          7.7504 -2041.4                  
+## log(carat):color    6   0.12893 7.6215 -2037.8  1.3336  0.240428
+## log(carat):clarity  7   0.17840 7.5720 -2039.1  1.5886  0.136476
+## log(carat):cut      4   0.39334 7.3570 -2059.5  6.3489 5.540e-05
+## color:cut          23   0.44771 7.3027 -2025.2  1.2155  0.225315
+## clarity:color      37   1.22732 6.5231 -2053.6  2.2476 6.789e-05
+## clarity:cut        21   0.65138 7.0990 -2043.3  2.0012  0.005557</code></pre>
 <p>The interaction between <code>log(carat)</code> and <code>cut</code> is significant at the 5% level, idem for <code>clarity:color</code> and <code>clarity:cut</code>. Keep in mind that adding interactions leads to a large increase in the number of parameters; <code>clarity:color</code> would lead to an additional 37 parameters!</p>
 </div>
 <div id="information-criterion" class="section level3">
@@ -569,64 +570,63 @@ Let us try to drop one of the remaining variables.</p>
 <p>Akaike’s An Information Criterion (AIC) is <span class="math inline">\(\mathrm{AIC}=-2\ell(\hat{\boldsymbol{\theta}}) + 2p\)</span>, while Schwartz’s information criterion is <span class="math inline">\(\mathrm{BIC}=-2\ell(\hat{\boldsymbol{\theta}}) + p \log(n)\)</span>. The latter is more stringent and penalizes more heavily the complex models as more data becomes available.</p>
 <p>Some general remarks if you use information criteria</p>
 <ol style="list-style-type: decimal">
-<li>AIC and BIC <em>must be</em> computed using maximum likelihood estimators. In a linear model, this means that the estimator of the variance is <span class="math inline">\(\hat{\sigma}^2=\mathrm{RSS}/n\)</span> and not <span class="math inline">\(s^2\)</span>. Similarly, the ordinary least square estimator is equivalent to the MLE for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> if <span class="math inline">\(\mathrm{Va}({\boldsymbol{\varepsilon}}) = \sigma^2 \mathbf{I}_n\)</span>. In <strong>R</strong>, you can use <code>BIC</code> and <code>AIC</code> commands on models obtained from <code>lm</code> to get those values.</li>
+<li>AIC and BIC <em>must be</em> computed using maximum likelihood estimators. In a linear model, this means that the estimator of the variance is <span class="math inline">\(\hat{\sigma}^2=\mathrm{RSS}/n\)</span> and not <span class="math inline">\(s^2\)</span>. Similarly, the ordinary least square estimator is equivalent to the MLE for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> if <span class="math inline">\(\mathrm{Var}({\boldsymbol{\varepsilon}}) = \sigma^2 \mathbf{I}_n\)</span>. In <strong>R</strong>, you can use <code>BIC</code> and <code>AIC</code> commands on models obtained from <code>lm</code> to get those values.</li>
+<li>Information criteria can be used to compare nested and non-nested models.</li>
 <li>The models should include the <em>same data</em> to be comparable.</li>
 <li>If you are comparing different distributions, you need to include all the constants to make AIC values comparable.</li>
-<li>The models need not be nested, but there are consequences if they are not. The <span class="math inline">\(\mathrm{AIC}= \mathrm{O}_p(n)\)</span> (so information accumulates over time at a linear rate), but its variability is <span class="math inline">\(\mathrm{O}_p(n^{1/2})\)</span> — this difference is only <span class="math inline">\(\mathrm{O}_p(1)\)</span> when models are nested.</li>
-<li>If the <em>TRUE</em> model exists and one of the models under consideration, it will be selected as <span class="math inline">\(n \to \infty\)</span> with probability one by BIC and with high probability by AIC.</li>
 </ol>
-<p>The function <code>step</code> allows you to do forward or backward model selection using one of the information criterion. I <strong>do not</strong> recommend this, as there is no theoretical ground for the method. Comparisons based on information criteria are mostly meaningful if the models are nested. You may wish to use BIC rather than AIC because the latter leads to more parsimonious (and consistent model selection in the large sample limit). It may be a good starting point for your model search.</p>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" title="1">BIC_search &lt;-<span class="st"> </span><span class="kw">formula</span>(<span class="kw">step</span>(full_mod, <span class="dt">trace =</span> <span class="dv">0</span>, <span class="dt">k =</span> <span class="kw">log</span>(<span class="kw">nrow</span>(di)))) <span class="co">#BIC</span></a>
-<a class="sourceLine" id="cb275-2" title="2"><span class="co">#Search within space of main effect-only models</span></a>
-<a class="sourceLine" id="cb275-3" title="3">BIC_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(BIC_search, <span class="dt">data =</span> di) </a>
-<a class="sourceLine" id="cb275-4" title="4">final_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb275-5" title="5"><span class="st">                  </span>x <span class="op">+</span><span class="st"> </span>table <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(carat)<span class="op">:</span>cut, <span class="dt">data =</span> di)</a>
-<a class="sourceLine" id="cb275-6" title="6"><span class="co">#summary(final_mod)</span></a></code></pre></div>
+<p>The function <code>step</code> allows you to do forward or backward model selection using one of the information criterion. If you use this procedure, make sure that the model returned makes sense (e.g., no interactions without main effects). You may wish to use BIC rather than AIC because the latter leads to more parsimonious models. It may be a good starting point for your model search.</p>
+<pre class="sourceCode r"><code class="sourceCode r">BIC_search &lt;-<span class="st"> </span><span class="kw">formula</span>(<span class="kw">step</span>(full_mod, <span class="dt">trace =</span> <span class="dv">0</span>, <span class="dt">k =</span> <span class="kw">log</span>(<span class="kw">nrow</span>(di)))) <span class="co">#BIC</span>
+<span class="co">#Search within space of main effect-only models</span>
+BIC_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(BIC_search, <span class="dt">data =</span> di) 
+final_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(price) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(carat) <span class="op">+</span><span class="st"> </span>cut <span class="op">+</span><span class="st"> </span>color <span class="op">+</span><span class="st"> </span>clarity <span class="op">+</span><span class="st"> </span>
+<span class="st">                  </span>x <span class="op">+</span><span class="st"> </span>table <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(carat)<span class="op">:</span>cut, <span class="dt">data =</span> di)
+<span class="co">#summary(final_mod)</span></code></pre>
 <p>A further simplification would consist in merging the factors levels, typically into low quality and high quality. This may not a good idea, because it will disproportionally affect the prediction of large diamonds worth a lot, and will negatively impact the predictive accuracy. To merge factors, use e.g.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb276-1" title="1">newcut &lt;-<span class="st"> </span>cut</a>
-<a class="sourceLine" id="cb276-2" title="2"><span class="kw">levels</span>(newcut) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Fair-Good&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Fair&quot;</span>, <span class="st">&quot;Good&quot;</span>), <span class="st">&quot;High&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Very Good&quot;</span>, <span class="st">&quot;Premium&quot;</span>, <span class="st">&quot;Ideal&quot;</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">newcut &lt;-<span class="st"> </span>cut
+<span class="kw">levels</span>(newcut) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Fair-Good&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Fair&quot;</span>, <span class="st">&quot;Good&quot;</span>), <span class="st">&quot;High&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Very Good&quot;</span>, <span class="st">&quot;Premium&quot;</span>, <span class="st">&quot;Ideal&quot;</span>))</code></pre>
 <p>To export your table to , I recommend you use dedicated packages such as <code>texreg</code>, <code>stargazer</code> or <code>xtable</code>. You can easily export, using e.g. the command <code>texreg::texreg(final_mod, stars = 0, digits = 2, single.row = TRUE, booktabs = TRUE)</code>, to get what you want. The level of customization is important (so you could rename the columns). Please make sure the font size is adequate and you use the right amount of digits.</p>
 </div>
 <div id="cross-validation" class="section level3">
 <h3><span class="header-section-number">7.1.4</span> Cross-validation</h3>
 <p>Let us now compare the predictive performance of the model using cross-validation. The idea underlying cross-validation is simple: split the data, use a fraction (called training set) for model fit and the remaining observations (termed validation set) to check predictions.</p>
 <p>The predicted residual error sum of squares (PRESS), denoted <span class="math inline">\(\mathrm{CV}\)</span> in the course, is the result of leave-one-out cross validation. The <span class="math inline">\(i\)</span>th observation is predicted using the <span class="math inline">\(n-1\)</span> other observations for every <span class="math inline">\(i=1, \ldots, n\)</span>. That is, we do not use the observation both for estimation and prediction and thus the predicted residual error is a more accurate measure of prediction error. We can return the PRESS statistic using the residuals from <strong>R</strong>.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" title="1"><span class="co">#Leave-one-out cross validation</span></a>
-<a class="sourceLine" id="cb277-2" title="2">PRESS &lt;-<span class="st"> </span><span class="cf">function</span>(model){<span class="kw">crossprod</span>(<span class="kw">rstandard</span>(model, <span class="dt">type =</span> <span class="st">&quot;pred&quot;</span>))[<span class="dv">1</span>,<span class="dv">1</span>]}</a>
-<a class="sourceLine" id="cb277-3" title="3"><span class="kw">round</span>(<span class="kw">c</span>(<span class="st">&quot;reduced model&quot;</span> =<span class="st"> </span><span class="kw">PRESS</span>(redu_mod), <span class="co">#underfit?</span></a>
-<a class="sourceLine" id="cb277-4" title="4">        <span class="st">&quot;final model &quot;</span> =<span class="st"> </span><span class="kw">PRESS</span>(final_mod),</a>
-<a class="sourceLine" id="cb277-5" title="5">        <span class="st">&quot;full model&quot;</span> =<span class="st"> </span><span class="kw">PRESS</span>(full_mod)),</a>
-<a class="sourceLine" id="cb277-6" title="6">  <span class="dt">digits =</span> <span class="dv">2</span>) <span class="co">#overfitting</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Leave-one-out cross validation</span>
+PRESS &lt;-<span class="st"> </span><span class="cf">function</span>(model){<span class="kw">crossprod</span>(<span class="kw">rstandard</span>(model, <span class="dt">type =</span> <span class="st">&quot;pred&quot;</span>))[<span class="dv">1</span>,<span class="dv">1</span>]}
+<span class="kw">round</span>(<span class="kw">c</span>(<span class="st">&quot;reduced model&quot;</span> =<span class="st"> </span><span class="kw">PRESS</span>(redu_mod), <span class="co">#underfit?</span>
+        <span class="st">&quot;final model &quot;</span> =<span class="st"> </span><span class="kw">PRESS</span>(final_mod),
+        <span class="st">&quot;full model&quot;</span> =<span class="st"> </span><span class="kw">PRESS</span>(full_mod)),
+  <span class="dt">digits =</span> <span class="dv">2</span>) <span class="co">#overfitting</span></code></pre>
 <pre><code>## reduced model  final model     full model 
 ##         38.58          8.29          8.61</code></pre>
 <p>The cross-validated error estimate shows that we do significantly better with the final model than using simply the model with <code>log(carat)</code> and that the addition of <code>x</code> does not increase predictive accuracy. The full model has a larger prediction error, an indication that we may be overfitting.</p>
 <p>Rather than use only one observation for validation and <span class="math inline">\(n-1\)</span> for training, we can split more evenly: <span class="math inline">\(K\)</span>-fold cross validation uses <span class="math inline">\(n-n/K\)</span> observations for fitting and <span class="math inline">\(n/K\)</span> for validation, providing a more realistic depiction of prediction. Unfortunately, the number of possible subsets of size <span class="math inline">\(\lfloor n/K\rfloor\)</span> is very large and so one typically split the data into classes of equal size at random. The following function, which performs <span class="math inline">\(K\)</span>-fold cross validation, can be used in your project. Since the result is random, it may be necessary to average over many replicates of the <span class="math inline">\(K\)</span>-fold statistic provided that the calculation is not too computationally demanding. For large <span class="math inline">\(n\)</span>, this has less impact.</p>
 <p>The smaller the prediction error, the better the model.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb279-1" title="1">K &lt;-<span class="st"> </span><span class="dv">10</span></a>
-<a class="sourceLine" id="cb279-2" title="2"><span class="co">#Manually perform cross fold validation</span></a>
-<a class="sourceLine" id="cb279-3" title="3">KfoldCV &lt;-<span class="st"> </span><span class="cf">function</span>(fitted.mod, K, ...){</a>
-<a class="sourceLine" id="cb279-4" title="4">  data &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(fitted.mod) <span class="co">#design matrix</span></a>
-<a class="sourceLine" id="cb279-5" title="5">  y &lt;-<span class="st"> </span>fitted.mod<span class="op">$</span>model[,<span class="dv">1</span>] <span class="co">#response</span></a>
-<a class="sourceLine" id="cb279-6" title="6">  n &lt;-<span class="st"> </span><span class="kw">nrow</span>(data)</a>
-<a class="sourceLine" id="cb279-7" title="7">  <span class="co">#Shuffle the indices</span></a>
-<a class="sourceLine" id="cb279-8" title="8">  inds &lt;-<span class="st"> </span><span class="kw">sample.int</span>(<span class="dt">n =</span> n, <span class="dt">size =</span> n, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb279-9" title="9">  <span class="co">#Split into K groups of ~ equal size (from https://stackoverflow.com/a/16275428)</span></a>
-<a class="sourceLine" id="cb279-10" title="10">  form_group &lt;-<span class="st"> </span><span class="cf">function</span>(x, n){ <span class="kw">split</span>(x, <span class="kw">cut</span>(<span class="kw">seq_along</span>(x), n, <span class="dt">labels =</span> <span class="ot">FALSE</span>)) }</a>
-<a class="sourceLine" id="cb279-11" title="11">  groups &lt;-<span class="st"> </span><span class="kw">form_group</span>(inds, K)</a>
-<a class="sourceLine" id="cb279-12" title="12">  <span class="co">#Obtain prediction from K-folds</span></a>
-<a class="sourceLine" id="cb279-13" title="13">  preds &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, n)</a>
-<a class="sourceLine" id="cb279-14" title="14">  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>K){</a>
-<a class="sourceLine" id="cb279-15" title="15">   preds[groups[[j]]] &lt;-<span class="st"> </span>data[groups[[j]],] <span class="op">%*%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb279-16" title="16"><span class="st">                            </span><span class="kw">lm</span>(y[<span class="op">-</span>groups[[j]]] <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>data[<span class="op">-</span>groups[[j]],])<span class="op">$</span>coef</a>
-<a class="sourceLine" id="cb279-17" title="17">  } </a>
-<a class="sourceLine" id="cb279-18" title="18">  <span class="co">#Compute prediction error</span></a>
-<a class="sourceLine" id="cb279-19" title="19">  <span class="kw">crossprod</span>(preds <span class="op">-</span><span class="st"> </span>y)[<span class="dv">1</span>,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb279-20" title="20">}</a>
-<a class="sourceLine" id="cb279-21" title="21"><span class="co">## Because splitting is random, get different answer</span></a>
-<a class="sourceLine" id="cb279-22" title="22"><span class="kw">round</span>(<span class="kw">c</span>(<span class="st">&quot;reduced model&quot;</span> =<span class="st"> </span><span class="kw">median</span>(<span class="kw">replicate</span>(<span class="kw">KfoldCV</span>(<span class="dt">fitted.mod =</span> redu_mod, <span class="dt">K =</span> K), <span class="dt">n =</span> <span class="dv">100</span>)),</a>
-<a class="sourceLine" id="cb279-23" title="23">        <span class="st">&quot;final model &quot;</span> =<span class="st"> </span><span class="kw">median</span>(<span class="kw">replicate</span>(<span class="kw">KfoldCV</span>(<span class="dt">fitted.mod =</span> final_mod, <span class="dt">K =</span> K), <span class="dt">n =</span> <span class="dv">100</span>)),</a>
-<a class="sourceLine" id="cb279-24" title="24">        <span class="st">&quot;additive forward&quot;</span> =<span class="st"> </span><span class="kw">median</span>(<span class="kw">replicate</span>(<span class="kw">KfoldCV</span>(<span class="dt">fitted.mod =</span> BIC_mod, <span class="dt">K =</span> K), <span class="dt">n =</span> <span class="dv">100</span>))),</a>
-<a class="sourceLine" id="cb279-25" title="25">        <span class="dt">digits =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">K &lt;-<span class="st"> </span><span class="dv">10</span>
+<span class="co">#Manually perform cross fold validation</span>
+KfoldCV &lt;-<span class="st"> </span><span class="cf">function</span>(fitted.mod, K, ...){
+  data &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(fitted.mod) <span class="co">#design matrix</span>
+  y &lt;-<span class="st"> </span>fitted.mod<span class="op">$</span>model[,<span class="dv">1</span>] <span class="co">#response</span>
+  n &lt;-<span class="st"> </span><span class="kw">nrow</span>(data)
+  <span class="co">#Shuffle the indices</span>
+  inds &lt;-<span class="st"> </span><span class="kw">sample.int</span>(<span class="dt">n =</span> n, <span class="dt">size =</span> n, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
+  <span class="co">#Split into K groups of ~ equal size (from https://stackoverflow.com/a/16275428)</span>
+  form_group &lt;-<span class="st"> </span><span class="cf">function</span>(x, n){ <span class="kw">split</span>(x, <span class="kw">cut</span>(<span class="kw">seq_along</span>(x), n, <span class="dt">labels =</span> <span class="ot">FALSE</span>)) }
+  groups &lt;-<span class="st"> </span><span class="kw">form_group</span>(inds, K)
+  <span class="co">#Obtain prediction from K-folds</span>
+  preds &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, n)
+  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>K){
+   preds[groups[[j]]] &lt;-<span class="st"> </span>data[groups[[j]],] <span class="op">%*%</span><span class="st"> </span>
+<span class="st">                            </span><span class="kw">lm</span>(y[<span class="op">-</span>groups[[j]]] <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>data[<span class="op">-</span>groups[[j]],])<span class="op">$</span>coef
+  } 
+  <span class="co">#Compute prediction error</span>
+  <span class="kw">crossprod</span>(preds <span class="op">-</span><span class="st"> </span>y)[<span class="dv">1</span>,<span class="dv">1</span>]
+}
+<span class="co">## Because splitting is random, get different answer</span>
+<span class="kw">round</span>(<span class="kw">c</span>(<span class="st">&quot;reduced model&quot;</span> =<span class="st"> </span><span class="kw">median</span>(<span class="kw">replicate</span>(<span class="kw">KfoldCV</span>(<span class="dt">fitted.mod =</span> redu_mod, <span class="dt">K =</span> K), <span class="dt">n =</span> <span class="dv">100</span>)),
+        <span class="st">&quot;final model &quot;</span> =<span class="st"> </span><span class="kw">median</span>(<span class="kw">replicate</span>(<span class="kw">KfoldCV</span>(<span class="dt">fitted.mod =</span> final_mod, <span class="dt">K =</span> K), <span class="dt">n =</span> <span class="dv">100</span>)),
+        <span class="st">&quot;additive forward&quot;</span> =<span class="st"> </span><span class="kw">median</span>(<span class="kw">replicate</span>(<span class="kw">KfoldCV</span>(<span class="dt">fitted.mod =</span> BIC_mod, <span class="dt">K =</span> K), <span class="dt">n =</span> <span class="dv">100</span>))),
+        <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>##    reduced model     final model  additive forward 
 ##            38.60             8.34             8.74</code></pre>
 <p>The conclusions are the same for <span class="math inline">\(10\)</span>-fold cross validation as for leave-one-out cross validation, conforting our model choice. In general, we prefer the former.</p>
@@ -634,31 +634,31 @@ Let us try to drop one of the remaining variables.</p>
 <div id="presentation-of-results" class="section level3">
 <h3><span class="header-section-number">7.1.5</span> Presentation of results</h3>
 <p>Having selected a model (say <code>final_mod</code>), you should now present a table with the coefficients and standard errors, some goodness-of-fit measures (<span class="math inline">\(\mathrm{R}^2_c\)</span>, <span class="math inline">\(\mathrm{AIC}/\mathrm{BIC}, \mathrm{CV}\)</span>, <span class="math inline">\(K\)</span>-fold cross-validation error). Explain your model (interpret the parameters), look at diagnostic plots and answer the questions.</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">1.5</span>, <span class="fl">0.5</span>))</a>
-<a class="sourceLine" id="cb281-2" title="2">bl &lt;-<span class="st"> </span>scales<span class="op">::</span><span class="kw">alpha</span>(<span class="st">&quot;black&quot;</span>, <span class="fl">0.5</span>) <span class="co">#semi-transparent black</span></a>
-<a class="sourceLine" id="cb281-3" title="3">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(di)</a>
-<a class="sourceLine" id="cb281-4" title="4"><span class="co">#plot(final_mod)</span></a>
-<a class="sourceLine" id="cb281-5" title="5"></a>
-<a class="sourceLine" id="cb281-6" title="6"><span class="co">#Student Q-Q plot</span></a>
-<a class="sourceLine" id="cb281-7" title="7"><span class="kw">qqPlot</span>(final_mod, <span class="dt">simulate =</span> <span class="dv">1999</span>, <span class="dt">envelope =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb281-8" title="8">       <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>, </a>
-<a class="sourceLine" id="cb281-9" title="9">       <span class="dt">xlab =</span> <span class="st">&quot;Theoretical student quantiles&quot;</span>, </a>
-<a class="sourceLine" id="cb281-10" title="10">       <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> bl)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">1.5</span>, <span class="fl">0.5</span>))
+bl &lt;-<span class="st"> </span>scales<span class="op">::</span><span class="kw">alpha</span>(<span class="st">&quot;black&quot;</span>, <span class="fl">0.5</span>) <span class="co">#semi-transparent black</span>
+n &lt;-<span class="st"> </span><span class="kw">nrow</span>(di)
+<span class="co">#plot(final_mod)</span>
+
+<span class="co">#Student Q-Q plot</span>
+<span class="kw">qqPlot</span>(final_mod, <span class="dt">simulate =</span> <span class="dv">1999</span>, <span class="dt">envelope =</span> <span class="ot">TRUE</span>,
+       <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>, 
+       <span class="dt">xlab =</span> <span class="st">&quot;Theoretical student quantiles&quot;</span>, 
+       <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> bl)</code></pre>
 <pre><code>## [1] 243 350</code></pre>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb283-1" title="1"><span class="co">#Residuals vs fitted values</span></a>
-<a class="sourceLine" id="cb283-2" title="2"><span class="kw">residualPlot</span>(final_mod, <span class="dt">type =</span> <span class="st">&quot;rstudent&quot;</span>, <span class="dt">quadratic =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb283-3" title="3">             <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>)</a>
-<a class="sourceLine" id="cb283-4" title="4"><span class="co">#Cook distance</span></a>
-<a class="sourceLine" id="cb283-5" title="5"><span class="kw">plot</span>(<span class="kw">cooks.distance</span>(final_mod), <span class="dt">col =</span> bl, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">ylab =</span> <span class="st">&quot;Cook&#39;s distances&quot;</span>)</a>
-<a class="sourceLine" id="cb283-6" title="6"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n<span class="dv">-2</span><span class="op">*</span><span class="kw">length</span>(<span class="kw">coef</span>(final_mod))), <span class="dt">col =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb283-7" title="7"><span class="kw">influencePlot</span>(final_mod)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Residuals vs fitted values</span>
+<span class="kw">residualPlot</span>(final_mod, <span class="dt">type =</span> <span class="st">&quot;rstudent&quot;</span>, <span class="dt">quadratic =</span> <span class="ot">FALSE</span>, 
+             <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>)
+<span class="co">#Cook distance</span>
+<span class="kw">plot</span>(<span class="kw">cooks.distance</span>(final_mod), <span class="dt">col =</span> bl, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">ylab =</span> <span class="st">&quot;Cook&#39;s distances&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n<span class="dv">-2</span><span class="op">*</span><span class="kw">length</span>(<span class="kw">coef</span>(final_mod))), <span class="dt">col =</span> <span class="dv">2</span>)
+<span class="kw">influencePlot</span>(final_mod)</code></pre>
 <p><img src="LinesRModels_files/figure-html/diagnosticsdiamonds-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre><code>##         StudRes        Hat         CookD
-## 243 -3.93155877 0.03281988 0.02036095303
-## 340 -0.03069107 0.38041277 0.00002318201
-## 346 -0.64996148 0.32541064 0.00816123471
-## 350 -3.62756784 0.22541782 0.14936005917
-## 384 -2.65776683 0.15938312 0.05289674514</code></pre>
+<pre><code>##         StudRes        Hat        CookD
+## 243 -3.93155877 0.03281988 2.036095e-02
+## 340 -0.03069107 0.38041277 2.318201e-05
+## 346 -0.64996148 0.32541064 8.161235e-03
+## 350 -3.62756784 0.22541782 1.493601e-01
+## 384 -2.65776683 0.15938312 5.289675e-02</code></pre>
 <p>Many points have high leverage and large Cook’s values. This means the slope could in principle largely be driven by those points
 We get a very large residual (observation <code>350</code>, which is a very small diamond of high quality sold for almost double the value of a comparable one). A more careful analysis would be necessary to see the impact of these points on the coefficients and whether they matter (or not). For example, we could refit the model using the command <code>lm(final_mod, subset = -350)</code>.</p>
 <p>Diagnostics of heteroscedasticity are mostly useful when you have suspicions that different subgroups could have different variances (if you include factor variables) or if the data are time series, in which case you may wish to look at plots of the correlogram (<code>acf(resid(final_mod))</code> and partial correlogram <code>pacf(resid(final_mod))</code>). These are only useful for time ordered observations, i.e. when the errors at time <span class="math inline">\(t\)</span> depend on previous time periods <span class="math inline">\(\{t-1, \ldots\}\)</span>. The impact of serial dependence of the residuals is that the standard errors from OLS are too small and need to be inflated.</p>
@@ -690,7 +690,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -700,6 +700,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
@@ -717,7 +721,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

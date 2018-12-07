@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>lineaRmodels</title>
+  <title>9 Splines | lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="lineaRmodels" />
+  <meta property="og:title" content="9 Splines | lineaRmodels />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="lineaRmodels" />
+  <meta name="twitter:title" content="9 Splines | lineaRmodels />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
@@ -35,6 +35,7 @@
 <link rel="next" href="solutions-5.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,11 +47,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -260,47 +261,47 @@ that compute efficiently the generalized cross-validation criterion and return
 the best smoothing or regression spline.</p>
 <p>The package <code>splines</code> contains <code>bs</code> for cubic regression splines and <code>ns</code> for natural regression splines. Smoothing splines can be obtained by a call to <code>smooth.spline</code>.
 The following illustrates a regression spline in which a number of knots (here roughly <span class="math inline">\(n/10\)</span>) are chosen equispaced on the distribution scale, based on the quantiles of the covariate vector.</p>
-<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb303-1" title="1"><span class="kw">library</span>(splines)</a>
-<a class="sourceLine" id="cb303-2" title="2"><span class="kw">data</span>(mcycle, <span class="dt">package =</span> <span class="st">&quot;MASS&quot;</span>)</a>
-<a class="sourceLine" id="cb303-3" title="3"><span class="co"># Center observations</span></a>
-<a class="sourceLine" id="cb303-4" title="4">x &lt;-<span class="st"> </span>mcycle<span class="op">$</span>times</a>
-<a class="sourceLine" id="cb303-5" title="5">y &lt;-<span class="st"> </span>mcycle<span class="op">$</span>accel <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(mcycle<span class="op">$</span>accel)</a>
-<a class="sourceLine" id="cb303-6" title="6">n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</a>
-<a class="sourceLine" id="cb303-7" title="7">df &lt;-<span class="st"> </span><span class="kw">floor</span>(n<span class="op">/</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb303-8" title="8"><span class="co"># Compute number of knots</span></a>
-<a class="sourceLine" id="cb303-9" title="9">m &lt;-<span class="st"> </span>df <span class="op">+</span><span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb303-10" title="10">knots &lt;-<span class="st">  </span><span class="kw">quantile</span>(x, <span class="dt">prob =</span> (<span class="dv">1</span><span class="op">:</span>m)<span class="op">/</span>(m<span class="op">+</span><span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb303-11" title="11"></a>
-<a class="sourceLine" id="cb303-12" title="12"><span class="co">#With regression natural cubic spline, equispaced knots on quantile scale</span></a>
-<a class="sourceLine" id="cb303-13" title="13"><span class="kw">plot</span>(y<span class="op">~</span>x, <span class="dt">xlab =</span> <span class="st">&quot;time after impact (in milliseconds)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;acceleration&quot;</span>,</a>
-<a class="sourceLine" id="cb303-14" title="14">     <span class="dt">main =</span> <span class="st">&quot;Simulated motorcycle accident&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a>
-<a class="sourceLine" id="cb303-15" title="15"><span class="kw">lines</span>(x, <span class="kw">fitted</span>(<span class="kw">lm</span>(y<span class="op">~</span><span class="kw">ns</span>(<span class="dt">x =</span> x, <span class="dt">knots =</span> knots))), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</a>
-<a class="sourceLine" id="cb303-16" title="16"><span class="co">#Smoothing spline, using GCV</span></a>
-<a class="sourceLine" id="cb303-17" title="17">spl &lt;-<span class="st"> </span><span class="kw">smooth.spline</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">cv =</span> <span class="ot">FALSE</span>, <span class="dt">all.knots =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb303-18" title="18"><span class="kw">lines</span>(x, <span class="kw">fitted</span>(spl), <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(splines)
+<span class="kw">data</span>(mcycle, <span class="dt">package =</span> <span class="st">&quot;MASS&quot;</span>)
+<span class="co"># Center observations</span>
+x &lt;-<span class="st"> </span>mcycle<span class="op">$</span>times
+y &lt;-<span class="st"> </span>mcycle<span class="op">$</span>accel <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(mcycle<span class="op">$</span>accel)
+n &lt;-<span class="st"> </span><span class="kw">length</span>(x)
+df &lt;-<span class="st"> </span><span class="kw">floor</span>(n<span class="op">/</span><span class="dv">10</span>)
+<span class="co"># Compute number of knots</span>
+m &lt;-<span class="st"> </span>df <span class="op">+</span><span class="st"> </span><span class="dv">4</span>
+knots &lt;-<span class="st">  </span><span class="kw">quantile</span>(x, <span class="dt">prob =</span> (<span class="dv">1</span><span class="op">:</span>m)<span class="op">/</span>(m<span class="op">+</span><span class="dv">1</span>))
+
+<span class="co">#With regression natural cubic spline, equispaced knots on quantile scale</span>
+<span class="kw">plot</span>(y<span class="op">~</span>x, <span class="dt">xlab =</span> <span class="st">&quot;time after impact (in milliseconds)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;acceleration&quot;</span>,
+     <span class="dt">main =</span> <span class="st">&quot;Simulated motorcycle accident&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)
+<span class="kw">lines</span>(x, <span class="kw">fitted</span>(<span class="kw">lm</span>(y<span class="op">~</span><span class="kw">ns</span>(<span class="dt">x =</span> x, <span class="dt">knots =</span> knots))), <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+<span class="co">#Smoothing spline, using GCV</span>
+spl &lt;-<span class="st"> </span><span class="kw">smooth.spline</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">cv =</span> <span class="ot">FALSE</span>, <span class="dt">all.knots =</span> <span class="ot">TRUE</span>)
+<span class="kw">lines</span>(x, <span class="kw">fitted</span>(spl), <span class="dt">col =</span> <span class="st">&quot;green&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/spline%20example-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>The fit from the regression spline differs from that of the smoothing spline. The former uses only 18 basis functions and therefore can be fitted using <code>lm</code>, whereas the smoothing spline uses 94 basis functions (this is lower than <span class="math inline">\(n\)</span> because there are ties in the <code>x</code> vector).</p>
 <p>Below is sample code to obtain the <span class="math inline">\(\mathbf{B}\)</span> and <span class="math inline">\(\boldsymbol{\Omega}\)</span> matrices, corresponding to the basis functions and the associated penalty.</p>
-<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb304-1" title="1"><span class="co"># You need the fda package installed</span></a>
-<a class="sourceLine" id="cb304-2" title="2"><span class="co"># install.packages(&quot;fda&quot;)</span></a>
-<a class="sourceLine" id="cb304-3" title="3"><span class="co"># Function returns B and Omega matrices</span></a>
-<a class="sourceLine" id="cb304-4" title="4">smoothsplineb &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb304-5" title="5">  <span class="kw">require</span>(fda)</a>
-<a class="sourceLine" id="cb304-6" title="6">  breaks &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">unique</span>(x))</a>
-<a class="sourceLine" id="cb304-7" title="7">  basisfd &lt;-<span class="st"> </span><span class="kw">create.bspline.basis</span>(<span class="dt">norder =</span> <span class="dv">4</span>, <span class="dt">breaks =</span> breaks)</a>
-<a class="sourceLine" id="cb304-8" title="8">  B &lt;-<span class="st"> </span><span class="kw">bsplineS</span>(x, <span class="dt">breaks =</span> breaks, <span class="dt">norder =</span> <span class="dv">4</span>, <span class="dt">nderiv =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb304-9" title="9">  penmat &lt;-<span class="st"> </span><span class="kw">bsplinepen</span>(basisfd, <span class="dt">Lfd =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb304-10" title="10">  <span class="kw">list</span>(<span class="dt">basis =</span> B, <span class="dt">penmat =</span> penmat)</a>
-<a class="sourceLine" id="cb304-11" title="11">}</a>
-<a class="sourceLine" id="cb304-12" title="12"></a>
-<a class="sourceLine" id="cb304-13" title="13"><span class="co"># Compute ridge regression coefficients manually</span></a>
-<a class="sourceLine" id="cb304-14" title="14">lmridge &lt;-<span class="st"> </span><span class="cf">function</span>(y, X, <span class="dt">O =</span> <span class="kw">diag</span>(<span class="kw">length</span>(y)), lambda){ </a>
-<a class="sourceLine" id="cb304-15" title="15">  <span class="kw">as.vector</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(X) <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span>O, <span class="kw">crossprod</span>(X, y)))</a>
-<a class="sourceLine" id="cb304-16" title="16">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You need the fda package installed</span>
+<span class="co"># install.packages(&quot;fda&quot;)</span>
+<span class="co"># Function returns B and Omega matrices</span>
+smoothsplineb &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  <span class="kw">require</span>(fda)
+  breaks &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">unique</span>(x))
+  basisfd &lt;-<span class="st"> </span><span class="kw">create.bspline.basis</span>(<span class="dt">norder =</span> <span class="dv">4</span>, <span class="dt">breaks =</span> breaks)
+  B &lt;-<span class="st"> </span><span class="kw">bsplineS</span>(x, <span class="dt">breaks =</span> breaks, <span class="dt">norder =</span> <span class="dv">4</span>, <span class="dt">nderiv =</span> <span class="dv">0</span>)
+  penmat &lt;-<span class="st"> </span><span class="kw">bsplinepen</span>(basisfd, <span class="dt">Lfd =</span> <span class="dv">2</span>)
+  <span class="kw">list</span>(<span class="dt">basis =</span> B, <span class="dt">penmat =</span> penmat)
+}
+
+<span class="co"># Compute ridge regression coefficients manually</span>
+lmridge &lt;-<span class="st"> </span><span class="cf">function</span>(y, X, <span class="dt">O =</span> <span class="kw">diag</span>(<span class="kw">length</span>(y)), lambda){ 
+  <span class="kw">as.vector</span>(<span class="kw">solve</span>(<span class="kw">crossprod</span>(X) <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span>O, <span class="kw">crossprod</span>(X, y)))
+}</code></pre>
 <p>For the <code>mcycle</code> data, the following lines of code return those matrices.</p>
-<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb305-1" title="1">smoothspline_mcycle &lt;-<span class="st"> </span><span class="kw">smoothsplineb</span>(<span class="dt">x =</span> x)</a>
-<a class="sourceLine" id="cb305-2" title="2">B &lt;-<span class="st"> </span>smoothspline_mcycle<span class="op">$</span>basis</a>
-<a class="sourceLine" id="cb305-3" title="3">O &lt;-<span class="st"> </span>smoothspline_mcycle<span class="op">$</span>penmat</a></code></pre></div> 
+<pre class="sourceCode r"><code class="sourceCode r">smoothspline_mcycle &lt;-<span class="st"> </span><span class="kw">smoothsplineb</span>(<span class="dt">x =</span> x)
+B &lt;-<span class="st"> </span>smoothspline_mcycle<span class="op">$</span>basis
+O &lt;-<span class="st"> </span>smoothspline_mcycle<span class="op">$</span>penmat</code></pre> 
 </div>
             </section>
 
@@ -328,7 +329,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -338,6 +339,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
@@ -355,7 +360,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

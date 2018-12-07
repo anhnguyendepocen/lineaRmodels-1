@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>lineaRmodels</title>
+  <title>4.5 Solutions | lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="lineaRmodels" />
+  <meta property="og:title" content="4.5 Solutions | lineaRmodels />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="lineaRmodels" />
+  <meta name="twitter:title" content="4.5 Solutions | lineaRmodels />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
@@ -35,6 +35,7 @@
 <link rel="next" href="analysis-of-variance.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,11 +47,11 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -73,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -258,18 +259,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">4.5.1</span> Exercise 7.1 - Study of growth hormones</h3>
 <p>We will use <code>factor</code> objects in the sequel. A <code>factor</code> encodes a matrix of binary variables,
 potentially identied using strings, so that the output is readable. <strong>R</strong> know how to handle the vector if it is passed to e.g. the function <code>lm</code>. By default, if the matrix spans <span class="math inline">\(\mathbf{1}_n\)</span>, the first level (in alphabetical order) is dropped and the intercept becomes the mean of this level.</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" title="1">url1 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/growth.dat&quot;</span></a>
-<a class="sourceLine" id="cb150-2" title="2">growth &lt;-<span class="st"> </span><span class="kw">read.table</span>(url1, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb150-3" title="3"><span class="kw">summary</span>(growth)</a></code></pre></div>
-<pre><code>##        y               x             group          
-##  Min.   :107.0   Min.   : 78.00   Length:20         
-##  1st Qu.:122.0   1st Qu.: 93.75   Class :character  
-##  Median :140.0   Median :100.50   Mode  :character  
-##  Mean   :142.4   Mean   :100.90                     
-##  3rd Qu.:156.5   3rd Qu.:109.25                     
+<pre class="sourceCode r"><code class="sourceCode r">url1 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/growth.dat&quot;</span>
+growth &lt;-<span class="st"> </span><span class="kw">read.table</span>(url1, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="kw">summary</span>(growth)</code></pre>
+<pre><code>##        y               x                 group   
+##  Min.   :107.0   Min.   : 78.00   control   :10  
+##  1st Qu.:122.0   1st Qu.: 93.75   thiouracil:10  
+##  Median :140.0   Median :100.50                  
+##  Mean   :142.4   Mean   :100.90                  
+##  3rd Qu.:156.5   3rd Qu.:109.25                  
 ##  Max.   :185.0   Max.   :123.00</code></pre>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" title="1"><span class="co">##Check what the factor encodes: transpose of design matrix</span></a>
-<a class="sourceLine" id="cb152-2" title="2"><span class="kw">t</span>(<span class="kw">model.matrix</span>(y <span class="op">~</span><span class="st"> </span>group <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span> growth))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">##Check what the factor encodes: transpose of design matrix</span>
+<span class="kw">t</span>(<span class="kw">model.matrix</span>(y <span class="op">~</span><span class="st"> </span>group <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span> growth))</code></pre>
 <pre><code>##                 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 ## groupcontrol    1 1 1 1 1 1 1 1 1  1  0  0  0  0  0  0  0  0  0  0
 ## groupthiouracil 0 0 0 0 0 0 0 0 0  0  1  1  1  1  1  1  1  1  1  1
@@ -278,13 +279,13 @@ potentially identied using strings, so that the output is readable. <strong>R</s
 ## attr(,&quot;contrasts&quot;)
 ## attr(,&quot;contrasts&quot;)$group
 ## [1] &quot;contr.treatment&quot;</code></pre>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" title="1"><span class="co">#Fit linear model with interaction</span></a>
-<a class="sourceLine" id="cb154-2" title="2">rats_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">*</span><span class="st"> </span>group, <span class="dt">data =</span> growth)</a>
-<a class="sourceLine" id="cb154-3" title="3"><span class="co">## recall x*group is equivalent to x + group + x:group</span></a>
-<a class="sourceLine" id="cb154-4" title="4"><span class="co">## x:group is the interaction term,</span></a>
-<a class="sourceLine" id="cb154-5" title="5"></a>
-<a class="sourceLine" id="cb154-6" title="6"><span class="co">## The design matrix can be extracted using the command</span></a>
-<a class="sourceLine" id="cb154-7" title="7"><span class="kw">model.matrix</span>(rats_lm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Fit linear model with interaction</span>
+rats_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">*</span><span class="st"> </span>group, <span class="dt">data =</span> growth)
+<span class="co">## recall x*group is equivalent to x + group + x:group</span>
+<span class="co">## x:group is the interaction term,</span>
+
+<span class="co">## The design matrix can be extracted using the command</span>
+<span class="kw">model.matrix</span>(rats_lm)</code></pre>
 <pre><code>##    (Intercept)   x groupthiouracil x:groupthiouracil
 ## 1            1 114               0                 0
 ## 2            1 123               0                 0
@@ -311,14 +312,14 @@ potentially identied using strings, so that the output is readable. <strong>R</s
 ## attr(,&quot;contrasts&quot;)
 ## attr(,&quot;contrasts&quot;)$group
 ## [1] &quot;contr.treatment&quot;</code></pre>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" title="1"><span class="co">## 95% confidence interval</span></a>
-<a class="sourceLine" id="cb156-2" title="2"><span class="kw">confint</span>(rats_lm, <span class="dt">level =</span> <span class="fl">0.95</span>)[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>,]</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## 95% confidence interval</span>
+<span class="kw">confint</span>(rats_lm, <span class="dt">level =</span> <span class="fl">0.95</span>)[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>,]</code></pre>
 <pre><code>##                        2.5 %      97.5 %
 ## groupthiouracil   -87.550757 134.1308431
 ## x:groupthiouracil  -1.594919   0.6083507</code></pre>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" title="1"><span class="co">## Generalized linear hypothesis test for mu=gamma=0</span></a>
-<a class="sourceLine" id="cb158-2" title="2"><span class="co">## covered later in the course </span></a>
-<a class="sourceLine" id="cb158-3" title="3"><span class="co">#car::linearHypothesis(rats_lm, rbind(c(0,0,1,0), c(0,0,0,1)), c(0,0))</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Generalized linear hypothesis test for mu=gamma=0</span>
+<span class="co">## covered later in the course </span>
+<span class="co">#car::linearHypothesis(rats_lm, rbind(c(0,0,1,0), c(0,0,0,1)), c(0,0))</span></code></pre>
 </div>
 <div id="exercise-7.2---electric-production-of-windmills" class="section level3">
 <h3><span class="header-section-number">4.5.2</span> Exercise 7.2 - Electric production of windmills</h3>
@@ -328,78 +329,78 @@ the recording.
 a. Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate. Comment on the adequacy of the models.
 b. Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
 c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" title="1"><span class="co">#Extract dataset</span></a>
-<a class="sourceLine" id="cb159-2" title="2">url2 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/windmill.dat&quot;</span></a>
-<a class="sourceLine" id="cb159-3" title="3">windmill &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> url2, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb159-4" title="4"><span class="co">#Copy variables</span></a>
-<a class="sourceLine" id="cb159-5" title="5">output &lt;-<span class="st"> </span>windmill<span class="op">$</span>output</a>
-<a class="sourceLine" id="cb159-6" title="6">velocity &lt;-<span class="st"> </span>windmill<span class="op">$</span>velocity</a>
-<a class="sourceLine" id="cb159-7" title="7">recip_velo &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>velocity</a>
-<a class="sourceLine" id="cb159-8" title="8"><span class="co">#Fit linear model</span></a>
-<a class="sourceLine" id="cb159-9" title="9">lm_wind1 &lt;-<span class="st"> </span><span class="kw">lm</span>(output <span class="op">~</span><span class="st"> </span>velocity)</a>
-<a class="sourceLine" id="cb159-10" title="10"><span class="co">#Summary of fit</span></a>
-<a class="sourceLine" id="cb159-11" title="11">summ1 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm_wind1)</a>
-<a class="sourceLine" id="cb159-12" title="12"><span class="co">#Graphical parameters </span></a>
-<a class="sourceLine" id="cb159-13" title="13"><span class="co">#mfrow: 1 line 2 column plotting window, </span></a>
-<a class="sourceLine" id="cb159-14" title="14"><span class="co">#pch: small dots plotting symbol, </span></a>
-<a class="sourceLine" id="cb159-15" title="15"><span class="co">#bty: L console shape)</span></a>
-<a class="sourceLine" id="cb159-16" title="16"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a>
-<a class="sourceLine" id="cb159-17" title="17"><span class="co">#Plot and add line of best fit</span></a>
-<a class="sourceLine" id="cb159-18" title="18"><span class="kw">plot</span>(<span class="dt">y =</span> output, <span class="dt">x =</span> velocity, <span class="dt">xlab =</span> <span class="st">&quot;wind velocity (in mph)&quot;</span>)</a>
-<a class="sourceLine" id="cb159-19" title="19"><span class="kw">abline</span>(lm_wind1)</a>
-<a class="sourceLine" id="cb159-20" title="20"><span class="co">#Repeat with second dataset</span></a>
-<a class="sourceLine" id="cb159-21" title="21">summ2 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm_wind2 &lt;-<span class="st"> </span><span class="kw">lm</span>(output <span class="op">~</span><span class="st"> </span>recip_velo))</a>
-<a class="sourceLine" id="cb159-22" title="22"><span class="co">#alternatively summary(lm_wind2 &lt;- lm(output ~ I(1/velocity)))</span></a>
-<a class="sourceLine" id="cb159-23" title="23"><span class="co">#Note above how we can assign variables inside call to other functions</span></a>
-<a class="sourceLine" id="cb159-24" title="24"><span class="kw">plot</span>(output <span class="op">~</span><span class="st"> </span>recip_velo, <span class="dt">xlab =</span> <span class="st">&quot;reciprocal wind velocity (in mph)&quot;</span>)</a>
-<a class="sourceLine" id="cb159-25" title="25"><span class="kw">abline</span>(lm_wind2)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract dataset</span>
+url2 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/windmill.dat&quot;</span>
+windmill &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> url2, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="co">#Copy variables</span>
+output &lt;-<span class="st"> </span>windmill<span class="op">$</span>output
+velocity &lt;-<span class="st"> </span>windmill<span class="op">$</span>velocity
+recip_velo &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>velocity
+<span class="co">#Fit linear model</span>
+lm_wind1 &lt;-<span class="st"> </span><span class="kw">lm</span>(output <span class="op">~</span><span class="st"> </span>velocity)
+<span class="co">#Summary of fit</span>
+summ1 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm_wind1)
+<span class="co">#Graphical parameters </span>
+<span class="co">#mfrow: 1 line 2 column plotting window, </span>
+<span class="co">#pch: small dots plotting symbol, </span>
+<span class="co">#bty: L console shape)</span>
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)
+<span class="co">#Plot and add line of best fit</span>
+<span class="kw">plot</span>(<span class="dt">y =</span> output, <span class="dt">x =</span> velocity, <span class="dt">xlab =</span> <span class="st">&quot;wind velocity (in mph)&quot;</span>)
+<span class="kw">abline</span>(lm_wind1)
+<span class="co">#Repeat with second dataset</span>
+summ2 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm_wind2 &lt;-<span class="st"> </span><span class="kw">lm</span>(output <span class="op">~</span><span class="st"> </span>recip_velo))
+<span class="co">#alternatively summary(lm_wind2 &lt;- lm(output ~ I(1/velocity)))</span>
+<span class="co">#Note above how we can assign variables inside call to other functions</span>
+<span class="kw">plot</span>(output <span class="op">~</span><span class="st"> </span>recip_velo, <span class="dt">xlab =</span> <span class="st">&quot;reciprocal wind velocity (in mph)&quot;</span>)
+<span class="kw">abline</span>(lm_wind2)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb160-1" title="1"><span class="co">#Standardized residuals r - manual calculation</span></a>
-<a class="sourceLine" id="cb160-2" title="2"><span class="co">#Standard deviation of errors</span></a>
-<a class="sourceLine" id="cb160-3" title="3">s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>(<span class="kw">resid</span>(lm_wind1)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>lm_wind1<span class="op">$</span>df.residual)</a>
-<a class="sourceLine" id="cb160-4" title="4"><span class="co">#Design matrix i.e. cbind(1, velocity)</span></a>
-<a class="sourceLine" id="cb160-5" title="5">Xmat1 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(lm_wind1)</a>
-<a class="sourceLine" id="cb160-6" title="6"><span class="co">#Dimensions</span></a>
-<a class="sourceLine" id="cb160-7" title="7">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(Xmat1)</a>
-<a class="sourceLine" id="cb160-8" title="8">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(Xmat1)</a>
-<a class="sourceLine" id="cb160-9" title="9"><span class="co">#Projection matrix onto Xmat1</span></a>
-<a class="sourceLine" id="cb160-10" title="10">Hmat1 &lt;-<span class="st"> </span>Xmat1 <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(Xmat1)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(Xmat1)</a>
-<a class="sourceLine" id="cb160-11" title="11"><span class="co">#Diagonal of H</span></a>
-<a class="sourceLine" id="cb160-12" title="12">leverage &lt;-<span class="st"> </span><span class="kw">diag</span>(Hmat1)</a>
-<a class="sourceLine" id="cb160-13" title="13"><span class="co">#Standardized residuals</span></a>
-<a class="sourceLine" id="cb160-14" title="14">r_wind1 &lt;-<span class="st"> </span><span class="kw">resid</span>(lm_wind1)<span class="op">/</span>(s<span class="op">*</span><span class="kw">sqrt</span>(<span class="dv">1</span><span class="op">-</span>leverage))</a>
-<a class="sourceLine" id="cb160-15" title="15"><span class="co">#The function rstandard returns those for us</span></a>
-<a class="sourceLine" id="cb160-16" title="16">r_wind2 &lt;-<span class="st"> </span><span class="kw">rstandard</span>(lm_wind2)</a>
-<a class="sourceLine" id="cb160-17" title="17"></a>
-<a class="sourceLine" id="cb160-18" title="18"><span class="co">#Plot of standardized residuals vs fitted values</span></a>
-<a class="sourceLine" id="cb160-19" title="19"><span class="kw">plot</span>(<span class="dt">y =</span> r_wind1 <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(r_wind1), <span class="dt">x =</span> <span class="kw">fitted</span>(lm_wind1), </a>
-<a class="sourceLine" id="cb160-20" title="20">     <span class="dt">ylab =</span> <span class="st">&quot;Standardized residuals&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Fitted values&quot;</span>, </a>
-<a class="sourceLine" id="cb160-21" title="21">     <span class="dt">main =</span> <span class="st">&quot;Residuals vs</span><span class="ch">\n</span><span class="st">fitted values&quot;</span>, <span class="dt">sub =</span><span class="st">&quot;output ~ velocity&quot;</span>)</a>
-<a class="sourceLine" id="cb160-22" title="22"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb160-23" title="23"><span class="kw">plot</span>(<span class="dt">y =</span> r_wind2 <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(r_wind2), <span class="dt">x =</span> <span class="kw">fitted</span>(lm_wind2), </a>
-<a class="sourceLine" id="cb160-24" title="24">     <span class="dt">ylab =</span> <span class="st">&quot;Standardized residuals&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Fitted values&quot;</span>, </a>
-<a class="sourceLine" id="cb160-25" title="25">     <span class="dt">main =</span> <span class="st">&quot;Residuals vs</span><span class="ch">\n</span><span class="st">fitted values&quot;</span>, <span class="dt">sub =</span><span class="st">&quot;output ~ 1/velocity&quot;</span>)</a>
-<a class="sourceLine" id="cb160-26" title="26"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Standardized residuals r - manual calculation</span>
+<span class="co">#Standard deviation of errors</span>
+s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>(<span class="kw">resid</span>(lm_wind1)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>lm_wind1<span class="op">$</span>df.residual)
+<span class="co">#Design matrix i.e. cbind(1, velocity)</span>
+Xmat1 &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(lm_wind1)
+<span class="co">#Dimensions</span>
+n &lt;-<span class="st"> </span><span class="kw">nrow</span>(Xmat1)
+p &lt;-<span class="st"> </span><span class="kw">ncol</span>(Xmat1)
+<span class="co">#Projection matrix onto Xmat1</span>
+Hmat1 &lt;-<span class="st"> </span>Xmat1 <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(Xmat1)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(Xmat1)
+<span class="co">#Diagonal of H</span>
+leverage &lt;-<span class="st"> </span><span class="kw">diag</span>(Hmat1)
+<span class="co">#Standardized residuals</span>
+r_wind1 &lt;-<span class="st"> </span><span class="kw">resid</span>(lm_wind1)<span class="op">/</span>(s<span class="op">*</span><span class="kw">sqrt</span>(<span class="dv">1</span><span class="op">-</span>leverage))
+<span class="co">#The function rstandard returns those for us</span>
+r_wind2 &lt;-<span class="st"> </span><span class="kw">rstandard</span>(lm_wind2)
+
+<span class="co">#Plot of standardized residuals vs fitted values</span>
+<span class="kw">plot</span>(<span class="dt">y =</span> r_wind1 <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(r_wind1), <span class="dt">x =</span> <span class="kw">fitted</span>(lm_wind1), 
+     <span class="dt">ylab =</span> <span class="st">&quot;Standardized residuals&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Fitted values&quot;</span>, 
+     <span class="dt">main =</span> <span class="st">&quot;Residuals vs</span><span class="ch">\n</span><span class="st">fitted values&quot;</span>, <span class="dt">sub =</span><span class="st">&quot;output ~ velocity&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">plot</span>(<span class="dt">y =</span> r_wind2 <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(r_wind2), <span class="dt">x =</span> <span class="kw">fitted</span>(lm_wind2), 
+     <span class="dt">ylab =</span> <span class="st">&quot;Standardized residuals&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Fitted values&quot;</span>, 
+     <span class="dt">main =</span> <span class="st">&quot;Residuals vs</span><span class="ch">\n</span><span class="st">fitted values&quot;</span>, <span class="dt">sub =</span><span class="st">&quot;output ~ 1/velocity&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>There is some structure left in the model <code>output ~ velocity</code>, since the smallest values occur at the endpoint of the output. There is less visible structure in the model with the reciprocal.
 The second model appears to fit better, since its <span class="math inline">\(\mathrm{R}^2\)</span> value is 0.98 compared to 0.87 for the first model.
 Note that, in the second model, the intercept corresponds to infinite strenght wind gusts.</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" title="1"><span class="co">#Predict new observation</span></a>
-<a class="sourceLine" id="cb161-2" title="2">pred1int &lt;-<span class="st"> </span><span class="kw">predict</span>(lm_wind1, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">velocity =</span> <span class="dv">5</span>), </a>
-<a class="sourceLine" id="cb161-3" title="3">                    <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)</a>
-<a class="sourceLine" id="cb161-4" title="4">pred2int &lt;-<span class="st"> </span><span class="kw">predict</span>(lm_wind2, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">recip_velo =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">5</span>), </a>
-<a class="sourceLine" id="cb161-5" title="5">                    <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)</a>
-<a class="sourceLine" id="cb161-6" title="6"><span class="co">#Manually, see slide 68</span></a>
-<a class="sourceLine" id="cb161-7" title="7">xplus &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb161-8" title="8">pred1 &lt;-<span class="st"> </span>xplus <span class="op">%*%</span><span class="st"> </span><span class="kw">coef</span>(lm_wind1)</a>
-<a class="sourceLine" id="cb161-9" title="9">interv_length &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="fl">0.975</span>, lm_wind1<span class="op">$</span>df.residual) <span class="op">*</span><span class="st"> </span>summ1<span class="op">$</span>sigma <span class="op">*</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb161-10" title="10"><span class="st">            </span><span class="kw">sqrt</span>((<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(xplus) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(Xmat1)) <span class="op">%*%</span><span class="st"> </span>xplus))</a>
-<a class="sourceLine" id="cb161-11" title="11"><span class="co">#Check that the calculation is correct</span></a>
-<a class="sourceLine" id="cb161-12" title="12"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(pred1, pred1 <span class="op">-</span><span class="st"> </span>interv_length, pred1 <span class="op">+</span><span class="st"> </span>interv_length), </a>
-<a class="sourceLine" id="cb161-13" title="13">                 <span class="kw">c</span>(pred1int), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Predict new observation</span>
+pred1int &lt;-<span class="st"> </span><span class="kw">predict</span>(lm_wind1, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">velocity =</span> <span class="dv">5</span>), 
+                    <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)
+pred2int &lt;-<span class="st"> </span><span class="kw">predict</span>(lm_wind2, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">recip_velo =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">5</span>), 
+                    <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)
+<span class="co">#Manually, see slide 68</span>
+xplus &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)
+pred1 &lt;-<span class="st"> </span>xplus <span class="op">%*%</span><span class="st"> </span><span class="kw">coef</span>(lm_wind1)
+interv_length &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="fl">0.975</span>, lm_wind1<span class="op">$</span>df.residual) <span class="op">*</span><span class="st"> </span>summ1<span class="op">$</span>sigma <span class="op">*</span><span class="st"> </span>
+<span class="st">            </span><span class="kw">sqrt</span>((<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(xplus) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(Xmat1)) <span class="op">%*%</span><span class="st"> </span>xplus))
+<span class="co">#Check that the calculation is correct</span>
+<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">c</span>(pred1, pred1 <span class="op">-</span><span class="st"> </span>interv_length, pred1 <span class="op">+</span><span class="st"> </span>interv_length), 
+                 <span class="kw">c</span>(pred1int), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>The predicted output is 1.34 units of electrity for the first model, while the point forecast is 1.59 for the model with the reciprocal velocity. Both intervals overlap, but the second one [1.39, 1.79] is considerable narrower than the first one, given by [0.84, 1.84].</p>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb163-1" title="1"><span class="kw">summary</span>(<span class="kw">update</span>(lm_wind1, . <span class="op">~</span><span class="st"> </span>.<span class="op">-</span><span class="dv">1</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">update</span>(lm_wind1, . <span class="op">~</span><span class="st"> </span>.<span class="op">-</span><span class="dv">1</span>))</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = output ~ velocity - 1)
@@ -427,174 +428,174 @@ If you remove the intercept in a <code>lm</code> object using <code>-1</code>, t
 </div>
 
 <p>We now produce the quantile-quantile plots using the results described in Section <a href="qqplot.html#qqplot">4.4</a>.</p>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" title="1">Q &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">qr.Q</span>(<span class="kw">qr</span>(Xmat1), <span class="dt">complete =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb165-2" title="2">resQ1 &lt;-<span class="st"> </span>(<span class="kw">t</span>(Q) <span class="op">%*%</span><span class="st"> </span><span class="kw">resid</span>(lm_wind1))[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]</a>
-<a class="sourceLine" id="cb165-3" title="3"><span class="co">#Function to add confidence intervals using order statitics</span></a>
-<a class="sourceLine" id="cb165-4" title="4">confint.qqplot.ptw &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">dist =</span> <span class="st">&quot;norm&quot;</span>, ...){</a>
-<a class="sourceLine" id="cb165-5" title="5">  <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="cf">function</span>(i){</a>
-<a class="sourceLine" id="cb165-6" title="6">  <span class="co">#Beta order statistic quantiles, mapped to scale dist</span></a>
-<a class="sourceLine" id="cb165-7" title="7">    <span class="kw">do.call</span>(<span class="kw">paste0</span>(<span class="st">&#39;q&#39;</span>, dist), <span class="kw">list</span>(<span class="kw">qbeta</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), i, n <span class="op">-</span><span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ...))</a>
-<a class="sourceLine" id="cb165-8" title="8">  }))</a>
-<a class="sourceLine" id="cb165-9" title="9">}</a>
-<a class="sourceLine" id="cb165-10" title="10"></a>
-<a class="sourceLine" id="cb165-11" title="11"><span class="co"># Adjust the number of observations</span></a>
-<a class="sourceLine" id="cb165-12" title="12">N &lt;-<span class="st"> </span>n <span class="op">-</span><span class="st"> </span>p</a>
-<a class="sourceLine" id="cb165-13" title="13"><span class="co">#Plotting positions on X axis</span></a>
-<a class="sourceLine" id="cb165-14" title="14">rankit &lt;-<span class="st"> </span><span class="kw">qnorm</span>((<span class="dv">1</span><span class="op">:</span>N) <span class="op">/</span><span class="st"> </span>(N<span class="op">+</span><span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb165-15" title="15"><span class="kw">plot</span>(rankit, <span class="kw">sort</span>(<span class="kw">scale</span>(resQ1)), <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, </a>
-<a class="sourceLine" id="cb165-16" title="16">    <span class="dt">ylab =</span> <span class="st">&quot;Sample quantiles&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>)</a>
-<a class="sourceLine" id="cb165-17" title="17"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb165-18" title="18">confint_ptwise &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(N)</a>
-<a class="sourceLine" id="cb165-19" title="19"><span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb165-20" title="20"><span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">Q &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">qr.Q</span>(<span class="kw">qr</span>(Xmat1), <span class="dt">complete =</span> <span class="ot">TRUE</span>))
+resQ1 &lt;-<span class="st"> </span>(<span class="kw">t</span>(Q) <span class="op">%*%</span><span class="st"> </span><span class="kw">resid</span>(lm_wind1))[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]
+<span class="co">#Function to add confidence intervals using order statitics</span>
+confint.qqplot.ptw &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">dist =</span> <span class="st">&quot;norm&quot;</span>, ...){
+  <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="cf">function</span>(i){
+  <span class="co">#Beta order statistic quantiles, mapped to scale dist</span>
+    <span class="kw">do.call</span>(<span class="kw">paste0</span>(<span class="st">&#39;q&#39;</span>, dist), <span class="kw">list</span>(<span class="kw">qbeta</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), i, n <span class="op">-</span><span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ...))
+  }))
+}
+
+<span class="co"># Adjust the number of observations</span>
+N &lt;-<span class="st"> </span>n <span class="op">-</span><span class="st"> </span>p
+<span class="co">#Plotting positions on X axis</span>
+rankit &lt;-<span class="st"> </span><span class="kw">qnorm</span>((<span class="dv">1</span><span class="op">:</span>N) <span class="op">/</span><span class="st"> </span>(N<span class="op">+</span><span class="dv">1</span>))
+<span class="kw">plot</span>(rankit, <span class="kw">sort</span>(<span class="kw">scale</span>(resQ1)), <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, 
+    <span class="dt">ylab =</span> <span class="st">&quot;Sample quantiles&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
+confint_ptwise &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(N)
+<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/confints-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" title="1">boot_samps &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="kw">sort</span>(<span class="kw">scale</span>(<span class="kw">rnorm</span>(N))), <span class="dt">n =</span> (B &lt;-<span class="st"> </span><span class="dv">9999</span>))</a>
-<a class="sourceLine" id="cb166-2" title="2">alpha &lt;-<span class="st"> </span><span class="fl">0.05</span></a>
-<a class="sourceLine" id="cb166-3" title="3">k &lt;-<span class="st"> </span>alpha<span class="op">/</span><span class="dv">2</span><span class="op">*</span>(B <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb166-4" title="4">confint_boot &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samps, <span class="dv">1</span>, sort)[<span class="kw">c</span>(k, B<span class="op">+</span><span class="dv">1</span><span class="op">-</span>k),]</a>
-<a class="sourceLine" id="cb166-5" title="5"></a>
-<a class="sourceLine" id="cb166-6" title="6"><span class="co">#Example with second model</span></a>
-<a class="sourceLine" id="cb166-7" title="7">Xmat2 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">/</span>velocity)</a>
-<a class="sourceLine" id="cb166-8" title="8">Q &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">qr.Q</span>(<span class="kw">qr</span>(Xmat2), <span class="dt">complete =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb166-9" title="9">resQ2 &lt;-<span class="st"> </span>(<span class="kw">t</span>(Q) <span class="op">%*%</span><span class="st"> </span><span class="kw">resid</span>(lm_wind2))[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]</a>
-<a class="sourceLine" id="cb166-10" title="10"></a>
-<a class="sourceLine" id="cb166-11" title="11"><span class="kw">plot</span>(rankit, <span class="kw">sort</span>(<span class="kw">scale</span>(resQ2)), <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, </a>
-<a class="sourceLine" id="cb166-12" title="12">    <span class="dt">ylab =</span> <span class="st">&quot;Sample quantiles&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>)</a>
-<a class="sourceLine" id="cb166-13" title="13"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb166-14" title="14">confint_ptwise &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(N)</a>
-<a class="sourceLine" id="cb166-15" title="15"><span class="co">#Simulated pointwise bands</span></a>
-<a class="sourceLine" id="cb166-16" title="16"><span class="kw">lines</span>(rankit, confint_boot[<span class="dv">1</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb166-17" title="17"><span class="kw">lines</span>(rankit, confint_boot[<span class="dv">2</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb166-18" title="18"><span class="co">#Theoretical bands based on order statistics distribution</span></a>
-<a class="sourceLine" id="cb166-19" title="19"><span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb166-20" title="20"><span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">boot_samps &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="kw">sort</span>(<span class="kw">scale</span>(<span class="kw">rnorm</span>(N))), <span class="dt">n =</span> (B &lt;-<span class="st"> </span><span class="dv">9999</span>))
+alpha &lt;-<span class="st"> </span><span class="fl">0.05</span>
+k &lt;-<span class="st"> </span>alpha<span class="op">/</span><span class="dv">2</span><span class="op">*</span>(B <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)
+confint_boot &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samps, <span class="dv">1</span>, sort)[<span class="kw">c</span>(k, B<span class="op">+</span><span class="dv">1</span><span class="op">-</span>k),]
+
+<span class="co">#Example with second model</span>
+Xmat2 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="op">/</span>velocity)
+Q &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">qr.Q</span>(<span class="kw">qr</span>(Xmat2), <span class="dt">complete =</span> <span class="ot">TRUE</span>))
+resQ2 &lt;-<span class="st"> </span>(<span class="kw">t</span>(Q) <span class="op">%*%</span><span class="st"> </span><span class="kw">resid</span>(lm_wind2))[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)]
+
+<span class="kw">plot</span>(rankit, <span class="kw">sort</span>(<span class="kw">scale</span>(resQ2)), <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, 
+    <span class="dt">ylab =</span> <span class="st">&quot;Sample quantiles&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
+confint_ptwise &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(N)
+<span class="co">#Simulated pointwise bands</span>
+<span class="kw">lines</span>(rankit, confint_boot[<span class="dv">1</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)
+<span class="kw">lines</span>(rankit, confint_boot[<span class="dv">2</span>,], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lty =</span> <span class="dv">3</span>)
+<span class="co">#Theoretical bands based on order statistics distribution</span>
+<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-28-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>The simulated pointwise confidence interval are shorter and account for the scaling.</p>
 </div>
 <div id="exercise-7.3---air-traffic" class="section level3">
 <h3><span class="header-section-number">4.5.3</span> Exercise 7.3 - Air traffic</h3>
 <p>First load the data set and plot the observations</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" title="1"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>()) <span class="co">#clear environment </span></a>
-<a class="sourceLine" id="cb167-2" title="2"><span class="kw">par</span>(<span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb167-3" title="3">url3 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/airpassengers.dat&quot;</span></a>
-<a class="sourceLine" id="cb167-4" title="4">airpass &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> url3, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb167-5" title="5"><span class="co"># Cast monthly binary to factor</span></a>
-<a class="sourceLine" id="cb167-6" title="6">airpass<span class="op">$</span>time &lt;-<span class="st"> </span>airpass<span class="op">$</span>year <span class="op">+</span><span class="st"> </span>(airpass<span class="op">$</span>month<span class="dv">-1</span>)<span class="op">/</span><span class="dv">12</span></a>
-<a class="sourceLine" id="cb167-7" title="7">airpass<span class="op">$</span>month &lt;-<span class="st"> </span><span class="kw">as.factor</span>(airpass<span class="op">$</span>month)</a>
-<a class="sourceLine" id="cb167-8" title="8"><span class="kw">attach</span>(airpass)</a>
-<a class="sourceLine" id="cb167-9" title="9"><span class="co">#Proceed as usual</span></a>
-<a class="sourceLine" id="cb167-10" title="10"><span class="kw">plot</span>(<span class="dt">y =</span> passengers, <span class="dt">x =</span> time, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,</a>
-<a class="sourceLine" id="cb167-11" title="11">     <span class="dt">ylab =</span> <span class="st">&quot;Monthly totals of international airline passengers (in thousands)&quot;</span>)</a>
-<a class="sourceLine" id="cb167-12" title="12"><span class="co">#Fit simple linear model with time as covariate</span></a>
-<a class="sourceLine" id="cb167-13" title="13">sum_ap &lt;-<span class="st"> </span><span class="kw">summary</span>(fit_ap &lt;-<span class="st"> </span><span class="kw">lm</span>(passengers <span class="op">~</span><span class="st"> </span>time))</a>
-<a class="sourceLine" id="cb167-14" title="14"><span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_ap), <span class="dt">col =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb167-15" title="15"><span class="co">#Create monthly dummies</span></a>
-<a class="sourceLine" id="cb167-16" title="16"><span class="co">#create factor using `as.factor</span></a>
-<a class="sourceLine" id="cb167-17" title="17">month &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>, <span class="dt">length =</span> <span class="kw">length</span>(time)))</a>
-<a class="sourceLine" id="cb167-18" title="18"><span class="kw">levels</span>(month) &lt;-<span class="st"> </span>month.abb <span class="co">#abbreviation of months</span></a>
-<a class="sourceLine" id="cb167-19" title="19"><span class="co">#A fancier way would convert the fraction to units, </span></a>
-<a class="sourceLine" id="cb167-20" title="20"><span class="co">#month &lt;- as.factor(1 + as.integer(c(time*12) %% 12)) # %% is modulo operator</span></a>
-<a class="sourceLine" id="cb167-21" title="21"><span class="co">#quarter &lt;- as.factor(rep(1:4, each = 3, length = length(time)))</span></a>
-<a class="sourceLine" id="cb167-22" title="22">sum_ad &lt;-<span class="st"> </span><span class="kw">summary</span>(fit_ad &lt;-<span class="st"> </span><span class="kw">lm</span>(passengers <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month))</a>
-<a class="sourceLine" id="cb167-23" title="23"><span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_ad), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>) <span class="co">#dashed blue line</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>()) <span class="co">#clear environment </span>
+<span class="kw">par</span>(<span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)
+url3 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/airpassengers.dat&quot;</span>
+airpass &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> url3, <span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="co"># Cast monthly binary to factor</span>
+airpass<span class="op">$</span>time &lt;-<span class="st"> </span>airpass<span class="op">$</span>year <span class="op">+</span><span class="st"> </span>(airpass<span class="op">$</span>month<span class="dv">-1</span>)<span class="op">/</span><span class="dv">12</span>
+airpass<span class="op">$</span>month &lt;-<span class="st"> </span><span class="kw">as.factor</span>(airpass<span class="op">$</span>month)
+<span class="kw">attach</span>(airpass)
+<span class="co">#Proceed as usual</span>
+<span class="kw">plot</span>(<span class="dt">y =</span> passengers, <span class="dt">x =</span> time, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,
+     <span class="dt">ylab =</span> <span class="st">&quot;Monthly totals of international airline passengers (in thousands)&quot;</span>)
+<span class="co">#Fit simple linear model with time as covariate</span>
+sum_ap &lt;-<span class="st"> </span><span class="kw">summary</span>(fit_ap &lt;-<span class="st"> </span><span class="kw">lm</span>(passengers <span class="op">~</span><span class="st"> </span>time))
+<span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_ap), <span class="dt">col =</span> <span class="dv">2</span>)
+<span class="co">#Create monthly dummies</span>
+<span class="co">#create factor using `as.factor</span>
+month &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>, <span class="dt">length =</span> <span class="kw">length</span>(time)))
+<span class="kw">levels</span>(month) &lt;-<span class="st"> </span>month.abb <span class="co">#abbreviation of months</span>
+<span class="co">#A fancier way would convert the fraction to units, </span>
+<span class="co">#month &lt;- as.factor(1 + as.integer(c(time*12) %% 12)) # %% is modulo operator</span>
+<span class="co">#quarter &lt;- as.factor(rep(1:4, each = 3, length = length(time)))</span>
+sum_ad &lt;-<span class="st"> </span><span class="kw">summary</span>(fit_ad &lt;-<span class="st"> </span><span class="kw">lm</span>(passengers <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month))
+<span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_ad), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>) <span class="co">#dashed blue line</span></code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-29-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" title="1"><span class="co">#Prediction </span></a>
-<a class="sourceLine" id="cb168-2" title="2"><span class="kw">predict</span>(fit_ad, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">time =</span> <span class="dv">1962</span><span class="op">+</span><span class="dv">11</span><span class="op">/</span><span class="dv">12</span>, <span class="dt">month =</span> month[<span class="dv">12</span>]))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Prediction </span>
+<span class="kw">predict</span>(fit_ad, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">time =</span> <span class="dv">1962</span><span class="op">+</span><span class="dv">11</span><span class="op">/</span><span class="dv">12</span>, <span class="dt">month =</span> month[<span class="dv">12</span>]))</code></pre>
 <pre><code>##       1 
 ## 501.263</code></pre>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" title="1"><span class="kw">coef</span>(fit_ad) <span class="op">%*%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1962</span> <span class="op">+</span><span class="st"> </span><span class="dv">11</span><span class="op">/</span><span class="dv">12</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="dv">1</span>) <span class="co">#baseline is January if global mean included</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(fit_ad) <span class="op">%*%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1962</span> <span class="op">+</span><span class="st"> </span><span class="dv">11</span><span class="op">/</span><span class="dv">12</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="dv">1</span>) <span class="co">#baseline is January if global mean included</span></code></pre>
 <pre><code>##         [,1]
 ## [1,] 501.263</code></pre>
 <p>We notice that the model does an overall good job at getting the big features, but misses many things. The first point is that the relationship is not quite linear: a residual plot shows a somewhat quadratic relation between the fitted values and the residuals. The second obvious feature not captured is the change in the variation (the amplitude of the wave pattern changes over time). Since the variance is increasing, a log-transformation may help stabilize it.
 The residuals are not apparently close to normal (the last values are systematically too large) and there is some skewness. The last few points have large leverage and drive the curve up.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" title="1">n &lt;-<span class="st"> </span><span class="kw">length</span>(passengers)</a>
-<a class="sourceLine" id="cb172-2" title="2">p &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(fit_ad)) </a>
-<a class="sourceLine" id="cb172-3" title="3"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb172-4" title="4"><span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">1</span>) <span class="co">#residuals vs fitted values</span></a>
-<a class="sourceLine" id="cb172-5" title="5"><span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">2</span>) <span class="co">#Normal Q-Q plot</span></a>
-<a class="sourceLine" id="cb172-6" title="6"><span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">3</span>) <span class="co">#standardized residuals vs fitted values</span></a>
-<a class="sourceLine" id="cb172-7" title="7"><span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>) <span class="co">#Cook distance plot</span></a>
-<a class="sourceLine" id="cb172-8" title="8"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="kw">length</span>(passengers)
+p &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(fit_ad)) 
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))
+<span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">1</span>) <span class="co">#residuals vs fitted values</span>
+<span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">2</span>) <span class="co">#Normal Q-Q plot</span>
+<span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">3</span>) <span class="co">#standardized residuals vs fitted values</span>
+<span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>) <span class="co">#Cook distance plot</span>
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-30-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) <span class="co">#return to one plot per window</span></a>
-<a class="sourceLine" id="cb173-2" title="2"><span class="co">#Compute Cook statistic and other influence statistics</span></a>
-<a class="sourceLine" id="cb173-3" title="3">infl_ad &lt;-<span class="st"> </span><span class="kw">influence.measures</span>(fit_ad)</a>
-<a class="sourceLine" id="cb173-4" title="4">cookval_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[,<span class="st">&quot;cook.d&quot;</span>] <span class="co">#cooks.distance</span></a>
-<a class="sourceLine" id="cb173-5" title="5"><span class="co">#Diagonal values of the &quot;hat&quot; projection matrix</span></a>
-<a class="sourceLine" id="cb173-6" title="6">h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <span class="st">&quot;hat&quot;</span>] <span class="co">#hatvalues</span></a>
-<a class="sourceLine" id="cb173-7" title="7"><span class="kw">plot</span>(time, <span class="kw">rstudent</span>(fit_ad), </a>
-<a class="sourceLine" id="cb173-8" title="8">     <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>, </a>
-<a class="sourceLine" id="cb173-9" title="9">     <span class="dt">xlab =</span> <span class="st">&quot;Time (in years)&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) <span class="co">#return to one plot per window</span>
+<span class="co">#Compute Cook statistic and other influence statistics</span>
+infl_ad &lt;-<span class="st"> </span><span class="kw">influence.measures</span>(fit_ad)
+cookval_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[,<span class="st">&quot;cook.d&quot;</span>] <span class="co">#cooks.distance</span>
+<span class="co">#Diagonal values of the &quot;hat&quot; projection matrix</span>
+h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <span class="st">&quot;hat&quot;</span>] <span class="co">#hatvalues</span>
+<span class="kw">plot</span>(time, <span class="kw">rstudent</span>(fit_ad), 
+     <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>, 
+     <span class="dt">xlab =</span> <span class="st">&quot;Time (in years)&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-30-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Let us consider the log counts. The fit is much better and the quadratic relationship with the residuals vs fitted values is attenuated. While some points still have high leverage value, they are not considered outliers.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" title="1">fit_l &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month)</a>
-<a class="sourceLine" id="cb174-2" title="2"><span class="kw">plot</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time, <span class="dt">main =</span> <span class="st">&quot;International airline passengers&quot;</span>,</a>
-<a class="sourceLine" id="cb174-3" title="3"><span class="dt">ylab =</span> <span class="st">&quot;log of monthly total count (in thousands)&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)</a>
-<a class="sourceLine" id="cb174-4" title="4"><span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_l), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit_l &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month)
+<span class="kw">plot</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time, <span class="dt">main =</span> <span class="st">&quot;International airline passengers&quot;</span>,
+<span class="dt">ylab =</span> <span class="st">&quot;log of monthly total count (in thousands)&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)
+<span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_l), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-31-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb175-2" title="2"><span class="co"># Q-Q plot</span></a>
-<a class="sourceLine" id="cb175-3" title="3"><span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">sort</span>(<span class="kw">scale</span>(<span class="kw">rstudent</span>(fit_l))),</a>
-<a class="sourceLine" id="cb175-4" title="4">     <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>,</a>
-<a class="sourceLine" id="cb175-5" title="5">     <span class="dt">main =</span> <span class="st">&quot;Quantile-quantile plot of</span><span class="ch">\n</span><span class="st">externally studentized residuals&quot;</span>)</a>
-<a class="sourceLine" id="cb175-6" title="6"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb175-7" title="7"><span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">1</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb175-8" title="8"><span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb175-9" title="9"><span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">20</span>)
+<span class="co"># Q-Q plot</span>
+<span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">sort</span>(<span class="kw">scale</span>(<span class="kw">rstudent</span>(fit_l))),
+     <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>,
+     <span class="dt">main =</span> <span class="st">&quot;Quantile-quantile plot of</span><span class="ch">\n</span><span class="st">externally studentized residuals&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
+<span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">1</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)
+<span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)
+<span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-31-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>One hypothesis of the linear model that is clearly violated here is the independence of the errors. Even if the variance <span class="math inline">\(\mathsf{Var}(\boldsymbol{e})=\sigma^2\mathbf{M}_{\mathbf{X}}\)</span> need not have independent errors, there is positive dependence from residual to residual. This is confirmed by looking at the autocorrelation, which indicates geometric decay. This will be covered in MATH 342 (Time Series), but you should just think here of shocks carrying through until the next period before the model reverts to the mean.</p>
 <p>Ignoring the serial dependence in the error has consequences: the standard errors are too small (since errors are correlated, there is less units of information so we are overconfident in our uncertainty quantification).</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb176-1" title="1"><span class="co">#Laggedresidual plots</span></a>
-<a class="sourceLine" id="cb176-2" title="2"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb176-3" title="3"><span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">y =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span>n], </a>
-<a class="sourceLine" id="cb176-4" title="4">  <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span>n]), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span><span class="dv">1</span>]), </a>
-<a class="sourceLine" id="cb176-5" title="5">  <span class="dt">main =</span> <span class="st">&quot;Lagged residual plot&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Laggedresidual plots</span>
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">y =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span>n], 
+  <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span>n]), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span><span class="dv">1</span>]), 
+  <span class="dt">main =</span> <span class="st">&quot;Lagged residual plot&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-32-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" title="1"><span class="co">#(partial) correlogram: if residuals have no structure</span></a>
-<a class="sourceLine" id="cb177-2" title="2"><span class="co">#there should not be anything outside the bands 19 times out of 20</span></a>
-<a class="sourceLine" id="cb177-3" title="3"><span class="co">#Covered in detail in MATH-342 (Time series)</span></a>
-<a class="sourceLine" id="cb177-4" title="4"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb177-5" title="5"><span class="kw">acf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Autocorrelation of residuals&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">20</span>))</a>
-<a class="sourceLine" id="cb177-6" title="6"><span class="kw">pacf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Partial autocorrelation of residuals&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#(partial) correlogram: if residuals have no structure</span>
+<span class="co">#there should not be anything outside the bands 19 times out of 20</span>
+<span class="co">#Covered in detail in MATH-342 (Time series)</span>
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<span class="kw">acf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Autocorrelation of residuals&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">20</span>))
+<span class="kw">pacf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Partial autocorrelation of residuals&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/unnamed-chunk-32-2.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" title="1"><span class="co">#detach dataset</span></a>
-<a class="sourceLine" id="cb178-2" title="2"><span class="kw">detach</span>(airpass)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#detach dataset</span>
+<span class="kw">detach</span>(airpass)</code></pre>
 </div>
 <div id="exercise-7.4---determinants-of-earnings" class="section level3">
 <h3><span class="header-section-number">4.5.4</span> Exercise 7.4 - Determinants of earnings</h3>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" title="1">url4 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/labour.dat&quot;</span></a>
-<a class="sourceLine" id="cb179-2" title="2">labour &lt;-<span class="st"> </span><span class="kw">read.table</span>(url4, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb179-3" title="3"><span class="kw">attach</span>(labour)</a>
-<a class="sourceLine" id="cb179-4" title="4"><span class="co">## Create dummy for extract columns</span></a>
-<a class="sourceLine" id="cb179-5" title="5"><span class="co">## additional years of schooling after high school</span></a>
-<a class="sourceLine" id="cb179-6" title="6">labour<span class="op">$</span>pseduc  &lt;-<span class="st"> </span><span class="kw">I</span>(education <span class="op">&gt;=</span><span class="st"> </span><span class="dv">13</span>) <span class="op">*</span><span class="st"> </span>(education <span class="op">-</span><span class="st"> </span><span class="dv">13</span>)</a>
-<a class="sourceLine" id="cb179-7" title="7">educ_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(lhwages <span class="op">~</span><span class="st"> </span>education <span class="op">+</span><span class="st"> </span>pseduc, <span class="dt">data =</span> labour)</a>
-<a class="sourceLine" id="cb179-8" title="8"><span class="kw">confint</span>(educ_lm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">url4 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/labour.dat&quot;</span>
+labour &lt;-<span class="st"> </span><span class="kw">read.table</span>(url4, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">TRUE</span>)
+<span class="kw">attach</span>(labour)
+<span class="co">## Create dummy for extract columns</span>
+<span class="co">## additional years of schooling after high school</span>
+labour<span class="op">$</span>pseduc  &lt;-<span class="st"> </span><span class="kw">I</span>(education <span class="op">&gt;=</span><span class="st"> </span><span class="dv">13</span>) <span class="op">*</span><span class="st"> </span>(education <span class="op">-</span><span class="st"> </span><span class="dv">13</span>)
+educ_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(lhwages <span class="op">~</span><span class="st"> </span>education <span class="op">+</span><span class="st"> </span>pseduc, <span class="dt">data =</span> labour)
+<span class="kw">confint</span>(educ_lm)</code></pre>
 <pre><code>##                  2.5 %     97.5 %
 ## (Intercept) 2.29267414 2.51468758
 ## education   0.01030330 0.02940631
 ## pseduc      0.03325994 0.06318974</code></pre>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" title="1"><span class="co">## Plot with meaningful title + axis label</span></a>
-<a class="sourceLine" id="cb181-2" title="2"><span class="co">## red for Male, black for Female</span></a>
-<a class="sourceLine" id="cb181-3" title="3"><span class="kw">plot</span>(lhwages <span class="op">~</span><span class="st"> </span>education, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> <span class="kw">as.integer</span>(gender),</a>
-<a class="sourceLine" id="cb181-4" title="4">     <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Log hourly wage (in CAD)&quot;</span>, </a>
-<a class="sourceLine" id="cb181-5" title="5">     <span class="dt">xlab =</span> <span class="st">&quot;Education achievement (in years)&quot;</span>, </a>
-<a class="sourceLine" id="cb181-6" title="6">      <span class="dt">main =</span> <span class="st">&quot;Canadian Survey of Labour</span><span class="ch">\n</span><span class="st">and Income Dynamics (1994)&quot;</span>)</a>
-<a class="sourceLine" id="cb181-7" title="7"><span class="co">## Create observations on a grid, reproducing the design</span></a>
-<a class="sourceLine" id="cb181-8" title="8">predic &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="dv">0</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">12</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">9</span>)) <span class="op">%*%</span><span class="st"> </span><span class="kw">coef</span>(educ_lm)</a>
-<a class="sourceLine" id="cb181-9" title="9"><span class="kw">lines</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">20</span>, predic, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb181-10" title="10"><span class="co">## Legend</span></a>
-<a class="sourceLine" id="cb181-11" title="11"><span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Man&quot;</span>,<span class="st">&quot;Woman&quot;</span>), </a>
-<a class="sourceLine" id="cb181-12" title="12">       <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Plot with meaningful title + axis label</span>
+<span class="co">## red for Male, black for Female</span>
+<span class="kw">plot</span>(lhwages <span class="op">~</span><span class="st"> </span>education, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> <span class="kw">as.integer</span>(gender),
+     <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Log hourly wage (in CAD)&quot;</span>, 
+     <span class="dt">xlab =</span> <span class="st">&quot;Education achievement (in years)&quot;</span>, 
+      <span class="dt">main =</span> <span class="st">&quot;Canadian Survey of Labour</span><span class="ch">\n</span><span class="st">and Income Dynamics (1994)&quot;</span>)
+<span class="co">## Create observations on a grid, reproducing the design</span>
+predic &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="dv">0</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">12</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">9</span>)) <span class="op">%*%</span><span class="st"> </span><span class="kw">coef</span>(educ_lm)
+<span class="kw">lines</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">20</span>, predic, <span class="dt">lwd =</span> <span class="dv">2</span>)
+<span class="co">## Legend</span>
+<span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Man&quot;</span>,<span class="st">&quot;Woman&quot;</span>), 
+       <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/ex5.3-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" title="1"><span class="co">## Clear pattern: women are paid less for equivalent qualification</span></a>
-<a class="sourceLine" id="cb182-2" title="2"></a>
-<a class="sourceLine" id="cb182-3" title="3"><span class="co">## Add gender as covariate</span></a>
-<a class="sourceLine" id="cb182-4" title="4">educ_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(lhwages <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span> labour) </a>
-<a class="sourceLine" id="cb182-5" title="5"><span class="co"># fit lm with all columns but lhwages</span></a>
-<a class="sourceLine" id="cb182-6" title="6"><span class="co">## or equivalently</span></a>
-<a class="sourceLine" id="cb182-7" title="7"><span class="co">#update(educ_lm, . ~ . + gender)</span></a>
-<a class="sourceLine" id="cb182-8" title="8"><span class="kw">summary</span>(educ_lm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Clear pattern: women are paid less for equivalent qualification</span>
+
+<span class="co">## Add gender as covariate</span>
+educ_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(lhwages <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span> labour) 
+<span class="co"># fit lm with all columns but lhwages</span>
+<span class="co">## or equivalently</span>
+<span class="co">#update(educ_lm, . ~ . + gender)</span>
+<span class="kw">summary</span>(educ_lm)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = lhwages ~ ., data = labour)
@@ -604,24 +605,24 @@ The residuals are not apparently close to normal (the last values are systematic
 ## -2.10953 -0.25249  0.02989  0.28176  1.27908 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value     Pr(&gt;|t|)    
-## (Intercept) 2.200103   0.055375  39.731      &lt; 2e-16 ***
-## education   0.026589   0.004673   5.690 0.0000000138 ***
-## genderMale  0.256471   0.014771  17.363      &lt; 2e-16 ***
-## pseduc      0.037459   0.007322   5.116 0.0000003308 ***
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.200103   0.055375  39.731  &lt; 2e-16 ***
+## education   0.026589   0.004673   5.690 1.38e-08 ***
+## genderMale  0.256471   0.014771  17.363  &lt; 2e-16 ***
+## pseduc      0.037459   0.007322   5.116 3.31e-07 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 0.4154 on 3183 degrees of freedom
 ## Multiple R-squared:  0.1897, Adjusted R-squared:  0.1889 
 ## F-statistic: 248.3 on 3 and 3183 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" title="1"><span class="kw">confint</span>(educ_lm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(educ_lm)</code></pre>
 <pre><code>##                  2.5 %     97.5 %
 ## (Intercept) 2.09152815 2.30867726
 ## education   0.01742684 0.03575089
 ## genderMale  0.22750913 0.28543379
 ## pseduc      0.02310256 0.05181598</code></pre>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" title="1"><span class="kw">detach</span>(labour)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">detach</span>(labour)</code></pre>
 <p>The coefficient for gender is still statistically significative at level <span class="math inline">\(\alpha=5\%\)</span> after adjusting for the education level.</p>
 
 </div>
@@ -653,7 +654,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -663,6 +664,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
@@ -680,7 +685,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;
