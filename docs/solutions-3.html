@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -233,6 +233,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1.1" data-path="solutions-5.html"><a href="solutions-5.html#exercise-12.4-smoothing-splines"><i class="fa fa-check"></i><b>9.1.1</b> Exercise 12.4 Smoothing splines</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>10</b> Generalized linear models</a><ul>
+<li class="chapter" data-level="10.1" data-path="diagnostics-for-bernoulli-data.html"><a href="diagnostics-for-bernoulli-data.html"><i class="fa fa-check"></i><b>10.1</b> Diagnostics for Bernoulli data</a></li>
+<li class="chapter" data-level="10.2" data-path="poisson-model-for-contingency-table.html"><a href="poisson-model-for-contingency-table.html"><i class="fa fa-check"></i><b>10.2</b> Poisson model for contingency table</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -262,12 +266,12 @@ potentially identied using strings, so that the output is readable. <strong>R</s
 <pre class="sourceCode r"><code class="sourceCode r">url1 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/growth.dat&quot;</span>
 growth &lt;-<span class="st"> </span><span class="kw">read.table</span>(url1, <span class="dt">header =</span> <span class="ot">TRUE</span>)
 <span class="kw">summary</span>(growth)</code></pre>
-<pre><code>##        y               x                 group   
-##  Min.   :107.0   Min.   : 78.00   control   :10  
-##  1st Qu.:122.0   1st Qu.: 93.75   thiouracil:10  
-##  Median :140.0   Median :100.50                  
-##  Mean   :142.4   Mean   :100.90                  
-##  3rd Qu.:156.5   3rd Qu.:109.25                  
+<pre><code>##        y               x             group          
+##  Min.   :107.0   Min.   : 78.00   Length:20         
+##  1st Qu.:122.0   1st Qu.: 93.75   Class :character  
+##  Median :140.0   Median :100.50   Mode  :character  
+##  Mean   :142.4   Mean   :100.90                     
+##  3rd Qu.:156.5   3rd Qu.:109.25                     
 ##  Max.   :185.0   Max.   :123.00</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">##Check what the factor encodes: transpose of design matrix</span>
 <span class="kw">t</span>(<span class="kw">model.matrix</span>(y <span class="op">~</span><span class="st"> </span>group <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span> growth))</code></pre>
@@ -328,7 +332,7 @@ fifteen minute periods. We are interested in the relation between direct output 
 the recording.
 a. Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate. Comment on the adequacy of the models.
 b. Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
-c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.</p>
+c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract dataset</span>
 url2 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/windmill.dat&quot;</span>
 windmill &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> url2, <span class="dt">header =</span> <span class="ot">TRUE</span>)
@@ -605,11 +609,11 @@ educ_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(lhwages <span c
 ## -2.10953 -0.25249  0.02989  0.28176  1.27908 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 2.200103   0.055375  39.731  &lt; 2e-16 ***
-## education   0.026589   0.004673   5.690 1.38e-08 ***
-## genderMale  0.256471   0.014771  17.363  &lt; 2e-16 ***
-## pseduc      0.037459   0.007322   5.116 3.31e-07 ***
+##             Estimate Std. Error t value     Pr(&gt;|t|)    
+## (Intercept) 2.200103   0.055375  39.731      &lt; 2e-16 ***
+## education   0.026589   0.004673   5.690 0.0000000138 ***
+## genderMale  0.256471   0.014771  17.363      &lt; 2e-16 ***
+## pseduc      0.037459   0.007322   5.116 0.0000003308 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 

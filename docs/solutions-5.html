@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="splines.html">
-
+<link rel="next" href="generalized-linear-models.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -233,6 +233,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1.1" data-path="solutions-5.html"><a href="solutions-5.html#exercise-12.4-smoothing-splines"><i class="fa fa-check"></i><b>9.1.1</b> Exercise 12.4 Smoothing splines</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>10</b> Generalized linear models</a><ul>
+<li class="chapter" data-level="10.1" data-path="diagnostics-for-bernoulli-data.html"><a href="diagnostics-for-bernoulli-data.html"><i class="fa fa-check"></i><b>10.1</b> Diagnostics for Bernoulli data</a></li>
+<li class="chapter" data-level="10.2" data-path="poisson-model-for-contingency-table.html"><a href="poisson-model-for-contingency-table.html"><i class="fa fa-check"></i><b>10.2</b> Poisson model for contingency table</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -288,7 +292,6 @@ fitted_opt &lt;-<span class="st"> </span>B <span class="op">%*%</span><span clas
 <span class="kw">lines</span>(x, fitted_opt , <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</code></pre>
 <p><img src="LinesRModels_files/figure-html/soln12_4-2.png" width="70%" style="display: block; margin: auto;" /></p>
 
-
 </div>
 </div>
 <!-- </div> -->
@@ -297,8 +300,8 @@ fitted_opt &lt;-<span class="st"> </span>B <span class="op">%*%</span><span clas
           </div>
         </div>
       </div>
-<a href="splines.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="splines.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="generalized-linear-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

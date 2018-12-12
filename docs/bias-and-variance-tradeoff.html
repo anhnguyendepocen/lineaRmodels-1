@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -233,6 +233,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1.1" data-path="solutions-5.html"><a href="solutions-5.html#exercise-12.4-smoothing-splines"><i class="fa fa-check"></i><b>9.1.1</b> Exercise 12.4 Smoothing splines</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>10</b> Generalized linear models</a><ul>
+<li class="chapter" data-level="10.1" data-path="diagnostics-for-bernoulli-data.html"><a href="diagnostics-for-bernoulli-data.html"><i class="fa fa-check"></i><b>10.1</b> Diagnostics for Bernoulli data</a></li>
+<li class="chapter" data-level="10.2" data-path="poisson-model-for-contingency-table.html"><a href="poisson-model-for-contingency-table.html"><i class="fa fa-check"></i><b>10.2</b> Poisson model for contingency table</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -307,7 +311,7 @@ lambdaopt</code></pre>
 <pre><code>## [1] 7.227898</code></pre>
 <p>We can also look at the path of coefficient values <span class="math inline">\(\hat{\boldsymbol{\gamma}}_{\mathrm{ridge}}^{\lambda}\)</span> as a function of <span class="math inline">\(\lambda\)</span>:</p>
 <p><img src="LinesRModels_files/figure-html/plotgammaridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<p>While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients <span class="math inline">\(\boldsymbol{\gamma}\)</span>, which are exactly zero, stabilize around another value. Note that if we increase the penalty, from <span class="math inline">\(\lambda_1\)</span> to <span class="math inline">\(\lambda_2\)</span> with <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>, this <strong>does not</strong> necessarily imply that individual coefficient estimates decrease, i.e. <span class="math inline">\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\)</span> even if <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>.</p>
+<p>While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients <span class="math inline">\(\boldsymbol{\gamma}\)</span>, which are exactly zero, stabilize around another value. Note that if we increase the penalty, from <span class="math inline">\(\lambda_1\)</span> to <span class="math inline">\(\lambda_2\)</span> with <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>, this <strong>does not</strong> necessarily imply that individual coefficient estimates decrease, i.e. <span class="math inline">\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\)</span> even if <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>.</p>
 <p>The coefficients <span class="math inline">\(\hat{\boldsymbol{\gamma}}^\lambda\)</span> can be computed using an augmented linear regression, with response <span class="math inline">\((\boldsymbol{y}, \mathbf{0}_p)\)</span> and regressor <span class="math inline">\([\mathbf{Z}^\top,\; \lambda^{1/2} \mathbf{I}_p]\)</span>. Alternatively,
 <span class="math display">\[\hat{\boldsymbol{\gamma}}^\lambda = (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\boldsymbol{y}.\]</span></p>
 <p>We can also use the singular value decomposition of <span class="math inline">\(\mathbf{Z} = \mathbf{UDV}^\top\)</span> to compute the coefficients<span class="math display">\[\hat{\boldsymbol{\gamma}} = \sum_{j=1}^p \frac{d_j}{d_j^2+\lambda} \mathbf{u}_j^\top\boldsymbol{y} \mathbf{v}_j,\]</span>

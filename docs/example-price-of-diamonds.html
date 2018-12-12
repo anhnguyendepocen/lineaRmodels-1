@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -232,6 +232,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1" data-path="solutions-5.html"><a href="solutions-5.html"><i class="fa fa-check"></i><b>9.1</b> Solutions</a><ul>
 <li class="chapter" data-level="9.1.1" data-path="solutions-5.html"><a href="solutions-5.html#exercise-12.4-smoothing-splines"><i class="fa fa-check"></i><b>9.1.1</b> Exercise 12.4 Smoothing splines</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>10</b> Generalized linear models</a><ul>
+<li class="chapter" data-level="10.1" data-path="diagnostics-for-bernoulli-data.html"><a href="diagnostics-for-bernoulli-data.html"><i class="fa fa-check"></i><b>10.1</b> Diagnostics for Bernoulli data</a></li>
+<li class="chapter" data-level="10.2" data-path="poisson-model-for-contingency-table.html"><a href="poisson-model-for-contingency-table.html"><i class="fa fa-check"></i><b>10.2</b> Poisson model for contingency table</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -528,7 +532,7 @@ Let us try to drop one of the remaining variables.</p>
 ##            Df Sum of Sq     RSS     AIC  F value    Pr(&gt;F)
 ## &lt;none&gt;                   7.8077 -2039.8                   
 ## log(carat)  1    5.7660 13.5737 -1765.2 354.4787 &lt; 2.2e-16
-## cut         4    0.4411  8.2488 -2020.3   6.7788  2.59e-05
+## cut         4    0.4411  8.2488 -2020.3   6.7788 0.0000259
 ## color       6   10.1359 17.9436 -1635.7 103.8552 &lt; 2.2e-16
 ## clarity     7   18.5675 26.3752 -1445.1 163.0697 &lt; 2.2e-16
 ## x           1    0.0961  7.9038 -2035.6   5.9062   0.01545</code></pre>
@@ -554,14 +558,14 @@ form &lt;-<span class="st"> </span><span class="kw">deparse</span>(<span class="
 ## 
 ## Model:
 ## log(price) ~ log(carat) + clarity + color + x + table + cut
-##                    Df Sum of Sq    RSS     AIC F value    Pr(&gt;F)
-## &lt;none&gt;                          7.7504 -2041.4                  
-## log(carat):color    6   0.12893 7.6215 -2037.8  1.3336  0.240428
-## log(carat):clarity  7   0.17840 7.5720 -2039.1  1.5886  0.136476
-## log(carat):cut      4   0.39334 7.3570 -2059.5  6.3489 5.540e-05
-## color:cut          23   0.44771 7.3027 -2025.2  1.2155  0.225315
-## clarity:color      37   1.22732 6.5231 -2053.6  2.2476 6.789e-05
-## clarity:cut        21   0.65138 7.0990 -2043.3  2.0012  0.005557</code></pre>
+##                    Df Sum of Sq    RSS     AIC F value     Pr(&gt;F)
+## &lt;none&gt;                          7.7504 -2041.4                   
+## log(carat):color    6   0.12893 7.6215 -2037.8  1.3336   0.240428
+## log(carat):clarity  7   0.17840 7.5720 -2039.1  1.5886   0.136476
+## log(carat):cut      4   0.39334 7.3570 -2059.5  6.3489 0.00005540
+## color:cut          23   0.44771 7.3027 -2025.2  1.2155   0.225315
+## clarity:color      37   1.22732 6.5231 -2053.6  2.2476 0.00006789
+## clarity:cut        21   0.65138 7.0990 -2043.3  2.0012   0.005557</code></pre>
 <p>The interaction between <code>log(carat)</code> and <code>cut</code> is significant at the 5% level, idem for <code>clarity:color</code> and <code>clarity:cut</code>. Keep in mind that adding interactions leads to a large increase in the number of parameters; <code>clarity:color</code> would lead to an additional 37 parameters!</p>
 </div>
 <div id="information-criterion" class="section level3">
@@ -653,12 +657,12 @@ n &lt;-<span class="st"> </span><span class="kw">nrow</span>(di)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n<span class="dv">-2</span><span class="op">*</span><span class="kw">length</span>(<span class="kw">coef</span>(final_mod))), <span class="dt">col =</span> <span class="dv">2</span>)
 <span class="kw">influencePlot</span>(final_mod)</code></pre>
 <p><img src="LinesRModels_files/figure-html/diagnosticsdiamonds-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre><code>##         StudRes        Hat        CookD
-## 243 -3.93155877 0.03281988 2.036095e-02
-## 340 -0.03069107 0.38041277 2.318201e-05
-## 346 -0.64996148 0.32541064 8.161235e-03
-## 350 -3.62756784 0.22541782 1.493601e-01
-## 384 -2.65776683 0.15938312 5.289675e-02</code></pre>
+<pre><code>##         StudRes        Hat         CookD
+## 243 -3.93155877 0.03281988 0.02036095303
+## 340 -0.03069107 0.38041277 0.00002318201
+## 346 -0.64996148 0.32541064 0.00816123471
+## 350 -3.62756784 0.22541782 0.14936005917
+## 384 -2.65776683 0.15938312 0.05289674514</code></pre>
 <p>Many points have high leverage and large Cook’s values. This means the slope could in principle largely be driven by those points
 We get a very large residual (observation <code>350</code>, which is a very small diamond of high quality sold for almost double the value of a comparable one). A more careful analysis would be necessary to see the impact of these points on the coefficients and whether they matter (or not). For example, we could refit the model using the command <code>lm(final_mod, subset = -350)</code>.</p>
 <p>Diagnostics of heteroscedasticity are mostly useful when you have suspicions that different subgroups could have different variances (if you include factor variables) or if the data are time series, in which case you may wish to look at plots of the correlogram (<code>acf(resid(final_mod))</code> and partial correlogram <code>pacf(resid(final_mod))</code>). These are only useful for time ordered observations, i.e. when the errors at time <span class="math inline">\(t\)</span> depend on previous time periods <span class="math inline">\(\{t-1, \ldots\}\)</span>. The impact of serial dependence of the residuals is that the standard errors from OLS are too small and need to be inflated.</p>

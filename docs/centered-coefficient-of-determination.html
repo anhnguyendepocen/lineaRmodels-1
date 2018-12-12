@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -233,6 +233,10 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1.1" data-path="solutions-5.html"><a href="solutions-5.html#exercise-12.4-smoothing-splines"><i class="fa fa-check"></i><b>9.1.1</b> Exercise 12.4 Smoothing splines</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>10</b> Generalized linear models</a><ul>
+<li class="chapter" data-level="10.1" data-path="diagnostics-for-bernoulli-data.html"><a href="diagnostics-for-bernoulli-data.html"><i class="fa fa-check"></i><b>10.1</b> Diagnostics for Bernoulli data</a></li>
+<li class="chapter" data-level="10.2" data-path="poisson-model-for-contingency-table.html"><a href="poisson-model-for-contingency-table.html"><i class="fa fa-check"></i><b>10.2</b> Poisson model for contingency table</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -262,7 +266,7 @@ where <span class="math inline">\(\boldsymbol{e} \equiv \mathbf{M}_{\mathbf{X}}\
 <span class="math display">\[ R^2_c = \frac{\|\hat{\boldsymbol{y}}-\bar{y}\mathbf{1}_n\|^2}{\|\boldsymbol{y}-\bar{y}\mathbf{1}_n\|^2}=\frac{\|\hat{\boldsymbol{y}}\|^2-\|\bar{y}\mathbf{1}_n\|^2}{\|\boldsymbol{y}\|^2-\|\bar{y}\mathbf{1}_n\|^2}.\]</span>
 since the vectors <span class="math inline">\(\bar{y}\mathbf{1}_n \perp \hat{\boldsymbol{y}}-\bar{y}\mathbf{1}_n\)</span>.</p>
 <p>Provided that <span class="math inline">\(\mathbf{1}_n \in \mathscr{S}(\mathbf{X})\)</span>, it is obvious that the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> are invariant to linear transformations of the covariates <span class="math inline">\(\mathbf{X}\)</span> (by which I mean you can transform the design matrix column by column, with <span class="math inline">\(\mathbf{x}_i \mapsto \alpha_i+\mathbf{x}_i\gamma_i\)</span> for <span class="math inline">\(i=1, \ldots, p\)</span>). Multiplicative changes in <span class="math inline">\(\boldsymbol{y}\)</span> lead to an equivalent change in <span class="math inline">\(\boldsymbol{e}\)</span> and <span class="math inline">\(\hat{\boldsymbol{y}}\)</span>. However, location-changes in <span class="math inline">\(\boldsymbol{y}\)</span> are only reflected in <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> (they are absorbed by the intercept). This is why <span class="math inline">\(R^2\)</span> is not invariant to location-changes in the response, since the ratio <span class="math inline">\(\|\hat{\boldsymbol{y}}\|^2/\|\boldsymbol{y}\|^2\)</span> increases to 1 if <span class="math inline">\({\boldsymbol{y}}\mapsto {\boldsymbol{y}}+ a \mathbf{1}_n\)</span>.</p>
-<p>This invariance is precisely the reason we dismissed <span class="math inline">\(R^2\)</span>. For example, a change of units from Farenheit to Celcius, viz. <span class="math inline">\(T_c = 5 (T_F - 32)/9\)</span>, leads to different values of <span class="math inline">\(R^2\)</span>:</p>
+<p>This invariance is precisely the reason we dismissed <span class="math inline">\(R^2\)</span>. For example, a change of units from Farenheit to Celcius, viz. <span class="math inline">\(T_c = 5 (T_F - 32)/9\)</span>, leads to different values of <span class="math inline">\(R^2\)</span>:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(aatemp, <span class="dt">package =</span> <span class="st">&quot;faraway&quot;</span>)
 <span class="kw">plot</span>(temp <span class="op">~</span><span class="st"> </span>year, <span class="dt">data =</span> aatemp, <span class="dt">ylab =</span> <span class="st">&quot;Temperature (in F)&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)
 <span class="co">#Form design matrix and two response vectors</span>

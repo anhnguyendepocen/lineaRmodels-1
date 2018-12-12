@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>8.2 Cross-validation | lineaRmodels</title>
+  <title>10.1 Diagnostics for Bernoulli data | lineaRmodels</title>
   <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="8.2 Cross-validation | lineaRmodels />
+  <meta property="og:title" content="10.1 Diagnostics for Bernoulli data | lineaRmodels />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="8.2 Cross-validation | lineaRmodels />
+  <meta name="twitter:title" content="10.1 Diagnostics for Bernoulli data | lineaRmodels />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="bias-and-variance-tradeoff.html">
-<link rel="next" href="splines.html">
+<link rel="prev" href="generalized-linear-models.html">
+<link rel="next" href="poisson-model-for-contingency-table.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -257,58 +257,90 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="cross-validation-1" class="section level2">
-<h2><span class="header-section-number">8.2</span> Cross-validation</h2>
-<p>Denote the ridge estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}^\lambda\)</span> for a given penalty parameter <span class="math inline">\(\lambda\)</span>.
-The smoothing matrix, as given in the course notes, is <span class="math display">\[\mathbf{S}_{\lambda} = \mathbf{Z}(\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top;\]</span> its trace is <span class="math inline">\(\mathrm{tr}({\mathbf{S}_{\lambda}}) = \sum_{j=1}^p d_j^2/(d_j^2+\lambda)\)</span>, where <span class="math inline">\(d_{j}\)</span> is the <span class="math inline">\(j\)</span>th singular value of <span class="math inline">\(\mathbf{Z}\)</span>. The smoothing matrix <span class="math inline">\(\mathbf{S}_{\lambda}\)</span> is not a projection matrix; its eigenvalues lie in <span class="math inline">\((0,1)\)</span>.</p>
-<p>Similar calculations than those used to derive the leave-one-out cross validation residual errors of the PRESS statistic lead to the formula
-<span class="math display">\[\mathrm{CV}_\lambda = \sum_{i=1}^n e_{-i}^2(\lambda) =  \sum_{i=1}^n (y_i - \bar{y}- \mathbf{z}_i \hat{\boldsymbol{\gamma}}_{-i}^{\lambda})^2 = \sum_{i=1}^n \frac{(y_i - \bar{y} -\mathbf{z}_i\hat{\boldsymbol{\gamma}}^\lambda)^2}{1-{\mathbf{S}_{\lambda}}_{ii}},\]</span>
-where <span class="math inline">\(\mathbf{z}_i\)</span> is the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\mathbf{Z}\)</span>.
-Rather than compute <span class="math inline">\(\mathbf{S}_{\lambda}\)</span> and its diagonal elements, one can resort to the convenient generalized cross-validation approximation
-<span class="math display">\[\mathrm{GCV}_\lambda = \sum_{i=1}^n \frac{(y_i - \bar{y} -\mathbf{z}_i\hat{\boldsymbol{\gamma}}^\lambda)^2}{1-\mathrm{tr}(\mathbf{S}_{\lambda})/n}\]</span>
-and the latter is readily computed.</p>
-<pre class="sourceCode r"><code class="sourceCode r">nlam &lt;-<span class="st"> </span>201L
-lambda_seq &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dt">length =</span> nlam)
-svdZ &lt;-<span class="st"> </span><span class="kw">svd</span>(Z)
-n &lt;-<span class="st"> </span><span class="kw">nrow</span>(Z); p &lt;-<span class="st"> </span><span class="kw">ncol</span>(Z)
-<span class="co">#Each column is u_j^Tyv_j</span>
-uyv &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>p, <span class="cf">function</span>(j){<span class="kw">t</span>(svdZ<span class="op">$</span>u[,j]) <span class="op">%*%</span><span class="st"> </span>y <span class="op">%*%</span><span class="st"> </span>svdZ<span class="op">$</span>v[,j]})
-gcv &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, nlam)
-yc &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(y)
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nlam){
-  <span class="co"># Compute GCV - trace of smoother + RSS</span>
-  traceS &lt;-<span class="st"> </span><span class="kw">sum</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">/</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span><span class="op">+</span>lambda_seq[i]))
-  gcv[i] &lt;-<span class="st"> </span><span class="kw">sum</span>((yc <span class="op">-</span><span class="st"> </span>Z <span class="op">%*%</span><span class="st"> </span><span class="kw">colSums</span>(<span class="kw">c</span>(svdZ<span class="op">$</span>d<span class="op">/</span>(svdZ<span class="op">$</span>d<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>lambda_seq[i]))  <span class="op">*</span>
-<span class="st">                                      </span><span class="kw">t</span>(uyv)))<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>traceS<span class="op">/</span>n)<span class="op">^</span><span class="dv">2</span>
-}
-<span class="co"># Plot GCV curve against lambda</span>
-<span class="kw">plot</span>(lambda_seq, gcv, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>,
-     <span class="dt">main =</span> <span class="st">&quot;Generalized leave-one-out</span><span class="ch">\n</span><span class="st">cross validation for ridge regression&quot;</span>,
-     <span class="dt">ylab =</span> <span class="kw">expression</span>(GCV[lambda]), <span class="dt">xlab =</span> <span class="kw">expression</span>(lambda))
-<span class="kw">abline</span>(<span class="dt">v =</span> lambda_seq[<span class="kw">which.min</span>(gcv)], <span class="dt">col =</span> <span class="dv">2</span>)
-lambda_seq[<span class="kw">which.min</span>(gcv)]</code></pre>
-<pre><code>## [1] 13.5</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compare results with MASS</span>
-<span class="kw">library</span>(MASS)
-fit_ridge &lt;-<span class="st"> </span><span class="kw">lm.ridge</span>(y <span class="op">~</span><span class="st"> </span>Z, <span class="dt">lambda =</span> lambda_seq)
-<span class="co"># GCV returned by lm.ridge is divided by n^2</span>
-<span class="kw">lines</span>(lambda_seq, fit_ridge<span class="op">$</span>GCV<span class="op">*</span>n<span class="op">^</span><span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/gcv_ridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">select</span>(fit_ridge)</code></pre>
-<pre><code>## modified HKB estimator is 8.577316 
-## modified L-W estimator is 7.881568 
-## smallest value of GCV  at 13.7</code></pre>
-<p>Note that in this case, the optimal value of <span class="math inline">\(\lambda\)</span> found is higher than the theoretical optimum. In practice, we may prefer <span class="math inline">\(K\)</span>-fold cross-validation to leave-one-out cross validation.</p>
+<div id="diagnostics-for-bernoulli-data" class="section level2">
+<h2><span class="header-section-number">10.1</span> Diagnostics for Bernoulli data</h2>
+<p>This is the example presented in class. The response variable is a binary indicator of low birthweight.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(birthwt, <span class="dt">package =</span> <span class="st">&quot;MASS&quot;</span>)
+<span class="co"># Preprocessing from MASS - give meaningful labels for factors</span>
+<span class="co"># See help for description of the data set</span>
+<span class="co"># Rewrite a new data frame with those variables</span>
+bwt &lt;-<span class="st"> </span><span class="kw">with</span>(birthwt, {
+  race &lt;-<span class="st"> </span><span class="kw">factor</span>(race, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;other&quot;</span>))
+  ptd &lt;-<span class="st"> </span><span class="kw">factor</span>(ptl <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)
+  ftv &lt;-<span class="st"> </span><span class="kw">factor</span>(ftv) 
+  <span class="co"># Group number of visits to avoid categories with small counts</span>
+  <span class="kw">levels</span>(ftv)[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)] &lt;-<span class="st"> &quot;2+&quot;</span>
+  <span class="kw">data.frame</span>(<span class="dt">low =</span> <span class="kw">factor</span>(low), age, lwt, race, <span class="dt">smoke =</span> (smoke <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>),
+             ptd, <span class="dt">ht =</span> (ht <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">ui =</span> (ui <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), ftv)
+  })
 
+lbw &lt;-<span class="st"> </span><span class="kw">glm</span>(low <span class="op">~</span><span class="st"> </span>., <span class="dt">family =</span> binomial, <span class="dt">data =</span> bwt)
+<span class="co"># Can use summary just like for lm</span>
+<span class="kw">summary</span>(lbw)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = low ~ ., family = binomial, data = bwt)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.7038  -0.8068  -0.5008   0.8835   2.2152  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept)  0.82302    1.24471   0.661  0.50848
+## age         -0.03723    0.03870  -0.962  0.33602
+## lwt         -0.01565    0.00708  -2.211  0.02705
+## raceblack    1.19241    0.53597   2.225  0.02609
+## raceother    0.74069    0.46174   1.604  0.10869
+## smokeTRUE    0.75553    0.42502   1.778  0.07546
+## ptdTRUE      1.34376    0.48062   2.796  0.00518
+## htTRUE       1.91317    0.72074   2.654  0.00794
+## uiTRUE       0.68019    0.46434   1.465  0.14296
+## ftv1        -0.43638    0.47939  -0.910  0.36268
+## ftv2+        0.17901    0.45638   0.392  0.69488
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 234.67  on 188  degrees of freedom
+## Residual deviance: 195.48  on 178  degrees of freedom
+## AIC: 217.48
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>The <code>summary</code> object returns the coefficients, standard errors and results for the Wald test that <span class="math inline">\(\beta_i=0\)</span>. Note that these will generally differ from the likelihood ratio test.
+The code above illustrates how to fit the Bernoulli model. Since the data are binary, there is no need to give two columns as response. The following code produces diagnostics for the model as shown in class:</p>
+<pre class="sourceCode r"><code class="sourceCode r">binmod &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="dt">formula =</span> low <span class="op">~</span><span class="st"> </span>lwt <span class="op">+</span><span class="st"> </span>race <span class="op">+</span><span class="st"> </span>smoke <span class="op">+</span><span class="st"> </span>ptd <span class="op">+</span><span class="st"> </span>ht <span class="op">+</span><span class="st"> </span>ui, 
+           <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">&quot;logit&quot;</span>), <span class="dt">data =</span> bwt)
+<span class="co">#Logit link function</span>
+logit &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">log</span>(x)<span class="op">-</span><span class="kw">log</span>(<span class="dv">1</span><span class="op">-</span>x)}
+n &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">fitted</span>(binmod))
+U1 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="dv">0</span>, <span class="dt">max =</span> <span class="kw">fitted</span>(binmod))
+U2 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="kw">fitted</span>(binmod), <span class="dt">max =</span> <span class="dv">1</span>)
+unires &lt;-<span class="st"> </span>binmod<span class="op">$</span>y<span class="op">*</span>U1 <span class="op">+</span><span class="st"> </span>U2<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>binmod<span class="op">$</span>y)
+<span class="kw">par</span>(<span class="dt">pty =</span> <span class="st">&quot;s&quot;</span>, <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)
+<span class="kw">plot</span>(bwt<span class="op">$</span>lwt, unires, <span class="dt">ylab =</span> <span class="st">&quot;uniform residuals&quot;</span>,
+     <span class="dt">xlab =</span> <span class="st">&quot;mother&#39;s weight (in pounds)&quot;</span>)
+<span class="kw">plot</span>(<span class="kw">logit</span>(<span class="kw">fitted</span>(binmod)), unires, <span class="dt">ylab =</span> <span class="st">&quot;uniform residuals&quot;</span>,
+     <span class="dt">xlab =</span> <span class="st">&quot;logit(p)&quot;</span>)
+<span class="kw">hist</span>(unires, <span class="dt">probability =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;uniform residuals&quot;</span>)
+
+<span class="co"># Quantile - quantile plot</span>
+<span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">rank</span>(unires)<span class="op">/</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">y =</span> unires, 
+     <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Observed quantiles&quot;</span>, 
+     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">cex =</span> <span class="fl">0.5</span>)
+<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
+<span class="co"># Simulated confidence bands, based on quantiles of the uniform distribution</span>
+pconfint &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="kw">apply</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">10000</span> <span class="op">*</span><span class="st"> </span>n), <span class="dt">nrow =</span> n), <span class="dv">2</span>, sort), <span class="dv">1</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))
+<span class="kw">lines</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), pconfint[<span class="dv">1</span>,], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">2</span>)
+<span class="kw">lines</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), pconfint[<span class="dv">2</span>,], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
+<p><img src="LinesRModels_files/figure-html/glmdiag-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
-<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="bias-and-variance-tradeoff.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="splines.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="generalized-linear-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="poisson-model-for-contingency-table.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
