@@ -125,4 +125,135 @@ The likelihood ratio test to check whether the interaction is significative is s
 
 This is an example where the hypothesis of equal mean and variance does not seem to hold. Handling the overdispersion is beyond the scope of this course.
 
+## Solutions
 
+### Exercise 13.3 - Two-way contingency tables
+
+```{r cancer_glm}
+cancer <- read.table("http://sma.epfl.ch/~lbelzile/math341/cancer.dat", header = TRUE)
+print(cancer)
+# Some categories have small counts, so asymptotic result may be a bit off
+
+cancer.m0 <- glm(cbind(yes, no) ~ 1, family = "binomial", data = cancer)
+cancer.m1 <- glm(cbind(yes, no) ~ age, family = "binomial", data = cancer)
+cancer.m2 <- glm(cbind(yes, no) ~ malignant, family = "binomial", data = cancer)
+cancer.m3 <- glm(cbind(yes, no) ~ age + malignant, family = "binomial", data = cancer)
+cancer.m4 <- glm(cbind(yes, no) ~ age * malignant, family = "binomial", data = cancer)
+library(xtable)
+devtab <- data.frame("model" = c("M0","M1","M2","M3"), 
+                     "deviance" = round(c(deviance(cancer.m0), deviance(cancer.m1), 
+                                          deviance(cancer.m2), deviance(cancer.m3)), 2),
+      "p" = c(length(coef(cancer.m0)),length(coef(cancer.m1)),
+              length(coef(cancer.m2)),length(coef(cancer.m3))))
+
+devtab
+```
+
+Now that we have calculated the deviance of every model, we can perform an analysis of deviance and check 
+whether the final model obtained by backward elimination is adequate by comparing its $P$-value under the null.
+Some counts in the age category `70+` are very low, hence the asymptotic result can be a bit off. We assess this through a small simulation study in which we resample observations from the fitted model.
+
+
+```{r glmcancer2, cache = TRUE}
+# Saturated model vs additive model
+ 1- pchisq(deviance(cancer.m3), df = nrow(cancer) - length(cancer.m3$coef))
+# p-value of 0.78, fail to reject null that additive model is adequate
+# Try further simplification
+drop1(cancer.m3, test = "Chisq")
+# Fail to reject null that model with only "malignant" is adequate simplification
+ 1- pchisq(2*(c(logLik(cancer.m3) - logLik(cancer.m2))), df = (length(cancer.m3$coef) - length(cancer.m2$coef)))
+ 1- pchisq(2*(c(logLik(cancer.m3) - logLik(cancer.m1))), df = (length(cancer.m3$coef) - length(cancer.m1$coef)))
+drop1(cancer.m2, test = "Chisq")
+# Reject null that model with only intercept is adequate
+
+# If Model is adequate, Deviance approx JK-p 
+deviance(cancer.m2)
+# Is this result vary large? Investigate via simulation study
+# Canonical link functions for binomial
+logit <- function(x){log(x) - log(1-x)}
+# Inverse link function (logistic in course notes)
+expit <- function(x){ 1/(1+ exp(-x))}
+# Get predicted probability
+probc <- expit(predict(cancer.m2))
+# Need to condition on total count - fixed for binomial model
+nr <- rowSums(cancer[,c("yes","no")])
+# Simulate new datasets from the model, compute their deviance
+simudev <- rep(0, 1e3L)
+for(i in 1:length(simudev)){
+  newyes <- sapply(1:6, function(j){rbinom(n = 1, size = nr[j], prob = probc[j])})
+  newcancer <- data.frame(malignant = cancer$malignant, yes = newyes, no = nr - newyes)
+  simudev[i] <- deviance(glm( cbind(yes, no) ~ malignant, family = "binomial", data = newcancer))
+}
+# Distribution of deviance from simulated model, conditional on row total
+hist(simudev, main = "Deviance of simulated models", xlab = "Deviance", probability = TRUE, ylim = c(0, 0.2), breaks = 20)
+# Line corresponding to deviance of 
+abline(v = deviance(cancer.m2), lty = 2)
+# Null distribution
+curve(dchisq(x, df = 4), col = 2, add = TRUE)
+# P-value from simulation
+sum(I(deviance(cancer.m2) < simudev)) / length(simudev)
+# P-value with asymptotic distribution
+1-pchisq(deviance(cancer.m2), df = (nrow(cancer) - length(coef(cancer.m2))))
+# About 4% difference between the two
+```
+
+
+### Exercise 13.5 - Equivalence of binomial and Poisson models
+
+We can fit the model using the Poisson generalized linear model with an offset term for `log(pop)`, since the latter is fixed. We cannot make direct comparisons because the population size in each category are different. If $X \sim \mathcal{B}(m_i, \pi_i)$, the Poisson approximation is $X \sim \mathcal{P}(\lambda_i)$ with $\lambda_i \approx m_i\pi_i$. Taking logarithms, we get $\log(\lambda_i) = \log(m_i) + \log(\pi_i)$. The term $\log(m_i)$ is an offset with known coefficient of 1.
+
+```{r smokingglm}
+smoking <- read.table("http://sma.epfl.ch/~lbelzile/math341/smoking.dat", header = TRUE)
+smoking.p.m0 <- glm(dead ~ offset(log(pop)), family = poisson, data = smoking)
+smoking.p.m1 <- glm(dead ~ offset(log(pop)) + smoke, family = poisson, data = smoking)
+smoking.p.m2 <- glm(dead ~ offset(log(pop)) + age, family = poisson, data = smoking)
+smoking.p.m3 <- glm(dead ~ offset(log(pop)) + smoke + age, family = poisson, data = smoking)
+#Define quantities
+n <- nrow(smoking)
+p0 <- length(coef(smoking.p.m0)); D0p <- deviance(smoking.p.m0)
+p1 <- length(coef(smoking.p.m1)); D1p <- deviance(smoking.p.m1)
+p2 <- length(coef(smoking.p.m2)); D2p <- deviance(smoking.p.m2)
+p3 <- length(coef(smoking.p.m3)); D3p <- deviance(smoking.p.m3)
+
+#Analysis of deviance
+1 - pchisq(D3p, df = n - p3) # Interaction not stat. significative
+1 - pchisq(D2p - D3p, df = p3 - p2) # smoke significative
+1 - pchisq(D1p - D3p, df = p3 - p1) # age significative
+#If Model is correct, D3 approx chisq(n - p3)
+summary(smoking.p.m3)
+
+#Same with binomial model
+smoking.b.m0 <- glm(cbind(dead, pop - dead) ~ 1, family = binomial, data = smoking)
+smoking.b.m1 <- glm(cbind(dead, pop - dead) ~ smoke, family = binomial, data = smoking)
+smoking.b.m2 <- glm(cbind(dead, pop - dead) ~ age, family = binomial, data = smoking)
+smoking.b.m3 <- glm(cbind(dead, pop - dead) ~ smoke + age, family = binomial, data = smoking)
+#Define quantities
+n <- nrow(smoking)
+D0b <- deviance(smoking.b.m0)
+D1b <- deviance(smoking.b.m1)
+D2b <- deviance(smoking.b.m2)
+D3b <- deviance(smoking.b.m3)
+
+1 - pchisq(D3b, df = n - p3) # Interaction not stat. significative
+1 - pchisq(D2b - D3b, df = p3 - p2) # smoking group significative
+1 - pchisq(D1b - D3b, df = p3 - p1) # age group significative
+#If Model is correct, D3 approx n - p3
+summary(smoking.b.m3)
+# Output deviance table
+devtab <- data.frame("model" = c("M0","M1","M2","M3"), 
+                     "deviance binom." = round(c(D0p, D1p, D2p, D3p), 2),
+                     "deviance Poisson" = round(c(D0b, D1b, D2b, D3b), 2),
+                     "p" = c(p0, p1, p2, p3))
+print(devtab)
+#To export to LaTeX
+#xtab <- xtable(devtab, caption = "Analysis of deviance for the \\texttt{smoking} data set")
+#print(xtab, booktabs = TRUE, sanitize.text.function = identity, include.rownames = FALSE, )
+
+# Compare fitted probabilities
+par(mar = c(6,6,3,3))
+plot(fitted(smoking.b.m3), fitted(smoking.b.m3) - fitted(smoking.p.m3)/smoking$pop,
+     xlab = "Fitted probability of death\n from logistic model",
+     ylab = "Difference in fitted probability of death \nbetween Poisson and logistic models",
+     main = "Smoking cancer dataset", bty = "l")
+#Differ most for last categories in which the Poisson approximation is dubious
+```

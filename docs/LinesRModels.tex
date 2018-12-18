@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{version of 2018-12-12}
+    \date{version of 2018-12-18}
 
 \usepackage[mathscr]{eucal}
 \DeclareMathAlphabet{\mathcrl}{U}{rsfs}{m}{n}
@@ -2568,7 +2568,7 @@ You should choose \(B\) so that \(B+1\) is divisible by \(\alpha\) and rather la
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.5832583
+## [1] 0.5721572
 \end{verbatim}
 
 \begin{Shaded}
@@ -5168,6 +5168,412 @@ The data are count, hence we proceed with the analysis using a Poisson likelihoo
 The likelihood ratio test to check whether the interaction is significative is soundly rejected, hence we would keep the saturated model. For such a model, the fitted values correspond to the observed counts.
 
 This is an example where the hypothesis of equal mean and variance does not seem to hold. Handling the overdispersion is beyond the scope of this course.
+
+\hypertarget{solutions-6}{%
+\section{Solutions}\label{solutions-6}}
+
+\hypertarget{exercise-13.3---two-way-contingency-tables}{%
+\subsection{Exercise 13.3 - Two-way contingency tables}\label{exercise-13.3---two-way-contingency-tables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cancer <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"http://sma.epfl.ch/~lbelzile/math341/cancer.dat"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{print}\NormalTok{(cancer)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     age malignant yes no
+## 1   <50        no  77 10
+## 2   <50       yes  51 13
+## 3 50-69        no  51 11
+## 4 50-69       yes  38 20
+## 5   70+        no   7  3
+## 6   70+       yes   6  3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Some categories have small counts, so asymptotic result may be a bit off}
+
+\NormalTok{cancer.m0 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(yes, no) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ cancer)}
+\NormalTok{cancer.m1 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(yes, no) }\OperatorTok{~}\StringTok{ }\NormalTok{age, }\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ cancer)}
+\NormalTok{cancer.m2 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(yes, no) }\OperatorTok{~}\StringTok{ }\NormalTok{malignant, }\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ cancer)}
+\NormalTok{cancer.m3 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(yes, no) }\OperatorTok{~}\StringTok{ }\NormalTok{age }\OperatorTok{+}\StringTok{ }\NormalTok{malignant, }\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ cancer)}
+\NormalTok{cancer.m4 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(yes, no) }\OperatorTok{~}\StringTok{ }\NormalTok{age }\OperatorTok{*}\StringTok{ }\NormalTok{malignant, }\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ cancer)}
+\KeywordTok{library}\NormalTok{(xtable)}
+\NormalTok{devtab <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"model"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"M0"}\NormalTok{,}\StringTok{"M1"}\NormalTok{,}\StringTok{"M2"}\NormalTok{,}\StringTok{"M3"}\NormalTok{), }
+                     \StringTok{"deviance"}\NormalTok{ =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{deviance}\NormalTok{(cancer.m0), }\KeywordTok{deviance}\NormalTok{(cancer.m1), }
+                                          \KeywordTok{deviance}\NormalTok{(cancer.m2), }\KeywordTok{deviance}\NormalTok{(cancer.m3)), }\DecValTok{2}\NormalTok{),}
+      \StringTok{"p"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(cancer.m0)),}\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(cancer.m1)),}
+              \KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(cancer.m2)),}\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(cancer.m3))))}
+
+\NormalTok{devtab}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   model deviance p
+## 1    M0    12.66 1
+## 2    M1     6.64 3
+## 3    M2     5.96 2
+## 4    M3     0.49 4
+\end{verbatim}
+
+Now that we have calculated the deviance of every model, we can perform an analysis of deviance and check
+whether the final model obtained by backward elimination is adequate by comparing its \(P\)-value under the null.
+Some counts in the age category \texttt{70+} are very low, hence the asymptotic result can be a bit off. We assess this through a small simulation study in which we resample observations from the fitted model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Saturated model vs additive model}
+ \DecValTok{1}\OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(}\KeywordTok{deviance}\NormalTok{(cancer.m3), }\DataTypeTok{df =} \KeywordTok{nrow}\NormalTok{(cancer) }\OperatorTok{-}\StringTok{ }\KeywordTok{length}\NormalTok{(cancer.m3}\OperatorTok{$}\NormalTok{coef))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.7811038
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# p-value of 0.78, fail to reject null that additive model is adequate}
+\CommentTok{# Try further simplification}
+\KeywordTok{drop1}\NormalTok{(cancer.m3, }\DataTypeTok{test =} \StringTok{"Chisq"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## cbind(yes, no) ~ age + malignant
+##           Df Deviance    AIC    LRT Pr(>Chi)
+## <none>         0.4941 30.433                
+## age        2   5.9552 31.894 5.4611  0.06518
+## malignant  1   6.6412 34.580 6.1471  0.01316
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Fail to reject null that model with only "malignant" is adequate simplification}
+ \DecValTok{1}\OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{logLik}\NormalTok{(cancer.m3) }\OperatorTok{-}\StringTok{ }\KeywordTok{logLik}\NormalTok{(cancer.m2))), }\DataTypeTok{df =}\NormalTok{ (}\KeywordTok{length}\NormalTok{(cancer.m3}\OperatorTok{$}\NormalTok{coef) }\OperatorTok{-}\StringTok{ }\KeywordTok{length}\NormalTok{(cancer.m2}\OperatorTok{$}\NormalTok{coef)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.06518224
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \DecValTok{1}\OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{logLik}\NormalTok{(cancer.m3) }\OperatorTok{-}\StringTok{ }\KeywordTok{logLik}\NormalTok{(cancer.m1))), }\DataTypeTok{df =}\NormalTok{ (}\KeywordTok{length}\NormalTok{(cancer.m3}\OperatorTok{$}\NormalTok{coef) }\OperatorTok{-}\StringTok{ }\KeywordTok{length}\NormalTok{(cancer.m1}\OperatorTok{$}\NormalTok{coef)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01316278
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{drop1}\NormalTok{(cancer.m2, }\DataTypeTok{test =} \StringTok{"Chisq"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## cbind(yes, no) ~ malignant
+##           Df Deviance    AIC    LRT Pr(>Chi)
+## <none>         5.9552 31.894                
+## malignant  1  12.6558 36.595 6.7006 0.009638
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Reject null that model with only intercept is adequate}
+
+\CommentTok{# If Model is adequate, Deviance approx JK-p }
+\KeywordTok{deviance}\NormalTok{(cancer.m2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.955231
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Is this result vary large? Investigate via simulation study}
+\CommentTok{# Canonical link functions for binomial}
+\NormalTok{logit <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}\KeywordTok{log}\NormalTok{(x) }\OperatorTok{-}\StringTok{ }\KeywordTok{log}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{x)\}}
+\CommentTok{# Inverse link function (logistic in course notes)}
+\NormalTok{expit <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{ }\DecValTok{1}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{+}\StringTok{ }\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{x))\}}
+\CommentTok{# Get predicted probability}
+\NormalTok{probc <-}\StringTok{ }\KeywordTok{expit}\NormalTok{(}\KeywordTok{predict}\NormalTok{(cancer.m2))}
+\CommentTok{# Need to condition on total count - fixed for binomial model}
+\NormalTok{nr <-}\StringTok{ }\KeywordTok{rowSums}\NormalTok{(cancer[,}\KeywordTok{c}\NormalTok{(}\StringTok{"yes"}\NormalTok{,}\StringTok{"no"}\NormalTok{)])}
+\CommentTok{# Simulate new datasets from the model, compute their deviance}
+\NormalTok{simudev <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{1e3}\NormalTok{L)}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(simudev))\{}
+\NormalTok{  newyes <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(j)\{}\KeywordTok{rbinom}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1}\NormalTok{, }\DataTypeTok{size =}\NormalTok{ nr[j], }\DataTypeTok{prob =}\NormalTok{ probc[j])\})}
+\NormalTok{  newcancer <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{malignant =}\NormalTok{ cancer}\OperatorTok{$}\NormalTok{malignant, }\DataTypeTok{yes =}\NormalTok{ newyes, }\DataTypeTok{no =}\NormalTok{ nr }\OperatorTok{-}\StringTok{ }\NormalTok{newyes)}
+\NormalTok{  simudev[i] <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(}\KeywordTok{glm}\NormalTok{( }\KeywordTok{cbind}\NormalTok{(yes, no) }\OperatorTok{~}\StringTok{ }\NormalTok{malignant, }\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{, }\DataTypeTok{data =}\NormalTok{ newcancer))}
+\NormalTok{\}}
+\CommentTok{# Distribution of deviance from simulated model, conditional on row total}
+\KeywordTok{hist}\NormalTok{(simudev, }\DataTypeTok{main =} \StringTok{"Deviance of simulated models"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"Deviance"}\NormalTok{, }\DataTypeTok{probability =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.2}\NormalTok{), }\DataTypeTok{breaks =} \DecValTok{20}\NormalTok{)}
+\CommentTok{# Line corresponding to deviance of }
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v =} \KeywordTok{deviance}\NormalTok{(cancer.m2), }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{)}
+\CommentTok{# Null distribution}
+\KeywordTok{curve}\NormalTok{(}\KeywordTok{dchisq}\NormalTok{(x, }\DataTypeTok{df =} \DecValTok{4}\NormalTok{), }\DataTypeTok{col =} \DecValTok{2}\NormalTok{, }\DataTypeTok{add =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/glmcancer2-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# P-value from simulation}
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{I}\NormalTok{(}\KeywordTok{deviance}\NormalTok{(cancer.m2) }\OperatorTok{<}\StringTok{ }\NormalTok{simudev)) }\OperatorTok{/}\StringTok{ }\KeywordTok{length}\NormalTok{(simudev)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.27
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# P-value with asymptotic distribution}
+\DecValTok{1}\OperatorTok{-}\KeywordTok{pchisq}\NormalTok{(}\KeywordTok{deviance}\NormalTok{(cancer.m2), }\DataTypeTok{df =}\NormalTok{ (}\KeywordTok{nrow}\NormalTok{(cancer) }\OperatorTok{-}\StringTok{ }\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(cancer.m2))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2025167
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# About 4% difference between the two}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{exercise-13.5---equivalence-of-binomial-and-poisson-models}{%
+\subsection{Exercise 13.5 - Equivalence of binomial and Poisson models}\label{exercise-13.5---equivalence-of-binomial-and-poisson-models}}
+
+We can fit the model using the Poisson generalized linear model with an offset term for \texttt{log(pop)}, since the latter is fixed. We cannot make direct comparisons because the population size in each category are different. If \(X \sim \mathcal{B}(m_i, \pi_i)\), the Poisson approximation is \(X \sim \mathcal{P}(\lambda_i)\) with \(\lambda_i \approx m_i\pi_i\). Taking logarithms, we get \(\log(\lambda_i) = \log(m_i) + \log(\pi_i)\). The term \(\log(m_i)\) is an offset with known coefficient of 1.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{smoking <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"http://sma.epfl.ch/~lbelzile/math341/smoking.dat"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{smoking.p.m0 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(dead }\OperatorTok{~}\StringTok{ }\KeywordTok{offset}\NormalTok{(}\KeywordTok{log}\NormalTok{(pop)), }\DataTypeTok{family =}\NormalTok{ poisson, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\NormalTok{smoking.p.m1 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(dead }\OperatorTok{~}\StringTok{ }\KeywordTok{offset}\NormalTok{(}\KeywordTok{log}\NormalTok{(pop)) }\OperatorTok{+}\StringTok{ }\NormalTok{smoke, }\DataTypeTok{family =}\NormalTok{ poisson, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\NormalTok{smoking.p.m2 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(dead }\OperatorTok{~}\StringTok{ }\KeywordTok{offset}\NormalTok{(}\KeywordTok{log}\NormalTok{(pop)) }\OperatorTok{+}\StringTok{ }\NormalTok{age, }\DataTypeTok{family =}\NormalTok{ poisson, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\NormalTok{smoking.p.m3 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(dead }\OperatorTok{~}\StringTok{ }\KeywordTok{offset}\NormalTok{(}\KeywordTok{log}\NormalTok{(pop)) }\OperatorTok{+}\StringTok{ }\NormalTok{smoke }\OperatorTok{+}\StringTok{ }\NormalTok{age, }\DataTypeTok{family =}\NormalTok{ poisson, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\CommentTok{#Define quantities}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(smoking)}
+\NormalTok{p0 <-}\StringTok{ }\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(smoking.p.m0)); D0p <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.p.m0)}
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(smoking.p.m1)); D1p <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.p.m1)}
+\NormalTok{p2 <-}\StringTok{ }\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(smoking.p.m2)); D2p <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.p.m2)}
+\NormalTok{p3 <-}\StringTok{ }\KeywordTok{length}\NormalTok{(}\KeywordTok{coef}\NormalTok{(smoking.p.m3)); D3p <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.p.m3)}
+
+\CommentTok{#Analysis of deviance}
+\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(D3p, }\DataTypeTok{df =}\NormalTok{ n }\OperatorTok{-}\StringTok{ }\NormalTok{p3) }\CommentTok{# Interaction not stat. significative}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.609872
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(D2p }\OperatorTok{-}\StringTok{ }\NormalTok{D3p, }\DataTypeTok{df =}\NormalTok{ p3 }\OperatorTok{-}\StringTok{ }\NormalTok{p2) }\CommentTok{# smoke significative}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(D1p }\OperatorTok{-}\StringTok{ }\NormalTok{D3p, }\DataTypeTok{df =}\NormalTok{ p3 }\OperatorTok{-}\StringTok{ }\NormalTok{p1) }\CommentTok{# age significative}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#If Model is correct, D3 approx chisq(n - p3)}
+\KeywordTok{summary}\NormalTok{(smoking.p.m3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = dead ~ offset(log(pop)) + smoke + age, family = poisson, 
+##     data = smoking)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -2.06055  -0.54773   0.06431   0.29963   1.48348  
+## 
+## Coefficients:
+##                     Estimate Std. Error z value         Pr(>|z|)
+## (Intercept)         -3.63222    0.06783 -53.552          < 2e-16
+## smokecigarretteOnly  0.36915    0.03791   9.737          < 2e-16
+## smokecigarrettePlus  0.17015    0.03643   4.671 0.00000300158567
+## smokeno             -0.04781    0.04699  -1.017            0.309
+## age45-59             0.55388    0.07999   6.924 0.00000000000438
+## age50-54             0.98039    0.07682  12.762          < 2e-16
+## age55-59             1.37946    0.06526  21.138          < 2e-16
+## age60-64             1.65423    0.06257  26.439          < 2e-16
+## age65-69             1.99817    0.06279  31.824          < 2e-16
+## age70-74             2.27141    0.06435  35.296          < 2e-16
+## age75-79             2.55858    0.06778  37.746          < 2e-16
+## age80+               2.84692    0.07242  39.310          < 2e-16
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 4055.984  on 35  degrees of freedom
+## Residual deviance:   21.487  on 24  degrees of freedom
+## AIC: 285.51
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Same with binomial model}
+\NormalTok{smoking.b.m0 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(dead, pop }\OperatorTok{-}\StringTok{ }\NormalTok{dead) }\OperatorTok{~}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{family =}\NormalTok{ binomial, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\NormalTok{smoking.b.m1 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(dead, pop }\OperatorTok{-}\StringTok{ }\NormalTok{dead) }\OperatorTok{~}\StringTok{ }\NormalTok{smoke, }\DataTypeTok{family =}\NormalTok{ binomial, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\NormalTok{smoking.b.m2 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(dead, pop }\OperatorTok{-}\StringTok{ }\NormalTok{dead) }\OperatorTok{~}\StringTok{ }\NormalTok{age, }\DataTypeTok{family =}\NormalTok{ binomial, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\NormalTok{smoking.b.m3 <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(dead, pop }\OperatorTok{-}\StringTok{ }\NormalTok{dead) }\OperatorTok{~}\StringTok{ }\NormalTok{smoke }\OperatorTok{+}\StringTok{ }\NormalTok{age, }\DataTypeTok{family =}\NormalTok{ binomial, }\DataTypeTok{data =}\NormalTok{ smoking)}
+\CommentTok{#Define quantities}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(smoking)}
+\NormalTok{D0b <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.b.m0)}
+\NormalTok{D1b <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.b.m1)}
+\NormalTok{D2b <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.b.m2)}
+\NormalTok{D3b <-}\StringTok{ }\KeywordTok{deviance}\NormalTok{(smoking.b.m3)}
+
+\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(D3b, }\DataTypeTok{df =}\NormalTok{ n }\OperatorTok{-}\StringTok{ }\NormalTok{p3) }\CommentTok{# Interaction not stat. significative}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5530777
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(D2b }\OperatorTok{-}\StringTok{ }\NormalTok{D3b, }\DataTypeTok{df =}\NormalTok{ p3 }\OperatorTok{-}\StringTok{ }\NormalTok{p2) }\CommentTok{# smoking group significative}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(D1b }\OperatorTok{-}\StringTok{ }\NormalTok{D3b, }\DataTypeTok{df =}\NormalTok{ p3 }\OperatorTok{-}\StringTok{ }\NormalTok{p1) }\CommentTok{# age group significative}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#If Model is correct, D3 approx n - p3}
+\KeywordTok{summary}\NormalTok{(smoking.b.m3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = cbind(dead, pop - dead) ~ smoke + age, family = binomial, 
+##     data = smoking)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.79861  -0.61857   0.03789   0.45630   1.84921  
+## 
+## Coefficients:
+##                     Estimate Std. Error z value         Pr(>|z|)
+## (Intercept)         -3.69508    0.07224 -51.152          < 2e-16
+## smokecigarretteOnly  0.50308    0.04494  11.194          < 2e-16
+## smokecigarrettePlus  0.24727    0.04307   5.740 0.00000000944146
+## smokeno             -0.04696    0.05479  -0.857            0.391
+## age45-59             0.58001    0.08191   7.081 0.00000000000143
+## age50-54             1.03983    0.07921  13.128          < 2e-16
+## age55-59             1.49243    0.06718  22.216          < 2e-16
+## age60-64             1.82007    0.06438  28.270          < 2e-16
+## age65-69             2.25585    0.06511  34.647          < 2e-16
+## age70-74             2.63304    0.06785  38.808          < 2e-16
+## age75-79             3.07094    0.07423  41.368          < 2e-16
+## age80+               3.56348    0.08433  42.259          < 2e-16
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 4917.031  on 35  degrees of freedom
+## Residual deviance:   22.439  on 24  degrees of freedom
+## AIC: 277.38
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Output deviance table}
+\NormalTok{devtab <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\StringTok{"model"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"M0"}\NormalTok{,}\StringTok{"M1"}\NormalTok{,}\StringTok{"M2"}\NormalTok{,}\StringTok{"M3"}\NormalTok{), }
+                     \StringTok{"deviance binom."}\NormalTok{ =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{c}\NormalTok{(D0p, D1p, D2p, D3p), }\DecValTok{2}\NormalTok{),}
+                     \StringTok{"deviance Poisson"}\NormalTok{ =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{c}\NormalTok{(D0b, D1b, D2b, D3b), }\DecValTok{2}\NormalTok{),}
+                     \StringTok{"p"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(p0, p1, p2, p3))}
+\KeywordTok{print}\NormalTok{(devtab)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   model deviance.binom. deviance.Poisson  p
+## 1    M0         4055.98          4917.03  1
+## 2    M1         3910.70          4740.34  4
+## 3    M2          191.72           247.94  9
+## 4    M3           21.49            22.44 12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#To export to LaTeX}
+\CommentTok{#xtab <- xtable(devtab, caption = "Analysis of deviance for the \textbackslash{}\textbackslash{}texttt\{smoking\} data set")}
+\CommentTok{#print(xtab, booktabs = TRUE, sanitize.text.function = identity, include.rownames = FALSE, )}
+
+\CommentTok{# Compare fitted probabilities}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{fitted}\NormalTok{(smoking.b.m3), }\KeywordTok{fitted}\NormalTok{(smoking.b.m3) }\OperatorTok{-}\StringTok{ }\KeywordTok{fitted}\NormalTok{(smoking.p.m3)}\OperatorTok{/}\NormalTok{smoking}\OperatorTok{$}\NormalTok{pop,}
+     \DataTypeTok{xlab =} \StringTok{"Fitted probability of death}\CharTok{\textbackslash{}n}\StringTok{ from logistic model"}\NormalTok{,}
+     \DataTypeTok{ylab =} \StringTok{"Difference in fitted probability of death }\CharTok{\textbackslash{}n}\StringTok{between Poisson and logistic models"}\NormalTok{,}
+     \DataTypeTok{main =} \StringTok{"Smoking cancer dataset"}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"l"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{LinesRModels_files/figure-latex/smokingglm-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Differ most for last categories in which the Poisson approximation is dubious}
+\end{Highlighting}
+\end{Shaded}
 
 \bibliography{book.bib,packages.bib}
 
