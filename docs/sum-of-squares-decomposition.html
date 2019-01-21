@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -303,10 +303,10 @@ RSS.a[<span class="dv">1</span>,<span class="dv">1</span>]</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value      Pr(&gt;F)    
-## commerce   1 50.066  50.066 35.0438 0.000001985 ***
-## tradition  1  6.074   6.074  4.2514     0.04828 *  
-## Residuals 29 41.431   1.429                        
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## commerce   1 50.066  50.066 35.0438 1.985e-06 ***
+## tradition  1  6.074   6.074  4.2514   0.04828 *  
+## Residuals 29 41.431   1.429                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The function <code>anova</code> considers the <em>sequential</em> decomposition
@@ -328,10 +328,10 @@ Note that the residual sum of squares from the denominator is that of the full m
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: intensity
-##           Df Sum Sq Mean Sq F value     Pr(&gt;F)    
-## tradition  1 19.673  19.673  13.770   0.000872 ***
-## commerce   1 36.467  36.467  25.525 0.00002194 ***
-## Residuals 29 41.431   1.429                       
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## tradition  1 19.673  19.673  13.770  0.000872 ***
+## commerce   1 36.467  36.467  25.525 2.194e-05 ***
+## Residuals 29 41.431   1.429                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The <code>F</code> and <code>Pr(&gt;F)</code> columns now correspond to
@@ -347,10 +347,10 @@ and
 ## 
 ## Model:
 ## intensity ~ commerce + tradition
-##           Df Sum of Sq    RSS    AIC F value     Pr(&gt;F)    
-## &lt;none&gt;                 41.431 14.266                       
-## commerce   1    36.467 77.898 32.469 25.5252 0.00002194 ***
-## tradition  1     6.074 47.505 16.643  4.2514    0.04828 *  
+##           Df Sum of Sq    RSS    AIC F value    Pr(&gt;F)    
+## &lt;none&gt;                 41.431 14.266                      
+## commerce   1    36.467 77.898 32.469 25.5252 2.194e-05 ***
+## tradition  1     6.074 47.505 16.643  4.2514   0.04828 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>These <span class="math inline">\(F\)</span> values are the same as those obtained with the call on <code>anova</code> for the full model and the output is probably less confusing.</p>
@@ -368,9 +368,9 @@ jt_test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span cl
 ## Fit: lm(formula = intensity ~ commerce + tradition, data = Chirot)
 ## 
 ## Linear Hypotheses:
-##        Estimate Std. Error t value  Pr(&gt;|t|)    
-## 1 == 0  0.09522    0.01885   5.052 0.0000437 ***
-## 2 == 0  0.11992    0.05816   2.062    0.0911 .  
+##        Estimate Std. Error t value Pr(&gt;|t|)    
+## 1 == 0  0.09522    0.01885   5.052 4.37e-05 ***
+## 2 == 0  0.11992    0.05816   2.062   0.0911 .  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -384,8 +384,8 @@ jt_test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span cl
 ## 2 == 0  0.11992
 ## 
 ## Global Test:
-##       F DF1 DF2      Pr(&gt;F)
-## 1 19.65   2  29 0.000004038</code></pre>
+##       F DF1 DF2    Pr(&gt;F)
+## 1 19.65   2  29 4.038e-06</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Test hypothesis jointly using GLHT</span>
 car<span class="op">::</span><span class="kw">linearHypothesis</span>(mod.a, <span class="dt">hypothesis.matrix =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)), <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</code></pre>
 <pre><code>## Linear hypothesis test
@@ -397,9 +397,9 @@ car<span class="op">::</span><span class="kw">linearHypothesis</span>(mod.a, <sp
 ## Model 1: restricted model
 ## Model 2: intensity ~ commerce + tradition
 ## 
-##   Res.Df    RSS Df Sum of Sq      F      Pr(&gt;F)    
-## 1     31 97.571                                    
-## 2     29 41.431  2     56.14 19.648 0.000004038 ***
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     31 97.571                                  
+## 2     29 41.431  2     56.14 19.648 4.038e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>You can also use the function ANOVA to test with nested model. The syntax is slightly different, but the output is exactly the same.</p>
@@ -409,9 +409,9 @@ car<span class="op">::</span><span class="kw">linearHypothesis</span>(mod.a, <sp
 ## 
 ## Model 1: intensity ~ 1
 ## Model 2: intensity ~ commerce + tradition
-##   Res.Df    RSS Df Sum of Sq      F      Pr(&gt;F)    
-## 1     31 97.571                                    
-## 2     29 41.431  2     56.14 19.648 0.000004038 ***
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     31 97.571                                  
+## 2     29 41.431  2     56.14 19.648 4.038e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>At this point, it is important to note that we will get different test statistics (due to different denominator) if we consider the residuals sum of squares (RSS) from the full model or the simplified model in the <span class="math inline">\(F\)</span>-test. The test is sensitive to model misspecification and we must make sure the residual sum of squares in the denominator is at least consistent.</p>
@@ -496,7 +496,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

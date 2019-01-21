@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -275,7 +275,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span class="kw">plot</span>(<span class="dt">y =</span> e<span class="op">/</span><span class="kw">sqrt</span>(s2), <span class="dt">x =</span> X[,<span class="dv">2</span>], <span class="dt">xlab =</span> <span class="st">&quot;weight&quot;</span>, 
      <span class="dt">ylab =</span> <span class="st">&quot;rescaled residuals&quot;</span>); <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
 <span class="kw">points</span>(<span class="dt">y =</span> r, <span class="dt">x =</span> mtcars<span class="op">$</span>wt, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/diagnostics-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/diagnostics-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#graphics.off()</span>
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</code></pre>
 <p>An alternative is <code>residualPlot(lm(mpg ~ hp + wt, data = mtcars))</code>, which adds the line for a quadratic regression of <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> against standardized residuals.</p>
@@ -287,7 +287,7 @@ The package <code>car</code> has a function <code>avPlot</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;car&quot;)</span>
 <span class="kw">library</span>(car)
 car<span class="op">::</span><span class="kw">avPlots</span>(<span class="dt">model =</span> <span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>hp <span class="op">+</span><span class="st"> </span>wt <span class="op">+</span><span class="st"> </span>disp, <span class="dt">data =</span> mtcars))</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-23-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-23-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="diagnostic-of-heteroscedasticity" class="section level3">
 <h3><span class="header-section-number">4.3.2</span> Diagnostic of heteroscedasticity</h3>
@@ -299,9 +299,9 @@ If there are factors, these may have different variances. A simple boxplot of th
 <p>If an outlier is present and it has high leverage, it will draw the regression line towards itself. One way of assessing this (assuming there is a single such point) is to compute <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> by fitting the model to all but the observation <span class="math inline">\(y_i\)</span>. The difference between this estimate <span class="math inline">\(\hat{\boldsymbol{\beta}}_{-i}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is called difference of betas, or <code>dfbeta</code>. We can compute the effect of the deletion efficiently (details later on this) and similarly rescale the estimates to get a standardized difference.</p>
 <p>We can also look at the Cook’s distance, the leverage values and the externally studentized residuals. These are often combined in a bubble pplot in which the radius of the circle is proportional to Cook’s distance, with the leverage on the <span class="math inline">\(x\)</span>-axis and the value of the externally studentized residuals <span class="math inline">\(\boldsymbol{t}\)</span> on the <span class="math inline">\(y\)</span>-axis.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dfbetaPlots</span>(<span class="dt">model =</span> <span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>hp <span class="op">+</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars))</code></pre>
-<p><img src="LinesRModels_files/figure-html/dfbeta-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/dfbeta-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">influencePlot</span>(<span class="dt">model =</span> <span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>hp <span class="op">+</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars))</code></pre>
-<p><img src="LinesRModels_files/figure-html/dfbeta-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/dfbeta-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre><code>##                       StudRes        Hat     CookD
 ## Lincoln Continental 0.4434296 0.20897838 0.0178091
 ## Chrysler Imperial   2.5724776 0.18648721 0.4236109
@@ -352,7 +352,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

@@ -1,5 +1,5 @@
-book_filename: "LinesRModels"
-repo: https://github.com/lbelzile/LinesRModels
+book_filename: "LineaRModels"
+repo: https://github.com/lbelzile/LineaRModels
 output_dir: docs
 language:
   ui:

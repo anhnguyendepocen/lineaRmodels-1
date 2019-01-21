@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -265,7 +265,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.1</span> Basics of <strong>R</strong></h2>
 <div id="help" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> Help</h3>
-<p>Help can be accessed via <code>help</code> or simply <code>?</code>. If you do not know what to query, use <code>??</code> in front of a string, delimited by captions <code>" "</code> as in <code>??"Cholesky decomposition"</code>. Help is your best friend if you don’t know what a function does, what are its arguments, etc.</p>
+<p>Help can be accessed via <code>help</code> or simply <code>?</code>. If you do not know what to query, use <code>??</code> in front of a string, delimited by captions <code>&quot; &quot;</code> as in <code>??&quot;Cholesky decomposition&quot;</code>. Help is your best friend if you don’t know what a function does, what are its arguments, etc.</p>
 </div>
 <div id="basic-commands" class="section level3">
 <h3><span class="header-section-number">1.1.2</span> Basic commands</h3>
@@ -316,7 +316,7 @@ then</p>
 <div id="packages" class="section level3">
 <h3><span class="header-section-number">1.1.4</span> Packages</h3>
 <p>The great strength of <strong>R</strong> comes from its contributed libraries (called packages), which contain functions and datasets provided by third parties. Some of these (<code>base</code>, <code>stats</code>, <code>graphics</code>, etc.) are loaded by default whenever you open a session.</p>
-<p>To install a package from CRAN, use <code>install.packages("package")</code>, replacing <code>package</code> by the package name. Once installed, packages can be loaded using <code>library(package)</code>; all the functions in <code>package</code> will be available in the environment.</p>
+<p>To install a package from CRAN, use <code>install.packages(&quot;package&quot;)</code>, replacing <code>package</code> by the package name. Once installed, packages can be loaded using <code>library(package)</code>; all the functions in <code>package</code> will be available in the environment.</p>
 
 <div class="rmdcaution">
 <p>There are drawbacks to loading packages: if an object with the same name from another package is already present in your environment, it will be hidden. Use the double-colon operator <code>::</code> to access a single object from an installed package (<code>package::object</code>).</p>
@@ -367,7 +367,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

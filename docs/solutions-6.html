@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -351,7 +351,7 @@ simudev &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="d
 <span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">deviance</span>(cancer.m2), <span class="dt">lty =</span> <span class="dv">2</span>)
 <span class="co"># Null distribution</span>
 <span class="kw">curve</span>(<span class="kw">dchisq</span>(x, <span class="dt">df =</span> <span class="dv">4</span>), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/glmcancer2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/glmcancer2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># P-value from simulation</span>
 <span class="kw">sum</span>(<span class="kw">I</span>(<span class="kw">deviance</span>(cancer.m2) <span class="op">&lt;</span><span class="st"> </span>simudev)) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(simudev)</code></pre>
 <pre><code>## [1] 0.27</code></pre>
@@ -394,19 +394,19 @@ p3 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw"
 ## -2.06055  -0.54773   0.06431   0.29963   1.48348  
 ## 
 ## Coefficients:
-##                     Estimate Std. Error z value         Pr(&gt;|z|)
-## (Intercept)         -3.63222    0.06783 -53.552          &lt; 2e-16
-## smokecigarretteOnly  0.36915    0.03791   9.737          &lt; 2e-16
-## smokecigarrettePlus  0.17015    0.03643   4.671 0.00000300158567
-## smokeno             -0.04781    0.04699  -1.017            0.309
-## age45-59             0.55388    0.07999   6.924 0.00000000000438
-## age50-54             0.98039    0.07682  12.762          &lt; 2e-16
-## age55-59             1.37946    0.06526  21.138          &lt; 2e-16
-## age60-64             1.65423    0.06257  26.439          &lt; 2e-16
-## age65-69             1.99817    0.06279  31.824          &lt; 2e-16
-## age70-74             2.27141    0.06435  35.296          &lt; 2e-16
-## age75-79             2.55858    0.06778  37.746          &lt; 2e-16
-## age80+               2.84692    0.07242  39.310          &lt; 2e-16
+##                     Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept)         -3.63222    0.06783 -53.552  &lt; 2e-16
+## smokecigarretteOnly  0.36915    0.03791   9.737  &lt; 2e-16
+## smokecigarrettePlus  0.17015    0.03643   4.671 3.00e-06
+## smokeno             -0.04781    0.04699  -1.017    0.309
+## age45-59             0.55388    0.07999   6.924 4.38e-12
+## age50-54             0.98039    0.07682  12.762  &lt; 2e-16
+## age55-59             1.37946    0.06526  21.138  &lt; 2e-16
+## age60-64             1.65423    0.06257  26.439  &lt; 2e-16
+## age65-69             1.99817    0.06279  31.824  &lt; 2e-16
+## age70-74             2.27141    0.06435  35.296  &lt; 2e-16
+## age75-79             2.55858    0.06778  37.746  &lt; 2e-16
+## age80+               2.84692    0.07242  39.310  &lt; 2e-16
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
@@ -445,19 +445,19 @@ D3b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m3)
 ## -1.79861  -0.61857   0.03789   0.45630   1.84921  
 ## 
 ## Coefficients:
-##                     Estimate Std. Error z value         Pr(&gt;|z|)
-## (Intercept)         -3.69508    0.07224 -51.152          &lt; 2e-16
-## smokecigarretteOnly  0.50308    0.04494  11.194          &lt; 2e-16
-## smokecigarrettePlus  0.24727    0.04307   5.740 0.00000000944146
-## smokeno             -0.04696    0.05479  -0.857            0.391
-## age45-59             0.58001    0.08191   7.081 0.00000000000143
-## age50-54             1.03983    0.07921  13.128          &lt; 2e-16
-## age55-59             1.49243    0.06718  22.216          &lt; 2e-16
-## age60-64             1.82007    0.06438  28.270          &lt; 2e-16
-## age65-69             2.25585    0.06511  34.647          &lt; 2e-16
-## age70-74             2.63304    0.06785  38.808          &lt; 2e-16
-## age75-79             3.07094    0.07423  41.368          &lt; 2e-16
-## age80+               3.56348    0.08433  42.259          &lt; 2e-16
+##                     Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept)         -3.69508    0.07224 -51.152  &lt; 2e-16
+## smokecigarretteOnly  0.50308    0.04494  11.194  &lt; 2e-16
+## smokecigarrettePlus  0.24727    0.04307   5.740 9.44e-09
+## smokeno             -0.04696    0.05479  -0.857    0.391
+## age45-59             0.58001    0.08191   7.081 1.43e-12
+## age50-54             1.03983    0.07921  13.128  &lt; 2e-16
+## age55-59             1.49243    0.06718  22.216  &lt; 2e-16
+## age60-64             1.82007    0.06438  28.270  &lt; 2e-16
+## age65-69             2.25585    0.06511  34.647  &lt; 2e-16
+## age70-74             2.63304    0.06785  38.808  &lt; 2e-16
+## age75-79             3.07094    0.07423  41.368  &lt; 2e-16
+## age80+               3.56348    0.08433  42.259  &lt; 2e-16
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
@@ -487,7 +487,7 @@ devtab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span cl
      <span class="dt">xlab =</span> <span class="st">&quot;Fitted probability of death</span><span class="ch">\n</span><span class="st"> from logistic model&quot;</span>,
      <span class="dt">ylab =</span> <span class="st">&quot;Difference in fitted probability of death </span><span class="ch">\n</span><span class="st">between Poisson and logistic models&quot;</span>,
      <span class="dt">main =</span> <span class="st">&quot;Smoking cancer dataset&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/smokingglm-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/smokingglm-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Differ most for last categories in which the Poisson approximation is dubious</span></code></pre>
 
 </div>
@@ -536,7 +536,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

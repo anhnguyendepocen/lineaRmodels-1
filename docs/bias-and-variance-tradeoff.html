@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -306,7 +306,7 @@ gammahat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span clas
 <span class="kw">abline</span>(<span class="dt">h =</span> mse[<span class="dv">1</span>,<span class="dv">3</span>], <span class="dt">lty =</span> <span class="dv">2</span>)
 <span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;sq. bias&quot;</span>, <span class="st">&quot;variance&quot;</span>, <span class="st">&quot;mse&quot;</span>), 
        <span class="dt">col =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">lty =</span> <span class="dv">1</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/biasridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/biasridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute the value of lambda that minimizes MSE</span>
 lambdaopt &lt;-<span class="st"> </span><span class="kw">optimize</span>(<span class="dt">f =</span> <span class="cf">function</span>(x){
   <span class="kw">mse_ridge</span>(<span class="dt">gamma =</span> gamma, <span class="dt">lambda =</span> x, <span class="dt">Z =</span> Z)<span class="op">$</span>mse
@@ -314,8 +314,8 @@ lambdaopt &lt;-<span class="st"> </span><span class="kw">optimize</span>(<span c
 lambdaopt</code></pre>
 <pre><code>## [1] 7.227898</code></pre>
 <p>We can also look at the path of coefficient values <span class="math inline">\(\hat{\boldsymbol{\gamma}}_{\mathrm{ridge}}^{\lambda}\)</span> as a function of <span class="math inline">\(\lambda\)</span>:</p>
-<p><img src="LinesRModels_files/figure-html/plotgammaridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<p>While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients <span class="math inline">\(\boldsymbol{\gamma}\)</span>, which are exactly zero, stabilize around another value. Note that if we increase the penalty, from <span class="math inline">\(\lambda_1\)</span> to <span class="math inline">\(\lambda_2\)</span> with <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>, this <strong>does not</strong> necessarily imply that individual coefficient estimates decrease, i.e. <span class="math inline">\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\)</span> even if <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>.</p>
+<p><img src="LineaRModels_files/figure-html/plotgammaridge-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>While the overall vector of coefficients are shrunk towards zero, the set of 10 first coefficients <span class="math inline">\(\boldsymbol{\gamma}\)</span>, which are exactly zero, stabilize around another value. Note that if we increase the penalty, from <span class="math inline">\(\lambda_1\)</span> to <span class="math inline">\(\lambda_2\)</span> with <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>, this <strong>does not</strong> necessarily imply that individual coefficient estimates decrease, i.e. <span class="math inline">\(|\hat{\beta}_j (\lambda_1)| \nleq |\hat{\beta}_j(\lambda_2)|\)</span> even if <span class="math inline">\(\lambda_1 &lt; \lambda_2\)</span>.</p>
 <p>The coefficients <span class="math inline">\(\hat{\boldsymbol{\gamma}}^\lambda\)</span> can be computed using an augmented linear regression, with response <span class="math inline">\((\boldsymbol{y}, \mathbf{0}_p)\)</span> and regressor <span class="math inline">\([\mathbf{Z}^\top,\; \lambda^{1/2} \mathbf{I}_p]\)</span>. Alternatively,
 <span class="math display">\[\hat{\boldsymbol{\gamma}}^\lambda = (\mathbf{Z}^\top\mathbf{Z} + \lambda \mathbf{I}_p)^{-1}\mathbf{Z}^\top\boldsymbol{y}.\]</span></p>
 <p>We can also use the singular value decomposition of <span class="math inline">\(\mathbf{Z} = \mathbf{UDV}^\top\)</span> to compute the coefficients<span class="math display">\[\hat{\boldsymbol{\gamma}} = \sum_{j=1}^p \frac{d_j}{d_j^2+\lambda} \mathbf{u}_j^\top\boldsymbol{y} \mathbf{v}_j,\]</span>
@@ -379,7 +379,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

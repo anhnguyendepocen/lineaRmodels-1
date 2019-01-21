@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -304,9 +304,9 @@ cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span 
 ## 
 ## Model 1: cases ~ tumor + site
 ## Model 2: cases ~ tumor * site
-##   Resid. Df Resid. Dev Df Deviance      Pr(&gt;Chi)
-## 1         6     51.795                          
-## 2         0      0.000  6   51.795 0.00000000205</code></pre>
+##   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)
+## 1         6     51.795                     
+## 2         0      0.000  6   51.795 2.05e-09</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># anova(cancer.m4) returns three tests, </span>
 <span class="co"># but only the comparison with additive model is justified</span>
 <span class="kw">summary</span>(cancer.m4)</code></pre>
@@ -318,19 +318,19 @@ cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span 
 ##  [1]  0  0  0  0  0  0  0  0  0  0  0  0
 ## 
 ## Coefficients:
-##              Estimate Std. Error z value    Pr(&gt;|z|)
-## (Intercept)    3.0910     0.2132  14.498     &lt; 2e-16
-## tumor2        -0.3185     0.3286  -0.969    0.332432
-## tumor3        -0.1466     0.3132  -0.468    0.639712
-## tumor4        -0.6931     0.3693  -1.877    0.060511
-## site2         -2.3979     0.7385  -3.247    0.001167
-## site3         -0.7885     0.3814  -2.067    0.038701
-## tumor2:site2   3.6143     0.7915   4.566 0.000004962
-## tumor3:site2   2.9500     0.7927   3.721    0.000198
-## tumor4:site2   2.8332     0.8338   3.398    0.000679
-## tumor2:site3   2.7608     0.4655   5.931 0.000000003
-## tumor3:site3   2.1345     0.4602   4.638 0.000003516
-## tumor4:site3   1.7228     0.5216   3.303    0.000957
+##              Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept)    3.0910     0.2132  14.498  &lt; 2e-16
+## tumor2        -0.3185     0.3286  -0.969 0.332432
+## tumor3        -0.1466     0.3132  -0.468 0.639712
+## tumor4        -0.6931     0.3693  -1.877 0.060511
+## site2         -2.3979     0.7385  -3.247 0.001167
+## site3         -0.7885     0.3814  -2.067 0.038701
+## tumor2:site2   3.6143     0.7915   4.566 4.96e-06
+## tumor3:site2   2.9500     0.7927   3.721 0.000198
+## tumor4:site2   2.8332     0.8338   3.398 0.000679
+## tumor2:site3   2.7608     0.4655   5.931 3.00e-09
+## tumor3:site3   2.1345     0.4602   4.638 3.52e-06
+## tumor4:site3   1.7228     0.5216   3.303 0.000957
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
@@ -341,7 +341,7 @@ cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span 
 ## Number of Fisher Scoring iterations: 3</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Alternatively, compute manually</span>
 <span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(cancer.m3), <span class="dt">df =</span> cancer.m3<span class="op">$</span>df.residual)</code></pre>
-<pre><code>## [1] 0.000000002050453</code></pre>
+<pre><code>## [1] 2.050453e-09</code></pre>
 <p>The likelihood ratio test to check whether the interaction is significative is soundly rejected, hence we would keep the saturated model. For such a model, the fitted values correspond to the observed counts.</p>
 <p>This is an example where the hypothesis of equal mean and variance does not seem to hold. Handling the overdispersion is beyond the scope of this course.</p>
 </div>
@@ -388,7 +388,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

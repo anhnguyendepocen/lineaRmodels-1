@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -332,13 +332,13 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span class="co">#using the grammar of graphics (more modular)</span>
 <span class="co">#install.packages(&quot;ggplot2&quot;) #do this once only</span>
 <span class="kw">library</span>(ggplot2)</code></pre>
-<p><img src="LinesRModels_files/figure-html/week1_scatterplot-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/week1_scatterplot-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r">ggplot2<span class="op">::</span><span class="kw">ggplot</span>(<span class="dt">data =</span> faithful, <span class="kw">aes</span>(<span class="dt">x =</span> eruptions, <span class="dt">y =</span> waiting)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">  </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Old Faithful Geyser Data&quot;</span>, 
        <span class="dt">x =</span> <span class="st">&quot;Eruption time (in min.)&quot;</span>, 
        <span class="dt">y =</span> <span class="st">&quot;Waiting time between eruptions (in min.)&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/week1_scatterplot-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/week1_scatterplot-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>A simple linear model of the form <span class="math display">\[y_i = \beta_0 + \beta_1 \mathrm{x}_i + \varepsilon_i,\]</span> where <span class="math inline">\(\varepsilon_i\)</span> is a noise variable with expectation zero and <span class="math inline">\(\mathbf{x} = \mathsf{eruptions}\)</span> and <span class="math inline">\(\boldsymbol{y} = \mathsf{waiting}\)</span>. We first create a matrix with a column of <span class="math inline">\(\mathbf{1}_n\)</span> for the intercept. We bind vectors by column (<code>cbind</code>) into a matrix, recycling arguments if necessary. Use <code>$</code> to obtain a column of the data frame based on the name of the variable (partial matching is allowed, e.g., <code>faithful$er</code> is equivalent to <code>faithful$eruptions</code> in this case).</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Manipulating matrices</span>
 n &lt;-<span class="st"> </span><span class="kw">nrow</span>(faithful)
@@ -434,7 +434,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

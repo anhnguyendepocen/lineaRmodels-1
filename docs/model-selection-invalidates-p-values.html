@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -272,7 +272,7 @@ by means of simulation the size distortion (the difference between the nominal l
 ## model                 0.1   0.05   0.01
 ##   Lowest BIC model 0.1738 0.1076 0.0324
 ##   Correct model    0.1104 0.0562 0.0106</code></pre>
-<p><img src="LinesRModels_files/figure-html/modelselectinvalid-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/modelselectinvalid-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre><code>## Correlated variables, model selection using BIC</code></pre>
 <pre><code>##                   size
 ## model                 0.1   0.05   0.01
@@ -288,7 +288,7 @@ by means of simulation the size distortion (the difference between the nominal l
 ## model                0.1   0.05   0.01
 ##   Lowest Cp model 0.1864 0.1114 0.0352
 ##   Correct model   0.1014 0.0514 0.0084</code></pre>
-<p><img src="LinesRModels_files/figure-html/modelselectinvalid-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/modelselectinvalid-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Adding superfluous variables does not induce bias, but inflates the standard errors (leading to larger <span class="math inline">\(P\)</span>-values). We observe on the contrary here smaller <span class="math inline">\(P\)</span>-values. Recall that the <span class="math inline">\(P\)</span>-values should be uniformly distributed under the null hypothesis (and they seemingly are when the true null model is fitted).</p>
 
 </div>
@@ -336,7 +336,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

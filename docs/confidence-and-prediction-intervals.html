@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -324,7 +324,7 @@ ystar_predint &lt;-<span class="st"> </span><span class="kw">predict</span>(ols,
 <span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>,<span class="st">&quot;blue&quot;</span>), 
        <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>,
        <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Prediction&quot;</span>,<span class="st">&quot;Conf. inter.&quot;</span>,<span class="st">&quot;Pred. inter.&quot;</span>))</code></pre>
-<p><img src="LinesRModels_files/figure-html/mtcars_confint-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/mtcars_confint-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>The function <code>predict</code> takes as imput a <code>data.frame</code> object containing the same column names as those of the fitted <code>lm</code> object. The names can be obtained from <code>names(ols$model)[-1]</code>.</p>
 <p>As usual, we can verify we get the same result if we computed the intervals manually.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Manually (see class notes)</span>
@@ -376,7 +376,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

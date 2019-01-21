@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -270,12 +270,12 @@ potentially identied using strings, so that the output is readable. <strong>R</s
 <pre class="sourceCode r"><code class="sourceCode r">url1 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/growth.dat&quot;</span>
 growth &lt;-<span class="st"> </span><span class="kw">read.table</span>(url1, <span class="dt">header =</span> <span class="ot">TRUE</span>)
 <span class="kw">summary</span>(growth)</code></pre>
-<pre><code>##        y               x             group          
-##  Min.   :107.0   Min.   : 78.00   Length:20         
-##  1st Qu.:122.0   1st Qu.: 93.75   Class :character  
-##  Median :140.0   Median :100.50   Mode  :character  
-##  Mean   :142.4   Mean   :100.90                     
-##  3rd Qu.:156.5   3rd Qu.:109.25                     
+<pre><code>##        y               x                 group   
+##  Min.   :107.0   Min.   : 78.00   control   :10  
+##  1st Qu.:122.0   1st Qu.: 93.75   thiouracil:10  
+##  Median :140.0   Median :100.50                  
+##  Mean   :142.4   Mean   :100.90                  
+##  3rd Qu.:156.5   3rd Qu.:109.25                  
 ##  Max.   :185.0   Max.   :123.00</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">##Check what the factor encodes: transpose of design matrix</span>
 <span class="kw">t</span>(<span class="kw">model.matrix</span>(y <span class="op">~</span><span class="st"> </span>group <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span> growth))</code></pre>
@@ -336,7 +336,7 @@ fifteen minute periods. We are interested in the relation between direct output 
 the recording.
 a. Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate. Comment on the adequacy of the models.
 b. Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
-c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.</p>
+c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract dataset</span>
 url2 &lt;-<span class="st"> &quot;http://sma.epfl.ch/~lbelzile/math341/windmill.dat&quot;</span>
 windmill &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> url2, <span class="dt">header =</span> <span class="ot">TRUE</span>)
@@ -362,7 +362,7 @@ summ2 &lt;-<span class="st"> </span><span class="kw">summary</span>(lm_wind2 &lt
 <span class="co">#Note above how we can assign variables inside call to other functions</span>
 <span class="kw">plot</span>(output <span class="op">~</span><span class="st"> </span>recip_velo, <span class="dt">xlab =</span> <span class="st">&quot;reciprocal wind velocity (in mph)&quot;</span>)
 <span class="kw">abline</span>(lm_wind2)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Standardized residuals r - manual calculation</span>
 <span class="co">#Standard deviation of errors</span>
 s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>(<span class="kw">resid</span>(lm_wind1)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>lm_wind1<span class="op">$</span>df.residual)
@@ -389,7 +389,7 @@ r_wind2 &lt;-<span class="st"> </span><span class="kw">rstandard</span>(lm_wind2
      <span class="dt">ylab =</span> <span class="st">&quot;Standardized residuals&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Fitted values&quot;</span>, 
      <span class="dt">main =</span> <span class="st">&quot;Residuals vs</span><span class="ch">\n</span><span class="st">fitted values&quot;</span>, <span class="dt">sub =</span><span class="st">&quot;output ~ 1/velocity&quot;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">0</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-26-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-26-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>There is some structure left in the model <code>output ~ velocity</code>, since the smallest values occur at the endpoint of the output. There is less visible structure in the model with the reciprocal.
 The second model appears to fit better, since its <span class="math inline">\(\mathrm{R}^2\)</span> value is 0.98 compared to 0.87 for the first model.
 Note that, in the second model, the intercept corresponds to infinite strenght wind gusts.</p>
@@ -456,7 +456,7 @@ rankit &lt;-<span class="st"> </span><span class="kw">qnorm</span>((<span class=
 confint_ptwise &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(N)
 <span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
 <span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/confints-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/confints-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r">boot_samps &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="kw">sort</span>(<span class="kw">scale</span>(<span class="kw">rnorm</span>(N))), <span class="dt">n =</span> (B &lt;-<span class="st"> </span><span class="dv">9999</span>))
 alpha &lt;-<span class="st"> </span><span class="fl">0.05</span>
 k &lt;-<span class="st"> </span>alpha<span class="op">/</span><span class="dv">2</span><span class="op">*</span>(B <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)
@@ -477,7 +477,7 @@ confint_ptwise &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw
 <span class="co">#Theoretical bands based on order statistics distribution</span>
 <span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">1</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
 <span class="kw">lines</span>(rankit, confint_ptwise[,<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">&quot;gray&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-28-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-28-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>The simulated pointwise confidence interval are shorter and account for the scaling.</p>
 </div>
 <div id="exercise-7.3---air-traffic" class="section level3">
@@ -506,7 +506,7 @@ month &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span clas
 <span class="co">#quarter &lt;- as.factor(rep(1:4, each = 3, length = length(time)))</span>
 sum_ad &lt;-<span class="st"> </span><span class="kw">summary</span>(fit_ad &lt;-<span class="st"> </span><span class="kw">lm</span>(passengers <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month))
 <span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_ad), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>) <span class="co">#dashed blue line</span></code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-29-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-29-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Prediction </span>
 <span class="kw">predict</span>(fit_ad, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">time =</span> <span class="dv">1962</span><span class="op">+</span><span class="dv">11</span><span class="op">/</span><span class="dv">12</span>, <span class="dt">month =</span> month[<span class="dv">12</span>]))</code></pre>
 <pre><code>##       1 
@@ -524,7 +524,7 @@ p &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">
 <span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">3</span>) <span class="co">#standardized residuals vs fitted values</span>
 <span class="kw">plot</span>(fit_ad, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>) <span class="co">#Cook distance plot</span>
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-30-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-30-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) <span class="co">#return to one plot per window</span>
 <span class="co">#Compute Cook statistic and other influence statistics</span>
 infl_ad &lt;-<span class="st"> </span><span class="kw">influence.measures</span>(fit_ad)
@@ -534,13 +534,13 @@ h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <spa
 <span class="kw">plot</span>(time, <span class="kw">rstudent</span>(fit_ad), 
      <span class="dt">ylab =</span> <span class="st">&quot;Externally studentized residuals&quot;</span>, 
      <span class="dt">xlab =</span> <span class="st">&quot;Time (in years)&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-30-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-30-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Let us consider the log counts. The fit is much better and the quadratic relationship with the residuals vs fitted values is attenuated. While some points still have high leverage value, they are not considered outliers.</p>
 <pre class="sourceCode r"><code class="sourceCode r">fit_l &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>month)
 <span class="kw">plot</span>(<span class="kw">log</span>(passengers) <span class="op">~</span><span class="st"> </span>time, <span class="dt">main =</span> <span class="st">&quot;International airline passengers&quot;</span>,
 <span class="dt">ylab =</span> <span class="st">&quot;log of monthly total count (in thousands)&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)
 <span class="kw">lines</span>(time, <span class="kw">fitted</span>(fit_l), <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">4</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-31-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-31-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">pch =</span> <span class="dv">20</span>)
 <span class="co"># Q-Q plot</span>
 <span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">sort</span>(<span class="kw">scale</span>(<span class="kw">rstudent</span>(fit_l))),
@@ -550,7 +550,7 @@ h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <spa
 <span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">1</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)
 <span class="kw">plot</span>(fit_l, <span class="dt">which =</span> <span class="dv">4</span>, <span class="dt">sub.caption =</span> <span class="st">&quot;&quot;</span>)
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">8</span><span class="op">/</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>p), <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-31-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-31-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>One hypothesis of the linear model that is clearly violated here is the independence of the errors. Even if the variance <span class="math inline">\(\mathsf{Var}(\boldsymbol{e})=\sigma^2\mathbf{M}_{\mathbf{X}}\)</span> need not have independent errors, there is positive dependence from residual to residual. This is confirmed by looking at the autocorrelation, which indicates geometric decay. This will be covered in MATH 342 (Time Series), but you should just think here of shocks carrying through until the next period before the model reverts to the mean.</p>
 <p>Ignoring the serial dependence in the error has consequences: the standard errors are too small (since errors are correlated, there is less units of information so we are overconfident in our uncertainty quantification).</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Laggedresidual plots</span>
@@ -558,14 +558,14 @@ h_ad &lt;-<span class="st"> </span>infl_ad<span class="op">$</span>infmat[, <spa
 <span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span><span class="dv">1</span>], <span class="dt">y =</span> <span class="kw">resid</span>(fit_l)[<span class="op">-</span>n], 
   <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span>n]), <span class="dt">xlab =</span> <span class="kw">expression</span>(<span class="kw">bold</span>(e)[<span class="op">-</span><span class="dv">1</span>]), 
   <span class="dt">main =</span> <span class="st">&quot;Lagged residual plot&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-32-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-32-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#(partial) correlogram: if residuals have no structure</span>
 <span class="co">#there should not be anything outside the bands 19 times out of 20</span>
 <span class="co">#Covered in detail in MATH-342 (Time series)</span>
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 <span class="kw">acf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Autocorrelation of residuals&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">20</span>))
 <span class="kw">pacf</span>(<span class="kw">resid</span>(fit_l), <span class="dt">main =</span> <span class="st">&quot;Partial autocorrelation of residuals&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-32-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-32-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#detach dataset</span>
 <span class="kw">detach</span>(airpass)</code></pre>
 </div>
@@ -595,7 +595,7 @@ predic &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="
 <span class="co">## Legend</span>
 <span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Man&quot;</span>,<span class="st">&quot;Woman&quot;</span>), 
        <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/ex5.3-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/ex5.3-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Clear pattern: women are paid less for equivalent qualification</span>
 
 <span class="co">## Add gender as covariate</span>
@@ -613,11 +613,11 @@ educ_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(lhwages <span c
 ## -2.10953 -0.25249  0.02989  0.28176  1.27908 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value     Pr(&gt;|t|)    
-## (Intercept) 2.200103   0.055375  39.731      &lt; 2e-16 ***
-## education   0.026589   0.004673   5.690 0.0000000138 ***
-## genderMale  0.256471   0.014771  17.363      &lt; 2e-16 ***
-## pseduc      0.037459   0.007322   5.116 0.0000003308 ***
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.200103   0.055375  39.731  &lt; 2e-16 ***
+## education   0.026589   0.004673   5.690 1.38e-08 ***
+## genderMale  0.256471   0.014771  17.363  &lt; 2e-16 ***
+## pseduc      0.037459   0.007322   5.116 3.31e-07 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -679,7 +679,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

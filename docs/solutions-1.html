@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -294,7 +294,7 @@ patients, Journal of Urology 141(5), 1076–1083.</p>
 removes the entire prostate gland along with some surrounding tissue.</p>
 </blockquote>
 <blockquote>
-<p>In Stamey et al. (1989), prostate specific antigen
+<p>In Stamey et al. (1989), prostate specific antigen
 (PSA) was proposed as a preoperative marker to predict the clinical stage of cancer. As well as modeling the stage of cancer as a
 function of PSA, the authors also examined PSA as a function of age and seven other histological and morphometric covariates.</p>
 </blockquote>
@@ -336,7 +336,7 @@ aggressive; the two grades are then added together to produce the Gleason score.
 <pre><code>## [1] 0.25</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(bph, <span class="dt">main =</span> <span class="st">&quot;Histogram&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;benign prostatic hyperplasia&quot;</span>)
 <span class="kw">rug</span>(bph) </code></pre>
-<p><img src="LinesRModels_files/figure-html/prostate_question_b2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/prostate_question_b2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#histogram, with lines below where the observations are</span></code></pre>
 <p>It seems likely that in order to take a logarithm, zeros were changed to 0.25. As such, we have to be careful with the interpretation of this coefficient if we include <code>bph</code> in the regression.</p>
 <ol start="2" style="list-style-type: lower-alpha">
@@ -369,18 +369,18 @@ aggressive; the two grades are then added together to produce the Gleason score.
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;prostate specific antigen (ng/ml), log scale&quot;</span>,
        <span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
        <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">exp</span>(lcavol), <span class="dt">y =</span> <span class="kw">exp</span>(lpsa))) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;prostate specific antigen (ng/ml)&quot;</span>,
        <span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,
        <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-11-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> prostate, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">exp</span>(lcavol))) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins =</span> <span class="dv">30</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_rug</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc)&quot;</span>,
        <span class="dt">title =</span> <span class="st">&quot;Histogram&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-11-3.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-11-3.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>We can see that both variables are positive and positively skewed, so a log transform may lead to a more linear relationship, as indicated by the pairs plot. A multiplicative model on the original scale is thus reasonable.</p>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Fit a linear model using the log prostate specific antigen as response variable, including a constant and the log cancer volume as covariates. Obtain numerically the OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> of the parameters, the fitted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\boldsymbol{e}\)</span> using the formulae given in class.</li>
@@ -443,7 +443,7 @@ e &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </s
        <span class="dt">x =</span> <span class="st">&quot;cancer volume (milliliters per cc), log scale&quot;</span>,
        <span class="dt">title =</span> <span class="st">&quot;Prostate cancer dataset&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/question_eggplot2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/question_eggplot2-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <ol start="7" style="list-style-type: lower-alpha">
 <li>Interpret the changes in prostate specific antigen (not the log prostate specific antigen), including any units in your interpretations.</li>
 </ol>
@@ -545,7 +545,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

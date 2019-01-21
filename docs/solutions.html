@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -280,7 +280,7 @@ P &lt;-<span class="st"> </span>x <span class="op">%*%</span><span class="st"> <
 ## [1,] 0.000 -2.625
 ## [2,] 2.625  0.000</code></pre>
 <p>The figure below shows the projection of a third vector <span class="math inline">\(\mathbf{v}\)</span> (non-parallel to <span class="math inline">\(\mathbf{X}\)</span> or <span class="math inline">\(\mathbf{W}\)</span>) onto the span of <span style="color:blue"><span class="math inline">\(\mathbf{P}\)</span> (blue)</span>, <span style="color:red"><span class="math inline">\(\mathbf{P}^\top\)</span> (red)</span>, <span style="color:cyan"><span class="math inline">\(\mathbf{I}_2-\mathbf{P}\)</span> (dashed cyan)</span> and <span style="color:orange"><span class="math inline">\(\mathbf{I}_2-\mathbf{P}^\top\)</span> (dashed orange)</span>. The circles indicate the vectors <span style="color:red"><span class="math inline">\(\mathbf{W}\)</span> (red)</span> and <span style="color:blue"><span class="math inline">\(\mathbf{X}\)</span> (blue)</span> on the plane. Notice that <span class="math inline">\(\mathbf{I}_2-\mathbf{P}^\top \perp \mathbf{P}\)</span>, whereas <span class="math inline">\(\mathbf{I}_2-\mathbf{P} \perp \mathbf{P}^\top\)</span>.</p>
-<p><img src="LinesRModels_files/figure-html/illustproj-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/illustproj-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
             </section>
@@ -326,7 +326,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

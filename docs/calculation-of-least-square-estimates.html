@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -304,7 +304,7 @@ res &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> <
 <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)){
   <span class="kw">segments</span>(<span class="dt">x0 =</span> Auto<span class="op">$</span>horsepower[i], <span class="dt">y0 =</span> fitted[i], <span class="dt">y1 =</span> fitted[i] <span class="op">+</span><span class="st"> </span>res[i], <span class="dt">col =</span> <span class="dv">2</span>)
 }</code></pre>
-<p><img src="LinesRModels_files/figure-html/verticaldist-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/verticaldist-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>The same scatterplot, this time using <code>ggplot2</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)
 <span class="co">#Create data frame with segments</span>
@@ -318,7 +318,7 @@ ggg &lt;-<span class="st"> </span><span class="kw">ggplot</span>(Auto, <span cla
                    <span class="dt">data =</span> vlines, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">      </span><span class="kw">geom_abline</span>(<span class="dt">slope =</span> beta_hat[<span class="dv">2</span>], <span class="dt">intercept =</span> beta_hat[<span class="dv">1</span>])
 <span class="kw">print</span>(ggg)</code></pre>
-<p><img src="LinesRModels_files/figure-html/ggplotmtcars-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/ggplotmtcars-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <div id="interpretation-of-the-coefficients" class="section level3">
 <h3><span class="header-section-number">2.1.1</span> Interpretation of the coefficients</h3>
 <p>If the regression model is
@@ -369,7 +369,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }

@@ -51,7 +51,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.100.1/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -74,7 +74,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -270,7 +270,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span class="co">#http://www.stat.ufl.edu/~winner/data/meniscus.txt</span>
 meniscus &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/meniscus.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
 <span class="kw">boxplot</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus, <span class="dt">ylab =</span> <span class="st">&quot;Displacement (in mm)&quot;</span>)</code></pre>
-<p><img src="LinesRModels_files/figure-html/unnamed-chunk-42-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="LineaRModels_files/figure-html/unnamed-chunk-42-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r">lmod_men &lt;-<span class="st"> </span><span class="kw">lm</span>(displacement <span class="op">~</span><span class="st"> </span>method, <span class="dt">data =</span> meniscus)
 summ_men &lt;-<span class="st"> </span><span class="kw">summary</span>(lmod_men)
 <span class="co">#ANOVA table</span>
@@ -294,14 +294,14 @@ anov_men[<span class="dv">1</span>,<span class="st">&quot;Pr(&gt;F)&quot;</span>
 ## -8.2667 -1.8500  0.2833  1.7708  5.3333 
 ## 
 ## Coefficients:
-##                       Estimate Std. Error t value      Pr(&gt;|t|)
-## methodFasT-Fix          17.467      1.403  12.454 0.00000000260
-## methodMeniscus Arrow    11.383      1.403   8.116 0.00000072052
-## methodVertical Suture   16.950      1.403  12.085 0.00000000392
+##                       Estimate Std. Error t value Pr(&gt;|t|)
+## methodFasT-Fix          17.467      1.403  12.454 2.60e-09
+## methodMeniscus Arrow    11.383      1.403   8.116 7.21e-07
+## methodVertical Suture   16.950      1.403  12.085 3.92e-09
 ## 
 ## Residual standard error: 3.435 on 15 degrees of freedom
 ## Multiple R-squared:  0.9607, Adjusted R-squared:  0.9529 
-## F-statistic: 122.3 on 3 and 15 DF,  p-value: 0.00000000009081</code></pre>
+## F-statistic: 122.3 on 3 and 15 DF,  p-value: 9.081e-11</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crossprod</span>(<span class="kw">model.matrix</span>(lmod_men2))</code></pre>
 <pre><code>##                       methodFasT-Fix methodMeniscus Arrow
 ## methodFasT-Fix                     6                    0
@@ -509,7 +509,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LinesRModels.pdf", "LinesRModels.epub"],
+"download": ["LineaRModels.pdf", "LineaRModels.epub"],
 "toc": {
 "collapse": "none"
 }
