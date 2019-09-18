@@ -2567,7 +2567,7 @@ You should choose \(B\) so that \(B+1\) is divisible by \(\alpha\) and rather la
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.5774577
+## [1] 0.5823582
 \end{verbatim}
 
 \begin{Shaded}
@@ -2725,9 +2725,17 @@ potentially identied using strings, so that the output is readable. \textbf{R} k
 The dataset \texttt{windmill} contains measurements of electricity output of wind turbine over 25 separate
 fifteen minute periods. We are interested in the relation between direct output and the average wind speed (measured in miles per hour) during
 the recording.
-a. Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate. Comment on the adequacy of the models.
-b. Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
-c.~Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate. Comment on the adequacy of the models.
+\item
+  Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
+\item
+  Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]

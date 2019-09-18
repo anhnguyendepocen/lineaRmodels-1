@@ -331,10 +331,12 @@ potentially identied using strings, so that the output is readable. <strong>R</s
 <h3><span class="header-section-number">4.5.2</span> Exercise 7.2 - Electric production of windmills</h3>
 <p>The dataset <code>windmill</code> contains measurements of electricity output of wind turbine over 25 separate
 fifteen minute periods. We are interested in the relation between direct output and the average wind speed (measured in miles per hour) during
-the recording.
-a. Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate. Comment on the adequacy of the models.
-b. Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
-c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.</p>
+the recording.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Fit a linear model with wind speed as covariate and plot the standardized residuals against the fitted values. Do you notice any residual structure missed by the model mean specification? Try fitting a model using the reciprocal of wind speed as covariate. Comment on the adequacy of the models.</li>
+<li>Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.</li>
+<li>Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.</li>
+</ol>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" title="1"><span class="co">#Extract dataset</span></a>
 <a class="sourceLine" id="cb159-2" title="2">url2 &lt;-<span class="st"> &quot;https://lbelzile.bitbucket.io/math341/windmill.dat&quot;</span></a>
 <a class="sourceLine" id="cb159-3" title="3">windmill &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> url2, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
