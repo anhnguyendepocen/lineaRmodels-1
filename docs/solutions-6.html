@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.3 Solutions | lineaRmodels</title>
-  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="10.3 Solutions | lineaRmodels />
+  <meta property="og:title" content="10.3 Solutions | lineaRmodels" />
   <meta property="og:type" content="book" />
   
   
@@ -17,21 +16,21 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="10.3 Solutions | lineaRmodels />
+  <meta name="twitter:title" content="10.3 Solutions | lineaRmodels" />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
 
-<meta name="author" content="Léo Belzile">
+<meta name="author" content="Léo Belzile" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="poisson-model-for-contingency-table.html">
+<link rel="prev" href="poisson-model-for-contingency-table.html"/>
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,7 +50,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.30/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -62,7 +61,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -74,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -265,44 +263,74 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">10.3</span> Solutions</h2>
 <div id="exercise-13.3---two-way-contingency-tables" class="section level3">
 <h3><span class="header-section-number">10.3.1</span> Exercise 13.3 - Two-way contingency tables</h3>
-<pre class="sourceCode r"><code class="sourceCode r">cancer &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/cancer.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
-<span class="kw">print</span>(cancer)</code></pre>
-<pre><code>##     age malignant yes no
-## 1   &lt;50        no  77 10
-## 2   &lt;50       yes  51 13
-## 3 50-69        no  51 11
-## 4 50-69       yes  38 20
-## 5   70+        no   7  3
-## 6   70+       yes   6  3</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Some categories have small counts, so asymptotic result may be a bit off</span>
-
-cancer.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)
-cancer.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)
-cancer.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)
-cancer.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)
-cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>age <span class="op">*</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)
-<span class="kw">library</span>(xtable)
-devtab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;M0&quot;</span>,<span class="st">&quot;M1&quot;</span>,<span class="st">&quot;M2&quot;</span>,<span class="st">&quot;M3&quot;</span>), 
-                     <span class="st">&quot;deviance&quot;</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">c</span>(<span class="kw">deviance</span>(cancer.m0), <span class="kw">deviance</span>(cancer.m1), 
-                                          <span class="kw">deviance</span>(cancer.m2), <span class="kw">deviance</span>(cancer.m3)), <span class="dv">2</span>),
-      <span class="st">&quot;p&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="kw">length</span>(<span class="kw">coef</span>(cancer.m0)),<span class="kw">length</span>(<span class="kw">coef</span>(cancer.m1)),
-              <span class="kw">length</span>(<span class="kw">coef</span>(cancer.m2)),<span class="kw">length</span>(<span class="kw">coef</span>(cancer.m3))))
-
-devtab</code></pre>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" title="1">cancer &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://lbelzile.bitbucket.io/math341/cancer.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb319-2" title="2"><span class="kw">print</span>(cancer)</a></code></pre></div>
+<pre><code>##      age malignant yes no
+## 1    &lt;50       yes  26  9
+## 2    &lt;50        no  68  7
+## 3    &lt;50       yes  25  4
+## 4    &lt;50        no   9  3
+## 5  50-69       yes  20  9
+## 6  50-69        no  46  9
+## 7  50-69       yes  18 11
+## 8  50-69        no   5  2
+## 9    70+       yes   1  2
+## 10   70+        no   6  3
+## 11   70+       yes   5  1
+## 12   70+        no   1  0
+## 13   &lt;50       yes  11  6
+## 14   &lt;50        no  24  7
+## 15   &lt;50       yes   4  6
+## 16   &lt;50        no   0  0
+## 17 50-69       yes  18  8
+## 18 50-69        no  58 20
+## 19 50-69       yes  10  3
+## 20 50-69        no   3  2
+## 21   70+       yes  15  9
+## 22   70+        no  26 18
+## 23   70+       yes   1  3
+## 24   70+        no   1  0
+## 25   &lt;50       yes  16 16
+## 26   &lt;50        no  20  7
+## 27   &lt;50       yes   8  3
+## 28   &lt;50        no   1  0
+## 29 50-69       yes  27 14
+## 30 50-69        no  39 12
+## 31 50-69       yes  10  3
+## 32 50-69        no   4  0
+## 33   70+       yes  12  3
+## 34   70+        no  11  7
+## 35   70+       yes   4  3
+## 36   70+        no   1  0</code></pre>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb321-1" title="1"><span class="co"># Some categories have small counts, so asymptotic result may be a bit off</span></a>
+<a class="sourceLine" id="cb321-2" title="2"></a>
+<a class="sourceLine" id="cb321-3" title="3">cancer.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb321-4" title="4">cancer.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb321-5" title="5">cancer.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb321-6" title="6">cancer.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb321-7" title="7">cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>age <span class="op">*</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb321-8" title="8"><span class="kw">library</span>(xtable)</a>
+<a class="sourceLine" id="cb321-9" title="9">devtab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;M0&quot;</span>,<span class="st">&quot;M1&quot;</span>,<span class="st">&quot;M2&quot;</span>,<span class="st">&quot;M3&quot;</span>), </a>
+<a class="sourceLine" id="cb321-10" title="10">                     <span class="st">&quot;deviance&quot;</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">c</span>(<span class="kw">deviance</span>(cancer.m0), <span class="kw">deviance</span>(cancer.m1), </a>
+<a class="sourceLine" id="cb321-11" title="11">                                          <span class="kw">deviance</span>(cancer.m2), <span class="kw">deviance</span>(cancer.m3)), <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb321-12" title="12">      <span class="st">&quot;p&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="kw">length</span>(<span class="kw">coef</span>(cancer.m0)),<span class="kw">length</span>(<span class="kw">coef</span>(cancer.m1)),</a>
+<a class="sourceLine" id="cb321-13" title="13">              <span class="kw">length</span>(<span class="kw">coef</span>(cancer.m2)),<span class="kw">length</span>(<span class="kw">coef</span>(cancer.m3))))</a>
+<a class="sourceLine" id="cb321-14" title="14"></a>
+<a class="sourceLine" id="cb321-15" title="15">devtab</a></code></pre></div>
 <pre><code>##   model deviance p
-## 1    M0    12.66 1
-## 2    M1     6.64 3
-## 3    M2     5.96 2
-## 4    M3     0.49 4</code></pre>
+## 1    M0    57.59 1
+## 2    M1    50.44 3
+## 3    M2    48.59 2
+## 4    M3    41.06 4</code></pre>
 <p>Now that we have calculated the deviance of every model, we can perform an analysis of deviance and check
 whether the final model obtained by backward elimination is adequate by comparing its <span class="math inline">\(P\)</span>-value under the null.
 Some counts in the age category <code>70+</code> are very low, hence the asymptotic result can be a bit off. We assess this through a small simulation study in which we resample observations from the fitted model.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Saturated model vs additive model</span>
- <span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(cancer.m3), <span class="dt">df =</span> <span class="kw">nrow</span>(cancer) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(cancer.m3<span class="op">$</span>coef))</code></pre>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb323-1" title="1"><span class="co"># Saturated model vs additive model</span></a>
+<a class="sourceLine" id="cb323-2" title="2"> <span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(cancer.m3), <span class="dt">df =</span> <span class="kw">nrow</span>(cancer) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(cancer.m3<span class="op">$</span>coef))</a></code></pre></div>
 <pre><code>## [1] 0.7811038</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># p-value of 0.78, fail to reject null that additive model is adequate</span>
-<span class="co"># Try further simplification</span>
-<span class="kw">drop1</span>(cancer.m3, <span class="dt">test =</span> <span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb325-1" title="1"><span class="co"># p-value of 0.78, fail to reject null that additive model is adequate</span></a>
+<a class="sourceLine" id="cb325-2" title="2"><span class="co"># Try further simplification</span></a>
+<a class="sourceLine" id="cb325-3" title="3"><span class="kw">drop1</span>(cancer.m3, <span class="dt">test =</span> <span class="st">&quot;Chisq&quot;</span>)</a></code></pre></div>
 <pre><code>## Single term deletions
 ## 
 ## Model:
@@ -311,12 +339,12 @@ Some counts in the age category <code>70+</code> are very low, hence the asympto
 ## &lt;none&gt;         0.4941 30.433                
 ## age        2   5.9552 31.894 5.4611  0.06518
 ## malignant  1   6.6412 34.580 6.1471  0.01316</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Fail to reject null that model with only &quot;malignant&quot; is adequate simplification</span>
- <span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="dv">2</span><span class="op">*</span>(<span class="kw">c</span>(<span class="kw">logLik</span>(cancer.m3) <span class="op">-</span><span class="st"> </span><span class="kw">logLik</span>(cancer.m2))), <span class="dt">df =</span> (<span class="kw">length</span>(cancer.m3<span class="op">$</span>coef) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(cancer.m2<span class="op">$</span>coef)))</code></pre>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb327-1" title="1"><span class="co"># Fail to reject null that model with only &quot;malignant&quot; is adequate simplification</span></a>
+<a class="sourceLine" id="cb327-2" title="2"> <span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="dv">2</span><span class="op">*</span>(<span class="kw">c</span>(<span class="kw">logLik</span>(cancer.m3) <span class="op">-</span><span class="st"> </span><span class="kw">logLik</span>(cancer.m2))), <span class="dt">df =</span> (<span class="kw">length</span>(cancer.m3<span class="op">$</span>coef) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(cancer.m2<span class="op">$</span>coef)))</a></code></pre></div>
 <pre><code>## [1] 0.06518224</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"> <span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="dv">2</span><span class="op">*</span>(<span class="kw">c</span>(<span class="kw">logLik</span>(cancer.m3) <span class="op">-</span><span class="st"> </span><span class="kw">logLik</span>(cancer.m1))), <span class="dt">df =</span> (<span class="kw">length</span>(cancer.m3<span class="op">$</span>coef) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(cancer.m1<span class="op">$</span>coef)))</code></pre>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb329-1" title="1"> <span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="dv">2</span><span class="op">*</span>(<span class="kw">c</span>(<span class="kw">logLik</span>(cancer.m3) <span class="op">-</span><span class="st"> </span><span class="kw">logLik</span>(cancer.m1))), <span class="dt">df =</span> (<span class="kw">length</span>(cancer.m3<span class="op">$</span>coef) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(cancer.m1<span class="op">$</span>coef)))</a></code></pre></div>
 <pre><code>## [1] 0.01316278</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">drop1</span>(cancer.m2, <span class="dt">test =</span> <span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb331-1" title="1"><span class="kw">drop1</span>(cancer.m2, <span class="dt">test =</span> <span class="st">&quot;Chisq&quot;</span>)</a></code></pre></div>
 <pre><code>## Single term deletions
 ## 
 ## Model:
@@ -324,66 +352,66 @@ Some counts in the age category <code>70+</code> are very low, hence the asympto
 ##           Df Deviance    AIC    LRT Pr(&gt;Chi)
 ## &lt;none&gt;         5.9552 31.894                
 ## malignant  1  12.6558 36.595 6.7006 0.009638</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Reject null that model with only intercept is adequate</span>
-
-<span class="co"># If Model is adequate, Deviance approx JK-p </span>
-<span class="kw">deviance</span>(cancer.m2)</code></pre>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb333-1" title="1"><span class="co"># Reject null that model with only intercept is adequate</span></a>
+<a class="sourceLine" id="cb333-2" title="2"></a>
+<a class="sourceLine" id="cb333-3" title="3"><span class="co"># If Model is adequate, Deviance approx JK-p </span></a>
+<a class="sourceLine" id="cb333-4" title="4"><span class="kw">deviance</span>(cancer.m2)</a></code></pre></div>
 <pre><code>## [1] 5.955231</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Is this result vary large? Investigate via simulation study</span>
-<span class="co"># Canonical link functions for binomial</span>
-logit &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">log</span>(x) <span class="op">-</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">1</span><span class="op">-</span>x)}
-<span class="co"># Inverse link function (logistic in course notes)</span>
-expit &lt;-<span class="st"> </span><span class="cf">function</span>(x){ <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>x))}
-<span class="co"># Get predicted probability</span>
-probc &lt;-<span class="st"> </span><span class="kw">expit</span>(<span class="kw">predict</span>(cancer.m2))
-<span class="co"># Need to condition on total count - fixed for binomial model</span>
-nr &lt;-<span class="st"> </span><span class="kw">rowSums</span>(cancer[,<span class="kw">c</span>(<span class="st">&quot;yes&quot;</span>,<span class="st">&quot;no&quot;</span>)])
-<span class="co"># Simulate new datasets from the model, compute their deviance</span>
-simudev &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="fl">1e3</span>L)
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(simudev)){
-  newyes &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(j){<span class="kw">rbinom</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">size =</span> nr[j], <span class="dt">prob =</span> probc[j])})
-  newcancer &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">malignant =</span> cancer<span class="op">$</span>malignant, <span class="dt">yes =</span> newyes, <span class="dt">no =</span> nr <span class="op">-</span><span class="st"> </span>newyes)
-  simudev[i] &lt;-<span class="st"> </span><span class="kw">deviance</span>(<span class="kw">glm</span>( <span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> newcancer))
-}
-<span class="co"># Distribution of deviance from simulated model, conditional on row total</span>
-<span class="kw">hist</span>(simudev, <span class="dt">main =</span> <span class="st">&quot;Deviance of simulated models&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Deviance&quot;</span>, <span class="dt">probability =</span> <span class="ot">TRUE</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.2</span>), <span class="dt">breaks =</span> <span class="dv">20</span>)
-<span class="co"># Line corresponding to deviance of </span>
-<span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">deviance</span>(cancer.m2), <span class="dt">lty =</span> <span class="dv">2</span>)
-<span class="co"># Null distribution</span>
-<span class="kw">curve</span>(<span class="kw">dchisq</span>(x, <span class="dt">df =</span> <span class="dv">4</span>), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb335-1" title="1"><span class="co"># Is this result vary large? Investigate via simulation study</span></a>
+<a class="sourceLine" id="cb335-2" title="2"><span class="co"># Canonical link functions for binomial</span></a>
+<a class="sourceLine" id="cb335-3" title="3">logit &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">log</span>(x) <span class="op">-</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">1</span><span class="op">-</span>x)}</a>
+<a class="sourceLine" id="cb335-4" title="4"><span class="co"># Inverse link function (logistic in course notes)</span></a>
+<a class="sourceLine" id="cb335-5" title="5">expit &lt;-<span class="st"> </span><span class="cf">function</span>(x){ <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>x))}</a>
+<a class="sourceLine" id="cb335-6" title="6"><span class="co"># Get predicted probability</span></a>
+<a class="sourceLine" id="cb335-7" title="7">probc &lt;-<span class="st"> </span><span class="kw">expit</span>(<span class="kw">predict</span>(cancer.m2))</a>
+<a class="sourceLine" id="cb335-8" title="8"><span class="co"># Need to condition on total count - fixed for binomial model</span></a>
+<a class="sourceLine" id="cb335-9" title="9">nr &lt;-<span class="st"> </span><span class="kw">rowSums</span>(cancer[,<span class="kw">c</span>(<span class="st">&quot;yes&quot;</span>,<span class="st">&quot;no&quot;</span>)])</a>
+<a class="sourceLine" id="cb335-10" title="10"><span class="co"># Simulate new datasets from the model, compute their deviance</span></a>
+<a class="sourceLine" id="cb335-11" title="11">simudev &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="fl">1e3</span>L)</a>
+<a class="sourceLine" id="cb335-12" title="12"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(simudev)){</a>
+<a class="sourceLine" id="cb335-13" title="13">  newyes &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(j){<span class="kw">rbinom</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">size =</span> nr[j], <span class="dt">prob =</span> probc[j])})</a>
+<a class="sourceLine" id="cb335-14" title="14">  newcancer &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">malignant =</span> cancer<span class="op">$</span>malignant, <span class="dt">yes =</span> newyes, <span class="dt">no =</span> nr <span class="op">-</span><span class="st"> </span>newyes)</a>
+<a class="sourceLine" id="cb335-15" title="15">  simudev[i] &lt;-<span class="st"> </span><span class="kw">deviance</span>(<span class="kw">glm</span>( <span class="kw">cbind</span>(yes, no) <span class="op">~</span><span class="st"> </span>malignant, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">data =</span> newcancer))</a>
+<a class="sourceLine" id="cb335-16" title="16">}</a>
+<a class="sourceLine" id="cb335-17" title="17"><span class="co"># Distribution of deviance from simulated model, conditional on row total</span></a>
+<a class="sourceLine" id="cb335-18" title="18"><span class="kw">hist</span>(simudev, <span class="dt">main =</span> <span class="st">&quot;Deviance of simulated models&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Deviance&quot;</span>, <span class="dt">probability =</span> <span class="ot">TRUE</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.2</span>), <span class="dt">breaks =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb335-19" title="19"><span class="co"># Line corresponding to deviance of </span></a>
+<a class="sourceLine" id="cb335-20" title="20"><span class="kw">abline</span>(<span class="dt">v =</span> <span class="kw">deviance</span>(cancer.m2), <span class="dt">lty =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb335-21" title="21"><span class="co"># Null distribution</span></a>
+<a class="sourceLine" id="cb335-22" title="22"><span class="kw">curve</span>(<span class="kw">dchisq</span>(x, <span class="dt">df =</span> <span class="dv">4</span>), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/glmcancer2-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># P-value from simulation</span>
-<span class="kw">sum</span>(<span class="kw">I</span>(<span class="kw">deviance</span>(cancer.m2) <span class="op">&lt;</span><span class="st"> </span>simudev)) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(simudev)</code></pre>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb336-1" title="1"><span class="co"># P-value from simulation</span></a>
+<a class="sourceLine" id="cb336-2" title="2"><span class="kw">sum</span>(<span class="kw">I</span>(<span class="kw">deviance</span>(cancer.m2) <span class="op">&lt;</span><span class="st"> </span>simudev)) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(simudev)</a></code></pre></div>
 <pre><code>## [1] 0.27</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># P-value with asymptotic distribution</span>
-<span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(cancer.m2), <span class="dt">df =</span> (<span class="kw">nrow</span>(cancer) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(cancer.m2))))</code></pre>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb338-1" title="1"><span class="co"># P-value with asymptotic distribution</span></a>
+<a class="sourceLine" id="cb338-2" title="2"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(cancer.m2), <span class="dt">df =</span> (<span class="kw">nrow</span>(cancer) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(cancer.m2))))</a></code></pre></div>
 <pre><code>## [1] 0.2025167</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># About 4% difference between the two</span></code></pre>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb340-1" title="1"><span class="co"># About 4% difference between the two</span></a></code></pre></div>
 </div>
 <div id="exercise-13.5---equivalence-of-binomial-and-poisson-models" class="section level3">
 <h3><span class="header-section-number">10.3.2</span> Exercise 13.5 - Equivalence of binomial and Poisson models</h3>
 <p>We can fit the model using the Poisson generalized linear model with an offset term for <code>log(pop)</code>, since the latter is fixed. We cannot make direct comparisons because the population size in each category are different. If <span class="math inline">\(X \sim \mathcal{B}(m_i, \pi_i)\)</span>, the Poisson approximation is <span class="math inline">\(X \sim \mathcal{P}(\lambda_i)\)</span> with <span class="math inline">\(\lambda_i \approx m_i\pi_i\)</span>. Taking logarithms, we get <span class="math inline">\(\log(\lambda_i) = \log(m_i) + \log(\pi_i)\)</span>. The term <span class="math inline">\(\log(m_i)\)</span> is an offset with known coefficient of 1.</p>
-<pre class="sourceCode r"><code class="sourceCode r">smoking &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://sma.epfl.ch/~lbelzile/math341/smoking.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)
-smoking.p.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)), <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)
-smoking.p.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)) <span class="op">+</span><span class="st"> </span>smoke, <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)
-smoking.p.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)) <span class="op">+</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)
-smoking.p.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)) <span class="op">+</span><span class="st"> </span>smoke <span class="op">+</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)
-<span class="co">#Define quantities</span>
-n &lt;-<span class="st"> </span><span class="kw">nrow</span>(smoking)
-p0 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m0)); D0p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m0)
-p1 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m1)); D1p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m1)
-p2 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m2)); D2p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m2)
-p3 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m3)); D3p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m3)
-
-<span class="co">#Analysis of deviance</span>
-<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D3p, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p3) <span class="co"># Interaction not stat. significative</span></code></pre>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb341-1" title="1">smoking &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://lbelzile.bitbucket.io/math341/smoking.dat&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb341-2" title="2">smoking.p.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)), <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb341-3" title="3">smoking.p.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)) <span class="op">+</span><span class="st"> </span>smoke, <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb341-4" title="4">smoking.p.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)) <span class="op">+</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb341-5" title="5">smoking.p.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(dead <span class="op">~</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(pop)) <span class="op">+</span><span class="st"> </span>smoke <span class="op">+</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb341-6" title="6"><span class="co">#Define quantities</span></a>
+<a class="sourceLine" id="cb341-7" title="7">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(smoking)</a>
+<a class="sourceLine" id="cb341-8" title="8">p0 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m0)); D0p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m0)</a>
+<a class="sourceLine" id="cb341-9" title="9">p1 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m1)); D1p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m1)</a>
+<a class="sourceLine" id="cb341-10" title="10">p2 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m2)); D2p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m2)</a>
+<a class="sourceLine" id="cb341-11" title="11">p3 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">coef</span>(smoking.p.m3)); D3p &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.p.m3)</a>
+<a class="sourceLine" id="cb341-12" title="12"></a>
+<a class="sourceLine" id="cb341-13" title="13"><span class="co">#Analysis of deviance</span></a>
+<a class="sourceLine" id="cb341-14" title="14"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D3p, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p3) <span class="co"># Interaction not stat. significative</span></a></code></pre></div>
 <pre><code>## [1] 0.609872</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D2p <span class="op">-</span><span class="st"> </span>D3p, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p2) <span class="co"># smoke significative</span></code></pre>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb343-1" title="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D2p <span class="op">-</span><span class="st"> </span>D3p, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p2) <span class="co"># smoke significative</span></a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D1p <span class="op">-</span><span class="st"> </span>D3p, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p1) <span class="co"># age significative</span></code></pre>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" title="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D1p <span class="op">-</span><span class="st"> </span>D3p, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p1) <span class="co"># age significative</span></a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#If Model is correct, D3 approx chisq(n - p3)</span>
-<span class="kw">summary</span>(smoking.p.m3)</code></pre>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" title="1"><span class="co">#If Model is correct, D3 approx chisq(n - p3)</span></a>
+<a class="sourceLine" id="cb347-2" title="2"><span class="kw">summary</span>(smoking.p.m3)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = dead ~ offset(log(pop)) + smoke + age, family = poisson, 
@@ -394,19 +422,19 @@ p3 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw"
 ## -2.06055  -0.54773   0.06431   0.29963   1.48348  
 ## 
 ## Coefficients:
-##                     Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept)         -3.63222    0.06783 -53.552  &lt; 2e-16
-## smokecigarretteOnly  0.36915    0.03791   9.737  &lt; 2e-16
-## smokecigarrettePlus  0.17015    0.03643   4.671 3.00e-06
-## smokeno             -0.04781    0.04699  -1.017    0.309
-## age45-59             0.55388    0.07999   6.924 4.38e-12
-## age50-54             0.98039    0.07682  12.762  &lt; 2e-16
-## age55-59             1.37946    0.06526  21.138  &lt; 2e-16
-## age60-64             1.65423    0.06257  26.439  &lt; 2e-16
-## age65-69             1.99817    0.06279  31.824  &lt; 2e-16
-## age70-74             2.27141    0.06435  35.296  &lt; 2e-16
-## age75-79             2.55858    0.06778  37.746  &lt; 2e-16
-## age80+               2.84692    0.07242  39.310  &lt; 2e-16
+##                     Estimate Std. Error z value         Pr(&gt;|z|)
+## (Intercept)         -3.63222    0.06783 -53.552          &lt; 2e-16
+## smokecigarretteOnly  0.36915    0.03791   9.737          &lt; 2e-16
+## smokecigarrettePlus  0.17015    0.03643   4.671 0.00000300158567
+## smokeno             -0.04781    0.04699  -1.017            0.309
+## age45-49             0.55388    0.07999   6.924 0.00000000000438
+## age50-54             0.98039    0.07682  12.762          &lt; 2e-16
+## age55-59             1.37946    0.06526  21.138          &lt; 2e-16
+## age60-64             1.65423    0.06257  26.439          &lt; 2e-16
+## age65-69             1.99817    0.06279  31.824          &lt; 2e-16
+## age70-74             2.27141    0.06435  35.296          &lt; 2e-16
+## age75-79             2.55858    0.06778  37.746          &lt; 2e-16
+## age80+               2.84692    0.07242  39.310          &lt; 2e-16
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
@@ -415,26 +443,26 @@ p3 &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw"
 ## AIC: 285.51
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Same with binomial model</span>
-smoking.b.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)
-smoking.b.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span>smoke, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)
-smoking.b.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)
-smoking.b.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span>smoke <span class="op">+</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)
-<span class="co">#Define quantities</span>
-n &lt;-<span class="st"> </span><span class="kw">nrow</span>(smoking)
-D0b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m0)
-D1b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m1)
-D2b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m2)
-D3b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m3)
-
-<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D3b, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p3) <span class="co"># Interaction not stat. significative</span></code></pre>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" title="1"><span class="co">#Same with binomial model</span></a>
+<a class="sourceLine" id="cb349-2" title="2">smoking.b.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb349-3" title="3">smoking.b.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span>smoke, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb349-4" title="4">smoking.b.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb349-5" title="5">smoking.b.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(dead, pop <span class="op">-</span><span class="st"> </span>dead) <span class="op">~</span><span class="st"> </span>smoke <span class="op">+</span><span class="st"> </span>age, <span class="dt">family =</span> binomial, <span class="dt">data =</span> smoking)</a>
+<a class="sourceLine" id="cb349-6" title="6"><span class="co">#Define quantities</span></a>
+<a class="sourceLine" id="cb349-7" title="7">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(smoking)</a>
+<a class="sourceLine" id="cb349-8" title="8">D0b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m0)</a>
+<a class="sourceLine" id="cb349-9" title="9">D1b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m1)</a>
+<a class="sourceLine" id="cb349-10" title="10">D2b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m2)</a>
+<a class="sourceLine" id="cb349-11" title="11">D3b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m3)</a>
+<a class="sourceLine" id="cb349-12" title="12"></a>
+<a class="sourceLine" id="cb349-13" title="13"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D3b, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p3) <span class="co"># Interaction not stat. significative</span></a></code></pre></div>
 <pre><code>## [1] 0.5530777</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D2b <span class="op">-</span><span class="st"> </span>D3b, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p2) <span class="co"># smoking group significative</span></code></pre>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb351-1" title="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D2b <span class="op">-</span><span class="st"> </span>D3b, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p2) <span class="co"># smoking group significative</span></a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D1b <span class="op">-</span><span class="st"> </span>D3b, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p1) <span class="co"># age group significative</span></code></pre>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb353-1" title="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(D1b <span class="op">-</span><span class="st"> </span>D3b, <span class="dt">df =</span> p3 <span class="op">-</span><span class="st"> </span>p1) <span class="co"># age group significative</span></a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#If Model is correct, D3 approx n - p3</span>
-<span class="kw">summary</span>(smoking.b.m3)</code></pre>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb355-1" title="1"><span class="co">#If Model is correct, D3 approx n - p3</span></a>
+<a class="sourceLine" id="cb355-2" title="2"><span class="kw">summary</span>(smoking.b.m3)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = cbind(dead, pop - dead) ~ smoke + age, family = binomial, 
@@ -445,19 +473,19 @@ D3b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m3)
 ## -1.79861  -0.61857   0.03789   0.45630   1.84921  
 ## 
 ## Coefficients:
-##                     Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept)         -3.69508    0.07224 -51.152  &lt; 2e-16
-## smokecigarretteOnly  0.50308    0.04494  11.194  &lt; 2e-16
-## smokecigarrettePlus  0.24727    0.04307   5.740 9.44e-09
-## smokeno             -0.04696    0.05479  -0.857    0.391
-## age45-59             0.58001    0.08191   7.081 1.43e-12
-## age50-54             1.03983    0.07921  13.128  &lt; 2e-16
-## age55-59             1.49243    0.06718  22.216  &lt; 2e-16
-## age60-64             1.82007    0.06438  28.270  &lt; 2e-16
-## age65-69             2.25585    0.06511  34.647  &lt; 2e-16
-## age70-74             2.63304    0.06785  38.808  &lt; 2e-16
-## age75-79             3.07094    0.07423  41.368  &lt; 2e-16
-## age80+               3.56348    0.08433  42.259  &lt; 2e-16
+##                     Estimate Std. Error z value         Pr(&gt;|z|)
+## (Intercept)         -3.69508    0.07224 -51.152          &lt; 2e-16
+## smokecigarretteOnly  0.50308    0.04494  11.194          &lt; 2e-16
+## smokecigarrettePlus  0.24727    0.04307   5.740 0.00000000944146
+## smokeno             -0.04696    0.05479  -0.857            0.391
+## age45-49             0.58001    0.08191   7.081 0.00000000000143
+## age50-54             1.03983    0.07921  13.128          &lt; 2e-16
+## age55-59             1.49243    0.06718  22.216          &lt; 2e-16
+## age60-64             1.82007    0.06438  28.270          &lt; 2e-16
+## age65-69             2.25585    0.06511  34.647          &lt; 2e-16
+## age70-74             2.63304    0.06785  38.808          &lt; 2e-16
+## age75-79             3.07094    0.07423  41.368          &lt; 2e-16
+## age80+               3.56348    0.08433  42.259          &lt; 2e-16
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
@@ -466,29 +494,29 @@ D3b &lt;-<span class="st"> </span><span class="kw">deviance</span>(smoking.b.m3)
 ## AIC: 277.38
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Output deviance table</span>
-devtab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;M0&quot;</span>,<span class="st">&quot;M1&quot;</span>,<span class="st">&quot;M2&quot;</span>,<span class="st">&quot;M3&quot;</span>), 
-                     <span class="st">&quot;deviance binom.&quot;</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">c</span>(D0p, D1p, D2p, D3p), <span class="dv">2</span>),
-                     <span class="st">&quot;deviance Poisson&quot;</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">c</span>(D0b, D1b, D2b, D3b), <span class="dv">2</span>),
-                     <span class="st">&quot;p&quot;</span> =<span class="st"> </span><span class="kw">c</span>(p0, p1, p2, p3))
-<span class="kw">print</span>(devtab)</code></pre>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb357-1" title="1"><span class="co"># Output deviance table</span></a>
+<a class="sourceLine" id="cb357-2" title="2">devtab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;model&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;M0&quot;</span>,<span class="st">&quot;M1&quot;</span>,<span class="st">&quot;M2&quot;</span>,<span class="st">&quot;M3&quot;</span>), </a>
+<a class="sourceLine" id="cb357-3" title="3">                     <span class="st">&quot;deviance binom.&quot;</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">c</span>(D0p, D1p, D2p, D3p), <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb357-4" title="4">                     <span class="st">&quot;deviance Poisson&quot;</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">c</span>(D0b, D1b, D2b, D3b), <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb357-5" title="5">                     <span class="st">&quot;p&quot;</span> =<span class="st"> </span><span class="kw">c</span>(p0, p1, p2, p3))</a>
+<a class="sourceLine" id="cb357-6" title="6"><span class="kw">print</span>(devtab)</a></code></pre></div>
 <pre><code>##   model deviance.binom. deviance.Poisson  p
 ## 1    M0         4055.98          4917.03  1
 ## 2    M1         3910.70          4740.34  4
 ## 3    M2          191.72           247.94  9
 ## 4    M3           21.49            22.44 12</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#To export to LaTeX</span>
-<span class="co">#xtab &lt;- xtable(devtab, caption = &quot;Analysis of deviance for the \\texttt{smoking} data set&quot;)</span>
-<span class="co">#print(xtab, booktabs = TRUE, sanitize.text.function = identity, include.rownames = FALSE, )</span>
-
-<span class="co"># Compare fitted probabilities</span>
-<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>))
-<span class="kw">plot</span>(<span class="kw">fitted</span>(smoking.b.m3), <span class="kw">fitted</span>(smoking.b.m3) <span class="op">-</span><span class="st"> </span><span class="kw">fitted</span>(smoking.p.m3)<span class="op">/</span>smoking<span class="op">$</span>pop,
-     <span class="dt">xlab =</span> <span class="st">&quot;Fitted probability of death</span><span class="ch">\n</span><span class="st"> from logistic model&quot;</span>,
-     <span class="dt">ylab =</span> <span class="st">&quot;Difference in fitted probability of death </span><span class="ch">\n</span><span class="st">between Poisson and logistic models&quot;</span>,
-     <span class="dt">main =</span> <span class="st">&quot;Smoking cancer dataset&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb359-1" title="1"><span class="co">#To export to LaTeX</span></a>
+<a class="sourceLine" id="cb359-2" title="2"><span class="co">#xtab &lt;- xtable(devtab, caption = &quot;Analysis of deviance for the \\texttt{smoking} data set&quot;)</span></a>
+<a class="sourceLine" id="cb359-3" title="3"><span class="co">#print(xtab, booktabs = TRUE, sanitize.text.function = identity, include.rownames = FALSE, )</span></a>
+<a class="sourceLine" id="cb359-4" title="4"></a>
+<a class="sourceLine" id="cb359-5" title="5"><span class="co"># Compare fitted probabilities</span></a>
+<a class="sourceLine" id="cb359-6" title="6"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb359-7" title="7"><span class="kw">plot</span>(<span class="kw">fitted</span>(smoking.b.m3), <span class="kw">fitted</span>(smoking.b.m3) <span class="op">-</span><span class="st"> </span><span class="kw">fitted</span>(smoking.p.m3)<span class="op">/</span>smoking<span class="op">$</span>pop,</a>
+<a class="sourceLine" id="cb359-8" title="8">     <span class="dt">xlab =</span> <span class="st">&quot;Fitted probability of death</span><span class="ch">\n</span><span class="st"> from logistic model&quot;</span>,</a>
+<a class="sourceLine" id="cb359-9" title="9">     <span class="dt">ylab =</span> <span class="st">&quot;Difference in fitted probability of death </span><span class="ch">\n</span><span class="st">between Poisson and logistic models&quot;</span>,</a>
+<a class="sourceLine" id="cb359-10" title="10">     <span class="dt">main =</span> <span class="st">&quot;Smoking cancer dataset&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/smokingglm-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Differ most for last categories in which the Poisson approximation is dubious</span></code></pre>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb360-1" title="1"><span class="co">#Differ most for last categories in which the Poisson approximation is dubious</span></a></code></pre></div>
 
 </div>
 </div>
@@ -551,8 +579,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.1 Diagnostics for Bernoulli data | lineaRmodels</title>
-  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="10.1 Diagnostics for Bernoulli data | lineaRmodels />
+  <meta property="og:title" content="10.1 Diagnostics for Bernoulli data | lineaRmodels" />
   <meta property="og:type" content="book" />
   
   
@@ -17,22 +16,22 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="10.1 Diagnostics for Bernoulli data | lineaRmodels />
+  <meta name="twitter:title" content="10.1 Diagnostics for Bernoulli data | lineaRmodels" />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
 
-<meta name="author" content="Léo Belzile">
+<meta name="author" content="Léo Belzile" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="generalized-linear-models.html">
-<link rel="next" href="poisson-model-for-contingency-table.html">
+<link rel="prev" href="generalized-linear-models.html"/>
+<link rel="next" href="poisson-model-for-contingency-table.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,7 +50,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.30/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -62,7 +61,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -74,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -264,23 +262,23 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="diagnostics-for-bernoulli-data" class="section level2">
 <h2><span class="header-section-number">10.1</span> Diagnostics for Bernoulli data</h2>
 <p>This is the example presented in class. The response variable is a binary indicator of low birthweight.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(birthwt, <span class="dt">package =</span> <span class="st">&quot;MASS&quot;</span>)
-<span class="co"># Preprocessing from MASS - give meaningful labels for factors</span>
-<span class="co"># See help for description of the data set</span>
-<span class="co"># Rewrite a new data frame with those variables</span>
-bwt &lt;-<span class="st"> </span><span class="kw">with</span>(birthwt, {
-  race &lt;-<span class="st"> </span><span class="kw">factor</span>(race, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;other&quot;</span>))
-  ptd &lt;-<span class="st"> </span><span class="kw">factor</span>(ptl <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)
-  ftv &lt;-<span class="st"> </span><span class="kw">factor</span>(ftv) 
-  <span class="co"># Group number of visits to avoid categories with small counts</span>
-  <span class="kw">levels</span>(ftv)[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)] &lt;-<span class="st"> &quot;2+&quot;</span>
-  <span class="kw">data.frame</span>(<span class="dt">low =</span> <span class="kw">factor</span>(low), age, lwt, race, <span class="dt">smoke =</span> (smoke <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>),
-             ptd, <span class="dt">ht =</span> (ht <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">ui =</span> (ui <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), ftv)
-  })
-
-lbw &lt;-<span class="st"> </span><span class="kw">glm</span>(low <span class="op">~</span><span class="st"> </span>., <span class="dt">family =</span> binomial, <span class="dt">data =</span> bwt)
-<span class="co"># Can use summary just like for lm</span>
-<span class="kw">summary</span>(lbw)</code></pre>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb308-1" title="1"><span class="kw">data</span>(birthwt, <span class="dt">package =</span> <span class="st">&quot;MASS&quot;</span>)</a>
+<a class="sourceLine" id="cb308-2" title="2"><span class="co"># Preprocessing from MASS - give meaningful labels for factors</span></a>
+<a class="sourceLine" id="cb308-3" title="3"><span class="co"># See help for description of the data set</span></a>
+<a class="sourceLine" id="cb308-4" title="4"><span class="co"># Rewrite a new data frame with those variables</span></a>
+<a class="sourceLine" id="cb308-5" title="5">bwt &lt;-<span class="st"> </span><span class="kw">with</span>(birthwt, {</a>
+<a class="sourceLine" id="cb308-6" title="6">  race &lt;-<span class="st"> </span><span class="kw">factor</span>(race, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;other&quot;</span>))</a>
+<a class="sourceLine" id="cb308-7" title="7">  ptd &lt;-<span class="st"> </span><span class="kw">factor</span>(ptl <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb308-8" title="8">  ftv &lt;-<span class="st"> </span><span class="kw">factor</span>(ftv) </a>
+<a class="sourceLine" id="cb308-9" title="9">  <span class="co"># Group number of visits to avoid categories with small counts</span></a>
+<a class="sourceLine" id="cb308-10" title="10">  <span class="kw">levels</span>(ftv)[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)] &lt;-<span class="st"> &quot;2+&quot;</span></a>
+<a class="sourceLine" id="cb308-11" title="11">  <span class="kw">data.frame</span>(<span class="dt">low =</span> <span class="kw">factor</span>(low), age, lwt, race, <span class="dt">smoke =</span> (smoke <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb308-12" title="12">             ptd, <span class="dt">ht =</span> (ht <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">ui =</span> (ui <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), ftv)</a>
+<a class="sourceLine" id="cb308-13" title="13">  })</a>
+<a class="sourceLine" id="cb308-14" title="14"></a>
+<a class="sourceLine" id="cb308-15" title="15">lbw &lt;-<span class="st"> </span><span class="kw">glm</span>(low <span class="op">~</span><span class="st"> </span>., <span class="dt">family =</span> binomial, <span class="dt">data =</span> bwt)</a>
+<a class="sourceLine" id="cb308-16" title="16"><span class="co"># Can use summary just like for lm</span></a>
+<a class="sourceLine" id="cb308-17" title="17"><span class="kw">summary</span>(lbw)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = low ~ ., family = binomial, data = bwt)
@@ -312,30 +310,30 @@ lbw &lt;-<span class="st"> </span><span class="kw">glm</span>(low <span class="o
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>The <code>summary</code> object returns the coefficients, standard errors and results for the Wald test that <span class="math inline">\(\beta_i=0\)</span>. Note that these will generally differ from the likelihood ratio test.
 The code above illustrates how to fit the Bernoulli model. Since the data are binary, there is no need to give two columns as response. The following code produces diagnostics for the model as shown in class:</p>
-<pre class="sourceCode r"><code class="sourceCode r">binmod &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="dt">formula =</span> low <span class="op">~</span><span class="st"> </span>lwt <span class="op">+</span><span class="st"> </span>race <span class="op">+</span><span class="st"> </span>smoke <span class="op">+</span><span class="st"> </span>ptd <span class="op">+</span><span class="st"> </span>ht <span class="op">+</span><span class="st"> </span>ui, 
-           <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">&quot;logit&quot;</span>), <span class="dt">data =</span> bwt)
-<span class="co">#Logit link function</span>
-logit &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">log</span>(x)<span class="op">-</span><span class="kw">log</span>(<span class="dv">1</span><span class="op">-</span>x)}
-n &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">fitted</span>(binmod))
-U1 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="dv">0</span>, <span class="dt">max =</span> <span class="kw">fitted</span>(binmod))
-U2 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="kw">fitted</span>(binmod), <span class="dt">max =</span> <span class="dv">1</span>)
-unires &lt;-<span class="st"> </span>binmod<span class="op">$</span>y<span class="op">*</span>U1 <span class="op">+</span><span class="st"> </span>U2<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>binmod<span class="op">$</span>y)
-<span class="kw">par</span>(<span class="dt">pty =</span> <span class="st">&quot;s&quot;</span>, <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)
-<span class="kw">plot</span>(bwt<span class="op">$</span>lwt, unires, <span class="dt">ylab =</span> <span class="st">&quot;uniform residuals&quot;</span>,
-     <span class="dt">xlab =</span> <span class="st">&quot;mother&#39;s weight (in pounds)&quot;</span>)
-<span class="kw">plot</span>(<span class="kw">logit</span>(<span class="kw">fitted</span>(binmod)), unires, <span class="dt">ylab =</span> <span class="st">&quot;uniform residuals&quot;</span>,
-     <span class="dt">xlab =</span> <span class="st">&quot;logit(p)&quot;</span>)
-<span class="kw">hist</span>(unires, <span class="dt">probability =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;uniform residuals&quot;</span>)
-
-<span class="co"># Quantile - quantile plot</span>
-<span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">rank</span>(unires)<span class="op">/</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">y =</span> unires, 
-     <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Observed quantiles&quot;</span>, 
-     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">cex =</span> <span class="fl">0.5</span>)
-<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
-<span class="co"># Simulated confidence bands, based on quantiles of the uniform distribution</span>
-pconfint &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="kw">apply</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">10000</span> <span class="op">*</span><span class="st"> </span>n), <span class="dt">nrow =</span> n), <span class="dv">2</span>, sort), <span class="dv">1</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))
-<span class="kw">lines</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), pconfint[<span class="dv">1</span>,], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">2</span>)
-<span class="kw">lines</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), pconfint[<span class="dv">2</span>,], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">2</span>)</code></pre>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb310-1" title="1">binmod &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="dt">formula =</span> low <span class="op">~</span><span class="st"> </span>lwt <span class="op">+</span><span class="st"> </span>race <span class="op">+</span><span class="st"> </span>smoke <span class="op">+</span><span class="st"> </span>ptd <span class="op">+</span><span class="st"> </span>ht <span class="op">+</span><span class="st"> </span>ui, </a>
+<a class="sourceLine" id="cb310-2" title="2">           <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">&quot;logit&quot;</span>), <span class="dt">data =</span> bwt)</a>
+<a class="sourceLine" id="cb310-3" title="3"><span class="co">#Logit link function</span></a>
+<a class="sourceLine" id="cb310-4" title="4">logit &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">log</span>(x)<span class="op">-</span><span class="kw">log</span>(<span class="dv">1</span><span class="op">-</span>x)}</a>
+<a class="sourceLine" id="cb310-5" title="5">n &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">fitted</span>(binmod))</a>
+<a class="sourceLine" id="cb310-6" title="6">U1 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="dv">0</span>, <span class="dt">max =</span> <span class="kw">fitted</span>(binmod))</a>
+<a class="sourceLine" id="cb310-7" title="7">U2 &lt;-<span class="st"> </span><span class="kw">runif</span>(n, <span class="dt">min =</span> <span class="kw">fitted</span>(binmod), <span class="dt">max =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb310-8" title="8">unires &lt;-<span class="st"> </span>binmod<span class="op">$</span>y<span class="op">*</span>U1 <span class="op">+</span><span class="st"> </span>U2<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>binmod<span class="op">$</span>y)</a>
+<a class="sourceLine" id="cb310-9" title="9"><span class="kw">par</span>(<span class="dt">pty =</span> <span class="st">&quot;s&quot;</span>, <span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb310-10" title="10"><span class="kw">plot</span>(bwt<span class="op">$</span>lwt, unires, <span class="dt">ylab =</span> <span class="st">&quot;uniform residuals&quot;</span>,</a>
+<a class="sourceLine" id="cb310-11" title="11">     <span class="dt">xlab =</span> <span class="st">&quot;mother&#39;s weight (in pounds)&quot;</span>)</a>
+<a class="sourceLine" id="cb310-12" title="12"><span class="kw">plot</span>(<span class="kw">logit</span>(<span class="kw">fitted</span>(binmod)), unires, <span class="dt">ylab =</span> <span class="st">&quot;uniform residuals&quot;</span>,</a>
+<a class="sourceLine" id="cb310-13" title="13">     <span class="dt">xlab =</span> <span class="st">&quot;logit(p)&quot;</span>)</a>
+<a class="sourceLine" id="cb310-14" title="14"><span class="kw">hist</span>(unires, <span class="dt">probability =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;uniform residuals&quot;</span>)</a>
+<a class="sourceLine" id="cb310-15" title="15"></a>
+<a class="sourceLine" id="cb310-16" title="16"><span class="co"># Quantile - quantile plot</span></a>
+<a class="sourceLine" id="cb310-17" title="17"><span class="kw">plot</span>(<span class="dt">x =</span> <span class="kw">rank</span>(unires)<span class="op">/</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">y =</span> unires, </a>
+<a class="sourceLine" id="cb310-18" title="18">     <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Observed quantiles&quot;</span>, </a>
+<a class="sourceLine" id="cb310-19" title="19">     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">cex =</span> <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb310-20" title="20"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb310-21" title="21"><span class="co"># Simulated confidence bands, based on quantiles of the uniform distribution</span></a>
+<a class="sourceLine" id="cb310-22" title="22">pconfint &lt;-<span class="st"> </span><span class="kw">apply</span>(<span class="kw">apply</span>(<span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">10000</span> <span class="op">*</span><span class="st"> </span>n), <span class="dt">nrow =</span> n), <span class="dv">2</span>, sort), <span class="dv">1</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</a>
+<a class="sourceLine" id="cb310-23" title="23"><span class="kw">lines</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), pconfint[<span class="dv">1</span>,], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb310-24" title="24"><span class="kw">lines</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), pconfint[<span class="dv">2</span>,], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="dv">2</span>)</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/glmdiag-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
             </section>
@@ -396,8 +394,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

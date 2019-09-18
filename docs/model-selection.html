@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7 Model selection | lineaRmodels</title>
-  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="7 Model selection | lineaRmodels />
+  <meta property="og:title" content="7 Model selection | lineaRmodels" />
   <meta property="og:type" content="book" />
   
   
@@ -17,22 +16,22 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="7 Model selection | lineaRmodels />
+  <meta name="twitter:title" content="7 Model selection | lineaRmodels" />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
 
-<meta name="author" content="Léo Belzile">
+<meta name="author" content="Léo Belzile" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="hypothesis-testing.html">
-<link rel="next" href="example-price-of-diamonds.html">
+<link rel="prev" href="hypothesis-testing.html"/>
+<link rel="next" href="example-price-of-diamonds.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,7 +50,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.30/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -62,7 +61,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -74,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -267,7 +265,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>My (personal) general strategy for model selection, given the tools covered in MATH 341, is the following:</p>
 <ol style="list-style-type: decimal">
 <li>Start with a complex model (all additive terms, say). Look at the individual Wald tests for the marginal significance of the coefficients.</li>
-<li>Try to simplify the full model using an <span class="math inline">\(F\)</span> test, potentially dropping multiple terms at once. This preserves power (avoids the potential bias in the estimate of RSS in the denominator; cf. <a href="sum-of-squares-decomposition.html#biased-rss">5.1.3</a> and reduces the multiple testing problem that inflates Type I errors (reject the null more than <span class="math inline">\(\alpha\%\)</span> of the time when you shouldn’t).</li>
+<li>Try to simplify the full model using an <span class="math inline">\(F\)</span> test, potentially dropping multiple terms at once. This preserves power (avoids the potential bias in the estimate of RSS in the denominator; cf. <a href="sum-of-squares-decomposition.html#biased-rss">5.1.3</a> and reduces the multiple testing problem that inflates Type I errors (reject the null more than <span class="math inline">\(\alpha\%\)</span> of the time when you shouldn’t).</li>
 <li>Repeat; you can use <code>drop1</code> to further reduce the model.</li>
 <li>Try adding interactions between variables, if any.</li>
 <li>Compare the nested models using an information criterion such as AIC or BIC.</li>
@@ -334,8 +332,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

@@ -378,7 +378,7 @@ We will use `factor` objects in the sequel. A `factor` encodes a matrix of binar
 potentially identied using strings, so that the output is readable. **R** know how to handle the vector if it is passed to e.g. the function `lm`. By default, if the matrix spans $\mathbf{1}_n$, the first level (in alphabetical order) is dropped and the intercept becomes the mean of this level. 
 
 ```{r ex7.1}
-url1 <- "http://sma.epfl.ch/~lbelzile/math341/growth.dat"
+url1 <- "https://lbelzile.bitbucket.io/math341/growth.dat"
 growth <- read.table(url1, header = TRUE)
 summary(growth)
 ##Check what the factor encodes: transpose of design matrix
@@ -409,7 +409,7 @@ c. Produce a standard Gaussian quantile-quantile plot of the standardized residu
 
 ```{r}
 #Extract dataset
-url2 <- "http://sma.epfl.ch/~lbelzile/math341/windmill.dat"
+url2 <- "https://lbelzile.bitbucket.io/math341/windmill.dat"
 windmill <- read.table(file = url2, header = TRUE)
 #Copy variables
 output <- windmill$output
@@ -557,7 +557,7 @@ First load the data set and plot the observations
 ```{r}
 rm(list = ls()) #clear environment 
 par(bty = "l", pch = 20)
-url3 <- "http://sma.epfl.ch/~lbelzile/math341/airpassengers.dat"
+url3 <- "https://lbelzile.bitbucket.io/math341/airpassengers.dat"
 airpass <- read.table(file = url3, header = TRUE)
 # Cast monthly binary to factor
 airpass$time <- airpass$year + (airpass$month-1)/12
@@ -649,7 +649,7 @@ detach(airpass)
 ### Exercise 7.4 - Determinants of earnings 
 
 ```{r ex5.3}
-url4 <- "http://sma.epfl.ch/~lbelzile/math341/labour.dat"
+url4 <- "https://lbelzile.bitbucket.io/math341/labour.dat"
 labour <- read.table(url4, header = TRUE, stringsAsFactors = TRUE)
 attach(labour)
 ## Create dummy for extract columns

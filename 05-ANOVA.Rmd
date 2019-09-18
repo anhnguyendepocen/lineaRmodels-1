@@ -242,7 +242,7 @@ In this example, the three groups have very different variances! We carry out th
 ```{r}
 options(show.signif.stars = FALSE)
 #http://www.stat.ufl.edu/~winner/data/meniscus.txt
-meniscus <- read.table("http://sma.epfl.ch/~lbelzile/math341/meniscus.dat", header = TRUE)
+meniscus <- read.table("https://lbelzile.bitbucket.io/math341/meniscus.dat", header = TRUE)
 boxplot(displacement ~ method, data = meniscus, ylab = "Displacement (in mm)")
 lmod_men <- lm(displacement ~ method, data = meniscus)
 summ_men <- summary(lmod_men)
@@ -276,7 +276,7 @@ We can compute the mean using the information on the total number of cases, sinc
 ### Exercise 9.4 - Two-way analysis of variance
 
 ```{r}
-diet <- read.table("http://sma.epfl.ch/~lbelzile/math341/diet.dat", header = TRUE)
+diet <- read.table("https://lbelzile.bitbucket.io/math341/diet.dat", header = TRUE)
 #Cast strings to factors
 diet$diet.type <- as.factor(diet$diet.type)
 diet$gender <- as.factor(diet$gender)

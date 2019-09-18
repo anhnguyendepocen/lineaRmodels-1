@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.2 Factors | lineaRmodels</title>
-  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.2 Factors | lineaRmodels />
+  <meta property="og:title" content="3.2 Factors | lineaRmodels" />
   <meta property="og:type" content="book" />
   
   
@@ -17,22 +16,22 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.2 Factors | lineaRmodels />
+  <meta name="twitter:title" content="3.2 Factors | lineaRmodels" />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
 
-<meta name="author" content="Léo Belzile">
+<meta name="author" content="Léo Belzile" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html">
-<link rel="next" href="example-seasonal-effects.html">
+<link rel="prev" href="revisiting-the-interpretation-of-the-parameters-of-a-linear-model.html"/>
+<link rel="next" href="example-seasonal-effects.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,7 +50,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.30/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -62,7 +61,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -74,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -276,17 +274,17 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>The function <code>lm</code> knows how to deal with <code>factor</code> objects and will automatically transform it to a matrix of binary indiactors. For identifiability constraints, one level of the factor must be dropped and the convention in <strong>R</strong> is that the categories whose <code>levels</code> is first in alphabetical order is used as baseline. See <code>?factor</code> for more details.</p>
 <p>Suppose your data set contains binary factors with only two levels and such that these are mutually exclusive. You may wish to merge these if they refer to the same variable, for example ethnicity.
 The following brute-force solution shows how to merge the factor vectors into a single factor. This will not change the model you get (since the design matrix would span the same space), but can affect the result of ANOVA calls since you will drop all different levels at once rather than subgroup by subgroup.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create dummy factors with different names to illustrate</span>
-a &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">500</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.2</span>)
-b &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">500</span>)
-b[a <span class="op">==</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="kw">sum</span>(a <span class="op">==</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.1</span>)
-<span class="co">#This is the output you get if they are encoded using 0/1</span>
-<span class="co">#Usually, they are columns of a data frame</span>
-newfactor &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="kw">factor</span>(a, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Hispanic&quot;</span>,<span class="st">&quot;Other&quot;</span>)), 
-                        <span class="dt">b =</span> <span class="kw">factor</span>(b, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Black&quot;</span>, <span class="st">&quot;Not black&quot;</span>)))
-<span class="co">#Make them have different levels (important that the Other class be encoded as zero</span>
-newlev &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">as.numeric</span>(newfactor<span class="op">$</span>a) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">as.numeric</span>(newfactor<span class="op">$</span>b) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%*%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)
-mergfactor &lt;-<span class="st"> </span><span class="kw">factor</span>(newlev, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;0&quot;</span>), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Hispanic&quot;</span>, <span class="st">&quot;Black&quot;</span>, <span class="st">&quot;Other&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1"><span class="co">#Create dummy factors with different names to illustrate</span></a>
+<a class="sourceLine" id="cb89-2" title="2">a &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dv">500</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.2</span>)</a>
+<a class="sourceLine" id="cb89-3" title="3">b &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb89-4" title="4">b[a <span class="op">==</span><span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="kw">sum</span>(a <span class="op">==</span><span class="st"> </span><span class="dv">0</span>), <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb89-5" title="5"><span class="co">#This is the output you get if they are encoded using 0/1</span></a>
+<a class="sourceLine" id="cb89-6" title="6"><span class="co">#Usually, they are columns of a data frame</span></a>
+<a class="sourceLine" id="cb89-7" title="7">newfactor &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="kw">factor</span>(a, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Hispanic&quot;</span>,<span class="st">&quot;Other&quot;</span>)), </a>
+<a class="sourceLine" id="cb89-8" title="8">                        <span class="dt">b =</span> <span class="kw">factor</span>(b, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Black&quot;</span>, <span class="st">&quot;Not black&quot;</span>)))</a>
+<a class="sourceLine" id="cb89-9" title="9"><span class="co">#Make them have different levels (important that the Other class be encoded as zero</span></a>
+<a class="sourceLine" id="cb89-10" title="10">newlev &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">as.numeric</span>(newfactor<span class="op">$</span>a) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">as.numeric</span>(newfactor<span class="op">$</span>b) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%*%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb89-11" title="11">mergfactor &lt;-<span class="st"> </span><span class="kw">factor</span>(newlev, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;1&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;0&quot;</span>), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Hispanic&quot;</span>, <span class="st">&quot;Black&quot;</span>, <span class="st">&quot;Other&quot;</span>))</a></code></pre></div>
 <p>Ordered factors do not have the same parametrization as unordered ones, so be careful when interpreting them.</p>
 </div>
             </section>
@@ -347,8 +345,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

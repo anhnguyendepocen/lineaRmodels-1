@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4.4 Quantile-quantile plots | lineaRmodels</title>
-  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4.4 Quantile-quantile plots | lineaRmodels />
+  <meta property="og:title" content="4.4 Quantile-quantile plots | lineaRmodels" />
   <meta property="og:type" content="book" />
   
   
@@ -17,22 +16,22 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4.4 Quantile-quantile plots | lineaRmodels />
+  <meta name="twitter:title" content="4.4 Quantile-quantile plots | lineaRmodels" />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
 
-<meta name="author" content="Léo Belzile">
+<meta name="author" content="Léo Belzile" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="diagnostic-plots.html">
-<link rel="next" href="solutions-3.html">
+<link rel="prev" href="diagnostic-plots.html"/>
+<link rel="next" href="solutions-3.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,7 +50,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.30/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -62,7 +61,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -74,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -279,27 +277,27 @@ result on the distribution of the order statistic, which will be covered in Exer
 Let <span class="math inline">\(X_{(k)}\)</span> denote the <span class="math inline">\(k\)</span>th order statistic: <span class="math inline">\(X_{(1)} \leq \cdots \leq X_{(n)}\)</span>; then <span class="math inline">\(F(X_{(k)})\)</span> follows a Beta distribution with parameters <span class="math inline">\(k\)</span> and <span class="math inline">\(n + 1 - k\)</span>. Let <span class="math inline">\(\mathfrak{b}_{\eta}\)</span> denote the <span class="math inline">\(\eta\)</span>-quantile of the <span class="math inline">\(\mathsf{Beta}(k, n+1-k)\)</span> distribution. Then,
 <span class="math display">\[\Pr\left\{\mathfrak{b}_{\alpha/2} \leq  F(X_{(k)}) \leq \mathfrak{b}_{1-\alpha/2}\right\} = 1-\alpha\]</span></p>
 <p>so an approximate confidence interval for <span class="math inline">\(X_{(k)}\)</span> is <span class="math inline">\([F^{-1}(\mathfrak{b}_{\alpha/2}), F^{-1}(\mathfrak{b}_{1-\alpha/2})]\)</span>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Student plotting position F^(-1)(E[U_{(i)}])</span>
-emp_quant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="kw">rank</span>(esr)<span class="op">/</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>),  <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)  
-<span class="co">#Function to compute the pointwise confidence intervals</span>
-<span class="co">#You can simply copy-paste this for your own plots</span>
-confint.qqplot.ptw &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">dist =</span> <span class="st">&quot;norm&quot;</span>, ...){
-  <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="cf">function</span>(i){
-  <span class="co">#Beta order statistic quantiles, mapped to Student scale</span>
-    <span class="kw">do.call</span>(<span class="kw">paste0</span>(<span class="st">&#39;q&#39;</span>, dist), <span class="kw">list</span>(<span class="kw">qbeta</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), i, n <span class="op">-</span><span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ...))
-  }))
-}
-
-<span class="co">#Call the function</span>
-confint_lim &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(<span class="dt">n =</span> n, <span class="dt">dist =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)
-<span class="co">#Plot these confidence bands alongside with the empirical quantile plotting position</span>
-<span class="kw">matplot</span>(<span class="kw">sort</span>(emp_quant), confint_lim, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>,
-        <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>),
-        <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>)  
-<span class="co">#Theoretical line of fit</span>
-<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
-<span class="co">#Add observations</span>
-<span class="kw">points</span>(esr, emp_quant, <span class="dt">pch =</span> <span class="dv">20</span>)</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" title="1"><span class="co">#Student plotting position F^(-1)(E[U_{(i)}])</span></a>
+<a class="sourceLine" id="cb144-2" title="2">emp_quant &lt;-<span class="st"> </span><span class="kw">qt</span>(<span class="kw">rank</span>(esr)<span class="op">/</span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>),  <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)  </a>
+<a class="sourceLine" id="cb144-3" title="3"><span class="co">#Function to compute the pointwise confidence intervals</span></a>
+<a class="sourceLine" id="cb144-4" title="4"><span class="co">#You can simply copy-paste this for your own plots</span></a>
+<a class="sourceLine" id="cb144-5" title="5">confint.qqplot.ptw &lt;-<span class="st"> </span><span class="cf">function</span>(n, <span class="dt">dist =</span> <span class="st">&quot;norm&quot;</span>, ...){</a>
+<a class="sourceLine" id="cb144-6" title="6">  <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="cf">function</span>(i){</a>
+<a class="sourceLine" id="cb144-7" title="7">  <span class="co">#Beta order statistic quantiles, mapped to Student scale</span></a>
+<a class="sourceLine" id="cb144-8" title="8">    <span class="kw">do.call</span>(<span class="kw">paste0</span>(<span class="st">&#39;q&#39;</span>, dist), <span class="kw">list</span>(<span class="kw">qbeta</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), i, n <span class="op">-</span><span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ...))</a>
+<a class="sourceLine" id="cb144-9" title="9">  }))</a>
+<a class="sourceLine" id="cb144-10" title="10">}</a>
+<a class="sourceLine" id="cb144-11" title="11"></a>
+<a class="sourceLine" id="cb144-12" title="12"><span class="co">#Call the function</span></a>
+<a class="sourceLine" id="cb144-13" title="13">confint_lim &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</span>(<span class="dt">n =</span> n, <span class="dt">dist =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb144-14" title="14"><span class="co">#Plot these confidence bands alongside with the empirical quantile plotting position</span></a>
+<a class="sourceLine" id="cb144-15" title="15"><span class="kw">matplot</span>(<span class="kw">sort</span>(emp_quant), confint_lim, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>,</a>
+<a class="sourceLine" id="cb144-16" title="16">        <span class="dt">main =</span> <span class="st">&quot;Normal Q-Q plot&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb144-17" title="17">        <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>)  </a>
+<a class="sourceLine" id="cb144-18" title="18"><span class="co">#Theoretical line of fit</span></a>
+<a class="sourceLine" id="cb144-19" title="19"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb144-20" title="20"><span class="co">#Add observations</span></a>
+<a class="sourceLine" id="cb144-21" title="21"><span class="kw">points</span>(esr, emp_quant, <span class="dt">pch =</span> <span class="dv">20</span>)</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="quantile-quantile-plot-using-the-qr-decomposition" class="section level3">
@@ -312,7 +310,7 @@ confint_lim &lt;-<span class="st"> </span><span class="kw">confint.qqplot.ptw</s
 <div id="monte-carlo-methods-for-confidence-intervals" class="section level3">
 <h3><span class="header-section-number">4.4.3</span> Monte Carlo methods for confidence intervals</h3>
 <p>This section contains <strong>optional</strong> material. It contains advanced material that can be skipped upon first reading.</p>
-<p>An alternative to asymptotic theory (which may be unreliable in small samples) is to rely on simulations. The idea is to obtain a statistic whose distribution is (at least asymptotically) pivotal, i.e. fully specified under the null hypothesis. One can simulate samples from the null distribution <span class="math inline">\(B\)</span> times and compare the resulting data points with the test statistic calculated from the observed sample. This method, which is termed bootstrap test, is particularly powerful when we want to obtain critical values for test statistics, like e.g. <span class="math inline">\(\max(|t_i|)\)</span>, whose distribution is untractable.</p>
+<p>An alternative to asymptotic theory (which may be unreliable in small samples) is to rely on simulations. The idea is to obtain a statistic whose distribution is (at least asymptotically) pivotal, i.e. fully specified under the null hypothesis. One can simulate samples from the null distribution <span class="math inline">\(B\)</span> times and compare the resulting data points with the test statistic calculated from the observed sample. This method, which is termed bootstrap test, is particularly powerful when we want to obtain critical values for test statistics, like e.g. <span class="math inline">\(\max(|t_i|)\)</span>, whose distribution is untractable.</p>
 Under the null hypothesis of the Gaussian linear model, <span class="math inline">\(\{y_i\}_{i=1}^n\)</span> is a simple random sample from a Gaussian distribution <span class="math inline">\(\boldsymbol{Y} \sim \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2 \mathbf{I}_n)\)</span>. One can resort to simulations to obtain approximate confidence intervals at asymptotic level <span class="math inline">\(\alpha\)</span>. Specifically, the postulated data generating mechanism is <span class="math display">\[\boldsymbol{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.\]</span>
 We will replace the unknown parameters (here <span class="math inline">\(\boldsymbol{\beta}\)</span> and <span class="math inline">\(\sigma^2\)</span>) by their best linear unbiased estimate. For <span class="math inline">\(b=1, \ldots, B\)</span> where <span class="math inline">\(B/\alpha \in \mathbb{N}\)</span>, repeat the following steps:
 
@@ -325,73 +323,73 @@ We will replace the unknown parameters (here <span class="math inline">\(\boldsy
 </ul>
 <p>These methods are implemented in the package <code>boot</code> and returned by the function <code>boot::envelope</code>; you must supply a matrix of replicates test statistics. In our setting, these are the ordered samples from the externally studentized residuals <span class="math display">\[\left\{\big\{t^{b}_{(i)}\big\}_{i=1}^n\right\}_{b=1}^B.\]</span></p>
 <p>You should choose <span class="math inline">\(B\)</span> so that <span class="math inline">\(B+1\)</span> is divisible by <span class="math inline">\(\alpha\)</span> and rather large. <span class="math inline">\(B = 9999\)</span> should work well and not be too computationally costly for small datasets.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Dimensions of the design matrix</span>
-n &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw">model.matrix</span>(ols))
-p &lt;-<span class="st"> </span><span class="kw">ncol</span>(<span class="kw">model.matrix</span>(ols))
-<span class="co">#Bootstrap setting</span>
-B &lt;-<span class="st"> </span><span class="dv">9999</span>
-X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(ols)
-betahat &lt;-<span class="st"> </span><span class="kw">coef</span>(ols)
-boot_samp &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> B, <span class="dt">ncol =</span> n)
-<span class="cf">for</span>(b <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>B){
-  <span class="co">#Generate new errors</span>
-  eps_samp &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd =</span> <span class="kw">sqrt</span>(s2))
-  Xbeta &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>betahat
-  <span class="co">#Create new replicate dataset</span>
-  yb &lt;-<span class="st"> </span>Xbeta <span class="op">+</span><span class="st"> </span>eps_samp
-  <span class="co">#Obtain externally studentized residuals</span>
-  <span class="co">#Sort them in increasing order</span>
-  boot_samp[b, ] &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">rstudent</span>(<span class="kw">lm</span>(yb <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>X)))
-}
-
-<span class="co">#Add the dataset to the replicates</span>
-res_samp &lt;-<span class="st"> </span><span class="kw">rbind</span>((esr &lt;-<span class="st"> </span><span class="kw">rstudent</span>(ols)), boot_samp)
-<span class="co">#Compute the quantiles of this experiment =&gt; per column means for each order statistic</span>
-confint_pw &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(res_samp, <span class="dv">2</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)))
-<span class="co">#Alternatively, could sort each column and pick the k and B-k-1 entries</span>
-
-<span class="co">#Computed automatically by package bootstrap</span>
-env &lt;-<span class="st"> </span>boot<span class="op">::</span><span class="kw">envelope</span>(<span class="dt">mat =</span> boot_samp)
-
-<span class="co">#Plot the confidence interval</span>
-<span class="kw">matplot</span>(<span class="dt">y =</span> <span class="kw">cbind</span>(<span class="kw">sort</span>(esr), confint_pw), <span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n) <span class="op">/</span><span class="st"> </span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), 
-       <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;grey&quot;</span>, <span class="st">&quot;grey&quot;</span>), <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;p&quot;</span>,<span class="st">&quot;l&quot;</span>,<span class="st">&quot;l&quot;</span>), 
-       <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>, <span class="dt">bty =</span> <span class="st">&#39;l&#39;</span>)
-<span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
-
-<span class="co">#Simultaneous confidence interval</span>
-<span class="co">#In how many of the replicates datasets do we have </span>
-<span class="co">#observations outside of the pointwise confidence bands?</span>
-R &lt;-<span class="st"> </span><span class="kw">nrow</span>(boot_samp)
-alpha &lt;-<span class="st"> </span><span class="fl">0.05</span>
-k &lt;-<span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>(R <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span>
-<span class="co">#Simply check this as follows:</span>
-<span class="co">#For each column, return the rank of the simulation</span>
-rank_boot &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, rank)
-<span class="co">#For each row, keep minimum and maximum rank</span>
-minmax_rk &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(rank_boot, <span class="dv">1</span>, <span class="cf">function</span>(x){<span class="kw">c</span>(<span class="kw">min</span>(x), <span class="kw">max</span>(x))}))
-<span class="co">#Go outside of the pointwise confidence interval if </span>
-<span class="co">#min(rank) &lt; k or max(rank) &gt; R + 1 - k </span>
-emp_boot_cov &lt;-<span class="st"> </span><span class="cf">function</span>(k){
- <span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>((<span class="kw">I</span>(minmax_rk[,<span class="dv">1</span>] <span class="op">&gt;</span><span class="st"> </span>k))<span class="op">*</span><span class="kw">I</span>(minmax_rk[,<span class="dv">2</span>] <span class="op">&lt;</span><span class="st"> </span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>k)))
-}
-<span class="co">#In how many of the replicates datasets do </span>
-<span class="co">#we have observations outside of the bounds?</span>
-<span class="kw">emp_boot_cov</span>(k)</code></pre>
-<pre><code>## [1] 0.5784578</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Ouch! decrease k until we hit alpha percentage of exceedances (0.05)</span>
-boot_cov_k &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>k, emp_boot_cov)
-klev &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="ot">TRUE</span>, boot_cov_k <span class="op">&gt;</span><span class="st"> </span>alpha) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
-<span class="cf">if</span>(klev <span class="op">==</span><span class="st"> </span><span class="dv">0</span>){
- klev &lt;-<span class="st"> </span><span class="dv">1</span>
-}
-env_jt &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, sort)[<span class="kw">c</span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>klev, klev),]
-
-<span class="co">#This is what is returned by function envelope</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(env_jt, env<span class="op">$</span>overall))</code></pre>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" title="1"><span class="co">#Dimensions of the design matrix</span></a>
+<a class="sourceLine" id="cb145-2" title="2">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw">model.matrix</span>(ols))</a>
+<a class="sourceLine" id="cb145-3" title="3">p &lt;-<span class="st"> </span><span class="kw">ncol</span>(<span class="kw">model.matrix</span>(ols))</a>
+<a class="sourceLine" id="cb145-4" title="4"><span class="co">#Bootstrap setting</span></a>
+<a class="sourceLine" id="cb145-5" title="5">B &lt;-<span class="st"> </span><span class="dv">9999</span></a>
+<a class="sourceLine" id="cb145-6" title="6">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(ols)</a>
+<a class="sourceLine" id="cb145-7" title="7">betahat &lt;-<span class="st"> </span><span class="kw">coef</span>(ols)</a>
+<a class="sourceLine" id="cb145-8" title="8">boot_samp &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> B, <span class="dt">ncol =</span> n)</a>
+<a class="sourceLine" id="cb145-9" title="9"><span class="cf">for</span>(b <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>B){</a>
+<a class="sourceLine" id="cb145-10" title="10">  <span class="co">#Generate new errors</span></a>
+<a class="sourceLine" id="cb145-11" title="11">  eps_samp &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd =</span> <span class="kw">sqrt</span>(s2))</a>
+<a class="sourceLine" id="cb145-12" title="12">  Xbeta &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>betahat</a>
+<a class="sourceLine" id="cb145-13" title="13">  <span class="co">#Create new replicate dataset</span></a>
+<a class="sourceLine" id="cb145-14" title="14">  yb &lt;-<span class="st"> </span>Xbeta <span class="op">+</span><span class="st"> </span>eps_samp</a>
+<a class="sourceLine" id="cb145-15" title="15">  <span class="co">#Obtain externally studentized residuals</span></a>
+<a class="sourceLine" id="cb145-16" title="16">  <span class="co">#Sort them in increasing order</span></a>
+<a class="sourceLine" id="cb145-17" title="17">  boot_samp[b, ] &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">rstudent</span>(<span class="kw">lm</span>(yb <span class="op">~</span><span class="st"> </span><span class="dv">-1</span> <span class="op">+</span><span class="st"> </span>X)))</a>
+<a class="sourceLine" id="cb145-18" title="18">}</a>
+<a class="sourceLine" id="cb145-19" title="19"></a>
+<a class="sourceLine" id="cb145-20" title="20"><span class="co">#Add the dataset to the replicates</span></a>
+<a class="sourceLine" id="cb145-21" title="21">res_samp &lt;-<span class="st"> </span><span class="kw">rbind</span>((esr &lt;-<span class="st"> </span><span class="kw">rstudent</span>(ols)), boot_samp)</a>
+<a class="sourceLine" id="cb145-22" title="22"><span class="co">#Compute the quantiles of this experiment =&gt; per column means for each order statistic</span></a>
+<a class="sourceLine" id="cb145-23" title="23">confint_pw &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(res_samp, <span class="dv">2</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)))</a>
+<a class="sourceLine" id="cb145-24" title="24"><span class="co">#Alternatively, could sort each column and pick the k and B-k-1 entries</span></a>
+<a class="sourceLine" id="cb145-25" title="25"></a>
+<a class="sourceLine" id="cb145-26" title="26"><span class="co">#Computed automatically by package bootstrap</span></a>
+<a class="sourceLine" id="cb145-27" title="27">env &lt;-<span class="st"> </span>boot<span class="op">::</span><span class="kw">envelope</span>(<span class="dt">mat =</span> boot_samp)</a>
+<a class="sourceLine" id="cb145-28" title="28"></a>
+<a class="sourceLine" id="cb145-29" title="29"><span class="co">#Plot the confidence interval</span></a>
+<a class="sourceLine" id="cb145-30" title="30"><span class="kw">matplot</span>(<span class="dt">y =</span> <span class="kw">cbind</span>(<span class="kw">sort</span>(esr), confint_pw), <span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n) <span class="op">/</span><span class="st"> </span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb145-31" title="31">       <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;grey&quot;</span>, <span class="st">&quot;grey&quot;</span>), <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;p&quot;</span>,<span class="st">&quot;l&quot;</span>,<span class="st">&quot;l&quot;</span>), </a>
+<a class="sourceLine" id="cb145-32" title="32">       <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">xlab =</span> <span class="st">&quot;Theoretical quantiles&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Empirical quantiles&quot;</span>, <span class="dt">bty =</span> <span class="st">&#39;l&#39;</span>)</a>
+<a class="sourceLine" id="cb145-33" title="33"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb145-34" title="34"></a>
+<a class="sourceLine" id="cb145-35" title="35"><span class="co">#Simultaneous confidence interval</span></a>
+<a class="sourceLine" id="cb145-36" title="36"><span class="co">#In how many of the replicates datasets do we have </span></a>
+<a class="sourceLine" id="cb145-37" title="37"><span class="co">#observations outside of the pointwise confidence bands?</span></a>
+<a class="sourceLine" id="cb145-38" title="38">R &lt;-<span class="st"> </span><span class="kw">nrow</span>(boot_samp)</a>
+<a class="sourceLine" id="cb145-39" title="39">alpha &lt;-<span class="st"> </span><span class="fl">0.05</span></a>
+<a class="sourceLine" id="cb145-40" title="40">k &lt;-<span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>(R <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb145-41" title="41"><span class="co">#Simply check this as follows:</span></a>
+<a class="sourceLine" id="cb145-42" title="42"><span class="co">#For each column, return the rank of the simulation</span></a>
+<a class="sourceLine" id="cb145-43" title="43">rank_boot &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, rank)</a>
+<a class="sourceLine" id="cb145-44" title="44"><span class="co">#For each row, keep minimum and maximum rank</span></a>
+<a class="sourceLine" id="cb145-45" title="45">minmax_rk &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(rank_boot, <span class="dv">1</span>, <span class="cf">function</span>(x){<span class="kw">c</span>(<span class="kw">min</span>(x), <span class="kw">max</span>(x))}))</a>
+<a class="sourceLine" id="cb145-46" title="46"><span class="co">#Go outside of the pointwise confidence interval if </span></a>
+<a class="sourceLine" id="cb145-47" title="47"><span class="co">#min(rank) &lt; k or max(rank) &gt; R + 1 - k </span></a>
+<a class="sourceLine" id="cb145-48" title="48">emp_boot_cov &lt;-<span class="st"> </span><span class="cf">function</span>(k){</a>
+<a class="sourceLine" id="cb145-49" title="49"> <span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>((<span class="kw">I</span>(minmax_rk[,<span class="dv">1</span>] <span class="op">&gt;</span><span class="st"> </span>k))<span class="op">*</span><span class="kw">I</span>(minmax_rk[,<span class="dv">2</span>] <span class="op">&lt;</span><span class="st"> </span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>k)))</a>
+<a class="sourceLine" id="cb145-50" title="50">}</a>
+<a class="sourceLine" id="cb145-51" title="51"><span class="co">#In how many of the replicates datasets do </span></a>
+<a class="sourceLine" id="cb145-52" title="52"><span class="co">#we have observations outside of the bounds?</span></a>
+<a class="sourceLine" id="cb145-53" title="53"><span class="kw">emp_boot_cov</span>(k)</a></code></pre></div>
+<pre><code>## [1] 0.5745575</code></pre>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" title="1"><span class="co">#Ouch! decrease k until we hit alpha percentage of exceedances (0.05)</span></a>
+<a class="sourceLine" id="cb147-2" title="2">boot_cov_k &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span>k, emp_boot_cov)</a>
+<a class="sourceLine" id="cb147-3" title="3">klev &lt;-<span class="st"> </span><span class="kw">match</span>(<span class="ot">TRUE</span>, boot_cov_k <span class="op">&gt;</span><span class="st"> </span>alpha) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb147-4" title="4"><span class="cf">if</span>(klev <span class="op">==</span><span class="st"> </span><span class="dv">0</span>){</a>
+<a class="sourceLine" id="cb147-5" title="5"> klev &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb147-6" title="6">}</a>
+<a class="sourceLine" id="cb147-7" title="7">env_jt &lt;-<span class="st"> </span><span class="kw">apply</span>(boot_samp, <span class="dv">2</span>, sort)[<span class="kw">c</span>(R<span class="op">+</span><span class="dv">1</span><span class="op">-</span>klev, klev),]</a>
+<a class="sourceLine" id="cb147-8" title="8"></a>
+<a class="sourceLine" id="cb147-9" title="9"><span class="co">#This is what is returned by function envelope</span></a>
+<a class="sourceLine" id="cb147-10" title="10"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(env_jt, env<span class="op">$</span>overall))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matplot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="dv">-1</span>), <span class="dt">y =</span> <span class="kw">t</span>(env<span class="op">$</span>overall), 
-       <span class="dt">col =</span> <span class="st">&quot;darkgrey&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">1</span>)</code></pre>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" title="1"><span class="kw">matplot</span>(<span class="dt">x =</span> <span class="kw">qt</span>((<span class="dv">1</span><span class="op">:</span>n)<span class="op">/</span>(n<span class="op">+</span><span class="dv">1</span>), <span class="dt">df =</span> n <span class="op">-</span><span class="st"> </span>p <span class="dv">-1</span>), <span class="dt">y =</span> <span class="kw">t</span>(env<span class="op">$</span>overall), </a>
+<a class="sourceLine" id="cb149-2" title="2">       <span class="dt">col =</span> <span class="st">&quot;darkgrey&quot;</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">lty =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/unnamed-chunk-25-1.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="parametric-bootstrap-confidence-intervals-using-the-qr-decomposition" class="section level3">
@@ -464,8 +462,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

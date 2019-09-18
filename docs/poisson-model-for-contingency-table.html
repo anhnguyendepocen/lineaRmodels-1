@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.2 Poisson model for contingency table | lineaRmodels</title>
-  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="10.2 Poisson model for contingency table | lineaRmodels />
+  <meta property="og:title" content="10.2 Poisson model for contingency table | lineaRmodels" />
   <meta property="og:type" content="book" />
   
   
@@ -17,22 +16,22 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="10.2 Poisson model for contingency table | lineaRmodels />
+  <meta name="twitter:title" content="10.2 Poisson model for contingency table | lineaRmodels" />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
 
-<meta name="author" content="Léo Belzile">
+<meta name="author" content="Léo Belzile" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="diagnostics-for-bernoulli-data.html">
-<link rel="next" href="solutions-6.html">
+<link rel="prev" href="diagnostics-for-bernoulli-data.html"/>
+<link rel="next" href="solutions-6.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,7 +50,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.30/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -62,7 +61,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -74,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -276,22 +274,22 @@ The first factor is cancer <code>type</code>, with levels</p>
 2. Trunk,
 3. Extremities</p>
 <p>The data are count, hence we proceed with the analysis using a Poisson likelihood. This ressembles ANOVA models with factors.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create dataset</span>
-site &lt;-<span class="st"> </span><span class="kw">gl</span>(<span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">k =</span> <span class="dv">1</span>, <span class="dt">length =</span> <span class="dv">12</span>) 
-<span class="co"># gl generates levels of a factor</span>
-tumor &lt;-<span class="st"> </span><span class="kw">gl</span>(<span class="dt">n =</span> <span class="dv">4</span>, <span class="dt">k =</span> <span class="dv">3</span>) <span class="co">#each 3</span>
-cases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">22</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">16</span>, <span class="dv">54</span>, <span class="dv">115</span>, <span class="dv">19</span>, <span class="dv">33</span>, <span class="dv">73</span>, <span class="dv">11</span>, <span class="dv">17</span>, <span class="dv">28</span>)
-cancer &lt;-<span class="st"> </span><span class="kw">data.frame</span>(tumor, site, cases)
-<span class="co"># Four cases - no effect, main interaction only, additive</span>
-cancer.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)
-cancer.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>tumor, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)
-cancer.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>site, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)
-cancer.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>tumor <span class="op">+</span><span class="st"> </span>site, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)
-<span class="co"># Saturated model</span>
-cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>tumor <span class="op">*</span><span class="st"> </span>site, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)
-<span class="co"># Analysis of deviance</span>
-<span class="co"># Same syntax as for GLM</span>
-<span class="kw">drop1</span>(cancer.m4)</code></pre>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb311-1" title="1"><span class="co"># Create dataset</span></a>
+<a class="sourceLine" id="cb311-2" title="2">site &lt;-<span class="st"> </span><span class="kw">gl</span>(<span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">k =</span> <span class="dv">1</span>, <span class="dt">length =</span> <span class="dv">12</span>) </a>
+<a class="sourceLine" id="cb311-3" title="3"><span class="co"># gl generates levels of a factor</span></a>
+<a class="sourceLine" id="cb311-4" title="4">tumor &lt;-<span class="st"> </span><span class="kw">gl</span>(<span class="dt">n =</span> <span class="dv">4</span>, <span class="dt">k =</span> <span class="dv">3</span>) <span class="co">#each 3</span></a>
+<a class="sourceLine" id="cb311-5" title="5">cases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">22</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">16</span>, <span class="dv">54</span>, <span class="dv">115</span>, <span class="dv">19</span>, <span class="dv">33</span>, <span class="dv">73</span>, <span class="dv">11</span>, <span class="dv">17</span>, <span class="dv">28</span>)</a>
+<a class="sourceLine" id="cb311-6" title="6">cancer &lt;-<span class="st"> </span><span class="kw">data.frame</span>(tumor, site, cases)</a>
+<a class="sourceLine" id="cb311-7" title="7"><span class="co"># Four cases - no effect, main interaction only, additive</span></a>
+<a class="sourceLine" id="cb311-8" title="8">cancer.m0 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb311-9" title="9">cancer.m1 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>tumor, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb311-10" title="10">cancer.m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>site, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb311-11" title="11">cancer.m3 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>tumor <span class="op">+</span><span class="st"> </span>site, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb311-12" title="12"><span class="co"># Saturated model</span></a>
+<a class="sourceLine" id="cb311-13" title="13">cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span class="op">~</span><span class="st"> </span>tumor <span class="op">*</span><span class="st"> </span>site, <span class="dt">family =</span> poisson, <span class="dt">data =</span> cancer)</a>
+<a class="sourceLine" id="cb311-14" title="14"><span class="co"># Analysis of deviance</span></a>
+<a class="sourceLine" id="cb311-15" title="15"><span class="co"># Same syntax as for GLM</span></a>
+<a class="sourceLine" id="cb311-16" title="16"><span class="kw">drop1</span>(cancer.m4)</a></code></pre></div>
 <pre><code>## Single term deletions
 ## 
 ## Model:
@@ -299,17 +297,17 @@ cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span 
 ##            Df Deviance     AIC
 ## &lt;none&gt;           0.000  83.111
 ## tumor:site  6   51.795 122.906</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(cancer.m3, cancer.m4, <span class="dt">test =</span> <span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb313-1" title="1"><span class="kw">anova</span>(cancer.m3, cancer.m4, <span class="dt">test =</span> <span class="st">&quot;Chisq&quot;</span>)</a></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model 1: cases ~ tumor + site
 ## Model 2: cases ~ tumor * site
-##   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)
-## 1         6     51.795                     
-## 2         0      0.000  6   51.795 2.05e-09</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># anova(cancer.m4) returns three tests, </span>
-<span class="co"># but only the comparison with additive model is justified</span>
-<span class="kw">summary</span>(cancer.m4)</code></pre>
+##   Resid. Df Resid. Dev Df Deviance      Pr(&gt;Chi)
+## 1         6     51.795                          
+## 2         0      0.000  6   51.795 0.00000000205</code></pre>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb315-1" title="1"><span class="co"># anova(cancer.m4) returns three tests, </span></a>
+<a class="sourceLine" id="cb315-2" title="2"><span class="co"># but only the comparison with additive model is justified</span></a>
+<a class="sourceLine" id="cb315-3" title="3"><span class="kw">summary</span>(cancer.m4)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = cases ~ tumor * site, family = poisson, data = cancer)
@@ -318,19 +316,19 @@ cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span 
 ##  [1]  0  0  0  0  0  0  0  0  0  0  0  0
 ## 
 ## Coefficients:
-##              Estimate Std. Error z value Pr(&gt;|z|)
-## (Intercept)    3.0910     0.2132  14.498  &lt; 2e-16
-## tumor2        -0.3185     0.3286  -0.969 0.332432
-## tumor3        -0.1466     0.3132  -0.468 0.639712
-## tumor4        -0.6931     0.3693  -1.877 0.060511
-## site2         -2.3979     0.7385  -3.247 0.001167
-## site3         -0.7885     0.3814  -2.067 0.038701
-## tumor2:site2   3.6143     0.7915   4.566 4.96e-06
-## tumor3:site2   2.9500     0.7927   3.721 0.000198
-## tumor4:site2   2.8332     0.8338   3.398 0.000679
-## tumor2:site3   2.7608     0.4655   5.931 3.00e-09
-## tumor3:site3   2.1345     0.4602   4.638 3.52e-06
-## tumor4:site3   1.7228     0.5216   3.303 0.000957
+##              Estimate Std. Error z value    Pr(&gt;|z|)
+## (Intercept)    3.0910     0.2132  14.498     &lt; 2e-16
+## tumor2        -0.3185     0.3286  -0.969    0.332432
+## tumor3        -0.1466     0.3132  -0.468    0.639712
+## tumor4        -0.6931     0.3693  -1.877    0.060511
+## site2         -2.3979     0.7385  -3.247    0.001167
+## site3         -0.7885     0.3814  -2.067    0.038701
+## tumor2:site2   3.6143     0.7915   4.566 0.000004962
+## tumor3:site2   2.9500     0.7927   3.721    0.000198
+## tumor4:site2   2.8332     0.8338   3.398    0.000679
+## tumor2:site3   2.7608     0.4655   5.931 0.000000003
+## tumor3:site3   2.1345     0.4602   4.638 0.000003516
+## tumor4:site3   1.7228     0.5216   3.303    0.000957
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
@@ -339,9 +337,9 @@ cancer.m4 &lt;-<span class="st"> </span><span class="kw">glm</span>(cases <span 
 ## AIC: 83.111
 ## 
 ## Number of Fisher Scoring iterations: 3</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Alternatively, compute manually</span>
-<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(cancer.m3), <span class="dt">df =</span> cancer.m3<span class="op">$</span>df.residual)</code></pre>
-<pre><code>## [1] 2.050453e-09</code></pre>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb317-1" title="1"><span class="co"># Alternatively, compute manually</span></a>
+<a class="sourceLine" id="cb317-2" title="2"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(cancer.m3), <span class="dt">df =</span> cancer.m3<span class="op">$</span>df.residual)</a></code></pre></div>
+<pre><code>## [1] 0.000000002050453</code></pre>
 <p>The likelihood ratio test to check whether the interaction is significative is soundly rejected, hence we would keep the saturated model. For such a model, the fitted values correspond to the observed counts.</p>
 <p>This is an example where the hypothesis of equal mean and variance does not seem to hold. Handling the overdispersion is beyond the scope of this course.</p>
 </div>
@@ -403,8 +401,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4.1 Confidence and prediction intervals | lineaRmodels</title>
-  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4.1 Confidence and prediction intervals | lineaRmodels />
+  <meta property="og:title" content="4.1 Confidence and prediction intervals | lineaRmodels" />
   <meta property="og:type" content="book" />
   
   
@@ -17,22 +16,22 @@
   <meta name="github-repo" content="lbelzile/lineaRmodels" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4.1 Confidence and prediction intervals | lineaRmodels />
+  <meta name="twitter:title" content="4.1 Confidence and prediction intervals | lineaRmodels" />
   
   <meta name="twitter:description" content="This is a web complement to MATH 341 (Linear Models), a first regression course for EPFL mathematicians." />
   
 
-<meta name="author" content="Léo Belzile">
+<meta name="author" content="Léo Belzile" />
 
 
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="gaussian-linear-model.html">
-<link rel="next" href="residuals.html">
+<link rel="prev" href="gaussian-linear-model.html"/>
+<link rel="next" href="residuals.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,7 +50,7 @@
 <link href="libs/rglwidgetClass-2/rgl.css" rel="stylesheet" />
 <script src="libs/rglwidgetClass-2/rglClass.src.js"></script>
 <script src="libs/CanvasMatrix4-2016/CanvasMatrix.src.js"></script>
-<script src="libs/rglWebGL-binding-0.99.16/rglWebGL.js"></script>
+<script src="libs/rglWebGL-binding-0.100.30/rglWebGL.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
@@ -62,7 +61,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -74,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -270,68 +268,68 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[ \mathbf{x}^i\widehat{\boldsymbol{\beta}} \pm t_{n-p}({0.025})\sqrt{s^2 \left[ \mathbf{I}_n + \mathbf{x}^{i\top}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{x}^i\right]}.\]</span>
 Provided the model is correct, new observations <span class="math inline">\(y_{\mathrm{new}}\)</span> should fall 19 times out of 20 within the reported prediction interval.</p>
 <p>As we move away from the bulk of the data (average value of <span class="math inline">\(\mathbf{x}\)</span>), the hyperbolic shape of the intervals becomes visible. Note here how the prediction interval is necessarily wider than the confidence interval (iterated variance formula).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The function lm and its output</span>
-ols &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)
-res &lt;-<span class="st"> </span><span class="kw">resid</span>(ols)
-X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>,  mtcars<span class="op">$</span>wt)
-n &lt;-<span class="st"> </span><span class="kw">nrow</span>(X)
-s2 &lt;-<span class="st"> </span><span class="kw">sum</span>(res<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>(<span class="kw">length</span>(res) <span class="op">-</span><span class="st"> </span><span class="kw">ncol</span>(X))
-std_err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(s2 <span class="op">*</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))))
-beta_hat &lt;-<span class="st"> </span><span class="kw">coef</span>(ols)
-<span class="co">#Covariance matrix of (beta0, beta1)</span>
-Sigma &lt;-<span class="st"> </span><span class="kw">vcov</span>(<span class="kw">summary</span>(ols))
-<span class="co">#check the calculation</span>
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Sigma, s2 <span class="op">*</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</code></pre>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" title="1"><span class="co"># The function lm and its output</span></a>
+<a class="sourceLine" id="cb119-2" title="2">ols &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)</a>
+<a class="sourceLine" id="cb119-3" title="3">res &lt;-<span class="st"> </span><span class="kw">resid</span>(ols)</a>
+<a class="sourceLine" id="cb119-4" title="4">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>,  mtcars<span class="op">$</span>wt)</a>
+<a class="sourceLine" id="cb119-5" title="5">n &lt;-<span class="st"> </span><span class="kw">nrow</span>(X)</a>
+<a class="sourceLine" id="cb119-6" title="6">s2 &lt;-<span class="st"> </span><span class="kw">sum</span>(res<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>(<span class="kw">length</span>(res) <span class="op">-</span><span class="st"> </span><span class="kw">ncol</span>(X))</a>
+<a class="sourceLine" id="cb119-7" title="7">std_err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(s2 <span class="op">*</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))))</a>
+<a class="sourceLine" id="cb119-8" title="8">beta_hat &lt;-<span class="st"> </span><span class="kw">coef</span>(ols)</a>
+<a class="sourceLine" id="cb119-9" title="9"><span class="co">#Covariance matrix of (beta0, beta1)</span></a>
+<a class="sourceLine" id="cb119-10" title="10">Sigma &lt;-<span class="st"> </span><span class="kw">vcov</span>(<span class="kw">summary</span>(ols))</a>
+<a class="sourceLine" id="cb119-11" title="11"><span class="co">#check the calculation</span></a>
+<a class="sourceLine" id="cb119-12" title="12"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(Sigma, s2 <span class="op">*</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)), <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Standard error of estimates</span>
-std_err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(Sigma))
-<span class="co">#Extract leverage values h_ii</span>
-leverage &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">hatvalues</span>(ols))
-<span class="co"># Compare with manual calculation from diagonal matrix</span>
-leverage_man &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n)
-XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n){
-  leverage_man[i] &lt;-<span class="st"> </span>X[i,] <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span>X[i,]
-}
-<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(leverage, leverage_man))</code></pre>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" title="1"><span class="co">#Standard error of estimates</span></a>
+<a class="sourceLine" id="cb121-2" title="2">std_err &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">diag</span>(Sigma))</a>
+<a class="sourceLine" id="cb121-3" title="3"><span class="co">#Extract leverage values h_ii</span></a>
+<a class="sourceLine" id="cb121-4" title="4">leverage &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">hatvalues</span>(ols))</a>
+<a class="sourceLine" id="cb121-5" title="5"><span class="co"># Compare with manual calculation from diagonal matrix</span></a>
+<a class="sourceLine" id="cb121-6" title="6">leverage_man &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, n)</a>
+<a class="sourceLine" id="cb121-7" title="7">XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X))</a>
+<a class="sourceLine" id="cb121-8" title="8"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n){</a>
+<a class="sourceLine" id="cb121-9" title="9">  leverage_man[i] &lt;-<span class="st"> </span>X[i,] <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span>X[i,]</a>
+<a class="sourceLine" id="cb121-10" title="10">}</a>
+<a class="sourceLine" id="cb121-11" title="11"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(leverage, leverage_man))</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot data set</span>
-<span class="kw">plot</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars, 
-     <span class="dt">xlab =</span> <span class="st">&quot;weight (1000 lbs)&quot;</span>, 
-     <span class="dt">ylab =</span> <span class="st">&quot;Fuel consumption (in miles/US gallon)&quot;</span>, 
-     <span class="dt">main =</span> <span class="st">&quot;Fuel consumption of automobiles, 1974 Motor Trend&quot;</span>, 
-     <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">35</span>), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">6</span>))
-<span class="kw">abline</span>(beta_hat, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
-
-<span class="co">#Confidence intervals</span>
-tqu =<span class="st"> </span><span class="kw">qt</span>(<span class="fl">0.975</span>, <span class="dt">df =</span> <span class="kw">nrow</span>(X)<span class="op">-</span><span class="st"> </span><span class="kw">ncol</span>(X))
-conf_inter &lt;-<span class="st"> </span><span class="kw">cbind</span>(beta_hat <span class="op">-</span><span class="st"> </span>tqu <span class="op">*</span><span class="st"> </span>std_err, beta_hat <span class="op">+</span><span class="st"> </span>tqu <span class="op">*</span><span class="st"> </span>std_err)
-<span class="co">#Compare with lm output</span>
-<span class="kw">confint</span>(ols)</code></pre>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" title="1"><span class="co"># Plot data set</span></a>
+<a class="sourceLine" id="cb123-2" title="2"><span class="kw">plot</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars, </a>
+<a class="sourceLine" id="cb123-3" title="3">     <span class="dt">xlab =</span> <span class="st">&quot;weight (1000 lbs)&quot;</span>, </a>
+<a class="sourceLine" id="cb123-4" title="4">     <span class="dt">ylab =</span> <span class="st">&quot;Fuel consumption (in miles/US gallon)&quot;</span>, </a>
+<a class="sourceLine" id="cb123-5" title="5">     <span class="dt">main =</span> <span class="st">&quot;Fuel consumption of automobiles, 1974 Motor Trend&quot;</span>, </a>
+<a class="sourceLine" id="cb123-6" title="6">     <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">35</span>), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">6</span>))</a>
+<a class="sourceLine" id="cb123-7" title="7"><span class="kw">abline</span>(beta_hat, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb123-8" title="8"></a>
+<a class="sourceLine" id="cb123-9" title="9"><span class="co">#Confidence intervals</span></a>
+<a class="sourceLine" id="cb123-10" title="10">tqu =<span class="st"> </span><span class="kw">qt</span>(<span class="fl">0.975</span>, <span class="dt">df =</span> <span class="kw">nrow</span>(X)<span class="op">-</span><span class="st"> </span><span class="kw">ncol</span>(X))</a>
+<a class="sourceLine" id="cb123-11" title="11">conf_inter &lt;-<span class="st"> </span><span class="kw">cbind</span>(beta_hat <span class="op">-</span><span class="st"> </span>tqu <span class="op">*</span><span class="st"> </span>std_err, beta_hat <span class="op">+</span><span class="st"> </span>tqu <span class="op">*</span><span class="st"> </span>std_err)</a>
+<a class="sourceLine" id="cb123-12" title="12"><span class="co">#Compare with lm output</span></a>
+<a class="sourceLine" id="cb123-13" title="13"><span class="kw">confint</span>(ols)</a></code></pre></div>
 <pre><code>##                 2.5 %    97.5 %
 ## (Intercept) 33.450500 41.119753
 ## wt          -6.486308 -4.202635</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">xstar &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">6</span>, <span class="dt">by =</span> <span class="fl">0.1</span>)
-
-<span class="co">#Confidence interval for prediction using lm output</span>
-ystar_confint &lt;-<span class="st"> </span><span class="kw">predict</span>(ols, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">wt =</span> xstar), <span class="dt">interval =</span> <span class="st">&#39;confidence&#39;</span>)
-<span class="kw">lines</span>(xstar, ystar_confint[ ,<span class="dv">2</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)
-<span class="kw">lines</span>(xstar, ystar_confint[ ,<span class="dv">3</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)
-<span class="co">#Prediction interval using lm output</span>
-ystar_predint &lt;-<span class="st"> </span><span class="kw">predict</span>(ols, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">wt =</span> xstar), <span class="dt">interval =</span> <span class="st">&#39;prediction&#39;</span>)
-<span class="kw">lines</span>(xstar, ystar_predint[ ,<span class="dv">2</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>)
-<span class="kw">lines</span>(xstar, ystar_predint[ ,<span class="dv">3</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>)
-<span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>,<span class="st">&quot;blue&quot;</span>), 
-       <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>,
-       <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Prediction&quot;</span>,<span class="st">&quot;Conf. inter.&quot;</span>,<span class="st">&quot;Pred. inter.&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" title="1">xstar &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">6</span>, <span class="dt">by =</span> <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb125-2" title="2"></a>
+<a class="sourceLine" id="cb125-3" title="3"><span class="co">#Confidence interval for prediction using lm output</span></a>
+<a class="sourceLine" id="cb125-4" title="4">ystar_confint &lt;-<span class="st"> </span><span class="kw">predict</span>(ols, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">wt =</span> xstar), <span class="dt">interval =</span> <span class="st">&#39;confidence&#39;</span>)</a>
+<a class="sourceLine" id="cb125-5" title="5"><span class="kw">lines</span>(xstar, ystar_confint[ ,<span class="dv">2</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)</a>
+<a class="sourceLine" id="cb125-6" title="6"><span class="kw">lines</span>(xstar, ystar_confint[ ,<span class="dv">3</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)</a>
+<a class="sourceLine" id="cb125-7" title="7"><span class="co">#Prediction interval using lm output</span></a>
+<a class="sourceLine" id="cb125-8" title="8">ystar_predint &lt;-<span class="st"> </span><span class="kw">predict</span>(ols, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">wt =</span> xstar), <span class="dt">interval =</span> <span class="st">&#39;prediction&#39;</span>)</a>
+<a class="sourceLine" id="cb125-9" title="9"><span class="kw">lines</span>(xstar, ystar_predint[ ,<span class="dv">2</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>)</a>
+<a class="sourceLine" id="cb125-10" title="10"><span class="kw">lines</span>(xstar, ystar_predint[ ,<span class="dv">3</span>], <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>)</a>
+<a class="sourceLine" id="cb125-11" title="11"><span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>,<span class="st">&quot;blue&quot;</span>), </a>
+<a class="sourceLine" id="cb125-12" title="12">       <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>,</a>
+<a class="sourceLine" id="cb125-13" title="13">       <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Prediction&quot;</span>,<span class="st">&quot;Conf. inter.&quot;</span>,<span class="st">&quot;Pred. inter.&quot;</span>))</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/mtcars_confint-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>The function <code>predict</code> takes as imput a <code>data.frame</code> object containing the same column names as those of the fitted <code>lm</code> object. The names can be obtained from <code>names(ols$model)[-1]</code>.</p>
 <p>As usual, we can verify we get the same result if we computed the intervals manually.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Manually (see class notes)</span>
-confint_xstar &lt;-<span class="st"> </span>tqu <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(s2 <span class="op">*</span><span class="st"> </span><span class="kw">apply</span>(<span class="kw">cbind</span>(<span class="dv">1</span>, xstar), <span class="dv">1</span>, <span class="cf">function</span>(cvec){<span class="kw">t</span>(cvec) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span>cvec}))
-fitted_xstar &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, xstar) <span class="op">%*%</span><span class="st"> </span><span class="kw">cbind</span>(beta_hat)
-<span class="kw">lines</span>(xstar,  fitted_xstar <span class="op">-</span><span class="st"> </span>confint_xstar, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)
-<span class="kw">lines</span>(xstar,  fitted_xstar <span class="op">+</span><span class="st"> </span>confint_xstar, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)</code></pre>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" title="1"><span class="co">#Manually (see class notes)</span></a>
+<a class="sourceLine" id="cb126-2" title="2">confint_xstar &lt;-<span class="st"> </span>tqu <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(s2 <span class="op">*</span><span class="st"> </span><span class="kw">apply</span>(<span class="kw">cbind</span>(<span class="dv">1</span>, xstar), <span class="dv">1</span>, <span class="cf">function</span>(cvec){<span class="kw">t</span>(cvec) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span>cvec}))</a>
+<a class="sourceLine" id="cb126-3" title="3">fitted_xstar &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, xstar) <span class="op">%*%</span><span class="st"> </span><span class="kw">cbind</span>(beta_hat)</a>
+<a class="sourceLine" id="cb126-4" title="4"><span class="kw">lines</span>(xstar,  fitted_xstar <span class="op">-</span><span class="st"> </span>confint_xstar, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)</a>
+<a class="sourceLine" id="cb126-5" title="5"><span class="kw">lines</span>(xstar,  fitted_xstar <span class="op">+</span><span class="st"> </span>confint_xstar, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&#39;green&#39;</span>)</a></code></pre></div>
 </div>
             </section>
 
@@ -391,8 +389,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
