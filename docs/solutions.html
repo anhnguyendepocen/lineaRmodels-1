@@ -72,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -265,15 +265,15 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">1.4.1</span> Exercise 1.4 - Oblique projections</h3>
 <p>Suppose that <span class="math inline">\(\mathsf{span}(\mathbf{X}) \neq \mathsf{span}(\mathbf{W})\)</span>, that both <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{W}\)</span> are full-rank <span class="math inline">\(n \times p\)</span> matrices such that <span class="math inline">\(\mathbf{X}^\top\mathbf{W}\)</span> and <span class="math inline">\(\mathbf{W}^\top\mathbf{X}\)</span> are invertible. An oblique projection matrix is of the form <span class="math inline">\(\mathbf{P}\equiv\mathbf{X}(\mathbf{W}^\top\mathbf{X})^{-1}\mathbf{W}^\top\)</span> and appears in instrumental variable regression. The oblique projection is such that <span class="math inline">\(\mathrm{im}(\mathbf{P})=\mathsf{span}(\mathbf{X})\)</span>, but <span class="math inline">\(\mathrm{im}(\mathbf{I}-\mathbf{P})=\mathsf{span}(\mathbf{W}^\perp)\)</span>. This fact is illustrated below.</p>
 <p>We consider two non-parallel vectors in <span class="math inline">\(\mathbb{R}^2\)</span>, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{W}\)</span>.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co">#Create two vectors (non-parallel)</span></a>
-<a class="sourceLine" id="cb22-2" title="2">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb22-3" title="3">w &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb22-4" title="4"><span class="co">#Create oblique projection matrix</span></a>
-<a class="sourceLine" id="cb22-5" title="5">P &lt;-<span class="st"> </span>x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(w) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(w)</a>
-<a class="sourceLine" id="cb22-6" title="6"></a>
-<a class="sourceLine" id="cb22-7" title="7"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((P <span class="op">%*%</span><span class="st"> </span>P), P)) <span class="co">#P is idempotent</span></a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co">#Create two vectors (non-parallel)</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">w &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">#Create oblique projection matrix</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5">P &lt;-<span class="st"> </span>x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(w) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(w)</a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>((P <span class="op">%*%</span><span class="st"> </span>P), P)) <span class="co">#P is idempotent</span></a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">P <span class="op">-</span><span class="st"> </span><span class="kw">t</span>(P) <span class="co">#but not symmetric</span></a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">P <span class="op">-</span><span class="st"> </span><span class="kw">t</span>(P) <span class="co">#but not symmetric</span></a></code></pre></div>
 <pre><code>##       [,1]   [,2]
 ## [1,] 0.000 -2.625
 ## [2,] 2.625  0.000</code></pre>

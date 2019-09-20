@@ -72,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -264,97 +264,97 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-4.4" class="section level3">
 <h3><span class="header-section-number">3.4.1</span> Exercise 4.4</h3>
 <p>Consider the linear model <span class="math display">\[\boldsymbol{y} = \mathbf{X}_1\boldsymbol{\beta}_1 +\mathbf{X}_2\boldsymbol{\beta}_1 + \boldsymbol{\varepsilon}\]</span> and suppose that <span class="math inline">\(\mathbf{X}_1\)</span> includes a column of ones.</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" title="1"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)</a>
-<a class="sourceLine" id="cb111-2" title="2">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb111-3" title="3">X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
-<a class="sourceLine" id="cb111-4" title="4">X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</a></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)</a>
+<a class="sourceLine" id="cb111-2" data-line-number="2">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb111-3" data-line-number="3">X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
+<a class="sourceLine" id="cb111-4" data-line-number="4">X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</a></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li>Form the projection matrices <span class="math inline">\(\mathbf{H}_{\mathbf{X}}\)</span>, <span class="math inline">\(\mathbf{H}_{1}\)</span>, <span class="math inline">\(\mathbf{H}_{2}\)</span> and the complementary projection matrices (the functions <code>cbind</code>, <code>%*%</code>, <code>solve</code> and <code>t</code> may be useful).</li>
 </ol>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)</a>
-<a class="sourceLine" id="cb112-2" title="2">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb112-3" title="3">X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
-<a class="sourceLine" id="cb112-4" title="4">X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</a>
-<a class="sourceLine" id="cb112-5" title="5"><span class="co">##Warning: output not displayed </span></a>
-<a class="sourceLine" id="cb112-6" title="6"><span class="co">#Projection matrices</span></a>
-<a class="sourceLine" id="cb112-7" title="7">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(X1, X2) </a>
-<a class="sourceLine" id="cb112-8" title="8"><span class="co">#Helper functions</span></a>
-<a class="sourceLine" id="cb112-9" title="9"><span class="co">#Create a function: function(args){ ...}</span></a>
-<a class="sourceLine" id="cb112-10" title="10"><span class="co">#last line will be object returned (if not assigned)</span></a>
-<a class="sourceLine" id="cb112-11" title="11"><span class="co">#otherwise use `return( )`: see below for example</span></a>
-<a class="sourceLine" id="cb112-12" title="12">proj_mat &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb112-13" title="13">  x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x)</a>
-<a class="sourceLine" id="cb112-14" title="14">}</a>
-<a class="sourceLine" id="cb112-15" title="15">coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){</a>
-<a class="sourceLine" id="cb112-16" title="16">  coefs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>y) </a>
-<a class="sourceLine" id="cb112-17" title="17">  <span class="kw">return</span>(coefs)</a>
-<a class="sourceLine" id="cb112-18" title="18">  <span class="co">#`c` transform output from n x 1 matrix to n-vector</span></a>
-<a class="sourceLine" id="cb112-19" title="19">}</a>
-<a class="sourceLine" id="cb112-20" title="20">resid_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){</a>
-<a class="sourceLine" id="cb112-21" title="21">  <span class="kw">c</span>((<span class="kw">diag</span>(<span class="dv">1</span>, <span class="kw">length</span>(y)) <span class="op">-</span><span class="st"> </span>pmat)  <span class="op">%*%</span><span class="st"> </span>y) </a>
-<a class="sourceLine" id="cb112-22" title="22">  <span class="co">#diag(1, ...) creates identity matrix</span></a>
-<a class="sourceLine" id="cb112-23" title="23">}</a>
-<a class="sourceLine" id="cb112-24" title="24">fitted_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){</a>
-<a class="sourceLine" id="cb112-25" title="25">  <span class="kw">c</span>(pmat <span class="op">%*%</span><span class="st"> </span>y)</a>
-<a class="sourceLine" id="cb112-26" title="26">}</a>
-<a class="sourceLine" id="cb112-27" title="27"></a>
-<a class="sourceLine" id="cb112-28" title="28"><span class="co">#Create projection matrices</span></a>
-<a class="sourceLine" id="cb112-29" title="29">H  &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X)</a>
-<a class="sourceLine" id="cb112-30" title="30">H1 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X1)</a>
-<a class="sourceLine" id="cb112-31" title="31">H2 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X2)</a>
-<a class="sourceLine" id="cb112-32" title="32">M  &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H</a>
-<a class="sourceLine" id="cb112-33" title="33">M1 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H1</a>
-<a class="sourceLine" id="cb112-34" title="34">M2 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H2</a></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1"><span class="kw">data</span>(Auto, <span class="dt">package =</span> <span class="st">&quot;ISLR&quot;</span>)</a>
+<a class="sourceLine" id="cb112-2" data-line-number="2">y &lt;-<span class="st"> </span>Auto<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb112-3" data-line-number="3">X1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, Auto<span class="op">$</span>horsepower)</a>
+<a class="sourceLine" id="cb112-4" data-line-number="4">X2 &lt;-<span class="st"> </span>Auto<span class="op">$</span>weight</a>
+<a class="sourceLine" id="cb112-5" data-line-number="5"><span class="co">##Warning: output not displayed </span></a>
+<a class="sourceLine" id="cb112-6" data-line-number="6"><span class="co">#Projection matrices</span></a>
+<a class="sourceLine" id="cb112-7" data-line-number="7">X &lt;-<span class="st"> </span><span class="kw">cbind</span>(X1, X2) </a>
+<a class="sourceLine" id="cb112-8" data-line-number="8"><span class="co">#Helper functions</span></a>
+<a class="sourceLine" id="cb112-9" data-line-number="9"><span class="co">#Create a function: function(args){ ...}</span></a>
+<a class="sourceLine" id="cb112-10" data-line-number="10"><span class="co">#last line will be object returned (if not assigned)</span></a>
+<a class="sourceLine" id="cb112-11" data-line-number="11"><span class="co">#otherwise use `return( )`: see below for example</span></a>
+<a class="sourceLine" id="cb112-12" data-line-number="12">proj_mat &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb112-13" data-line-number="13">  x <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x)</a>
+<a class="sourceLine" id="cb112-14" data-line-number="14">}</a>
+<a class="sourceLine" id="cb112-15" data-line-number="15">coefs_vals &lt;-<span class="st"> </span><span class="cf">function</span>(x, y){</a>
+<a class="sourceLine" id="cb112-16" data-line-number="16">  coefs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">solve</span>(<span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>x) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(x) <span class="op">%*%</span><span class="st"> </span>y) </a>
+<a class="sourceLine" id="cb112-17" data-line-number="17">  <span class="kw">return</span>(coefs)</a>
+<a class="sourceLine" id="cb112-18" data-line-number="18">  <span class="co">#`c` transform output from n x 1 matrix to n-vector</span></a>
+<a class="sourceLine" id="cb112-19" data-line-number="19">}</a>
+<a class="sourceLine" id="cb112-20" data-line-number="20">resid_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){</a>
+<a class="sourceLine" id="cb112-21" data-line-number="21">  <span class="kw">c</span>((<span class="kw">diag</span>(<span class="dv">1</span>, <span class="kw">length</span>(y)) <span class="op">-</span><span class="st"> </span>pmat)  <span class="op">%*%</span><span class="st"> </span>y) </a>
+<a class="sourceLine" id="cb112-22" data-line-number="22">  <span class="co">#diag(1, ...) creates identity matrix</span></a>
+<a class="sourceLine" id="cb112-23" data-line-number="23">}</a>
+<a class="sourceLine" id="cb112-24" data-line-number="24">fitted_vals &lt;-<span class="st"> </span><span class="cf">function</span>(y, pmat){</a>
+<a class="sourceLine" id="cb112-25" data-line-number="25">  <span class="kw">c</span>(pmat <span class="op">%*%</span><span class="st"> </span>y)</a>
+<a class="sourceLine" id="cb112-26" data-line-number="26">}</a>
+<a class="sourceLine" id="cb112-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb112-28" data-line-number="28"><span class="co">#Create projection matrices</span></a>
+<a class="sourceLine" id="cb112-29" data-line-number="29">H  &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X)</a>
+<a class="sourceLine" id="cb112-30" data-line-number="30">H1 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X1)</a>
+<a class="sourceLine" id="cb112-31" data-line-number="31">H2 &lt;-<span class="st"> </span><span class="kw">proj_mat</span>(X2)</a>
+<a class="sourceLine" id="cb112-32" data-line-number="32">M  &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H</a>
+<a class="sourceLine" id="cb112-33" data-line-number="33">M1 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H1</a>
+<a class="sourceLine" id="cb112-34" data-line-number="34">M2 &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">nrow</span>(X)) <span class="op">-</span><span class="st"> </span>H2</a></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Obtain the OLS estimates <span class="math inline">\(\widehat{\boldsymbol{\beta}}_1\)</span>, <span class="math inline">\(\widehat{\boldsymbol{\beta}}_2\)</span></li>
 <li>Use the projection matrices to obtain the fitted values <span class="math inline">\(\widehat{\boldsymbol{y}}\)</span> and the estimated residuals <span class="math inline">\(\widehat{\boldsymbol{\varepsilon}}\)</span>.</li>
 </ol>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" title="1"><span class="co">#OLS coefficients</span></a>
-<a class="sourceLine" id="cb113-2" title="2">beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(X, y)</a>
-<a class="sourceLine" id="cb113-3" title="3">beta_hat</a>
-<a class="sourceLine" id="cb113-4" title="4"><span class="co">#Fitted values</span></a>
-<a class="sourceLine" id="cb113-5" title="5"><span class="kw">fitted_vals</span>(y, H)</a>
-<a class="sourceLine" id="cb113-6" title="6"><span class="co">#Residuals</span></a>
-<a class="sourceLine" id="cb113-7" title="7"><span class="kw">resid_vals</span>(y, H)</a></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1"><span class="co">#OLS coefficients</span></a>
+<a class="sourceLine" id="cb113-2" data-line-number="2">beta_hat &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(X, y)</a>
+<a class="sourceLine" id="cb113-3" data-line-number="3">beta_hat</a>
+<a class="sourceLine" id="cb113-4" data-line-number="4"><span class="co">#Fitted values</span></a>
+<a class="sourceLine" id="cb113-5" data-line-number="5"><span class="kw">fitted_vals</span>(y, H)</a>
+<a class="sourceLine" id="cb113-6" data-line-number="6"><span class="co">#Residuals</span></a>
+<a class="sourceLine" id="cb113-7" data-line-number="7"><span class="kw">resid_vals</span>(y, H)</a></code></pre></div>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>What happens to the residuals if your regressors do not include a vector of constants?</li>
 </ol>
 <p>If a constant is not included, the residuals are not centered unless the columns of the design matrix and the response were
 centered, meaning they had expectation zero. This is why a column vector of ones is always included unless the mean is known
 (from theory or otherwise) to be zero.</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" title="1"><span class="co">#Removing the row of constants</span></a>
-<a class="sourceLine" id="cb114-2" title="2">res_uncentered &lt;-<span class="st"> </span><span class="kw">resid_vals</span>(y, <span class="kw">proj_mat</span>(X[,<span class="op">-</span><span class="dv">1</span>])) <span class="co">#subset [row, column]</span></a>
-<a class="sourceLine" id="cb114-3" title="3"><span class="co">#X[,-1] take all rows, all columns but first</span></a>
-<a class="sourceLine" id="cb114-4" title="4"><span class="kw">mean</span>(res_uncentered)</a></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="co">#Removing the row of constants</span></a>
+<a class="sourceLine" id="cb114-2" data-line-number="2">res_uncentered &lt;-<span class="st"> </span><span class="kw">resid_vals</span>(y, <span class="kw">proj_mat</span>(X[,<span class="op">-</span><span class="dv">1</span>])) <span class="co">#subset [row, column]</span></a>
+<a class="sourceLine" id="cb114-3" data-line-number="3"><span class="co">#X[,-1] take all rows, all columns but first</span></a>
+<a class="sourceLine" id="cb114-4" data-line-number="4"><span class="kw">mean</span>(res_uncentered)</a></code></pre></div>
 <pre><code>## [1] 3.32711</code></pre>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" title="1"><span class="co">#Consequence of not centering is that residuals are not mean zero</span></a></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1"><span class="co">#Consequence of not centering is that residuals are not mean zero</span></a></code></pre></div>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Verify numerically Frisch–Waugh–Lovell’s theorem and test the different regression models from Exercice 2.4 to validate your answers.</li>
 </ol>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" title="1"><span class="co">#The null models regression has</span></a>
-<a class="sourceLine" id="cb117-2" title="2">coef_<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> y)[<span class="kw">ncol</span>(X)]</a>
-<a class="sourceLine" id="cb117-3" title="3">res_<span class="dv">0</span>  &lt;-<span class="st"> </span><span class="kw">resid_vals</span> (<span class="dt">y =</span> y, <span class="dt">pmat =</span> H)</a>
-<a class="sourceLine" id="cb117-4" title="4"><span class="co">#The following function checks equality of the coefficients</span></a>
-<a class="sourceLine" id="cb117-5" title="5"><span class="co">#beta 2 is the last coef (here 1d)</span></a>
-<a class="sourceLine" id="cb117-6" title="6">check_FWL &lt;-<span class="st"> </span><span class="cf">function</span>(xmat, yvec, <span class="dt">coef0 =</span> coef_<span class="dv">0</span>, <span class="dt">res0 =</span> res_<span class="dv">0</span>){</a>
-<a class="sourceLine" id="cb117-7" title="7">  <span class="kw">c</span>(<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">coefs_vals</span>(<span class="dt">x =</span> xmat, <span class="dt">y =</span> yvec)[<span class="kw">ncol</span>(xmat)], coef0)),</a>
-<a class="sourceLine" id="cb117-8" title="8">    <span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">resid_vals</span>(<span class="dt">y =</span> yvec, <span class="dt">pmat =</span> <span class="kw">proj_mat</span>(xmat)), res0))</a>
-<a class="sourceLine" id="cb117-9" title="9">  )</a>
-<a class="sourceLine" id="cb117-10" title="10">}</a>
-<a class="sourceLine" id="cb117-11" title="11"></a>
-<a class="sourceLine" id="cb117-12" title="12"><span class="co">#Check the results of 4.3</span></a>
-<a class="sourceLine" id="cb117-13" title="13">res_mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> y, <span class="dt">xmat =</span> X2), <span class="co">#1</span></a>
-<a class="sourceLine" id="cb117-14" title="14"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#2</span></a>
-<a class="sourceLine" id="cb117-15" title="15"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> H1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#3</span></a>
-<a class="sourceLine" id="cb117-16" title="16"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X), <span class="co">#4</span></a>
-<a class="sourceLine" id="cb117-17" title="17"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#5</span></a>
-<a class="sourceLine" id="cb117-18" title="18"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#6</span></a>
-<a class="sourceLine" id="cb117-19" title="19"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#7 and 9</span></a>
-<a class="sourceLine" id="cb117-20" title="20"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> <span class="kw">cbind</span>(X1, M1 <span class="op">%*%</span><span class="st"> </span>X2)), <span class="co">#8</span></a>
-<a class="sourceLine" id="cb117-21" title="21"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2)) <span class="co">#10</span></a>
-<a class="sourceLine" id="cb117-22" title="22"><span class="kw">colnames</span>(res_mat) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;(1)&quot;</span>, <span class="st">&quot;(2)&quot;</span>, <span class="st">&quot;(3)&quot;</span>, <span class="st">&quot;(4)&quot;</span>, <span class="st">&quot;(5)&quot;</span>, <span class="st">&quot;(6)&quot;</span>, <span class="st">&quot;(7,9)&quot;</span>,<span class="st">&quot;(8)&quot;</span>,<span class="st">&quot;(10)&quot;</span>)</a>
-<a class="sourceLine" id="cb117-23" title="23"><span class="kw">rownames</span>(res_mat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;coefficients&quot;</span>,<span class="st">&quot;residuals&quot;</span>)</a>
-<a class="sourceLine" id="cb117-24" title="24"><span class="kw">print</span>(res_mat)</a></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="co">#The null models regression has</span></a>
+<a class="sourceLine" id="cb117-2" data-line-number="2">coef_<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">coefs_vals</span>(<span class="dt">x =</span> X, <span class="dt">y =</span> y)[<span class="kw">ncol</span>(X)]</a>
+<a class="sourceLine" id="cb117-3" data-line-number="3">res_<span class="dv">0</span>  &lt;-<span class="st"> </span><span class="kw">resid_vals</span> (<span class="dt">y =</span> y, <span class="dt">pmat =</span> H)</a>
+<a class="sourceLine" id="cb117-4" data-line-number="4"><span class="co">#The following function checks equality of the coefficients</span></a>
+<a class="sourceLine" id="cb117-5" data-line-number="5"><span class="co">#beta 2 is the last coef (here 1d)</span></a>
+<a class="sourceLine" id="cb117-6" data-line-number="6">check_FWL &lt;-<span class="st"> </span><span class="cf">function</span>(xmat, yvec, <span class="dt">coef0 =</span> coef_<span class="dv">0</span>, <span class="dt">res0 =</span> res_<span class="dv">0</span>){</a>
+<a class="sourceLine" id="cb117-7" data-line-number="7">  <span class="kw">c</span>(<span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">coefs_vals</span>(<span class="dt">x =</span> xmat, <span class="dt">y =</span> yvec)[<span class="kw">ncol</span>(xmat)], coef0)),</a>
+<a class="sourceLine" id="cb117-8" data-line-number="8">    <span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(<span class="kw">resid_vals</span>(<span class="dt">y =</span> yvec, <span class="dt">pmat =</span> <span class="kw">proj_mat</span>(xmat)), res0))</a>
+<a class="sourceLine" id="cb117-9" data-line-number="9">  )</a>
+<a class="sourceLine" id="cb117-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb117-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb117-12" data-line-number="12"><span class="co">#Check the results of 4.3</span></a>
+<a class="sourceLine" id="cb117-13" data-line-number="13">res_mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">check_FWL</span>(<span class="dt">yvec =</span> y, <span class="dt">xmat =</span> X2), <span class="co">#1</span></a>
+<a class="sourceLine" id="cb117-14" data-line-number="14"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#2</span></a>
+<a class="sourceLine" id="cb117-15" data-line-number="15"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> H1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#3</span></a>
+<a class="sourceLine" id="cb117-16" data-line-number="16"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X), <span class="co">#4</span></a>
+<a class="sourceLine" id="cb117-17" data-line-number="17"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#5</span></a>
+<a class="sourceLine" id="cb117-18" data-line-number="18"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> X2), <span class="co">#6</span></a>
+<a class="sourceLine" id="cb117-19" data-line-number="19"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2), <span class="co">#7 and 9</span></a>
+<a class="sourceLine" id="cb117-20" data-line-number="20"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> M1 <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> <span class="kw">cbind</span>(X1, M1 <span class="op">%*%</span><span class="st"> </span>X2)), <span class="co">#8</span></a>
+<a class="sourceLine" id="cb117-21" data-line-number="21"><span class="kw">check_FWL</span>(<span class="dt">yvec =</span> H <span class="op">%*%</span><span class="st"> </span>y, <span class="dt">xmat =</span> M1 <span class="op">%*%</span><span class="st"> </span>X2)) <span class="co">#10</span></a>
+<a class="sourceLine" id="cb117-22" data-line-number="22"><span class="kw">colnames</span>(res_mat) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;(1)&quot;</span>, <span class="st">&quot;(2)&quot;</span>, <span class="st">&quot;(3)&quot;</span>, <span class="st">&quot;(4)&quot;</span>, <span class="st">&quot;(5)&quot;</span>, <span class="st">&quot;(6)&quot;</span>, <span class="st">&quot;(7,9)&quot;</span>,<span class="st">&quot;(8)&quot;</span>,<span class="st">&quot;(10)&quot;</span>)</a>
+<a class="sourceLine" id="cb117-23" data-line-number="23"><span class="kw">rownames</span>(res_mat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;coefficients&quot;</span>,<span class="st">&quot;residuals&quot;</span>)</a>
+<a class="sourceLine" id="cb117-24" data-line-number="24"><span class="kw">print</span>(res_mat)</a></code></pre></div>
 <pre><code>##                (1)   (2)   (3)   (4)   (5)   (6) (7,9)  (8)  (10)
 ## coefficients FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE TRUE  TRUE
 ## residuals    FALSE FALSE FALSE FALSE FALSE FALSE  TRUE TRUE FALSE</code></pre>

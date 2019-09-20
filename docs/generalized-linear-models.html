@@ -72,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -268,7 +268,7 @@ We use <code>y ~ x</code> formula syntax to specify the mean relationship. If yo
 <p>The second difference between <code>lm</code> and <code>glm</code> is the presence of the argument <code>family</code> that allow you to specify the likelihood</p>
 <ul>
 <li><code>family = gaussian()</code> gives back a linear model;</li>
-<li><code>family = binomial("logit")</code> gives you a binary or binomial regression with logistic link function;</li>
+<li><code>family = binomial(&quot;logit&quot;)</code> gives you a binary or binomial regression with logistic link function;</li>
 <li><code>family = poisson()</code> gives you Poisson regression.</li>
 </ul>
 <p>By default, empty parenthesis give the so-called canonical link function (identity for normal, logit for binomial and log for Poisson).</p>

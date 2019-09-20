@@ -72,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -265,7 +265,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>My (personal) general strategy for model selection, given the tools covered in MATH 341, is the following:</p>
 <ol style="list-style-type: decimal">
 <li>Start with a complex model (all additive terms, say). Look at the individual Wald tests for the marginal significance of the coefficients.</li>
-<li>Try to simplify the full model using an <span class="math inline">\(F\)</span> test, potentially dropping multiple terms at once. This preserves power (avoids the potential bias in the estimate of RSS in the denominator; cf. <a href="sum-of-squares-decomposition.html#biased-rss">5.1.3</a> and reduces the multiple testing problem that inflates Type I errors (reject the null more than <span class="math inline">\(\alpha\%\)</span> of the time when you shouldn’t).</li>
+<li>Try to simplify the full model using an <span class="math inline">\(F\)</span> test, potentially dropping multiple terms at once. This preserves power (avoids the potential bias in the estimate of RSS in the denominator; cf. <a href="sum-of-squares-decomposition.html#biased-rss">5.1.3</a> and reduces the multiple testing problem that inflates Type I errors (reject the null more than <span class="math inline">\(\alpha\%\)</span> of the time when you shouldn’t).</li>
 <li>Repeat; you can use <code>drop1</code> to further reduce the model.</li>
 <li>Try adding interactions between variables, if any.</li>
 <li>Compare the nested models using an information criterion such as AIC or BIC.</li>

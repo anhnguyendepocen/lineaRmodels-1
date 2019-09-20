@@ -72,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -268,24 +268,24 @@ by means of simulation the size distortion (the difference between the nominal l
 <pre><code>## Uncorrelated variables, model selection using BIC</code></pre>
 <pre><code>##                   size
 ## model                 0.1   0.05   0.01
-##   Lowest BIC model 0.1738 0.1076 0.0324
-##   Correct model    0.1104 0.0562 0.0106</code></pre>
+##   Lowest BIC model 0.1696 0.1060 0.0344
+##   Correct model    0.1056 0.0534 0.0094</code></pre>
 <p><img src="LineaRModels_files/figure-html/modelselectinvalid-1.png" width="70%" style="display: block; margin: auto;" /></p>
 <pre><code>## Correlated variables, model selection using BIC</code></pre>
 <pre><code>##                   size
-## model                 0.1   0.05   0.01
-##   Lowest BIC model 0.1846 0.1150 0.0344
-##   Correct model    0.1018 0.0504 0.0110</code></pre>
+## model                0.1   0.05   0.01
+##   Lowest BIC model 0.190 0.1164 0.0350
+##   Correct model    0.104 0.0516 0.0102</code></pre>
 <pre><code>## Uncorrelated variables, model selection using Mallow&#39;s Cp</code></pre>
 <pre><code>##                  size
 ## model                0.1   0.05   0.01
-##   Lowest Cp model 0.1844 0.1096 0.0318
-##   Correct model   0.0978 0.0472 0.0088</code></pre>
+##   Lowest Cp model 0.1858 0.1092 0.0374
+##   Correct model   0.1012 0.0504 0.0120</code></pre>
 <pre><code>## Correlated variables, model selection using Mallow&#39;s Cp</code></pre>
 <pre><code>##                  size
 ## model                0.1   0.05   0.01
-##   Lowest Cp model 0.1864 0.1114 0.0352
-##   Correct model   0.1014 0.0514 0.0084</code></pre>
+##   Lowest Cp model 0.1872 0.1128 0.0356
+##   Correct model   0.1026 0.0518 0.0086</code></pre>
 <p><img src="LineaRModels_files/figure-html/modelselectinvalid-2.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>Adding superfluous variables does not induce bias, but inflates the standard errors (leading to larger <span class="math inline">\(P\)</span>-values). We observe on the contrary here smaller <span class="math inline">\(P\)</span>-values. Recall that the <span class="math inline">\(P\)</span>-values should be uniformly distributed under the null hypothesis (and they seemingly are when the true null model is fitted).</p>
 

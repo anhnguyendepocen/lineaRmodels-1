@@ -72,7 +72,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -263,35 +263,35 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">9.1</span> Solutions</h2>
 <div id="exercise-12.4-smoothing-splines" class="section level3">
 <h3><span class="header-section-number">9.1.1</span> Exercise 12.4 Smoothing splines</h3>
-<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb306-1" title="1"><span class="co"># Evaluate GCV at a grid of lambda</span></a>
-<a class="sourceLine" id="cb306-2" title="2">lambdas &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.1</span>, <span class="dv">40</span>, <span class="dt">length =</span> 250L)</a>
-<a class="sourceLine" id="cb306-3" title="3"><span class="co"># Container for GCV criterion</span></a>
-<a class="sourceLine" id="cb306-4" title="4">gcv &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(lambdas))  </a>
-<a class="sourceLine" id="cb306-5" title="5"><span class="co"># Loop over cases</span></a>
-<a class="sourceLine" id="cb306-6" title="6"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lambdas)){</a>
-<a class="sourceLine" id="cb306-7" title="7">  <span class="co"># Compute smoothing matrix</span></a>
-<a class="sourceLine" id="cb306-8" title="8">  Sm &lt;-<span class="st"> </span>B <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(B) <span class="op">+</span><span class="st"> </span>lambdas[i]<span class="op">*</span>O) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(B)</a>
-<a class="sourceLine" id="cb306-9" title="9">  <span class="co"># Compute ridge regression coefficients</span></a>
-<a class="sourceLine" id="cb306-10" title="10">  coefs &lt;-<span class="st"> </span><span class="kw">lmridge</span>(<span class="dt">y =</span> y, <span class="dt">X =</span> B, <span class="dt">O =</span> O, <span class="dt">lambda =</span> lambdas[i])</a>
-<a class="sourceLine" id="cb306-11" title="11">  <span class="co"># Compute GCV criterion</span></a>
-<a class="sourceLine" id="cb306-12" title="12">  gcv[i] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(y <span class="op">-</span><span class="st"> </span>B <span class="op">%*%</span><span class="st"> </span>coefs)<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>(<span class="kw">diag</span>(Sm))))<span class="op">/</span><span class="kw">nrow</span>(B)</a>
-<a class="sourceLine" id="cb306-13" title="13">}</a>
-<a class="sourceLine" id="cb306-14" title="14"><span class="co"># Plot GCV</span></a>
-<a class="sourceLine" id="cb306-15" title="15"><span class="kw">plot</span>(lambdas, gcv, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(lambda), </a>
-<a class="sourceLine" id="cb306-16" title="16">     <span class="dt">ylab =</span> <span class="st">&quot;GCV criterion value&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Cross validation&quot;</span>)</a>
-<a class="sourceLine" id="cb306-17" title="17"><span class="kw">abline</span>(<span class="dt">v =</span> lambdas[<span class="kw">which.min</span>(gcv)])</a></code></pre></div>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb306-1" data-line-number="1"><span class="co"># Evaluate GCV at a grid of lambda</span></a>
+<a class="sourceLine" id="cb306-2" data-line-number="2">lambdas &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.1</span>, <span class="dv">40</span>, <span class="dt">length =</span> 250L)</a>
+<a class="sourceLine" id="cb306-3" data-line-number="3"><span class="co"># Container for GCV criterion</span></a>
+<a class="sourceLine" id="cb306-4" data-line-number="4">gcv &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">length</span>(lambdas))  </a>
+<a class="sourceLine" id="cb306-5" data-line-number="5"><span class="co"># Loop over cases</span></a>
+<a class="sourceLine" id="cb306-6" data-line-number="6"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lambdas)){</a>
+<a class="sourceLine" id="cb306-7" data-line-number="7">  <span class="co"># Compute smoothing matrix</span></a>
+<a class="sourceLine" id="cb306-8" data-line-number="8">  Sm &lt;-<span class="st"> </span>B <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">crossprod</span>(B) <span class="op">+</span><span class="st"> </span>lambdas[i]<span class="op">*</span>O) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(B)</a>
+<a class="sourceLine" id="cb306-9" data-line-number="9">  <span class="co"># Compute ridge regression coefficients</span></a>
+<a class="sourceLine" id="cb306-10" data-line-number="10">  coefs &lt;-<span class="st"> </span><span class="kw">lmridge</span>(<span class="dt">y =</span> y, <span class="dt">X =</span> B, <span class="dt">O =</span> O, <span class="dt">lambda =</span> lambdas[i])</a>
+<a class="sourceLine" id="cb306-11" data-line-number="11">  <span class="co"># Compute GCV criterion</span></a>
+<a class="sourceLine" id="cb306-12" data-line-number="12">  gcv[i] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">crossprod</span>(y <span class="op">-</span><span class="st"> </span>B <span class="op">%*%</span><span class="st"> </span>coefs)<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>(<span class="kw">diag</span>(Sm))))<span class="op">/</span><span class="kw">nrow</span>(B)</a>
+<a class="sourceLine" id="cb306-13" data-line-number="13">}</a>
+<a class="sourceLine" id="cb306-14" data-line-number="14"><span class="co"># Plot GCV</span></a>
+<a class="sourceLine" id="cb306-15" data-line-number="15"><span class="kw">plot</span>(lambdas, gcv, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlab =</span> <span class="kw">expression</span>(lambda), </a>
+<a class="sourceLine" id="cb306-16" data-line-number="16">     <span class="dt">ylab =</span> <span class="st">&quot;GCV criterion value&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Cross validation&quot;</span>)</a>
+<a class="sourceLine" id="cb306-17" data-line-number="17"><span class="kw">abline</span>(<span class="dt">v =</span> lambdas[<span class="kw">which.min</span>(gcv)])</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/soln12_4-1.png" width="70%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb307-1" title="1"><span class="co"># Plot data</span></a>
-<a class="sourceLine" id="cb307-2" title="2"><span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">xlab =</span> <span class="st">&quot;time after impact (in milliseconds)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;centered acceleration&quot;</span>,</a>
-<a class="sourceLine" id="cb307-3" title="3">     <span class="dt">main =</span> <span class="st">&quot;Simulated motorcycle accident&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a>
-<a class="sourceLine" id="cb307-4" title="4"><span class="co"># Undersmoothing</span></a>
-<a class="sourceLine" id="cb307-5" title="5"><span class="co">#lines(x, B %*% lmridge(y = y, X = B, O = O, lambda = 0.01), col = &quot;green&quot;)</span></a>
-<a class="sourceLine" id="cb307-6" title="6"><span class="co"># Oversmoothing</span></a>
-<a class="sourceLine" id="cb307-7" title="7"><span class="co">#lines(x, B %*% lmridge(y = y, X = B, O = O, lambda = 500), col = &quot;blue&quot;)</span></a>
-<a class="sourceLine" id="cb307-8" title="8"><span class="kw">lines</span>(<span class="kw">predict</span>(<span class="kw">smooth.spline</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> x, <span class="dt">all.knots =</span> <span class="ot">TRUE</span>)))</a>
-<a class="sourceLine" id="cb307-9" title="9">fitted_opt &lt;-<span class="st"> </span>B <span class="op">%*%</span><span class="st"> </span><span class="kw">lmridge</span>(<span class="dt">y =</span> y, <span class="dt">X =</span> B, <span class="dt">O =</span> O,</a>
-<a class="sourceLine" id="cb307-10" title="10">                    <span class="dt">lambda =</span> lambdas[<span class="kw">which.min</span>(gcv)])</a>
-<a class="sourceLine" id="cb307-11" title="11"><span class="kw">lines</span>(x, fitted_opt , <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb307-1" data-line-number="1"><span class="co"># Plot data</span></a>
+<a class="sourceLine" id="cb307-2" data-line-number="2"><span class="kw">plot</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">xlab =</span> <span class="st">&quot;time after impact (in milliseconds)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;centered acceleration&quot;</span>,</a>
+<a class="sourceLine" id="cb307-3" data-line-number="3">     <span class="dt">main =</span> <span class="st">&quot;Simulated motorcycle accident&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>)</a>
+<a class="sourceLine" id="cb307-4" data-line-number="4"><span class="co"># Undersmoothing</span></a>
+<a class="sourceLine" id="cb307-5" data-line-number="5"><span class="co">#lines(x, B %*% lmridge(y = y, X = B, O = O, lambda = 0.01), col = &quot;green&quot;)</span></a>
+<a class="sourceLine" id="cb307-6" data-line-number="6"><span class="co"># Oversmoothing</span></a>
+<a class="sourceLine" id="cb307-7" data-line-number="7"><span class="co">#lines(x, B %*% lmridge(y = y, X = B, O = O, lambda = 500), col = &quot;blue&quot;)</span></a>
+<a class="sourceLine" id="cb307-8" data-line-number="8"><span class="kw">lines</span>(<span class="kw">predict</span>(<span class="kw">smooth.spline</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> x, <span class="dt">all.knots =</span> <span class="ot">TRUE</span>)))</a>
+<a class="sourceLine" id="cb307-9" data-line-number="9">fitted_opt &lt;-<span class="st"> </span>B <span class="op">%*%</span><span class="st"> </span><span class="kw">lmridge</span>(<span class="dt">y =</span> y, <span class="dt">X =</span> B, <span class="dt">O =</span> O,</a>
+<a class="sourceLine" id="cb307-10" data-line-number="10">                    <span class="dt">lambda =</span> lambdas[<span class="kw">which.min</span>(gcv)])</a>
+<a class="sourceLine" id="cb307-11" data-line-number="11"><span class="kw">lines</span>(x, fitted_opt , <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
 <p><img src="LineaRModels_files/figure-html/soln12_4-2.png" width="70%" style="display: block; margin: auto;" /></p>
 
 </div>

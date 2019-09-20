@@ -15,5 +15,6 @@ bookdown::pdf_book:
   latex_engine: xelatex
   citation_package: natbib
   keep_tex: yes
+  fig_crop: false
 bookdown::epub_book: default
 

@@ -408,7 +408,7 @@ a. Fit a linear model with wind speed as covariate and plot the standardized res
 b.  Predict, using both models in term, the output of electricity given that the average wind speed in a given period is 5 miles per hour. Provide prediction interval for your estimates.
 c. Produce a standard Gaussian quantile-quantile plot of the standardized residuals. Superimpose approximate pointwise confidence intervals.
 
-```{r}
+```{r windturbine}
 #Extract dataset
 url2 <- "https://lbelzile.bitbucket.io/math341/windmill.dat"
 windmill <- read.table(file = url2, header = TRUE)
@@ -465,7 +465,7 @@ abline(h = 0, lty = 2)
 
 There is some structure left in the model `output ~ velocity`, since the smallest values occur at the endpoint of the output. There is less visible structure in the model with the reciprocal.
 The second model appears to fit better, since its $\mathrm{R}^2$ value is `r round(digits = 2, summ2$r.squared)` compared to `r round(digits = 2, summ1$r.squared)` for the first model.
-Note that, in the second model, the intercept corresponds to infinite strenght wind gusts.
+Note that, in the second model, the intercept corresponds to infinite strength wind gusts.
 
 ```{r predict}
 #Predict new observation
@@ -555,7 +555,7 @@ The simulated pointwise confidence interval are shorter and account for the scal
 
 
 First load the data set and plot the observations
-```{r}
+```{r airpassengers}
 rm(list = ls()) #clear environment 
 par(bty = "l", pch = 20)
 url3 <- "https://lbelzile.bitbucket.io/math341/airpassengers.dat"
@@ -588,7 +588,7 @@ We notice that the model does an overall good job at getting the big features, b
 The residuals are not apparently close to normal (the last values are systematically too large) and there is some skewness. The last few points have large leverage and drive the curve up.
 
 
-```{r} 
+```{r airpassengers_diagplot} 
 n <- length(passengers)
 p <- length(coef(fit_ad)) 
 par(mfrow = c(2, 2))
@@ -611,7 +611,7 @@ plot(time, rstudent(fit_ad),
 Let us consider the log counts. The fit is much better and the quadratic relationship with the residuals vs fitted values is attenuated. While some points still have high leverage value, they are not considered outliers.
 
 
-```{r}
+```{r airpassqq}
 fit_l <- lm(log(passengers) ~ time + month)
 plot(log(passengers) ~ time, main = "International airline passengers",
 ylab = "log of monthly total count (in thousands)", type = "l")
@@ -631,7 +631,7 @@ One hypothesis of the linear model that is clearly violated here is the independ
 
 Ignoring the serial dependence in the error has consequences: the standard errors are too small (since errors are correlated, there is less units of information so we are overconfident in our uncertainty quantification).
 
-```{r}
+```{r airpasslag}
 #Laggedresidual plots
 par(mfrow = c(1, 1))
 plot(x = resid(fit_l)[-1], y = resid(fit_l)[-n], 
@@ -649,7 +649,7 @@ detach(airpass)
 
 ### Exercise 7.4 - Determinants of earnings 
 
-```{r ex5.3}
+```{r determinantsofearning}
 url4 <- "https://lbelzile.bitbucket.io/math341/labour.dat"
 labour <- read.table(url4, header = TRUE, stringsAsFactors = TRUE)
 attach(labour)

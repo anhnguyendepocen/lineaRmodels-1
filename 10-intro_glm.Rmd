@@ -180,7 +180,7 @@ nr <- rowSums(cancer[,c("yes","no")])
 # Simulate new datasets from the model, compute their deviance
 simudev <- rep(0, 1e3L)
 for(i in 1:length(simudev)){
-  newyes <- sapply(1:6, function(j){rbinom(n = 1, size = nr[j], prob = probc[j])})
+  newyes <- sapply(1:length(nr), function(j){rbinom(n = 1, size = nr[j], prob = probc[j])})
   newcancer <- data.frame(malignant = cancer$malignant, yes = newyes, no = nr - newyes)
   simudev[i] <- deviance(glm( cbind(yes, no) ~ malignant, family = "binomial", data = newcancer))
 }
@@ -189,7 +189,7 @@ hist(simudev, main = "Deviance of simulated models", xlab = "Deviance", probabil
 # Line corresponding to deviance of 
 abline(v = deviance(cancer.m2), lty = 2)
 # Null distribution
-curve(dchisq(x, df = 4), col = 2, add = TRUE)
+curve(dchisq(x, df = cancer.m2$df.residual), col = 2, add = TRUE)
 # P-value from simulation
 sum(I(deviance(cancer.m2) < simudev)) / length(simudev)
 # P-value with asymptotic distribution
